@@ -148,6 +148,19 @@ resource 'Tenants', admin_api: true do
       expect(json_response_body[:host]).to eq(new_tenant_attrs[:host])
     end
 
+    example 'Create a tenant with iframes in a helper text', document: false do
+      own_page = %(<iframe src="https://#{new_tenant_attrs[:host]}/m"></iframe>)
+      map = '<iframe src="https://maps.example.org/m"></iframe>'
+      new_tenant_attrs[:settings]['core']['enter_email_helper_text'] = { 'en' => own_page + map }
+
+      do_request tenant: new_tenant_attrs
+
+      assert_status 201
+      Tenant.find_by(host: new_tenant_attrs[:host]).switch do
+        expect(AppConfiguration.instance.settings('core', 'enter_email_helper_text', 'en')).to eq map
+      end
+    end
+
     example '[error] Cannot create tenant with host of other tenant' do
       new_tenant_attrs[:host] = tenant.host
 

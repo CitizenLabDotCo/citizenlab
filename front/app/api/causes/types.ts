@@ -75,12 +75,11 @@ export interface IVolunteer {
           id: string;
           type: 'user';
         };
-
-        cause: {
-          data: {
-            id: string;
-            type: 'cause';
-          };
+      };
+      cause: {
+        data: {
+          id: string;
+          type: 'cause';
         };
       };
     };

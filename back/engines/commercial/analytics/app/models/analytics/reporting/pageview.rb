@@ -17,6 +17,10 @@ module Analytics
       self.table_name = 'reporting_pageviews'
       self.primary_key = :id
 
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(project_id: project_ids)
+
       def self.table_description
         <<~DOC.squish
           One row per pageview: a single page displayed to a visitor. Join to

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
@@ -25,6 +25,7 @@ import parentMessages from '../../../../messages';
 import configMessages from '../../messages';
 
 interface Props {
+  surveyPlacement?: ReactNode;
   apiErrors: CLErrors | null;
   phase?: IPhase;
   formData: IUpdatedPhaseProperties;
@@ -39,6 +40,7 @@ interface Props {
 }
 
 const NativeSurveyInputs = ({
+  surveyPlacement,
   apiErrors,
   phase,
   formData,
@@ -60,7 +62,7 @@ const NativeSurveyInputs = ({
   const openSurveyPreview = (event: React.MouseEvent) => {
     if (phase) {
       window.open(
-        `/projects/${project?.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`,
+        `/projects/${project?.data.attributes.slug}/surveys/new/${phase.data.id}`,
         '_blank'
       );
     }
@@ -73,6 +75,7 @@ const NativeSurveyInputs = ({
         <Box mb="10px">
           <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
         </Box>
+        {surveyPlacement}
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
@@ -85,7 +88,11 @@ const NativeSurveyInputs = ({
             checked={!!formData.submission_enabled}
             onChange={toggleSubmissionEnabled}
           />
-          <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
+          <Error
+            showBackground={false}
+            showIcon={false}
+            apiErrors={apiErrors && apiErrors.submission_enabled}
+          />
           <SettingToggleRow
             title={formatMessage(parentMessages.allowMultipleResponsesLabel)}
             description={formatMessage(
@@ -94,7 +101,11 @@ const NativeSurveyInputs = ({
             checked={!!formData.allow_multiple_responses}
             onChange={toggleAllowMultipleResponses}
           />
-          <Error apiErrors={apiErrors && apiErrors.allow_multiple_responses} />
+          <Error
+            showBackground={false}
+            showIcon={false}
+            apiErrors={apiErrors && apiErrors.allow_multiple_responses}
+          />
           {phase && (
             <PhaseActionAccessRow
               phaseId={phase.data.id}
@@ -126,6 +137,8 @@ const NativeSurveyInputs = ({
                 onChange={handleSurveyTitleChange}
               />
               <Error
+                showBackground={false}
+                showIcon={false}
                 apiErrors={apiErrors && apiErrors.native_survey_title_multiloc}
               />
             </Box>
@@ -139,21 +152,10 @@ const NativeSurveyInputs = ({
                 onChange={handleSurveyCTAChange}
               />
               <Error
+                showBackground={false}
+                showIcon={false}
                 apiErrors={apiErrors && apiErrors.native_survey_button_multiloc}
               />
-            </Box>
-            <Box display="flex" flexDirection="column" gap="4px">
-              <Text variant="boMicro" m="0">
-                {formatMessage(parentMessages.previewSurveyCTALabel)}
-              </Text>
-              <ButtonWithLink
-                buttonStyle="bo-secondary"
-                boSize="medium"
-                width="fit-content"
-                onClick={openSurveyPreview}
-              >
-                {localize(formData.native_survey_button_multiloc)}
-              </ButtonWithLink>
             </Box>
           </Box>
         </PanelGroup>

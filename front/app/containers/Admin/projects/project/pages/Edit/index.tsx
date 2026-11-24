@@ -6,7 +6,6 @@ import useCustomPageLayout from 'api/custom_page_layout/useCustomPageLayout';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
@@ -34,9 +33,6 @@ const EditProjectPage = () => {
   const { data: project } = useProjectById(projectId);
   const { data: customPage, dataUpdatedAt } = useCustomPageById(customPageId);
   const { data: layout } = useCustomPageLayout(customPageId);
-  const customPageBuilderEnabled = useFeatureFlag({
-    name: 'custom_page_builder',
-  });
   useEnsureCustomPageLayout(customPageId);
 
   if (!customPage || !project) {
@@ -46,8 +42,6 @@ const EditProjectPage = () => {
   const form = (
     <ProjectPageForm project={project.data} page={customPage.data} />
   );
-
-  if (!customPageBuilderEnabled) return form;
 
   const projectSlug = project.data.attributes.slug;
   const pageSlug = customPage.data.attributes.slug;

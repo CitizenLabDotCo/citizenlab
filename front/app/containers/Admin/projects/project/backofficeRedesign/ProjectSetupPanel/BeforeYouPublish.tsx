@@ -20,6 +20,7 @@ import PanelHeading from './PanelHeading';
 import SelectMethodModal from './SelectMethodModal';
 import SetupCard from './SetupCard';
 import SetupCards from './SetupCards';
+import setupCardMessages from './SetupCards/messages';
 import { getMissingItems, SETUP_ITEMS } from './setupItems';
 import useSetupReadiness from './useSetupReadiness';
 
@@ -94,6 +95,7 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
         />
         <SetupCard
           id="e2e-setup-card-methods"
+          tooltip={formatMessage(setupCardMessages.methodsTooltip)}
           title={formatMessage(backofficeRedesignMessages.participationMethods)}
           ready={readiness.methods}
           behaviour={

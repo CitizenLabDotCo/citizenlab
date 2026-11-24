@@ -71,6 +71,8 @@ class User < ApplicationRecord
   INVITE_STATUSES = %w[pending accepted].freeze
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
+  EMAIL_DOMAIN_BLOCKED_ERROR_CODE = 'zrb-42'
+  EMAIL_BANNED_ERROR_CODE = 'zrb-43'
 
   # NOTE: Apr 2026 - Slug is still generated but no longer used in the codebase.
   # It will be removed in the near future when we are sure there is no further use for it.
@@ -201,6 +203,7 @@ class User < ApplicationRecord
 
   has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
   has_many :idea_exposures, dependent: :destroy
+  has_many :pulse_checks, dependent: :destroy
   has_many :email_bans, foreign_key: :banned_by_id, dependent: :nullify
   has_many :manual_votes_last_updated_ideas, class_name: 'Idea', foreign_key: :manual_votes_last_updated_by_id, dependent: :nullify
   has_many :manual_voters_last_updated_phases, class_name: 'Phase', foreign_key: :manual_voters_last_updated_by_id, dependent: :nullify
@@ -225,7 +228,8 @@ class User < ApplicationRecord
   # auto_confirm_on_invite_accept must run before complete_registration, as the former can set confirmation_required to false,
   # which is a condition for complete_registration to set registration_completed_at
   # By putting it on the line before complete_registration, and using prepend: true, we ensure it runs before complete_registration.
-  before_validation :auto_confirm_on_invite_accept, if: ->(user) { user.invite_status_change&.last == 'accepted' }, prepend: true
+  # An address typed in while accepting was never proven to belong to the invitee, so it goes through the normal confirmation.
+  before_validation :auto_confirm_on_invite_accept, if: -> { invite_status_change&.last == 'accepted' && (!email_changed? || email_changed_only_in_case?) }, prepend: true
   before_validation :complete_registration
 
   # A bounce belongs to the address, so a different address starts clean.
@@ -606,7 +610,7 @@ class User < ApplicationRecord
       # Mild obfuscation of error message to make a spammers life a little more difficult,
       # especially avoiding leaking info about which domains are blacklisted.
       # Error is a string, not a symbol, as it is translated on FE, not BE.
-      errors.add(field, 'something_went_wrong', code: 'zrb-42')
+      errors.add(field, 'something_went_wrong', code: EMAIL_DOMAIN_BLOCKED_ERROR_CODE)
       Rails.logger.info "Validation error! Email domain blacklisted: #{domain}" # Clearer message in the logs
     end
   end
@@ -621,7 +625,7 @@ class User < ApplicationRecord
     return if value.blank?
     return unless EmailBan.banned?(value)
 
-    errors.add(field, 'something_went_wrong', code: 'zrb-43')
+    errors.add(field, 'something_went_wrong', code: EMAIL_BANNED_ERROR_CODE)
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
   end
 

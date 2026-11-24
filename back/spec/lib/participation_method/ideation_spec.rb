@@ -147,6 +147,42 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe '#ensure_default_form!' do
+    it 'creates a default form on the project level when none exists' do
+      form = nil
+      expect { form = participation_method.ensure_default_form! }
+        .to change(CustomForm, :count).by(1)
+        .and change(CustomField, :count).by_at_least(1)
+
+      expect(form.participation_context).to eq phase.project
+    end
+
+    it 'persists the default fields, in their default order, into an existing form without fields' do
+      form = create(:custom_form, participation_context: phase.project)
+
+      expect(participation_method.ensure_default_form!).to eq form
+      expect(form.custom_fields.order(:ordering).map(&:code))
+        .to eq participation_method.default_fields(form).map(&:code)
+    end
+
+    it 'leaves a form that already has fields untouched' do
+      form = create(:custom_form, participation_context: phase.project)
+      field = create(:custom_field, resource: form)
+
+      expect { participation_method.ensure_default_form! }.not_to change(CustomField, :count)
+      expect(form.custom_fields).to eq [field]
+    end
+
+    it 'makes the created form available on the already loaded project' do
+      project = phase.project
+      expect(project.custom_form).to be_nil
+
+      form = participation_method.ensure_default_form!
+
+      expect(project.custom_form).to eq form
+    end
+  end
+
   describe '#default_fields' do
     it 'returns the default ideation fields' do
       expect(

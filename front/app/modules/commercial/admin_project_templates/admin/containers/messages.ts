@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  templatesLoadFailed: {
+    id: 'app.components.ProjectTemplatePreview.templatesLoadFailed',
+    defaultMessage: 'Templates could not be loaded. Please try again.',
+  },
+  retryTemplates: {
+    id: 'app.components.ProjectTemplatePreview.retryTemplates',
+    defaultMessage: 'Try again',
+  },
   goBack: {
     id: 'app.components.ProjectTemplatePreview.goBack',
     defaultMessage: 'Go back',

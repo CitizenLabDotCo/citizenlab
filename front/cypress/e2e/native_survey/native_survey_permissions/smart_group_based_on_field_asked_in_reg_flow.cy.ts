@@ -128,7 +128,7 @@ describe('Native survey permissions', () => {
       // Expect to be redirected to survey
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectSlug}/surveys/new`
+        `/en/projects/${projectSlug}/surveys/new/${phaseId}`
       );
       cy.dataCy('e2e-submit-form').should('exist');
     });

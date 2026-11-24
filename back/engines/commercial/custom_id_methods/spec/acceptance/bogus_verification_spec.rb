@@ -9,6 +9,7 @@ resource 'Verifications' do
     @user = create(:user)
     header_token_for @user
 
+    allow_test_id_methods
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['id_config'] = {
@@ -46,6 +47,18 @@ resource 'Verifications' do
         expect(@user.reload.verified).to be true
         expect(@user.last_name).to eq 'BOGUS'
         expect(@user.answer_for_key('gender')&.value).to eq 'female'
+      end
+    end
+
+    describe do
+      before { change_lifecycle_stage('active') }
+
+      let(:desired_error) { nil }
+
+      example '[error] Fake verify with bogus on a customer platform', document: false do
+        do_request
+        assert_status 404
+        expect(@user.reload.verified).to be false
       end
     end
 

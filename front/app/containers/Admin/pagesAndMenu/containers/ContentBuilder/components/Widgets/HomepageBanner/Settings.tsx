@@ -23,6 +23,7 @@ import {
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
 } from 'components/admin/ContentBuilder/constants';
+import TitleVariantSetting from 'components/admin/ContentBuilder/Widgets/_shared/TitleVariantSetting';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import Error from 'components/UI/Error';
@@ -332,6 +333,8 @@ const HomepageBannerSettings = () => {
           />
         )}
       </>
+
+      <TitleVariantSetting name="homepage-banner-title-variant" />
 
       <Box
         display="flex"

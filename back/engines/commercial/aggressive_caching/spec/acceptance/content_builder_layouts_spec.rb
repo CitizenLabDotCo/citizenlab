@@ -36,6 +36,86 @@ resource 'ContentBuilderLayouts', :clear_cache, document: false do
     end
   end
 
+  get 'web_api/v1/project_folders/:project_folder_id/content_builder_layouts/:code' do
+    let(:group_member) { create(:user) }
+    let(:folder) { create(:project_folder, projects: [create(:private_groups_project, user: group_member)]) }
+    let(:project_folder_id) { folder.id }
+    let(:code) { 'project_folder_description' }
+    let(:cache_key) { "api_response/example.org/web_api/v1/project_folders/#{project_folder_id}/content_builder_layouts/#{code}.json" }
+
+    before { create(:layout, content_buildable: folder, code: code) }
+
+    example 'refuses a visitor when the folder is hidden from them' do
+      do_request
+      expect(status).to eq 401
+    end
+
+    # A folder can be visible to this user and not to the next one.
+    context 'when logged in as a user who can see the folder' do
+      before { header_token_for group_member }
+
+      example 'it does not cache' do
+        do_request
+        expect(status).to eq 200
+        expect(Rails.cache.read(cache_key)).to be_nil
+      end
+
+      example 'a visitor asking next is still refused' do
+        do_request
+        expect(status).to eq 200
+
+        # Sign out: drop the auth cookie the request sent and any the response set.
+        header 'Cookie', nil
+        sign_out_client
+        do_request
+        expect(status).to eq 401
+      end
+    end
+
+    context 'when the folder is visible to everyone' do
+      let(:folder) { create(:project_folder, projects: [create(:project)]) }
+
+      example 'caches for a visitor' do
+        do_request
+        expect(status).to eq 200
+        expect(Rails.cache.read(cache_key)).to be_present
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/:project_id/content_builder_layouts/:code' do
+    let(:project) { create(:project, :draft) }
+    let(:project_id) { project.id }
+    let(:code) { 'project_description' }
+
+    before { create(:layout, project: project, code: code) }
+
+    example 'refuses a visitor for a draft project' do
+      do_request
+      expect(status).to eq 401
+    end
+
+    # A preview link lets this visitor see the draft project, and the next one not.
+    context 'when the visitor has the project\'s preview link' do
+      let(:cache_key) { "api_response/example.org/web_api/v1/projects/#{project_id}/content_builder_layouts/#{code}.json" }
+
+      before do
+        SettingsService.new.activate_feature! 'project_preview_link'
+        header 'Cookie', "preview_token=#{project.preview_token}"
+      end
+
+      example 'it does not cache, so a visitor asking next is still refused' do
+        do_request
+        expect(status).to eq 200
+        expect(Rails.cache.read(cache_key)).to be_nil
+
+        header 'Cookie', nil
+        do_request
+        expect(status).to eq 401
+      end
+    end
+  end
+
   get 'web_api/v1/home_pages/content_builder_layouts/:code' do
     let(:code) { 'homepage' }
     let(:cache_key) { "api_response/example.org/web_api/v1/home_pages/content_builder_layouts/#{code}.json" }

@@ -74,7 +74,11 @@ class McpServer::Tools::UpdatePlatformConfig < McpServer::BaseTool
 
       # deep_merge preserves untouched core keys, feature blocks, and merges *_multiloc
       # fields per locale (arrays like locales replace wholesale).
-      config.settings = config.settings.deep_merge('core' => core)
+      settings = config.settings.deep_merge('core' => core)
+      forbidden = policy(config).forbidden_settings(SettingsService.new.changed_settings(config.settings, settings))
+      return error("Only super admins can change: #{forbidden.map { |pair| pair.join('.') }.join(', ')}.") if forbidden.any?
+
+      config.settings = settings
       config.remote_logo_url = params[:logo_url] if params[:logo_url]
       config.remote_favicon_url = params[:favicon_url] if params[:favicon_url]
 

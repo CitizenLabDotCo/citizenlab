@@ -1,10 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 
-// intl
-
-// components
-import { Text, Box, Button } from '@citizenlab/cl2-component-library';
+import {
+  Text,
+  Box,
+  Button,
+  Label,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
+
+import usePhases from 'api/phases/usePhases';
 
 import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
 
@@ -12,7 +17,6 @@ import Modal from 'components/UI/Modal';
 import PhaseFilter from 'components/UI/PhaseFilter';
 import Warning from 'components/UI/Warning';
 
-// routing
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
@@ -23,6 +27,8 @@ type Props = {
   setShowCopySurveyModal: (show: boolean) => void;
   editFormLink: string;
   surveyFormPersisted: boolean;
+  surveyFormLoading?: boolean;
+  variant?: 'bo';
 };
 
 const CopySurveyModal = ({
@@ -30,38 +36,55 @@ const CopySurveyModal = ({
   setShowCopySurveyModal,
   editFormLink,
   surveyFormPersisted,
+  surveyFormLoading = false,
+  variant,
 }: Props) => {
   const { formatMessage } = useIntl();
 
   const [projectId, setProjectId] = useState<string>();
   const [phaseId, setPhaseId] = useState<string>();
 
-  // TODO: Very similar to what happens in report builder - could we combine?
-  const handleProjectFilter = useCallback(
-    ({ value }: IOption) => {
-      setProjectId(value);
-    },
-    [setProjectId]
-  );
+  const {
+    data: phases,
+    isFetching,
+    isPlaceholderData,
+  } = usePhases(projectId, 'all');
+  const canDuplicate =
+    !surveyFormLoading &&
+    !isFetching &&
+    !isPlaceholderData &&
+    phases?.data.some(
+      (phase) =>
+        phase.id === phaseId &&
+        phase.relationships.project.data.id === projectId &&
+        phase.attributes.participation_method === 'native_survey'
+    );
 
-  const handlePhaseFilter = useCallback(
-    ({ value }: IOption) => {
-      setPhaseId(value);
-    },
-    [setPhaseId]
-  );
+  const close = () => {
+    setProjectId(undefined);
+    setPhaseId(undefined);
+    setShowCopySurveyModal(false);
+  };
+
+  const handleProjectFilter = ({ value }: { value: string | undefined }) => {
+    setProjectId(value);
+    setPhaseId(undefined);
+  };
+
+  const handlePhaseFilter = ({ value }: IOption) => {
+    setPhaseId(value);
+  };
 
   return (
     <Modal
       width={520}
       opened={showCopySurveyModal}
-      close={() => {
-        setShowCopySurveyModal(false);
-      }}
+      close={close}
       header={formatMessage(messages.copySurveyTitle)}
     >
       <Box m="24px" data-cy="e2e-copy-survey-modal">
-        {surveyFormPersisted && (
+        {surveyFormLoading && <Spinner />}
+        {!surveyFormLoading && surveyFormPersisted && (
           <Warning>
             <Text color="primary" m="0px" fontSize="s">
               {formatMessage(messages.surveyFormPersistedWarning)}
@@ -72,8 +95,17 @@ const CopySurveyModal = ({
           {formatMessage(messages.copySurveyDescription)}
         </Text>
         <Box py="5px" mt="0px" alignItems="center">
+          {variant === 'bo' && <Label>{formatMessage(messages.project)}</Label>}
           <ProjectFilter
             projectId={projectId}
+            participationMethods={
+              variant === 'bo' ? ['native_survey'] : undefined
+            }
+            placeholder={
+              variant === 'bo'
+                ? formatMessage(messages.selectSurveyProject)
+                : undefined
+            }
             emptyOptionMessage={messages.noProject}
             onProjectFilter={handleProjectFilter}
           />
@@ -90,22 +122,17 @@ const CopySurveyModal = ({
         </Box>
 
         <Box mt="40px" display="flex" justifyContent="space-between">
-          <Button
-            p="0px"
-            m="0px"
-            buttonStyle="text"
-            onClick={() => {
-              setShowCopySurveyModal(false);
-            }}
-          >
+          <Button p="0px" m="0px" buttonStyle="text" onClick={close}>
             {formatMessage(messages.cancel)}
           </Button>
           <Button
             buttonStyle="admin-dark"
-            disabled={!phaseId}
+            disabled={!canDuplicate}
             onClick={() => {
+              if (!canDuplicate) return;
+
               const url = `${editFormLink}?copy_from=${phaseId}`;
-              setShowCopySurveyModal(false);
+              close();
               clHistory.push(url);
             }}
             data-cy="e2e-copy-survey-modal-duplicate"

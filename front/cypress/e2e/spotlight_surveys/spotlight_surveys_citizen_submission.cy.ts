@@ -48,8 +48,10 @@ describe('Citizen submitting an extra survey', () => {
     clickSpotlightSurveyButton();
 
     // We land on the survey form of the standalone phase, not the timeline phase
-    cy.url().should('include', `/projects/${projectSlug}/surveys/new`);
-    cy.url().should('include', `phase_id=${surveyPhaseId}`);
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${projectSlug}/surveys/new/${surveyPhaseId}`
+    );
 
     // Answer the select question
     cy.get('fieldset').first().find('input').first().check({ force: true });

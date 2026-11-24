@@ -9,6 +9,7 @@ import {
   useBreakpoint,
   defaultStyles,
   fontSizes,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
@@ -23,6 +24,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import ConfettiSvg from './ConfettiSvg';
 import messages from './messages';
@@ -62,6 +64,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   // basket
   const { data: basket } = useBasket(phase.relationships.user_basket?.data?.id);
   const { mutate: updateBasket } = useUpdateBasket();
+  const preview = usePhasePreview();
   const basketStatus = phaseHasEnded
     ? 'submissionEnded'
     : // TODO: Fix this the next time the file is edited.
@@ -72,6 +75,42 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
   const basketCount =
     phase.attributes.baskets_count || project.attributes.baskets_count;
+
+  if (
+    preview &&
+    config &&
+    !phaseHasNotStartedYet &&
+    basketStatus === 'hasNotSubmitted'
+  ) {
+    return (
+      <Box
+        id="voting-status-module"
+        border={`1px solid ${theme.colors.tenantPrimary}`}
+        borderRadius={stylingConsts.borderRadius}
+        background={colors.white}
+        p="16px"
+        mb="16px"
+      >
+        <Title variant="h4" as="h3" m="0 0 12px" color="tenantText">
+          {formatMessage(config.getStatusTitle(basketStatus))}
+        </Title>
+        <Box style={{ fontSize: fontSizes.s }}>
+          {config.getStatusDescription?.({
+            project,
+            phase,
+            submissionState: basketStatus,
+            formatCurrency,
+          })}
+        </Box>
+        <Text fontSize="s" mb="0">
+          <FormattedMessage
+            {...config.preSubmissionWarning()}
+            values={{ b: (chunks) => <strong>{chunks}</strong> }}
+          />
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <Box boxShadow={defaultStyles.boxShadow} id="voting-status-module">

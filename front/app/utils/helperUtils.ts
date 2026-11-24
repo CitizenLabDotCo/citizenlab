@@ -69,11 +69,11 @@ export function isPage(pageKey: pageKeys, pathName: string) {
     case 'admin':
       return pathnameWithoutLocale.startsWith('/admin/');
     case 'idea_form':
-      return pathnameWithoutLocale.endsWith('/ideas/new');
+      return /\/ideas\/new(\/[^/]+)?$/.test(pathnameWithoutLocale);
     case 'idea_edit':
       return pathnameWithoutLocale.startsWith('/ideas/edit/');
     case 'native_survey':
-      return pathnameWithoutLocale.endsWith('/surveys/new');
+      return /\/surveys\/new(\/[^/]+)?$/.test(pathnameWithoutLocale);
     case 'sign_in':
       return pathnameWithoutLocale.startsWith('/sign-in');
     case 'sign_up':
@@ -208,3 +208,8 @@ export const classNames = (...classes: (string | undefined)[]) => {
 export function generateTempId() {
   return `TEMP-ID-${uuidv4()}`;
 }
+
+export const inGroupsOf = <T>(items: T[], size: number): T[][] =>
+  Array.from({ length: Math.ceil(items.length / size) }, (_, index) =>
+    items.slice(index * size, (index + 1) * size)
+  );

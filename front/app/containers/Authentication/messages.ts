@@ -64,6 +64,11 @@ export default defineMessages({
     id: 'app.containers.Authentication.linkYourAccount',
     defaultMessage: 'Link your account',
   },
+  verificationSignedOut: {
+    id: 'app.containers.Authentication.verificationSignedOut',
+    defaultMessage:
+      "You were signed out, so we couldn't verify your identity. Sign in and try again.",
+  },
   accountMergeNotAllowed: {
     id: 'app.containers.Authentication.accountMergeNotAllowed',
     defaultMessage:

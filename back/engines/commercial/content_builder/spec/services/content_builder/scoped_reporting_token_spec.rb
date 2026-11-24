@@ -80,4 +80,16 @@ RSpec.describe ContentBuilder::ScopedReportingToken do
       expect(described_class.permits?(token, layout_id: nil)).to be false
     end
   end
+
+  describe '.user' do
+    it 'is the person the token was minted for' do
+      token = described_class.mint(layout_id: layout.id, user_id: user.id)
+
+      expect(described_class.user(token)).to eq user
+    end
+
+    it 'is nobody for a token that does not verify' do
+      expect(described_class.user('not-a-token')).to be_nil
+    end
+  end
 end

@@ -116,7 +116,7 @@ it-IT:
         user_accepts_invitation_to_cosponsor_a_proposal: "L'utente accetta l'invito a co-sponsorizzare una proposta"
         user_changes_email: L'utente modifica il proprio indirizzo email
         user_comments: Commenti degli utenti
-        user_comments_on_input: Commenti degli utenti sull'input
+        user_comments_on_input: Commenti degli utenti sul contributo
         user_comments_on_proposal: Commenti degli utenti sulla proposta
         user_confirms_email: L'utente conferma il proprio indirizzo email
         user_is_blocked: "L'account dell'utente è bloccato"
@@ -487,7 +487,7 @@ it-IT:
       event_description: "Qualcuno ha effettuato l'accesso alla piattaforma partecipativa di %{organizationName} e ha chiesto di collegare tale accesso all'account associato a questo indirizzo email. Se la richiesta è tua, inserisci questo codice di conferma per continuare:"
       expire_code: 'Questo codice scadrà tra '
       hours_24: 24 ore.
-      ignore_email: Se non sei stato tu, puoi ignorare tranquillamente questa email. Non è stato modificato nulla e nessuno può utilizzare questo codice senza avere accesso a questa casella di posta.
+      ignore_email: Se non hai fatto tu questa richiesta, puoi ignorare tranquillamente questa email. Non è stato modificato nulla e nessuno può utilizzare questo codice senza avere accesso a questa casella di posta.
       preheader: Conferma il tuo indirizzo email per %{organizationName}
       subject: Conferma il tuo indirizzo email per la piattaforma partecipativa di %{organizationName}
       title: Conferma il tuo indirizzo email
@@ -501,7 +501,7 @@ it-IT:
       subject: Report settimanale del project manager di %{project_title}
       title: '%{firstName}: Il tuo report settimanale'
       title_inputs_past_week: Nuovi contributi nell'ultima settimana
-      title_no_inputs_past_week: Nessun nuovo ingresso nell'ultima settimana
+      title_no_inputs_past_week: Nessun nuovo contributo nell'ultima settimana
       title_threshold_reached: Soglia raggiunta nell'ultima settimana
       today_by_author: Oggi da %{author}
       x_days_ago_by_author: '%{x} giorni fa da %{author}'
@@ -540,7 +540,7 @@ it-IT:
       days_ago: '%{numberOfDays} giorni fa'
       event_description: '%{authorName} ha inviato un nuovo contributo sulla tua piattaforma.'
       input_not_visible: <b>Il contributo non sarà visibile</b> finché non modificherai il suo status.
-      preheader: '%{authorName} ha pubblicato un nuovo input sulla tua piattaforma'
+      preheader: '%{authorName} ha pubblicato un nuovo contributo sulla tua piattaforma'
       subject: Un contributo richiede la tua revisione
       title: Un contributo richiede la tua revisione
       today: Oggi
@@ -549,7 +549,7 @@ it-IT:
       cta_button: Dai un riscontro a %{authorName}
       days_ago: '%{numberOfDays} giorni fa'
       event_description: '%{authorName} ha inviato un nuovo contributo sulla tua piattaforma. Guardalo subito, dai un riscontro o cambia il suo status!'
-      preheader: '%{authorName} ha pubblicato un nuovo input sulla tua piattaforma'
+      preheader: '%{authorName} ha pubblicato un nuovo contributo sulla tua piattaforma'
       subject: È stato pubblicato un nuovo contributo sulla tua piattaforma
       title: È stato pubblicato un nuovo contributo sulla tua piattaforma
       today: Oggi
@@ -687,7 +687,7 @@ it-IT:
       event_description: Questi contributi devono essere approvati prima di essere visibili al pubblico. Puoi esaminarli nella pagina Gestione contributi della piattaforma o nella Gestione contributi di ogni singola fase.
       inputs_awaiting_screening: contributi da esaminare
       preheader: Esamina i contributi per %{organizationName}
-      subject: '%{count} input in attesa di revisione'
+      subject: '%{count} contributi in attesa di revisione'
       title: '%{firstName}, i contributi sono in attesa di essere esaminati'
     space_moderation_rights_received:
       cta_button: Gestisci questo spazio

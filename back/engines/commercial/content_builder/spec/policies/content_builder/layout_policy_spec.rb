@@ -11,7 +11,6 @@ RSpec.describe ContentBuilder::LayoutPolicy do
   context 'for a visitor' do
     let(:user) { nil }
 
-    it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:upsert) }
     it { is_expected.not_to permit(:update) }
     it { is_expected.not_to permit(:destroy) }
@@ -20,7 +19,6 @@ RSpec.describe ContentBuilder::LayoutPolicy do
   context 'for an inactive user' do
     let(:user) { instance_double User, active?: false }
 
-    it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:upsert) }
     it { is_expected.not_to permit(:update) }
     it { is_expected.not_to permit(:destroy) }
@@ -39,7 +37,6 @@ RSpec.describe ContentBuilder::LayoutPolicy do
     context 'for non-moderators' do
       let(:can_moderate) { false }
 
-      it { is_expected.to permit(:show) }
       it { is_expected.not_to permit(:upsert) }
       it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:destroy) }
@@ -48,7 +45,6 @@ RSpec.describe ContentBuilder::LayoutPolicy do
     context 'for moderators' do
       let(:can_moderate) { true }
 
-      it { is_expected.to permit(:show) }
       it { is_expected.to permit(:upsert) }
       it { is_expected.to permit(:update) }
       it { is_expected.to permit(:destroy) }
@@ -220,6 +216,108 @@ RSpec.describe ContentBuilder::LayoutPolicy do
 
         it { is_expected.to permit(:show) }
       end
+    end
+  end
+
+  # A layout is no more visible than its project or folder: it holds a copy of their content.
+  describe 'show? for project and folder layouts' do
+    let(:group_member) { create(:user) }
+    let(:users) do
+      {
+        visitor: nil,
+        normal_user: create(:user),
+        group_member: group_member,
+        admin: create(:admin)
+      }
+    end
+
+    shared_examples 'visible only to who can see the parent' do |visible_to:, hidden_from:|
+      visible_to.each do |role|
+        it "permits #{role}" do
+          expect(described_class.new(users.fetch(role), layout)).to permit(:show)
+        end
+      end
+
+      hidden_from.each do |role|
+        it "does not permit #{role}" do
+          expect(described_class.new(users.fetch(role), layout)).not_to permit(:show)
+        end
+      end
+    end
+
+    context 'for the layout of a public project' do
+      let(:layout) { create(:layout, project: create(:project)) }
+
+      include_examples 'visible only to who can see the parent',
+        visible_to: %i[visitor normal_user group_member admin], hidden_from: []
+    end
+
+    context 'for the layout of a group-only project' do
+      let(:layout) { create(:layout, project: create(:private_groups_project, user: group_member)) }
+
+      include_examples 'visible only to who can see the parent',
+        visible_to: %i[group_member admin], hidden_from: %i[visitor normal_user]
+    end
+
+    context 'for the layout of a draft project' do
+      let(:layout) { create(:layout, project: create(:project, :draft)) }
+
+      include_examples 'visible only to who can see the parent',
+        visible_to: %i[admin], hidden_from: %i[visitor normal_user group_member]
+    end
+
+    context 'for the layout of a folder whose projects are all group-only' do
+      let(:folder) { create(:project_folder, projects: [create(:private_groups_project, user: group_member)]) }
+      let(:layout) { create(:layout, content_buildable: folder, code: 'project_folder_description') }
+
+      include_examples 'visible only to who can see the parent',
+        visible_to: %i[group_member admin], hidden_from: %i[visitor normal_user]
+
+      it 'permits a moderator of the folder' do
+        expect(described_class.new(create(:project_folder_moderator, project_folders: [folder]), layout)).to permit(:show)
+      end
+    end
+
+    context 'for the layout of a folder with a public project' do
+      let(:folder) { create(:project_folder, projects: [create(:project)]) }
+      let(:layout) { create(:layout, content_buildable: folder, code: 'project_folder_description') }
+
+      include_examples 'visible only to who can see the parent',
+        visible_to: %i[visitor normal_user group_member admin], hidden_from: []
+    end
+
+    context 'for the layout of a draft folder' do
+      let(:folder) do
+        create(:project_folder, projects: [create(:project)]).tap do |folder|
+          folder.admin_publication.update!(publication_status: 'draft')
+        end
+      end
+      let(:layout) { create(:layout, content_buildable: folder, code: 'project_folder_description') }
+
+      include_examples 'visible only to who can see the parent',
+        visible_to: %i[admin], hidden_from: %i[visitor normal_user group_member]
+    end
+
+    context 'for the homepage layout' do
+      let(:layout) { create(:homepage_layout) }
+
+      include_examples 'visible only to who can see the parent',
+        visible_to: %i[visitor normal_user group_member admin], hidden_from: []
+    end
+
+    # Who may read a report's layout is ReportPolicy#layout?, which its callers check.
+    context 'for a report layout' do
+      let(:layout) { create(:report_layout) }
+
+      include_examples 'visible only to who can see the parent',
+        visible_to: %i[visitor normal_user admin], hidden_from: []
+    end
+
+    context 'for a layout whose parent type the policy does not know' do
+      let(:layout) { create(:layout, content_buildable_type: 'UnknownClassName') }
+
+      include_examples 'visible only to who can see the parent',
+        visible_to: [], hidden_from: %i[visitor normal_user admin]
     end
   end
 

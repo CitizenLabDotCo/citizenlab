@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 
+import { signOutOnServer } from 'api/authentication/sign_in_out/signOut';
 import useAuthUser from 'api/me/useAuthUser';
 
-import { removeJwt } from 'utils/auth/jwt';
 import {
   invalidateQueryCache,
   resetMeQuery,
@@ -23,7 +23,7 @@ const SessionExpiryModal = () => {
   // Used to log out the user after session expires
   // or when they click "Sign out now" in the expiring soon modal
   const clearSession = useCallback(async () => {
-    removeJwt();
+    await signOutOnServer();
     await resetMeQuery();
     invalidateQueryCache();
   }, []);

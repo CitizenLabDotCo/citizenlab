@@ -26,10 +26,6 @@ const CustomPagesNewSettings = () => {
     name: 'pages',
     onlyCheckAllowed: true,
   });
-  // Matches the edit page, which drops its tabs when the builder is on.
-  const customPageBuilderEnabled = useFeatureFlag({
-    name: 'custom_page_builder',
-  });
   return (
     <>
       <HelmetIntl title={messages.newCustomPageMetaTitle} />
@@ -55,17 +51,7 @@ const CustomPagesNewSettings = () => {
           resource={{
             title: formatMessage(messages.newCustomPagePageTitle),
           }}
-          tabs={
-            customPageBuilderEnabled
-              ? []
-              : [
-                  {
-                    label: formatMessage(messages.pageSettingsTab),
-                    name: 'settings',
-                    url: '/admin/pages-menu/pages/new',
-                  },
-                ]
-          }
+          tabs={[]}
           contentWrapper={false}
         >
           <NewCustomPage />

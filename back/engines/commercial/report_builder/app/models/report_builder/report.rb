@@ -120,10 +120,21 @@ module ReportBuilder
       !phase_id.nil?
     end
 
+    def project?
+      !project_id.nil?
+    end
+
     # The project the report is about, whether it is scoped to the whole project or
     # to one of its phases.
     def reported_project
       project || phase&.project
+    end
+
+    # The projects whose rows this report's reporting queries read, whoever runs them,
+    # so that everyone working on the report sees the same data. Nil for a report
+    # about no project: its queries read whatever the person running them may read.
+    def scope_project_ids
+      [reported_project.id] if reported_project
     end
 
     # The run that wrote what the report holds now, if a model wrote it. A run that

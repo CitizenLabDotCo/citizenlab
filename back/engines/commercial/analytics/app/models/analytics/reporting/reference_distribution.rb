@@ -33,6 +33,11 @@ module Analytics
         END
       SQL
 
+      include ScopedView
+
+      # Census data, with nothing personal in it: the same for every scope.
+      def self.for_projects(_project_ids) = all
+
       def self.table_description
         <<~DOC.squish
           The population base data (census figures) administrators uploaded for

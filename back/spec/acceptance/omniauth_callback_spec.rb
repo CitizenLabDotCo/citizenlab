@@ -58,21 +58,46 @@ resource 'Omniauth Callback', document: false do
       assert_status(302)
       expect(response_headers['Location']).to include('authentication_error=true')
     end
+
+    example 'Does not report a visit without an OmniAuth failure (e.g. a bot)' do
+      expect(ErrorReporter).not_to receive(:report)
+      expect(ErrorReporter).not_to receive(:report_msg)
+
+      do_request
+    end
   end
 
-  context 'when the user is logged in' do
+  context 'when the OmniAuth strategy fails' do
     before do
-      @user = create(:user)
+      AppConfiguration.instance.settings['id_config'] = {
+        allowed: true,
+        enabled: true,
+        id_methods: [{ name: 'facebook' }]
+      }
+      AppConfiguration.instance.save!
+
+      OmniAuth.config.test_mode = true
+      OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
     end
 
-    parameter :user_id, 'User ID', required: true
+    after do
+      OmniAuth.config.test_mode = false
+      OmniAuth.config.mock_auth.delete(:facebook)
+    end
 
-    let(:user_id) { @user.id }
+    get '/auth/facebook/callback' do
+      example 'Reports the failure with its strategy and type, then redirects to the failure URL' do
+        expect(ErrorReporter).to receive(:report_msg).with(
+          'OmniAuth failure: invalid_credentials',
+          extra: { error_type: 'invalid_credentials', strategy: 'facebook', host: 'example.org' },
+          fingerprint: %w[omniauth-failure facebook none]
+        )
 
-    get '/auth/clave_unica/logout_data' do
-      example_request 'Returns ClaveUnica redirect URL' do
-        assert_status(200)
-        expect(json_response_body[:url]).to start_with('https://accounts.claveunica.gob.cl/api/v1/accounts/app/logout')
+        do_request
+
+        assert_status(302)
+        expect(response_headers['Location']).to include('/auth/failure?message=invalid_credentials')
+        expect(response_headers['Location']).to include('strategy=facebook')
       end
     end
   end
@@ -114,10 +139,11 @@ resource 'Omniauth Callback', document: false do
 
         assert_status(302) # Redirect code
 
-        cookie_header = response_headers['Set-Cookie']
-        expect(cookie_header).to match(/cl2_jwt=[^;]+/)
-        expect(cookie_header).to include('SameSite=Lax')
-        expect(cookie_header.include?('Secure')).to be(false) # No HTTPS in the test environment
+        cookie_header = auth_cookie_header
+        expect(cookie_header).to match(/#{AuthToken::Cookie::NAME}=[^;]+/o)
+        expect(cookie_header).to match(/httponly/i)
+        expect(cookie_header).to match(/samesite=lax/i)
+        expect(cookie_header).not_to match(/secure/i) # No HTTPS in the test environment
         expect(cookie_header).to match(/expires=.+GMT/i)
       end
     end
@@ -125,6 +151,7 @@ resource 'Omniauth Callback', document: false do
 
   context 'when SSO method returns email and it is confirmed' do
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config'] = {
         allowed: true,
         enabled: true,
@@ -149,6 +176,14 @@ resource 'Omniauth Callback', document: false do
         expect(user.confirmation_required?).to be false
         expect(user.email_confirmed_at).to be_present
         expect(user.verified).to be true
+      end
+
+      # The OmniAuth test mode skips the strategy setup, which already refuses unconfigured methods.
+      example '[error] fake SSO on a customer platform', document: false do
+        change_lifecycle_stage('active')
+
+        expect { do_request }.to raise_error(RuntimeError, 'fake_sso not supported')
+        expect(User.find_by(email: 'billy_fixed@example.com')).to be_nil
       end
 
       example 'if there is a pending invite with this email: allow create account' do
@@ -404,6 +439,7 @@ resource 'Omniauth Callback', document: false do
     let(:delivery_service) { instance_spy(EmailCampaigns::DeliveryService) }
 
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config'] = {
         allowed: true,
         enabled: true,
@@ -584,6 +620,83 @@ resource 'Omniauth Callback', document: false do
           expect(existing_user.email).to eq 'billy_fixed@example.com'
           expect(existing_user.identities).to be_empty
         end
+      end
+    end
+  end
+
+  context 'when the user returned by SSO cannot be saved' do
+    before do
+      allow_test_id_methods
+      AppConfiguration.instance.settings['id_config'] = {
+        allowed: true,
+        enabled: true,
+        id_methods: [{ name: 'fake_sso' }]
+      }
+      AppConfiguration.instance.save!
+      OmniAuth.config.test_mode = true
+    end
+
+    after do
+      OmniAuth.config.test_mode = false
+    end
+
+    def mock_sso_email(email, email_confirmed: true)
+      auth = get_auth_hash(email_confirmed: email_confirmed)
+      auth.info.email = email
+      OmniAuth.config.mock_auth[:fake_sso] = auth
+    end
+
+    get '/auth/fake_sso/callback' do
+      example 'Tracks, but does not report, a user rejected because the email domain is blocked' do
+        mock_sso_email("billy_fixed@#{User::EMAIL_DOMAIN_BLACKLIST.first}")
+        expect(ErrorReporter).not_to receive(:report)
+
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, anything, payload: hash_including(:remote_ip))
+
+        assert_status(302)
+        expect(response_headers['Location']).to include('authentication_error=true')
+        expect(User.count).to eq 0
+      end
+
+      example 'Tracks, but does not report, a user rejected because the email is banned' do
+        ban = EmailBan.ban!('billy_fixed@example.com')
+        mock_sso_email('billy_fixed@example.com')
+        expect(ErrorReporter).not_to receive(:report)
+
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(ban, 'banned_email_used', nil, anything, payload: hash_including(:remote_ip))
+
+        assert_status(302)
+        expect(User.count).to eq 0
+      end
+
+      example 'Tracks, but does not report, an unconfirmed SSO email whose domain is blocked' do
+        mock_sso_email("billy_fixed@#{User::EMAIL_DOMAIN_BLACKLIST.first}", email_confirmed: false)
+        expect(ErrorReporter).not_to receive(:report)
+
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, anything, payload: hash_including(:remote_ip))
+
+        assert_status(302)
+        expect(User.count).to eq 0
+      end
+
+      example 'Reports other validation errors, grouped by provider and error' do
+        mock_sso_email('not-an-email')
+        expect(ErrorReporter).to receive(:report).with(
+          instance_of(ActiveRecord::RecordInvalid),
+          extra: { provider: 'fake_sso', record: 'User', validation_errors: ['email.invalid'] },
+          fingerprint: %w[omniauth-invalid-record fake_sso User email.invalid]
+        )
+
+        do_request
+
+        assert_status(302)
+        expect(response_headers['Location']).to include('authentication_error=true')
       end
     end
   end

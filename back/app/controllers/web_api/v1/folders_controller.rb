@@ -89,8 +89,15 @@ class WebApi::V1::FoldersController < ApplicationController
     authorize @project_folder
     remove_image_if_requested!(@project_folder, project_folder_params, :header_bg)
 
-    if @project_folder.save
+    # One transaction, so the folder doesn't change space if its projects fail to move.
+    saved = ActiveRecord::Base.transaction do
+      next false unless @project_folder.save
+
       sidefx.after_update(@project_folder, current_user)
+      true
+    end
+
+    if saved
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
         params: jsonapi_serializer_params,

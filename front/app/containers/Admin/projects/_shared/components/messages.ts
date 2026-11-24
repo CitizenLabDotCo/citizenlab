@@ -1,6 +1,23 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  toSet: {
+    id: 'app.containers.Admin.projects.setupReview.toSet',
+    defaultMessage: 'To set',
+  },
+  toReview: {
+    id: 'app.containers.Admin.projects.setupReview.toReview',
+    defaultMessage: 'To review',
+  },
+  reviewed: {
+    id: 'app.containers.Admin.projects.setupReview.reviewed',
+    defaultMessage: 'Reviewed',
+  },
+  failed: {
+    id: 'app.containers.Admin.projects.setupReview.failed',
+    defaultMessage: 'Review could not be saved. Select the card to try again.',
+  },
+
   archived: {
     id: 'app.containers.Admin.projects.all.components.archived',
     defaultMessage: 'Archived',
@@ -35,6 +52,10 @@ export default defineMessages({
   copyProjectButton: {
     id: 'app.containers.Admin.projects.all.copyProjectButton',
     defaultMessage: 'Copy project',
+  },
+  copyingProject: {
+    id: 'app.containers.Admin.projects.all.copyingProject',
+    defaultMessage: 'Copying project…',
   },
   xGroupsHaveAccess: {
     id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',

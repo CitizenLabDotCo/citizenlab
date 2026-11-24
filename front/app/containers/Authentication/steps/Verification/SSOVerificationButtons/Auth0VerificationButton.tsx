@@ -7,7 +7,6 @@ import { AUTH_PATH } from 'containers/App/constants';
 import T from 'components/T';
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
-import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
 
 interface Props {
@@ -23,8 +22,7 @@ const Auth0VerificationButton = ({
 }: Props) => {
   const handleOnClick = () => {
     onClick(verificationMethod);
-    const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/auth0?token=${jwt}&verification_pathname=${removeUrlLocale(
+    window.location.href = `${AUTH_PATH}/auth0?verification=true&verification_pathname=${removeUrlLocale(
       window.location.pathname
     )}`;
   };

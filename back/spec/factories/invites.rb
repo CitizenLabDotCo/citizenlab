@@ -13,6 +13,10 @@ FactoryBot.define do
       invite.invitee.update!(email: evaluator.email) if evaluator.email
     end
 
+    factory :invite_without_email do
+      invitee { create(:unconfirmed_user, email: nil, invite_status: 'pending') }
+    end
+
     factory :accepted_invite do
       invitee { create(:user, invite_status: 'accepted') }
       accepted_at { Time.now - 3.weeks }

@@ -72,7 +72,7 @@ const CommunityMonitorCTA = ({
 
       // Redirect to the survey page
       clHistory.push(
-        `/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`
+        `/projects/${project.data.attributes.slug}/surveys/new/${phaseId}`
       );
     }
   };

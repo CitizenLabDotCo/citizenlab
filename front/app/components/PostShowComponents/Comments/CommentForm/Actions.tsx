@@ -14,6 +14,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';
 import { useLocation } from 'utils/router';
 
+import { useIsBoComments } from '../commentsVariant';
 import messages from '../messages';
 
 interface Props {
@@ -43,6 +44,8 @@ const Actions = ({
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
   const { pathname } = useLocation();
+  const isBo = useIsBoComments();
+  const responsivePadding = smallerThanTablet && !isBo ? '6px 12px' : undefined;
 
   const isAdminPage = isPage('admin', pathname);
 
@@ -87,8 +90,8 @@ const Actions = ({
     <Box display="flex">
       <ButtonWithLink
         disabled={processing}
-        buttonStyle="secondary-outlined"
-        padding={smallerThanTablet ? '6px 12px' : undefined}
+        buttonStyle={isBo ? 'bo-secondary' : 'secondary-outlined'}
+        padding={responsivePadding}
         mr="8px"
         onClick={onCancel}
       >
@@ -99,7 +102,8 @@ const Actions = ({
         id="e2e-submit-comment-btn"
         processing={processing}
         disabled={submitButtonDisabled}
-        padding={smallerThanTablet ? '6px 12px' : undefined}
+        buttonStyle={isBo ? 'bo-primary' : 'primary'}
+        padding={responsivePadding}
         icon={isAdminPage ? 'users' : undefined}
         onClick={onSubmit}
       >

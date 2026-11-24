@@ -24,7 +24,7 @@ RSpec.describe EmailCampaigns::Campaigns::NativeSurveyNotSubmitted do
       ).first
 
       expect(command.dig(:event_payload, :survey_url))
-        .to end_with "/ideas/new?phase_id=#{input.creation_phase.id}"
+        .to end_with "/surveys/new/#{input.creation_phase.id}"
       expect(command.dig(:event_payload, :phase_title_multiloc))
         .to eq input.creation_phase.title_multiloc
       expect(command.dig(:event_payload, :phase_end_at))
