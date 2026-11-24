@@ -10,6 +10,7 @@ import {
 import { debounce } from 'lodash-es';
 
 import NumberField from 'design-system/NumberField';
+import tooltipMessages from 'design-system/Tooltip/messages';
 import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -137,6 +138,9 @@ const OfflineVoteSettings = ({
               label={formatMessage(messages.manualVotersLabel)}
               labelAccessory={
                 <TooltipMark
+                  label={formatMessage(tooltipMessages.moreInformationAbout, {
+                    subject: formatMessage(messages.manualVotersLabel),
+                  })}
                   content={
                     <>
                       <FormattedMessage
@@ -168,6 +172,9 @@ const OfflineVoteSettings = ({
             label={votesLabel}
             labelAccessory={
               <TooltipMark
+                label={formatMessage(tooltipMessages.moreInformationAbout, {
+                  subject: votesLabel,
+                })}
                 content={
                   <>
                     <img
