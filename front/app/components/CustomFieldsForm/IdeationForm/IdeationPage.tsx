@@ -122,7 +122,6 @@ const IdeationPage = ({
   const handleNextAndsubmit = () => {
     pageRef.current?.scrollTo(0, 0);
     if (currentPageIndex === lastPageIndex) {
-      const phaseId = searchParams.phase_id;
       const userCanModerate = project
         ? canModerateProject(project.data, authUser)
         : false;
@@ -135,7 +134,7 @@ const IdeationPage = ({
         userCanModerate && participationMethod === 'common_ground';
 
       const path = shouldGoToIdeaFeed
-        ? `/projects/${project?.data.attributes.slug}/ideas-feed?phase_id=${phaseId}&initial_idea_id=${idea?.data.id}&idea_id=${idea?.data.id}`
+        ? `/projects/${project?.data.attributes.slug}/ideas-feed?phase_id=${phase.id}&initial_idea_id=${idea?.data.id}&idea_id=${idea?.data.id}`
         : shouldGoToInputManager
         ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
         : `/ideas/${idea?.data.attributes.slug}`;

@@ -140,10 +140,17 @@ export const sharedSteps = (
           not_entitled_no_match: 'auth_no_match',
           not_entitled_service_error: 'auth_service_error',
           taken: 'verification_taken',
+          no_token_passed: 'verification_signed_out',
         };
 
         if (error_code) {
-          setCurrentStep('missing-data:verification');
+          // Signed-out users (e.g. their session expired while the page was
+          // open) must sign in before they can verify.
+          setCurrentStep(
+            error_code === 'no_token_passed'
+              ? 'pre-auth:start'
+              : 'missing-data:verification'
+          );
           setError(errorMap[error_code]);
         } else {
           setCurrentStep('pre-auth:start');

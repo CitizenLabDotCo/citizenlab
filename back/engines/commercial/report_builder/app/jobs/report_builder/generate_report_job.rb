@@ -8,8 +8,7 @@ module ReportBuilder
   # through the +Jobs::Tracker+, and the tracker's owner is who the layout is
   # saved as.
   #
-  # Progress is one unit for the composition itself. It gains a unit per section
-  # once sections are composed separately.
+  # Progress is one unit: the composition either finishes or it does not.
   class GenerateReportJob < ApplicationJob
     include Jobs::TrackableJob
 
@@ -52,8 +51,9 @@ module ReportBuilder
       report.layout.craftjs_json = craftjs_json
       raise ActiveRecord::RecordInvalid, report unless ReportSaver.new(report, tracker.owner).save
 
-      # Only now is this run what the report holds — which is the question the chat
-      # history and the "is it whole" notice both ask.
+      # Only after the save: this marks the run whose work the report holds, which is
+      # where the chat history starts and what the "report may be incomplete"
+      # notification is about.
       run_record.applied!
 
       SideFxReportService.new.after_generate(report, tracker.owner)

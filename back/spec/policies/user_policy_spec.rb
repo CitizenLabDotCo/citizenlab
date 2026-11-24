@@ -125,6 +125,34 @@ describe UserPolicy do
         expect(scope.resolve.size).to eq 2
       end
     end
+
+    context 'on a super admin' do
+      let(:subject_user) { create(:super_admin) }
+
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:block)   }
+      it { is_expected.not_to permit(:unblock) }
+    end
+
+    context 'on a staff address being made admin' do
+      let(:subject_user) do
+        create(:user, email: 'staff@govocal.com').tap { |user| user.roles = [{ 'type' => 'admin' }] }
+      end
+
+      it { is_expected.to permit(:update) }
+    end
+  end
+
+  context 'for a super admin on another super admin' do
+    let(:current_user) { create(:super_admin) }
+    let(:subject_user) { create(:super_admin) }
+
+    it { is_expected.to permit(:update)  }
+    it { is_expected.to permit(:destroy) }
+    it { is_expected.to permit(:block)   }
+    it { is_expected.to permit(:unblock) }
   end
 
   context 'for a project moderator' do
@@ -360,6 +388,7 @@ describe UserPolicy do
       let(:subject_user) { current_user }
 
       it { expect(permits_early_access_opt_ins?).to be true }
+      it { is_expected.to include(:password) }
     end
 
     context 'for an admin on somebody else' do
@@ -367,6 +396,7 @@ describe UserPolicy do
       let(:subject_user) { create(:admin) }
 
       it { expect(permits_early_access_opt_ins?).to be false }
+      it { is_expected.not_to include(:password) }
     end
 
     context 'for a resident on their own record' do

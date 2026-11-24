@@ -127,7 +127,7 @@ module ReportBuilder
           # The lock makes the in-progress check + enqueue atomic across concurrent requests.
           tracker = begin
             ::CitizenLab::LockManager.try_with_transaction_lock("generate_report/#{report.id}") do
-              enqueue_generate_report_job.tracker unless in_progress_generation_tracker || report.chat&.running?
+              enqueue_generate_report_job.tracker unless report.running_generation_tracker || report.chat&.running?
             end
           rescue ::CitizenLab::LockManager::FailedToLock
             nil
@@ -193,7 +193,7 @@ module ReportBuilder
           return render json: { errors: { message: [{ error: error }] } }, status: :unprocessable_entity if error
 
           started = chat.with_lock do
-            next false if chat.running? || in_progress_generation_tracker
+            next false if chat.running? || report.running_generation_tracker
 
             # The run writes the prompt it builds around these words onto this same
             # message, as its context: the panel shows the question, the model is sent
@@ -235,7 +235,7 @@ module ReportBuilder
               type: 'report_chat',
               attributes: {
                 turns: chat_turns(chat),
-                pending: chat&.running? || in_progress_generation_tracker.present?
+                pending: chat&.running? || report.running_generation_tracker.present?
               }
             }
           }
@@ -264,27 +264,6 @@ module ReportBuilder
 
             turn.merge('changed_layout' => message.run&.applied? || false)
           end
-        end
-
-        # A generation that is still running for this report, if any. Failed jobs
-        # complete their tracker (with job_errors), so they don't block a new run;
-        # the time window is a safety valve against trackers orphaned by e.g. a dev
-        # environment without a running worker.
-        def in_progress_generation_tracker
-          context = report.phase || report.project
-          # A report about neither cannot be generated, and `context: nil` would match
-          # trackers that have none.
-          return nil if context.nil?
-
-          ::Jobs::Tracker
-            .where(
-              context: context,
-              root_job_type: ReportBuilder::GenerateReportJob.name,
-              completed_at: nil
-            )
-            .where(created_at: 1.hour.ago..)
-            .order(created_at: :desc)
-            .first
         end
 
         def enqueue_generate_report_job
@@ -339,7 +318,6 @@ module ReportBuilder
             .require(:report)
             .permit(
               :name,
-              :phase_id,
               :visible,
               :year,
               :quarter,

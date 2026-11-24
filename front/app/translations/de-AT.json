@@ -1513,6 +1513,7 @@
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Indem du fortfährst, erklärst du dich damit einverstanden, einen einmaligen Bestätigungscode per SMS von {orgName} zu erhalten. Wenn du oben zugestimmt hast, erhältst du außerdem Neuigkeiten und Updates; die Nachrichtenhäufigkeit variiert. Es können Gebühren für Nachrichten und Daten anfallen. Antworte mit HELP für Hilfe oder STOP, um dich abzumelden.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Indem Sie fortfahren, erklären Sie sich damit einverstanden, einen einmaligen Bestätigungscode per SMS von {orgName} zu erhalten. Es können Gebühren für Nachrichten und Daten anfallen. Antworten Sie mit HELP für Hilfe oder mit STOP, um sich abzumelden.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Neues Konto erstellen mit: {phone} {changeLink}",
+  "app.containers.Authentication.verificationSignedOut": "Sie wurden abgemeldet, daher konnten wir Ihre Identität nicht verifizieren. Melden Sie sich an und versuchen Sie es erneut.",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Alle {contentType}-Benachrichtigungen umschalten",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Benachrichtigungen in dieser Kategorie",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Welche Arten von E-Mail-Benachrichtigungen möchtest du erhalten?",

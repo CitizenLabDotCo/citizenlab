@@ -73,7 +73,7 @@ describe('Form builder page element', () => {
     cy.contains('Page description').should('exist');
 
     // Go to the survey page
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/ideas/new/${phaseId}`);
 
     // Go to the next page
     cy.dataCy('e2e-next-page').should('be.visible');

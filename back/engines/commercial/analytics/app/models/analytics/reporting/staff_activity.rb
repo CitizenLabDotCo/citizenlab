@@ -28,6 +28,11 @@ module Analytics
         comment_removed moderation_item_marked_read
       ].freeze
 
+      include ScopedView
+
+      # What staff did, counted by role: admins only, at least for now.
+      def self.admin_only? = true
+
       def self.table_description
         <<~DOC.squish
           How much management work staff (administrators and managers) did:

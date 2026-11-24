@@ -27,7 +27,8 @@ export type ErrorCode =
   | 'auth_service_error'
   | 'verification_taken'
   | 'resending_code_failed'
-  | 'account_merge_not_allowed';
+  | 'account_merge_not_allowed'
+  | 'verification_signed_out';
 
 export interface State {
   flow: 'signup' | 'signin';
@@ -64,7 +65,11 @@ export type SignUpInError =
   | NotEntitledError
   | 'general'
   | 'franceconnect_merging_failed';
-export type VerificationError = NotEntitledError | 'taken';
+export type VerificationError =
+  | NotEntitledError
+  | 'taken'
+  // The user wasn't signed in any more when the provider sent them back.
+  | 'no_token_passed';
 
 export interface AuthenticationData {
   context: AuthenticationContext;

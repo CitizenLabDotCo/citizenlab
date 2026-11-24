@@ -1513,6 +1513,7 @@
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Door verder te gaan, ga je ermee akkoord een eenmalige bevestigingscode per sms te ontvangen van {orgName}. Als je hierboven hebt ingestemt, ontvang je ook nieuws en updates; de frequentie van berichten varieert. Sms- en datatarieven kunnen van toepassing zijn. Antwoord HELP voor hulp, STOP om je af te melden.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Door verder te gaan, ga je ermee akkoord om een eenmalige bevestigingscode via sms te ontvangen van {orgName}. Bericht- en datakosten kunnen van toepassing zijn. Antwoord HELP voor hulp, STOP om je af te melden.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Maak een nieuw account aan met: {phone} {changeLink}",
+  "app.containers.Authentication.verificationSignedOut": "Je bent uitgelogd, waardoor we je identiteit niet konden verifiëren. Log in en probeer het opnieuw.",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Alle {contentType}-meldingen in-/uitschakelen",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Meldingen in deze categorie",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Welke soorten e-mailmeldingen wil je ontvangen?",

@@ -890,7 +890,9 @@ RSpec.describe User do
         build_stubbed(:admin, email: 'breek.nou.mijn.klomp@govocal.NL'),
         build_stubbed(:admin, email: 'bigger@govocal.us'),
         build_stubbed(:admin, email: 'magdalena@govocal.cl'),
-        build_stubbed(:admin, email: 'hello+admin@GOVOCAL.UK')
+        build_stubbed(:admin, email: 'hello+admin@GOVOCAL.UK'),
+        build_stubbed(:admin, email: 'hello@demo.govocal.com'),
+        build_stubbed(:admin, email: 'hello@Demo.CitizenLab.EU')
       ]
 
       expect(users).to all be_super_admin
@@ -901,6 +903,11 @@ RSpec.describe User do
         build_stubbed(:admin, email: 'hello@citizenlab.com'),
         build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
         build_stubbed(:admin, email: 'govocal.com@gmail.com'),
+        build_stubbed(:admin, email: 'hello@evilgovocal.com'),
+        build_stubbed(:admin, email: 'hello@evil-govocal.com'),
+        build_stubbed(:admin, email: 'hello@demo.evilgovocal.com'),
+        build_stubbed(:admin, email: 'hello@govocal.com.evil.io'),
+        build_stubbed(:admin, email: 'hello@notcitizenlab.co'),
         build_stubbed(:admin)
       ]
       expect(strangers).not_to include(be_super_admin)
@@ -1246,6 +1253,19 @@ RSpec.describe User do
     it 'is set when an invited user accepts the invite' do
       u = create(:invited_user)
       u.update!(invite_status: 'accepted')
+      expect(u.registration_completed_at).not_to be_nil
+    end
+
+    it 'is not set when an invited user accepts the invite with another email' do
+      u = create(:invited_user)
+      u.update!(invite_status: 'accepted', email: 'someone.else@example.com')
+      expect(u.registration_completed_at).to be_nil
+      expect(u.email_confirmed_at).to be_nil
+    end
+
+    it 'is set when an invited user accepts the invite with a different-case email' do
+      u = create(:invited_user)
+      u.update!(invite_status: 'accepted', email: u.email.upcase)
       expect(u.registration_completed_at).not_to be_nil
     end
 

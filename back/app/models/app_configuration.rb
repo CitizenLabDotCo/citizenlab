@@ -18,6 +18,15 @@
 class AppConfiguration < ApplicationRecord
   include StyleSettings
 
+  # Shown as HTML in the authentication flow, to every visitor who signs in or up.
+  HELPER_TEXT_SETTINGS = %w[
+    enter_email_helper_text
+    enter_password_helper_text
+    complete_your_profile_helper_text
+    custom_fields_signup_helper_text
+  ].freeze
+  HELPER_TEXT_SANITIZE_FEATURES = %i[decoration link embed blocks].freeze
+
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :favicon, FaviconUploader
 
@@ -37,6 +46,7 @@ class AppConfiguration < ApplicationRecord
 
   before_validation :validate_missing_feature_dependencies
   before_validation :add_missing_features_and_settings, on: :create
+  before_validation :sanitize_helper_texts
   after_save :update_time_zone, if: :timezone_changed?
 
   module Settings
@@ -234,8 +244,10 @@ class AppConfiguration < ApplicationRecord
       # localhost:3000 works (webpack proxies requests to localhost:4000)
       # using the app from the browser, but localhost:4000 is a better default
       # because it's more universal:
-      # it works both in the browser and in the BE code that runs in cl-back-web container
-      # (e.g., to copy images applying a tenant template or copying a project).
+      # it works both in the browser and in the BE code that runs in cl-back-web container.
+      # Code in other containers (e.g. cl-que, which applies project templates and copies
+      # their images) cannot reach localhost:4000. In Docker, downloads from localhost go to
+      # DOCKER_BACKEND_HOST instead (see config/initializers/carrierwave.rb).
       base_uri(ENV.fetch('ASSET_HOST_URI', 'http://localhost:4000'))
     end
   end
@@ -274,6 +286,27 @@ class AppConfiguration < ApplicationRecord
 
     transport = Rails.env.test? ? 'http' : 'https'
     "#{transport}://#{host}"
+  end
+
+  def sanitize_helper_texts
+    core = settings&.dig('core')
+    # Without a host, the record fails the host validation anyway.
+    return if !core.is_a?(Hash) || host.blank?
+
+    service = SanitizationService.new
+    sanitized = HELPER_TEXT_SETTINGS.each_with_object({}) do |name, result|
+      # Any other shape is left to the schema validation, which rejects it.
+      next unless core[name].is_a?(Hash) && core[name].values.all?(String)
+
+      multiloc = service.remove_multiloc_hidden_elements(core[name])
+      multiloc = service.sanitize_multiloc(multiloc, HELPER_TEXT_SANITIZE_FEATURES, host: host)
+      # Admins edit these texts in a plain text field, where an escaped `&` would show as `&amp;`.
+      # Unescaping it is safe: it never brings back a `<`, `>` or quote.
+      result[name] = multiloc.transform_values { |html| html.gsub('&amp;', '&') }
+    end
+    return if sanitized.empty?
+
+    self.settings = settings.merge('core' => core.merge(sanitized))
   end
 
   def validate_missing_feature_dependencies

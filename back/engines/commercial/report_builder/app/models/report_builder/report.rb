@@ -81,14 +81,17 @@ module ReportBuilder
 
     FAILED_TURN_REPLY = 'Something went wrong on my side. Please try again.'
 
-    # How long an unfinished run is believed to be still running. Past that the
-    # report is listed again even with the tracker open, so a worker that died
+    # How long an unfinished run is believed to be still running — both for listing
+    # a report and for refusing to start a second run. Past that the report is listed
+    # and a new run allowed even with the tracker still open, so a worker that died
     # without completing its tracker cannot hide a report for good.
     GENERATION_ASSUMED_STALE_AFTER = 1.hour
 
-    # A report about a whole project is created as an empty shell the moment an
-    # admin asks for one, and the composer only fills it minutes later. Listing
-    # the shell offers a report that opens onto nothing, so it waits out the run.
+    # The reports the admin's report overview may show — the scope the index endpoint
+    # starts from. Everything qualifies but one case: a report about a whole project
+    # is created as an empty shell the moment an admin asks for one, and the composer
+    # only fills it minutes later. Listing the shell offers a report that opens onto
+    # nothing, so it waits out the run.
     #
     # It is listed again the moment the run is over, with or without content: a run
     # that failed leaves a report the admin still has to be able to open, generate
@@ -132,10 +135,21 @@ module ReportBuilder
       !phase_id.nil?
     end
 
+    def project?
+      !project_id.nil?
+    end
+
     # The project the report is about, whether it is scoped to the whole project or
     # to one of its phases.
     def reported_project
       project || phase&.project
+    end
+
+    # The projects whose rows this report's reporting queries read, whoever runs them,
+    # so that everyone working on the report sees the same data. Nil for a report
+    # about no project: its queries read whatever the person running them may read.
+    def scope_project_ids
+      [reported_project.id] if reported_project
     end
 
     # @param locale [String] only used when the chat does not exist yet.
@@ -190,6 +204,26 @@ module ReportBuilder
     # still the work of the last run that did save.
     def last_generation
       runs.where(kind: GENERATION_KIND).applied.newest_first.first
+    end
+
+    # The tracker of the generation still running for this report, if any — the
+    # same question the listable scope asks in SQL, for a single report. Failed
+    # jobs complete their tracker (with job_errors), so they don't block a new run.
+    def running_generation_tracker
+      context = phase || project
+      # A report about neither cannot be generated, and `context: nil` would match
+      # trackers that have none.
+      return nil if context.nil?
+
+      ::Jobs::Tracker
+        .where(
+          context: context,
+          root_job_type: ReportBuilder::GenerateReportJob.name,
+          completed_at: nil
+        )
+        .where(created_at: GENERATION_ASSUMED_STALE_AFTER.ago..)
+        .order(created_at: :desc)
+        .first
     end
 
     def public?

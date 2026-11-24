@@ -342,7 +342,7 @@ module ReportBuilder
       end
 
       def run_query(query)
-        result = McpServer::ReportingQueryRunner.run(query.to_s)
+        result = McpServer::ReportingQueryRunner.run(query.to_s, scope: McpServer::QueryScope.all)
         sample = result.rows.first(SAMPLE_ROWS)
         note = result.rows.size > SAMPLE_ROWS ? " (showing the first #{SAMPLE_ROWS})" : ''
 

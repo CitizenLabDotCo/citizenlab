@@ -1868,6 +1868,39 @@ resource 'Users' do
               expect(user.reload.roles).to match [{ 'type' => 'admin', 'project_reviewer' => true }]
             end
           end
+
+          context 'on a super admin' do
+            let(:super_admin) { create(:super_admin) }
+            let(:id) { super_admin.id }
+            let(:password) { 'An0ther-Passw0rd!' }
+
+            example '[error] Change the password of a super admin', document: false do
+              expect { do_request }.not_to(change { super_admin.reload.password_digest })
+              assert_status 401
+            end
+          end
+
+          context 'on a resident with a staff address' do
+            let(:staff_user) { create(:user, email: 'staff@govocal.com') }
+            let(:id) { staff_user.id }
+            let(:roles) { [type: 'admin'] }
+
+            example_request 'Make the user (staff address) admin', document: false do
+              assert_status 200
+              expect(staff_user.reload.super_admin?).to be true
+            end
+          end
+
+          context 'on another user, with a password' do
+            let(:resident) { create(:user) }
+            let(:id) { resident.id }
+            let(:password) { 'An0ther-Passw0rd!' }
+
+            example 'Ignores the password', document: false do
+              expect { do_request }.not_to(change { resident.reload.password_digest })
+              assert_status 200
+            end
+          end
         end
       end
 
@@ -1932,6 +1965,15 @@ resource 'Users' do
         context 'normal route' do
           example_request 'Ping as an admin' do
             assert_status 200
+          end
+
+          example 'Ping returns when the session expires', document: false do
+            token = AuthToken::AuthToken.new(payload: @user.to_token_payload.merge(exp: 2.hours.from_now.to_i)).token
+            header 'Cookie', "#{AuthToken::Cookie::NAME}=#{token}"
+
+            do_request
+            assert_status 200
+            expect(json_response_body[:expires_at]).to eq(JWT.decode(token, nil, false).first['exp'])
           end
         end
 
@@ -2249,6 +2291,7 @@ resource 'Users' do
 
         describe do
           before do
+            allow_test_id_methods
             AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'bogus' }] }
             AppConfiguration.instance.save!
           end
@@ -2330,7 +2373,7 @@ resource 'Users' do
             expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
 
             # Resets the JWT cookie by setting a new token expiry key, so that old tokens are invalidated after password change
-            expect(CGI.unescape(response_headers['Set-Cookie'])).to include('cl2_jwt=')
+            expect(auth_token_from_response_cookie).to be_present
             expect(@user.token_expiry_key).not_to be_nil
           end
         end
@@ -2418,6 +2461,48 @@ resource 'Users' do
 
             expect(response_status).to eq 200
             expect(EmailBan.banned?(@subject_user.email)).to be true
+          end
+        end
+
+        example 'Deleting another user keeps the admin signed in', document: false do
+          do_request
+
+          expect(response_status).to eq 200
+          expect(auth_cookie_header).to be_nil
+        end
+      end
+
+      delete 'web_api/v1/users/:id' do
+        let(:id) { @user.id }
+
+        example 'Delete your own account' do
+          do_request
+
+          expect(response_status).to eq 200
+          expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+          expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
+        end
+
+        context 'when signed in through an SSO provider that supports logout' do
+          let(:logout_url) { 'https://sso.example.com/logout' }
+
+          before do
+            token = AuthToken::AuthToken.new(
+              payload: @user.to_token_payload.merge(provider: 'franceconnect', logout_supported: true)
+            ).token
+            header 'Cookie', "#{AuthToken::Cookie::NAME}=#{token}"
+
+            allow_any_instance_of(AuthenticationService)
+              .to receive(:logout_url).with('franceconnect', @user).and_return(logout_url)
+          end
+
+          example 'Delete your own account and get the URL to sign out at the SSO provider' do
+            do_request
+
+            expect(response_status).to eq 200
+            expect(json_response_body[:logout_url]).to eq(logout_url)
+            expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
           end
         end
       end
