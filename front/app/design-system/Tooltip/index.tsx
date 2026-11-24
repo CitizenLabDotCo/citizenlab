@@ -24,6 +24,8 @@ const fitText = (element: HTMLDivElement | null) => {
 
   element.style.width = '';
   const text = document.createRange();
+  if (typeof text.getClientRects !== 'function') return;
+
   text.selectNodeContents(element);
   const lines = Array.from(text.getClientRects());
 
