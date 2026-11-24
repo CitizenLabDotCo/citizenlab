@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Icon,
-  Spinner,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
 import saveAs from 'file-saver';
+
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import Link from 'design-system/Link';
+import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import { AttendanceSort, InputParameters } from 'api/event_attendance/types';
 import useEventAttendances from 'api/event_attendance/useEventAttendances';
@@ -21,7 +18,6 @@ import useLocalize from 'hooks/useLocalize';
 import eventMessages from 'components/admin/EventAttendance/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 import { requestBlob } from 'utils/requestBlob';
 
 import FilterMenu from '../InputManager/FilterMenu';
@@ -32,8 +28,10 @@ import EmptyState from '../Phase/EmptyState';
 import ListLoadError from '../Phase/ListLoadError';
 import ManageLayout from '../Phase/ManageLayout';
 
+import styles from './EventManager.module.css';
 import EventRegistrantTable from './EventRegistrantTable';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   event?: IEventData;
@@ -73,7 +71,7 @@ const EventManager = ({ event }: Props) => {
   const category: FilterCategory = {
     key: 'signedUp',
     label: formatMessage(messages.registered),
-    icon: 'calendar',
+    icon: 'calendar-16',
     options: [
       { value: 'this_week', label: formatMessage(messages.thisWeek) },
       { value: 'earlier', label: formatMessage(messages.earlier) },
@@ -114,26 +112,13 @@ const EventManager = ({ event }: Props) => {
   return (
     <ManageLayout
       side={
-        <Box
-          flexGrow={1}
-          p="24px"
-          background={colors.white}
-          borderRadius={bo.panelBorderRadius}
-          display="flex"
-          flexDirection="column"
-          gap="16px"
-        >
+        <div className={styles.side}>
           {event?.attributes.maximum_attendees != null && attendances && (
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              gap="8px"
-            >
-              <Text variant="boLabel" m="0">
+            <div className={styles.spots}>
+              <Text as="span" variant="ui" tone="secondary">
                 {formatMessage(messages.spotsLeft)}
               </Text>
-              <Text variant="boLabel" m="0">
+              <Text as="span" variant="ui" tone="secondary">
                 {formatMessage(messages.remainingSpots, {
                   remaining: Math.max(
                     0,
@@ -142,53 +127,35 @@ const EventManager = ({ event }: Props) => {
                   total: event.attributes.maximum_attendees,
                 })}
               </Text>
-            </Box>
+            </div>
           )}
           {event && unfilteredTotal > 0 && (
             <Button
-              buttonStyle="bo-secondary"
-              type="button"
-              width="100%"
-              justify="space-between"
-              icon="download"
-              iconPos="right"
-              processing={exporting}
-              onClick={exportRegistrants}
+              size={32}
+              trailingIcon="download-16"
+              isPending={exporting}
+              onPress={exportRegistrants}
             >
               {formatMessage(messages.exportRegistrants)}
             </Button>
           )}
           {exportError && (
-            <Text variant="boHelper" m="0" color="red600" role="alert">
+            <Text variant="small" tone="danger" role="alert">
               {formatMessage(messages.registrantsExportError)}
             </Text>
           )}
-          <Box
-            p="16px"
-            background={colors.grey100}
-            borderRadius={bo.borderRadius}
-            role="note"
-            display="flex"
-            gap="8px"
-          >
-            <Box flex="0 0 16px" mt="2px">
-              <Icon
-                name="info-outline"
-                width="16px"
-                fill={colors.coolGrey500}
-              />
-            </Box>
-            <Text variant="boHelper" m="0">
+          <div role="note">
+            <Banner tone="neutral">
               <FormattedMessage
                 {...eventMessages.eventAttendanceExportText}
                 values={{
                   userTabLink: (
-                    <Link to="/admin/users">
+                    <Link href="/admin/users">
                       {formatMessage(eventMessages.usersTabLinkText)}
                     </Link>
                   ),
                   supportArticleLink: (
-                    <a
+                    <Link
                       href={formatMessage(
                         eventMessages.attendanceSupportArticleLink2
                       )}
@@ -198,33 +165,26 @@ const EventManager = ({ event }: Props) => {
                       {formatMessage(
                         eventMessages.attendanceSupportArticleLinkText
                       )}
-                    </a>
+                    </Link>
                   ),
                 }}
               />
-            </Text>
-          </Box>
+            </Banner>
+          </div>
           {event?.attributes.using_url && (
-            <Text variant="boHelper" m="0">
+            <Text variant="small" tone="secondary">
               {formatMessage(messages.externalRegistrations)}
             </Text>
           )}
-        </Box>
+        </div>
       }
     >
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        gap="12px"
-        minHeight="40px"
-        mb="12px"
-      >
-        <Text variant="boSection" fontSize="l" m="0">
+      <div className={styles.toolbar}>
+        <Text variant="title" tone="primary">
           {(!event || attendances) &&
             formatMessage(messages.registrantCount, { count: total })}
         </Text>
-        <Box display="flex" alignItems="center" gap="8px">
+        <div className={styles.display}>
           <SearchToggle
             label={formatMessage(messages.searchRegistrants)}
             searchTerm={search}
@@ -235,8 +195,8 @@ const EventManager = ({ event }: Props) => {
             resultCount={total}
           />
           <FilterMenu categories={[category]} onClearAll={clearFilters} />
-        </Box>
-      </Box>
+        </div>
+      </div>
       <FilterChips categories={[category]} onClearAll={clearFilters} />
       {isError ? (
         <ListLoadError
@@ -245,9 +205,9 @@ const EventManager = ({ event }: Props) => {
           onRetry={() => refetch()}
         />
       ) : isLoading ? (
-        <Box display="flex" justifyContent="center" py="80px">
+        <div className={styles.loading}>
           <Spinner />
-        </Box>
+        </div>
       ) : !attendances?.data.length ? (
         <EmptyState
           size="large"
@@ -261,7 +221,7 @@ const EventManager = ({ event }: Props) => {
           }
         />
       ) : (
-        <Box opacity={isPlaceholderData ? 0.4 : 1}>
+        <div className={isPlaceholderData ? styles.dimmed : undefined}>
           <EventRegistrantTable
             attendances={attendances}
             sort={sort}
@@ -272,7 +232,7 @@ const EventManager = ({ event }: Props) => {
             page={page}
             onPageChange={setPage}
           />
-        </Box>
+        </div>
       )}
     </ManageLayout>
   );

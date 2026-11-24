@@ -1,0 +1,20 @@
+.fill {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+.large {
+  max-width: 360px;
+}
+
+.small {
+  max-width: 240px;
+}

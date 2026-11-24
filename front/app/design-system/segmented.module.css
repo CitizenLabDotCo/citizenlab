@@ -1,0 +1,10 @@
+/* The compact track uses the design’s 3 px padding and 5 px radius. */
+.track {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  gap: var(--gv-space-2);
+  border-radius: 5px;
+  background: var(--gv-surface-muted);
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { PhaseInsightsParticipationMetrics } from 'api/phase_insights/types';
-import { ParticipationMethod } from 'api/phases/types';
+import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
 import CommonGroundMetrics from './methodMetrics/CommonGroundMetrics';
 import IdeationMetrics from './methodMetrics/IdeationMetrics';
@@ -13,17 +13,27 @@ import VotingMetrics from './methodMetrics/VotingMetrics';
 
 interface Props {
   participationMethod: ParticipationMethod;
+  inputTerm?: InputTerm;
   metrics: PhaseInsightsParticipationMetrics;
   showChange: boolean;
 }
 
-const MethodMetrics = ({ participationMethod, metrics, showChange }: Props) => {
+const MethodMetrics = ({
+  participationMethod,
+  inputTerm,
+  metrics,
+  showChange,
+}: Props) => {
   switch (participationMethod) {
     case 'ideation': {
       const ideationMetrics = metrics.ideation;
       if (!ideationMetrics) return null;
       return (
-        <IdeationMetrics metrics={ideationMetrics} showChange={showChange} />
+        <IdeationMetrics
+          metrics={ideationMetrics}
+          inputTerm={inputTerm}
+          showChange={showChange}
+        />
       );
     }
     case 'proposals': {

@@ -1,0 +1,28 @@
+.anchor {
+  position: fixed;
+  z-index: 3000;
+}
+
+/* Keeps the 40x48 hit area the workspace header leaves for the trigger. */
+.trigger {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-40);
+  height: var(--gv-size-48);
+}
+
+.overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+/* The sidebar's fixed nav takes the overlay's top; its wrapper is static, so inherit passes the value through. */
+.overlay > div,
+.overlay > div > nav {
+  top: inherit;
+}

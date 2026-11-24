@@ -25,16 +25,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.settingsProjectGroup',
     defaultMessage: 'Project',
   },
-  settingsInputsGroup: {
-    id: 'app.containers.Admin.projects.project.settingsInputsGroup',
-    defaultMessage: 'Inputs',
-  },
-  settingsTags: {
-    id: 'app.containers.Admin.projects.project.settingsTags',
-    defaultMessage: 'Tags',
-  },
-  settingsPerspectives: {
-    id: 'app.containers.Admin.projects.project.settingsPerspectives',
-    defaultMessage: 'Perspectives',
-  },
 });

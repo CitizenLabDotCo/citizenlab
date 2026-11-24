@@ -1,5 +1,7 @@
 import React from 'react';
 
+import RadioGroup from 'design-system/RadioGroup';
+
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import NativeSurveyOption from './NativeSurveyOption';
@@ -14,14 +16,15 @@ const onAddQuestions = jest.fn();
 
 const renderOption = () =>
   render(
-    <NativeSurveyOption
-      projectId="project-id"
-      phaseId="phase-id"
-      name="survey-method"
-      title="Survey"
-      description="Survey description"
-      onAddQuestions={onAddQuestions}
-    />
+    <RadioGroup aria-label="Survey method" value="native_survey">
+      <NativeSurveyOption
+        projectId="project-id"
+        phaseId="phase-id"
+        title="Survey"
+        description="Survey description"
+        onAddQuestions={onAddQuestions}
+      />
+    </RadioGroup>
   );
 
 describe('NativeSurveyOption', () => {

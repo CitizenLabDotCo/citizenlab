@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import Disclosure from 'design-system/Disclosure';
+import Popover, { DialogTrigger } from 'design-system/Popover';
 
-import MenuButton from 'components/admin/MenuButton';
 import { ManagerType } from 'components/admin/PostManager';
 import ExportButtons from 'components/admin/PostManager/components/ExportMenu/ExportButtons';
 
@@ -21,36 +21,23 @@ const ExportRow = ({ type, projectId, selectedIds }: Props) => {
   const hasSelection = selectedIds.length > 0;
 
   return (
-    <MenuButton
-      portal
-      width="340px"
-      triggerWidth="100%"
-      trigger={({ opened, toggle }) => (
-        <Button
-          buttonStyle="bo-secondary"
-          width="100%"
-          height="44px"
-          justify="space-between"
-          icon="download"
-          iconPos="right"
-          title={formatMessage(messages.exportParticipationData)}
-          ariaExpanded={opened}
-          onClick={toggle}
-        >
-          {formatMessage(messages.export)}
-        </Button>
-      )}
-    >
-      {() => (
-        <Box role="menu">
+    <DialogTrigger>
+      <Disclosure
+        header="button"
+        title={formatMessage(messages.export)}
+        actionIcon="download-16"
+      />
+      <Popover aria-label={formatMessage(messages.exportParticipationData)}>
+        {/* Kept from the menu this replaced; the e2e tests find the export options by it. */}
+        <div role="menu">
           <ExportButtons
             type={type}
             exportType={hasSelection ? 'selected_posts' : 'project'}
             exportQueryParameter={hasSelection ? selectedIds : projectId}
           />
-        </Box>
-      )}
-    </MenuButton>
+        </div>
+      </Popover>
+    </DialogTrigger>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import Disclosure from 'design-system/Disclosure';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IPhaseData } from 'api/phases/types';
@@ -21,6 +21,7 @@ import ExportRow from './ExportRow';
 import InputStats from './InputStats';
 import OfflineCollection from './OfflineCollection';
 import OfflineVotesModal from './OfflineVotesModal';
+import 'design-system/tokens.css';
 
 interface Props {
   type: ManagerType;
@@ -63,28 +64,18 @@ const SideColumn = ({
       />
       {isVoting ? (
         <Card fillHeight={false}>
-          <Button
-            buttonStyle="bo-secondary"
-            width="100%"
-            height="44px"
-            justify="space-between"
-            icon="plus"
-            iconPos="right"
-            onClick={() => setOfflineOpened(true)}
-          >
-            {formatMessage(messages.addOfflineVotes)}
-          </Button>
-          <Button
-            buttonStyle="bo-secondary"
-            width="100%"
-            height="44px"
-            justify="space-between"
-            icon="upload-file"
-            iconPos="right"
-            onClick={() => setImportOpened(true)}
-          >
-            {formatMessage(messages.importOptions)}
-          </Button>
+          <Disclosure
+            header="button"
+            title={formatMessage(messages.addOfflineVotes)}
+            actionIcon="plus-16"
+            onPress={() => setOfflineOpened(true)}
+          />
+          <Disclosure
+            header="button"
+            title={formatMessage(messages.importOptions)}
+            actionIcon="upload-16"
+            onPress={() => setImportOpened(true)}
+          />
           {exports}
         </Card>
       ) : (

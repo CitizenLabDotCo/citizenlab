@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import Text from 'design-system/Text';
 
 import { IPhaseData } from 'api/phases/types';
 
@@ -32,13 +32,14 @@ const SurveyPlacement = ({ phase, hasUnsavedChanges, onMoved }: Props) => {
       onChange={() => setOpened(true)}
     >
       {hasUnsavedChanges && (
-        <Text variant="boHelper">
+        <Text variant="ui" tone="secondary">
           {formatMessage(messages.moveSaveChangesFirst)}
         </Text>
       )}
       {opened && (
         <MovePhaseModal
           phase={phase}
+          variant="panel"
           onClose={() => setOpened(false)}
           onMoved={onMoved}
         />

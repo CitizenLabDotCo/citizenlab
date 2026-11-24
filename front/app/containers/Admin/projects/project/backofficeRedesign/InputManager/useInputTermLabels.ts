@@ -1,9 +1,9 @@
 import usePhase from 'api/phases/usePhase';
 
+import inputTermMessages from 'containers/Admin/projects/project/inputTermMessages';
+
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
-
-import inputTermMessages from './inputTermMessages';
 
 const useInputTermLabels = () => {
   const { formatMessage } = useIntl();

@@ -1,0 +1,31 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  min-height: var(--gv-size-36);
+  padding: 0 var(--gv-space-4);
+  border-radius: var(--gv-radius-8);
+  cursor: grab;
+}
+
+.row:hover {
+  background: var(--gv-surface-control-subtle);
+}
+
+.title {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--gv-space-8);
+  min-width: 0;
+}
+
+.subtopics {
+  margin: 0 0 var(--gv-space-8) var(--gv-space-10);
+  padding-left: var(--gv-space-20);
+  border-left: var(--gv-border-width-2) solid var(--gv-border-default);
+}
+
+.addSubtopic {
+  display: flex;
+}

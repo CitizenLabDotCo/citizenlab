@@ -25,9 +25,10 @@ import { useParams } from 'utils/router';
 interface Props {
   projectId: string;
   phase: IPhaseData;
+  variant?: 'sidebar' | 'panel';
 }
 
-const PhaseOptionsMenu = ({ projectId, phase }: Props) => {
+const PhaseOptionsMenu = ({ projectId, phase, variant = 'sidebar' }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const pageSave = usePageSave();
@@ -84,6 +85,7 @@ const PhaseOptionsMenu = ({ projectId, phase }: Props) => {
       {showMoveModal && (
         <MovePhaseModal
           phase={phase}
+          variant={variant === 'panel' ? variant : 'default'}
           hasUnsavedChanges={pageSave?.dirty}
           onMoved={() => pageSave?.discardAll()}
           onClose={() => setShowMoveModal(false)}

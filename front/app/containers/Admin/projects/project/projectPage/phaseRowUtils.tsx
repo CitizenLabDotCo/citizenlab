@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Text,
-  bo,
-  colors,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { Locale, format, isSameMonth } from 'date-fns';
 import styled from 'styled-components';
 
@@ -100,37 +94,6 @@ export const formatDateRange = (
   return `${startDate} – ${endDate}`;
 };
 
-const STEP_DOT_COLORS: Record<PhaseStatus, string> = {
-  past: bo.colors.stepDoneDot,
-  present: bo.colors.stepLiveDot,
-  future: colors.grey300,
-};
-
-export const StepDot = ({ status }: { status: PhaseStatus }) => (
-  <Box
-    position="relative"
-    zIndex="1"
-    flex="0 0 auto"
-    w="8px"
-    h="8px"
-    mt="6px"
-    mr="12px"
-    borderRadius="50%"
-    background={STEP_DOT_COLORS[status]}
-  />
-);
-
-export const StepLine = ({ status }: { status: PhaseStatus }) => (
-  <Box
-    position="absolute"
-    top="18px"
-    bottom="-18px"
-    left="15.5px"
-    w="1px"
-    background={status === 'past' ? bo.colors.stepDoneLine : colors.grey200}
-  />
-);
-
 const dotBackground = (status: PhaseStatus) => {
   if (status === 'present') return colors.green500;
   if (status === 'past') return colors.coolGrey500;
@@ -213,42 +176,4 @@ export const Row = styled.div<{ selected: boolean }>`
     background: ${({ selected }) =>
       selected ? colors.grey200 : colors.grey100};
   }
-`;
-
-export const StepRow = styled(Row)`
-  gap: 0;
-  padding: 8px 8px 8px 12px;
-  border-radius: ${bo.borderRadius};
-`;
-
-export const StepTitle = styled(Text)`
-  margin: 0;
-  font-size: ${fontSizes.xs}px;
-  font-weight: 500;
-  line-height: 16px;
-`;
-
-// No margin here: the gap above it depends on the row.
-export const StepMeta = styled(Text)`
-  font-size: ${fontSizes.xs}px;
-  line-height: 16px;
-
-  & > span {
-    font-size: inherit;
-    line-height: inherit;
-  }
-`;
-
-export const SectionLabel = styled(Text)`
-  margin: 0;
-  font-size: ${fontSizes.xs}px;
-  font-weight: 400;
-  line-height: 16px;
-  color: ${bo.colors.sectionLabel};
-`;
-
-export const EventRow = styled(Row)`
-  flex-direction: column;
-  gap: 2px;
-  border-radius: ${bo.borderRadius};
 `;

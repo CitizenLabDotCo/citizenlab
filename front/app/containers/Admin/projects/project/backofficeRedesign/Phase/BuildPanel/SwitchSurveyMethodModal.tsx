@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
+import { useController, useForm } from 'react-hook-form';
+
+import Banner from 'design-system/Banner';
+import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
 
 import phasePermissionKeys from 'api/phase_permissions/keys';
 import { IPhaseData, TSurveyService } from 'api/phases/types';
@@ -10,14 +14,13 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
 import useNewPhaseDefaults from 'containers/Admin/projects/project/phaseSetup/useNewPhaseDefaults';
 
-import Error from 'components/UI/Error';
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
-
+import styles from './BuildPanel.module.css';
 import ExternalSurveyFields from './ExternalSurveyFields';
+import messages from './messages';
 import { useEnabledSurveyServices } from './SurveyServiceSelect';
 
 interface Props {
@@ -26,28 +29,49 @@ interface Props {
   onClose: () => void;
 }
 
+interface FormValues {
+  survey_service?: TSurveyService;
+  survey_embed_url: string;
+}
+
 const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const queryClient = useQueryClient();
   const newPhaseDefaults = useNewPhaseDefaults();
-  const { mutate: updatePhase, isPending, error, reset } = useUpdatePhase();
+  const {
+    mutateAsync: updatePhase,
+    error,
+    reset: resetMutation,
+  } = useUpdatePhase();
   const services = useEnabledSurveyServices();
-  const [surveyService, setSurveyService] = useState<TSurveyService>();
-  const [surveyEmbedUrl, setSurveyEmbedUrl] = useState('');
+  const apiErrorText = useApiErrorText();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<FormValues>({ defaultValues: { survey_embed_url: '' } });
+  const { field: serviceField } = useController({
+    control,
+    name: 'survey_service',
+  });
+  const { field: embedUrlField } = useController({
+    control,
+    name: 'survey_embed_url',
+  });
 
   const current = phase.attributes.participation_method;
   // An external survey can't be saved without its tool and link.
   const toExternal = method === 'survey';
-  const selectedService = surveyService ?? services[0];
+  const selectedService = serviceField.value ?? services[0];
 
   const close = () => {
+    resetMutation();
     reset();
-    setSurveyService(undefined);
-    setSurveyEmbedUrl('');
     onClose();
   };
 
-  const handleConfirm = () => {
+  const submit = handleSubmit(async ({ survey_embed_url }) => {
     if (!method || !newPhaseDefaults) return;
 
     const {
@@ -56,8 +80,8 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
       ...defaults
     } = newPhaseDefaults(method);
 
-    updatePhase(
-      {
+    try {
+      await updatePhase({
         phaseId: phase.id,
         ...defaults,
         native_survey_title_multiloc:
@@ -68,19 +92,17 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
           native_survey_button_multiloc,
         ...(toExternal && {
           survey_service: selectedService,
-          survey_embed_url: surveyEmbedUrl,
+          survey_embed_url,
         }),
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: phasePermissionKeys.lists(),
-          });
-          close();
-        },
-      }
-    );
-  };
+      });
+    } catch {
+      // The modal shows the errors from the mutation's state.
+      return;
+    }
+
+    queryClient.invalidateQueries({ queryKey: phasePermissionKeys.lists() });
+    close();
+  });
 
   const consequences = [
     messages.switchLosesAccessSettings,
@@ -89,55 +111,68 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
     messages.switchChangesNotifications,
   ];
 
+  const errorTexts = [
+    apiErrorText(error?.errors.participation_method),
+    apiErrorText(error?.errors.base),
+  ].filter((text) => !!text);
+
   return (
     <Modal
-      opened={method !== null}
-      close={close}
-      width={MEDIUM_MODAL_WIDTH}
-      header={formatMessage(messages.switchSurveyMethodTitle)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-secondary" onClick={close}>
-            {formatMessage(messages.switchCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            processing={isPending}
-            disabled={toExternal && !surveyEmbedUrl.trim()}
-            onClick={handleConfirm}
-          >
-            {formatMessage(messages.switchConfirm)}
-          </Button>
-        </Box>
-      }
+      isOpen={method !== null}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) close();
+      }}
+      size={560}
+      title={formatMessage(messages.switchSurveyMethodTitle)}
+      secondaryAction={{
+        label: formatMessage(messages.switchCancel),
+        onPress: close,
+      }}
+      primaryAction={{
+        label: formatMessage(messages.switchConfirm),
+        isPending: isSubmitting,
+        isDisabled: toExternal && !embedUrlField.value.trim(),
+        onPress: () => submit(),
+      }}
     >
-      <Box p="24px">
-        <Text variant="boHelper" mb="12px">
+      <div className={styles.switchBody}>
+        <Text variant="ui" tone="secondary" className={styles.switchIntro}>
           {formatMessage(messages.switchSurveyMethodIntro)}
         </Text>
-        <Box as="ul" pl="20px" m="0">
+        <ul className={styles.consequences}>
           {consequences.map((message) => (
-            <li key={message.id}>
-              <Text variant="boHelper" my="4px">
-                {formatMessage(message)}
-              </Text>
-            </li>
+            <Text
+              key={message.id}
+              as="li"
+              variant="ui"
+              tone="secondary"
+              className={styles.consequence}
+            >
+              {formatMessage(message)}
+            </Text>
           ))}
-        </Box>
+        </ul>
         {toExternal && (
-          <Box mt="20px">
+          <div className={styles.externalFields}>
             <ExternalSurveyFields
               service={selectedService}
-              embedUrl={surveyEmbedUrl}
+              embedUrl={embedUrlField.value}
               errors={error?.errors}
-              onServiceChange={setSurveyService}
-              onEmbedUrlChange={setSurveyEmbedUrl}
+              onServiceChange={serviceField.onChange}
+              onEmbedUrlChange={embedUrlField.onChange}
             />
-          </Box>
+          </div>
         )}
-        {error && <Error apiErrors={error.errors.participation_method} />}
-        {error?.errors.base && <Error apiErrors={error.errors.base} />}
-      </Box>
+        {errorTexts.length > 0 && (
+          <div className={styles.errors}>
+            {errorTexts.map((text) => (
+              <Banner key={text} tone="error">
+                {text}
+              </Banner>
+            ))}
+          </div>
+        )}
+      </div>
     </Modal>
   );
 };

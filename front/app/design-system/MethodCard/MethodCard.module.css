@@ -1,0 +1,61 @@
+.card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-height: 340px;
+  padding: 0;
+  overflow: hidden;
+  border: var(--gv-border-width-1) solid var(--gv-border-divider);
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-panel);
+  text-align: start;
+  cursor: pointer;
+  outline: none;
+  transition-property: border-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.card[data-hovered] {
+  border-color: var(--gv-border-control-hovered);
+}
+
+/* Focus is the card's own 2 px border, not a ring. */
+.card[data-focus-visible] {
+  border: var(--gv-border-width-2) solid var(--gv-border-focused);
+}
+
+.art {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  height: 168px;
+  overflow: hidden;
+  background: var(--gv-surface-control-subtle);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+  padding: var(--gv-space-16);
+}
+
+.title {
+  composes: bodyStrong from '../typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.description {
+  composes: body from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.notes {
+  display: flex;
+  gap: var(--gv-space-6);
+  padding-top: var(--gv-space-4);
+}

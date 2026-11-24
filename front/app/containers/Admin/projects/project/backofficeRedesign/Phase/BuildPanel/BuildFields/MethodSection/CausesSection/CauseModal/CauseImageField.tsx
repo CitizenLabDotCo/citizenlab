@@ -1,54 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useController } from 'react-hook-form';
 import { UploadFile } from 'typings';
 
+import Banner from 'design-system/Banner';
+import DropZone from 'design-system/DropZone';
+import Text from 'design-system/Text';
+
+import ImageFileRow from 'containers/Admin/projects/project/backofficeRedesign/Event/ImageFileRow';
+import {
+  ACCEPTED_IMAGE_TYPES,
+  isImageTooLarge,
+  MAX_IMAGE_FILE_SIZE_MB,
+  toUploadFile,
+} from 'containers/Admin/projects/project/backofficeRedesign/Event/imageUpload';
 import volunteeringMessages from 'containers/Admin/projects/project/volunteering/messages';
 import { CauseFormValues } from 'containers/Admin/projects/project/volunteering/useCauseForm';
 
-import ImagesDropzone from 'components/UI/ImagesDropzone';
+import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import ImageFileRow from '../../../../../../Event/ImageFileRow';
+import styles from './CauseModal.module.css';
 
-import messages from './messages';
+const ACCEPTED_TYPES = [...ACCEPTED_IMAGE_TYPES, 'image/gif'];
 
 const CauseImageField = () => {
   const { formatMessage } = useIntl();
   const { field } = useController<CauseFormValues, 'image'>({ name: 'image' });
+  const [tooLarge, setTooLarge] = useState(false);
   const image = field.value?.[0];
+  const label = formatMessage(volunteeringMessages.causeImageLabel);
 
   const setImage = (images: UploadFile[]) => field.onChange(images);
   const removeImage = () => field.onChange([]);
 
+  const addFile = async (files: File[]) => {
+    const file = files.at(0);
+    if (!file) return;
+
+    const isTooLarge = isImageTooLarge(file);
+    setTooLarge(isTooLarge);
+    if (isTooLarge) return;
+
+    setImage([await toUploadFile(file)]);
+  };
+
   return (
-    <Box display="flex" flexDirection="column" gap="4px">
-      <Text as="span" fontSize="xs" color="coolGrey600" m="0">
-        {formatMessage(volunteeringMessages.causeImageLabel)}
+    <div className={styles.imageField}>
+      <Text as="span" variant="small" tone="secondary">
+        {label}
       </Text>
       {image ? (
         <ImageFileRow
           image={image}
           thumbnail={image.base64}
+          acceptedFileTypes={ACCEPTED_TYPES}
           onReplace={(newImage) => setImage([newImage])}
           onRemove={removeImage}
         />
       ) : (
-        <ImagesDropzone
-          images={[]}
-          acceptedFileTypes={{
-            'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-          }}
-          onAdd={setImage}
-          onRemove={removeImage}
-          imagePreviewRatio={1 / 3}
-          label={formatMessage(messages.causeImageDrop)}
-          compact
+        <DropZone
+          aria-label={label}
+          acceptedFileTypes={ACCEPTED_TYPES}
+          onSelect={addFile}
         />
       )}
-    </Box>
+      {tooLarge && (
+        <Banner tone="error">
+          {formatMessage(imagesDropzoneMessages.errorImageMaxSizeExceeded, {
+            maxFileSize: MAX_IMAGE_FILE_SIZE_MB,
+          })}
+        </Banner>
+      )}
+    </div>
   );
 };
 

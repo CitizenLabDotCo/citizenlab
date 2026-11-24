@@ -1,0 +1,4 @@
+.input {
+  composes: frame from '../DateField/DateInput.module.css';
+  width: 120px;
+}
