@@ -229,6 +229,14 @@ class WebApi::V1::ProjectsController < ApplicationController
   def copy
     source_project = Project.find(params[:id])
     dest_folder = source_project.folder if UserRoleService.new.can_moderate?(source_project.folder, current_user)
+    # A copy kept in the folder must stay in the folder's space. Without a
+    # folder, it keeps the space only if the user can moderate it. Otherwise it
+    # goes to the root, where moderators may create drafts.
+    dest_space = if dest_folder
+      dest_folder.space
+    elsif UserRoleService.new.can_moderate?(source_project.space, current_user)
+      source_project.space
+    end
 
     # The authorization of this action is more complex than usual. It works in two steps:
     # - Check if the user can copy the source project.
@@ -246,6 +254,7 @@ class WebApi::V1::ProjectsController < ApplicationController
         p.assign_attributes(
           slug: nil,
           default_assignee_id: nil,
+          space: dest_space,
           admin_publication_attributes: {
             publication_status: 'draft',
             parent_id: dest_folder&.admin_publication&.id
@@ -261,7 +270,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     start_time = Time.now
     project = Project.transaction do
-      copy = LocalProjectCopyService.new.copy(source_project, dest_folder: dest_folder)
+      copy = LocalProjectCopyService.new.copy(source_project, dest_folder: dest_folder, dest_space: dest_space)
       authorize(copy, :create?)
     end
 

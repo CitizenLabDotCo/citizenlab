@@ -2,7 +2,7 @@
 
 # Copies a project within a tenant.
 class LocalProjectCopyService < ProjectCopyService
-  def copy(source_project, dest_folder: source_project.folder)
+  def copy(source_project, dest_folder: source_project.folder, dest_space: dest_folder ? dest_folder.space : source_project.space)
     new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
 
     options = {
@@ -15,6 +15,7 @@ class LocalProjectCopyService < ProjectCopyService
     }
 
     template = export(source_project, **options)
+    template['models']['project'].first['space_id'] = dest_space&.id
     copied_project = import(template, folder: dest_folder, local_copy: true)
 
     copy_project_visibility_permission_groups(source_project, copied_project)
