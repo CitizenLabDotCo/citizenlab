@@ -429,12 +429,12 @@ const InsightsContent = () => {
           aria-label="Phase Insights"
         >
           <div className={styles.panelLayout}>
-            <div className={styles.dashboardPanel}>{dashboard}</div>
             <div className={styles.sideColumn}>
               <RecommendedActions phase={phase.data}>
                 {panelActions}
               </RecommendedActions>
             </div>
+            <div className={styles.dashboardPanel}>{dashboard}</div>
           </div>
         </div>
       ) : (
