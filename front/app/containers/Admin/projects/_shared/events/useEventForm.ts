@@ -215,6 +215,4 @@ const useEventForm = ({ projectId, eventId, onCreate }: Options) => {
   };
 };
 
-export type EventForm = ReturnType<typeof useEventForm>;
-
 export default useEventForm;
