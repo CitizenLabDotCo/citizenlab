@@ -7,20 +7,19 @@ import Banner from 'design-system/Banner';
 import DropZone from 'design-system/DropZone';
 import Text from 'design-system/Text';
 
+import ImageFileRow from 'containers/Admin/projects/project/backofficeRedesign/Event/ImageFileRow';
+import {
+  ACCEPTED_IMAGE_TYPES,
+  isImageTooLarge,
+  MAX_IMAGE_FILE_SIZE_MB,
+  toUploadFile,
+} from 'containers/Admin/projects/project/backofficeRedesign/Event/imageUpload';
 import volunteeringMessages from 'containers/Admin/projects/project/volunteering/messages';
 import { CauseFormValues } from 'containers/Admin/projects/project/volunteering/useCauseForm';
 
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
 import { useIntl } from 'utils/cl-intl';
-
-import ImageFileRow from '../../../../../../Event/ImageFileRow';
-import {
-  ACCEPTED_IMAGE_TYPES,
-  isImageTooLarge,
-  MAX_IMAGE_FILE_SIZE_MB,
-  toUploadFile,
-} from '../../../../../../Event/imageUpload';
 
 import styles from './CauseModal.module.css';
 
