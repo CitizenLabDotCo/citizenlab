@@ -30,7 +30,9 @@ module InputTypeStrategy
     def normalize_value(value)
       return value if !value.is_a?(String) || !DECIMAL_FORMAT.match?(value)
 
-      value.include?('.') ? value.to_f : value.to_i
+      # A zero decimal part ("1963.0") is stored as an integer: integer-only
+      # answers such as birth years, and the ::integer casts below, expect one.
+      value.match?(/\.0*[1-9]/) ? value.to_f : value.to_i
     end
 
     def answers_eq(answers, value)
