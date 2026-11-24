@@ -127,7 +127,7 @@ module ReportBuilder
           # The lock makes the in-progress check + enqueue atomic across concurrent requests.
           tracker = begin
             ::CitizenLab::LockManager.try_with_transaction_lock("generate_report/#{report.id}") do
-              enqueue_generate_report_job.tracker unless in_progress_generation_tracker
+              enqueue_generate_report_job.tracker unless report.running_generation_tracker
             end
           rescue ::CitizenLab::LockManager::FailedToLock
             nil
@@ -187,9 +187,7 @@ module ReportBuilder
               status: :unprocessable_entity
           end
 
-          chat.update!(transcript: chat.transcript + [
-            { 'role' => 'user', 'text' => message, 'at' => Time.current.iso8601 }
-          ])
+          chat.append_turn!({ 'role' => 'user', 'text' => message, 'at' => Time.current.iso8601 })
 
           ReportBuilder::ReviseReportJob
             .with_tracking(owner: current_user)
@@ -219,22 +217,6 @@ module ReportBuilder
               }
             }
           }
-        end
-
-        # A generation that is still running for this report, if any. Failed jobs
-        # complete their tracker (with job_errors), so they don't block a new run;
-        # the time window is a safety valve against trackers orphaned by e.g. a dev
-        # environment without a running worker.
-        def in_progress_generation_tracker
-          ::Jobs::Tracker
-            .where(
-              context: report.phase || report.project,
-              root_job_type: ReportBuilder::GenerateReportJob.name,
-              completed_at: nil
-            )
-            .where(created_at: 1.hour.ago..)
-            .order(created_at: :desc)
-            .first
         end
 
         def enqueue_generate_report_job

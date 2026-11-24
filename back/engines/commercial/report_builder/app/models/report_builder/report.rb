@@ -66,14 +66,17 @@ module ReportBuilder
 
     scope :global, -> { where(phase_id: nil) }
 
-    # How long an unfinished run is believed to be still running. Past that the
-    # report is listed again even with the tracker open, so a worker that died
+    # How long an unfinished run is believed to be still running — both for listing
+    # a report and for refusing to start a second run. Past that the report is listed
+    # and a new run allowed even with the tracker still open, so a worker that died
     # without completing its tracker cannot hide a report for good.
     GENERATION_ASSUMED_STALE_AFTER = 1.hour
 
-    # A report about a whole project is created as an empty shell the moment an
-    # admin asks for one, and the composer only fills it minutes later. Listing
-    # the shell offers a report that opens onto nothing, so it waits out the run.
+    # The reports the admin's report overview may show — the scope the index endpoint
+    # starts from. Everything qualifies but one case: a report about a whole project
+    # is created as an empty shell the moment an admin asks for one, and the composer
+    # only fills it minutes later. Listing the shell offers a report that opens onto
+    # nothing, so it waits out the run.
     #
     # It is listed again the moment the run is over, with or without content: a run
     # that failed leaves a report the admin still has to be able to open, generate
@@ -127,7 +130,22 @@ module ReportBuilder
     # stopped without saving is not it, however it stopped: what the report holds is
     # still the work of the last run that did save.
     def last_generation
-      generation_transcripts.generations.saved_the_report.newest_first.first
+      generation_transcripts.generations.with_saved_report.newest_first.first
+    end
+
+    # The tracker of the generation still running for this report, if any — the
+    # same question the listable scope asks in SQL, for a single report. Failed
+    # jobs complete their tracker (with job_errors), so they don't block a new run.
+    def running_generation_tracker
+      ::Jobs::Tracker
+        .where(
+          context: phase || project,
+          root_job_type: ReportBuilder::GenerateReportJob.name,
+          completed_at: nil
+        )
+        .where(created_at: GENERATION_ASSUMED_STALE_AFTER.ago..)
+        .order(created_at: :desc)
+        .first
     end
 
     def public?

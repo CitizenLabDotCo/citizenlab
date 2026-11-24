@@ -30,6 +30,18 @@ module ReportBuilder
 
     validate :validate_transcript
 
+    # Appended in one statement: the transcript has two writers — the controller
+    # adds the admin's turn, the job answering an earlier one adds the model's —
+    # and a read-then-write append loses whichever of the two lands second.
+    def append_turn!(turn)
+      self.class.where(id: id).update_all([
+        "transcript = jsonb_insert(transcript, '{-1}', ?::jsonb, true), updated_at = ?",
+        turn.to_json,
+        Time.current
+      ])
+      reload
+    end
+
     private
 
     def validate_transcript

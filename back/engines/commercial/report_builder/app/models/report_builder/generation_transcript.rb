@@ -67,7 +67,7 @@ module ReportBuilder
     scope :running, -> { where(stopped_because: nil) }
     scope :finished, -> { where.not(stopped_because: nil) }
     scope :not_failed, -> { where.not(stopped_because: 'failed') }
-    scope :saved_the_report, -> { where.not(report_saved_at: nil) }
+    scope :with_saved_report, -> { where.not(report_saved_at: nil) }
 
     # The runs that make up a report's conversation so far: the latest finished
     # generation and the finished turns after it, oldest first. Runs before that

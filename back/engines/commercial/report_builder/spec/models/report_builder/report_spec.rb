@@ -167,6 +167,39 @@ RSpec.describe ReportBuilder::Report do
     end
   end
 
+  describe '#running_generation_tracker' do
+    let(:report) { create(:report, :with_project) }
+
+    def generation_tracker(report, completed: false, created_at: Time.current)
+      create(
+        :jobs_tracker,
+        root_job_type: ReportBuilder::GenerateReportJob.name,
+        context: report.project,
+        project: report.project,
+        completed_at: completed ? Time.current : nil,
+        created_at: created_at
+      )
+    end
+
+    it 'is the tracker of a run that is under way' do
+      tracker = generation_tracker(report)
+
+      expect(report.running_generation_tracker).to eq tracker
+    end
+
+    it 'is nothing once the run has completed' do
+      generation_tracker(report, completed: true)
+
+      expect(report.running_generation_tracker).to be_nil
+    end
+
+    it 'is nothing for a tracker left open long enough to be presumed dead' do
+      generation_tracker(report, created_at: ReportBuilder::Report::GENERATION_ASSUMED_STALE_AFTER.ago - 1.minute)
+
+      expect(report.running_generation_tracker).to be_nil
+    end
+  end
+
   describe '#last_generation' do
     def generation(stopped:, saved:, at:)
       create(:generation_transcript, report: report, kind: 'generation',
@@ -182,7 +215,7 @@ RSpec.describe ReportBuilder::Report do
     end
 
     # Whatever the reason it stopped, a run that saved nothing did not write what is
-    # on screen — so it is not what "is this report whole" is asking about.
+    # on screen, so it is not the run the report came from.
     it 'skips a later run that stopped without saving' do
       wrote_it = generation(stopped: 'done', saved: true, at: 2.hours.ago)
       generation(stopped: 'round_cap', saved: false, at: 1.hour.ago)

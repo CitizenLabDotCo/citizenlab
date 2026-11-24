@@ -49,10 +49,9 @@ const GenerateReportButton = ({ projectId, reportId }: Props) => {
   const running = isReportGenerationInProgress(job);
   const failed = reportGenerationFailed(job);
 
-  // The run writes the layout on the server, where no query can notice. Queries are
-  // cached indefinitely here, so without this the copy fetched before the run — an
-  // empty one — is the copy this button keeps reading, and a finished report goes on
-  // offering to be generated again.
+  // The run writes the layout on the server, which no query here can notice, and
+  // layouts are cached indefinitely. Without this the button keeps reading the empty
+  // copy it fetched before the run and goes on offering to generate a finished report.
   const wasRunning = useRef(false);
   useEffect(() => {
     if (wasRunning.current && !running) {
@@ -65,10 +64,9 @@ const GenerateReportButton = ({ projectId, reportId }: Props) => {
 
   if (!llmReportingEnabled) return null;
 
-  // A report row exists from the moment someone asks for one, and stays behind
-  // empty if the run failed or never ran. Offering to open that is offering an
-  // empty editor with no way out, so what matters here is whether the report has
-  // anything in it, not whether it exists.
+  // A report row exists from the moment someone asks for one, and is left empty if
+  // the run failed or never ran — so what decides the button is whether the report
+  // has content, not whether it exists.
   const hasContent =
     Object.keys(layout?.data.attributes.craftjs_json ?? {}).length > 0;
 
@@ -78,10 +76,9 @@ const GenerateReportButton = ({ projectId, reportId }: Props) => {
       context: { type: 'Project', id: projectId },
     });
 
-  // The report exists, has something in it and nothing is running: the button's
-  // job now is to open it. While the layout is still being read there is no
-  // telling which report this is, and guessing wrong means offering to overwrite
-  // a finished one.
+  // Wait for the layout before deciding: until it is read there is no telling
+  // whether this report has content, and guessing wrong offers to overwrite a
+  // finished one.
   const settled = !running && !loadingLayout;
 
   if (settled && reportId && hasContent && !failed) {
@@ -99,9 +96,8 @@ const GenerateReportButton = ({ projectId, reportId }: Props) => {
     );
   }
 
-  // One button throughout: starting a run, waiting for it and reading the layout
-  // all keep the shape and the label, and only the spinner inside it changes.
-  // Swapping in a different, smaller button mid-run reads as the page breaking.
+  // One button throughout: starting a run, waiting for it and reading the layout all
+  // keep its shape and label, and only the spinner inside it changes.
   const busy = running || creating || starting || loadingLayout;
 
   return (

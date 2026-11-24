@@ -69,19 +69,16 @@ module ReportBuilder
       run_record.report_saved!
     end
 
-    # Reload before appending: the controller wrote the admin's turn after this job
-    # was enqueued, and it must not be lost.
     # changed_layout tells the panel whether to pull the new layout into the editor.
     # On a turn that changed nothing it must not, or it would overwrite edits the
     # admin has made and not saved.
     def answer(chat, text, changed_layout: false)
-      chat.reload
-      chat.update!(transcript: chat.transcript + [{
+      chat.append_turn!({
         'role' => 'assistant',
         'text' => text,
         'at' => Time.current.iso8601,
         'changed_layout' => changed_layout
-      }])
+      })
     end
 
     # The model's own closing sentence when it finished; a plain account of what
