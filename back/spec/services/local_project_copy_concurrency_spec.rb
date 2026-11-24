@@ -2,38 +2,21 @@
 
 require 'rails_helper'
 
-RSpec.describe LocalProjectCopyService do
-  # Separate connections must see committed records to exercise the lock.
-  self.use_transactional_tests = false
+# Separate connections must see committed records to exercise the lock.
+RSpec.describe LocalProjectCopyService, use_transactional_fixtures: false do
+  it 'gives each concurrent copy of a project its own slug' do
+    project = create(:project, title_multiloc: { en: 'Copy me' }, slug: 'copy-me')
 
-  let(:source_project) { create(:project, title_multiloc: { en: 'Copy me' }, slug: 'copy-me') }
+    copies = concurrently(2) { described_class.new.copy(Project.find(project.id)) }
 
-  before { source_project }
-  after { Project.destroy_all }
-
-  def concurrently(count)
-    tenant = Apartment::Tenant.current
-    project_id = source_project.id
-    ready = Queue.new
-    start = Queue.new
-    threads = Array.new(count) do
-      Thread.new do
-        ActiveRecord::Base.connection_pool.with_connection do
-          Apartment::Tenant.switch(tenant) do
-            ready << true
-            start.pop
-            yield Project.find(project_id)
-          end
-        end
-      end
-    end
-    count.times { ready.pop }
-    count.times { start << true }
-    threads.map(&:value)
+    expect(copies.map(&:slug)).to contain_exactly('copy-me-copy', 'copy-me-copy-1')
   end
 
-  it 'gives each concurrent copy of a project its own slug' do
-    copies = concurrently(2) { |project| described_class.new.copy(project) }
-    expect(copies.map(&:slug)).to contain_exactly('copy-me-copy', 'copy-me-copy-1')
+  it 'gives concurrent copies of projects with the same title their own slug' do
+    project_ids = create_list(:project, 2, title_multiloc: { en: 'Same title' }).map(&:id)
+
+    copies = concurrently(2) { |index| described_class.new.copy(Project.find(project_ids[index])) }
+
+    expect(copies.map(&:slug)).to contain_exactly('same-title-copy', 'same-title-copy-1')
   end
 end

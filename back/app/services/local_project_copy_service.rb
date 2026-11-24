@@ -2,20 +2,26 @@
 
 # Copies a project within a tenant.
 class LocalProjectCopyService < ProjectCopyService
+  # Copying a large project can take a while. Waiting for another copy longer
+  # than this would push the request past the 30s request timeout.
+  SLUG_LOCK_TIMEOUT = 10.seconds
+
   def copy(source_project, dest_folder: source_project.folder)
+    new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
+
     # The copy's slug is picked from its title when the project is saved, but
-    # only the commit reserves it. Two copies of the same project running at
-    # the same time would otherwise pick the same slug.
-    CitizenLab::LockManager.with_transaction_lock("project_copy/#{source_project.id}") do
-      copy_project(source_project, dest_folder)
+    # only the commit reserves it. Copies with the same title running at the
+    # same time (a double click, or two projects with the same title) would
+    # otherwise pick the same slug.
+    lock_name = "project_slug/#{base_slug(new_title_multiloc)}"
+    CitizenLab::LockManager.with_transaction_lock(lock_name, timeout: SLUG_LOCK_TIMEOUT) do
+      copy_project(source_project, dest_folder, new_title_multiloc)
     end
   end
 
   private
 
-  def copy_project(source_project, dest_folder)
-    new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
-
+  def copy_project(source_project, dest_folder, new_title_multiloc)
     options = {
       local_copy: true,
       include_ideas: false,
@@ -35,6 +41,10 @@ class LocalProjectCopyService < ProjectCopyService
     source_project.areas_projects.each { |areas_project| areas_project.dup.update!(project_id: copied_project.id) }
 
     copied_project
+  end
+
+  def base_slug(title_multiloc)
+    SlugService.new.slugify(Project.slug_from.call(Project.new(title_multiloc: title_multiloc)))
   end
 
   def add_suffix_to_title(multiloc)
