@@ -12,6 +12,25 @@ let sessionId: string | undefined;
 let previousPathTracked: string | undefined;
 let sessionTracked = false;
 
+// fetch's network error in Chromium, WebKit and Firefox. Matched by prefix:
+// Sentry may append the host, e.g. "Load failed (example.org)".
+const NETWORK_ERROR_MESSAGES = [
+  'Failed to fetch',
+  'Load failed',
+  'NetworkError when attempting to fetch resource.',
+];
+
+// Losing a tracking call to the network is expected; rethrow anything else.
+export const ignoreNetworkErrors = (error: unknown) => {
+  if (
+    error instanceof TypeError &&
+    NETWORK_ERROR_MESSAGES.some((message) => error.message.startsWith(message))
+  ) {
+    return;
+  }
+  throw error;
+};
+
 const trackSessionStarted = async (path: string) => {
   // eslint-disable-next-line
   const referrer = document.referrer ?? window.frames?.top?.document.referrer;
@@ -19,6 +38,7 @@ const trackSessionStarted = async (path: string) => {
   const response = await fetch(`${API_PATH}/sessions`, {
     method: 'POST',
     credentials: 'include', // Include cookies (session, auth tokens)
+    keepalive: true, // Ensure tracking finishes after the page unloads
     body: JSON.stringify({
       session: {
         referrer,
@@ -43,7 +63,7 @@ const trackSessionStarted = async (path: string) => {
 
   // Because the first page view depends on the response of the session creation,
   // we handle it here and ignore the first page view event (see below).
-  trackPageView(path);
+  trackPageView(path).catch(ignoreNetworkErrors);
 };
 
 const upgradeSession = () => {
@@ -51,7 +71,7 @@ const upgradeSession = () => {
     path: `/sessions/current/upgrade`,
     action: 'patch',
     body: {},
-  });
+  }).catch(ignoreNetworkErrors);
 };
 
 const trackPageView = async (path: string) => {
@@ -66,9 +86,11 @@ const trackPageView = async (path: string) => {
 
   const route = getRoutePattern(path);
 
+  // keepalive: survives a redirect, e.g. to an SSO provider.
   await fetcher({
     path: `/sessions/${sessionId}/track_pageview`,
     action: 'post',
+    keepalive: true,
     body: {
       pageview: {
         client_path: path,
@@ -103,16 +125,17 @@ const configuration: ModuleConfiguration = {
 
       if (hasLocale(strippedPath)) {
         if (!sessionTracked) {
-          trackSessionStarted(strippedPath); // This will also track the first page view
+          // This will also track the first page view
+          trackSessionStarted(strippedPath).catch(ignoreNetworkErrors);
           sessionTracked = true;
         } else {
-          trackPageView(strippedPath);
+          trackPageView(strippedPath).catch(ignoreNetworkErrors);
         }
       }
     });
 
     virtualPageViews$.subscribe((path) => {
-      trackPageView(path);
+      trackPageView(path).catch(ignoreNetworkErrors);
     });
 
     // Upgrade the session when a visitor signs in, not when a user who was already

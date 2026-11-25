@@ -12,9 +12,17 @@ import { IUser } from 'api/users/types';
 let signedInOnServer = false;
 const user = { data: { id: 'user-id', type: 'user' } } as unknown as IUser;
 
-const mockFetcher = jest.fn(({ path }: { path: string }) =>
-  Promise.resolve(path === '/users/me' && signedInOnServer ? user : null)
-);
+// What tracking a page view fails with, if anything.
+let pageViewError: unknown = null;
+
+const mockFetcher = jest.fn(({ path }: { path: string }) => {
+  if (path.endsWith('/track_pageview') && pageViewError) {
+    return Promise.reject(pageViewError);
+  }
+  return Promise.resolve(
+    path === '/users/me' && signedInOnServer ? user : null
+  );
+});
 jest.mock('utils/cl-react-query/fetcher', () => ({
   __esModule: true,
   default: (args: { path: string }) => mockFetcher(args),
@@ -167,5 +175,87 @@ describe('impact tracking: session upgrade', () => {
     await signIn();
 
     expect(upgradeCount()).toBe(1);
+  });
+});
+
+// Jest fails a test on any unhandled rejection, which is what Sentry reports.
+describe('impact tracking: failed requests', () => {
+  // Starts a session and returns the subject the app sends page changes to.
+  const startSession = async () => {
+    signedInOnServer = false;
+    mockAuthUserStream = new BehaviorSubject<IUser | null | undefined>(null);
+    global.fetch = jest.fn().mockResolvedValue({
+      status: 201,
+      json: () => Promise.resolve({ data: { id: 'session-id' } }),
+    });
+
+    let pageChanges$: Subject<{ path: string }> | undefined;
+    jest.isolateModules(() => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('.').default.beforeMountApplication();
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      pageChanges$ = require('utils/analytics').pageChanges$;
+    });
+    pageChanges$?.next({ path: '/en' });
+    await flushPromises();
+    return pageChanges$;
+  };
+
+  beforeEach(() => {
+    mockFetcher.mockClear();
+  });
+
+  afterEach(() => {
+    pageViewError = null;
+  });
+
+  it('sends tracking requests with keepalive, so they survive a redirect', async () => {
+    await startSession();
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      '/web_api/v1/sessions',
+      expect.objectContaining({ keepalive: true })
+    );
+    expect(mockFetcher).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: '/sessions/session-id/track_pageview',
+        keepalive: true,
+      })
+    );
+  });
+
+  it('ignores page views that fail because of the network', async () => {
+    pageViewError = new TypeError('Load failed');
+    const pageChanges$ = await startSession();
+    pageChanges$?.next({ path: '/en/projects' });
+    await flushPromises();
+
+    expect(mockFetcher).toHaveBeenCalledWith(
+      expect.objectContaining({ path: '/sessions/session-id/track_pageview' })
+    );
+  });
+
+  it('ignores the network error of every browser engine', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { ignoreNetworkErrors } = require('.');
+    [
+      'Failed to fetch',
+      'Load failed',
+      'NetworkError when attempting to fetch resource.',
+      // As rewritten by Sentry's fetch instrumentation.
+      'Load failed (example.org)',
+    ].forEach((message) => {
+      expect(() => ignoreNetworkErrors(new TypeError(message))).not.toThrow();
+    });
+  });
+
+  it('still surfaces a TypeError from a bug in our code', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { ignoreNetworkErrors } = require('.');
+    const bug = new TypeError(
+      "Cannot read properties of undefined (reading 'id')"
+    );
+
+    expect(() => ignoreNetworkErrors(bug)).toThrow(bug);
   });
 });
