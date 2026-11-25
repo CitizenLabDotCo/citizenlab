@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import DesignSystemEmptyState from 'design-system/EmptyState';
 import Text from 'design-system/Text';
@@ -8,7 +8,7 @@ import 'design-system/tokens.css';
 
 interface Props {
   title?: string;
-  description?: string;
+  description?: ReactNode;
   size: 'large' | 'small';
 }
 
