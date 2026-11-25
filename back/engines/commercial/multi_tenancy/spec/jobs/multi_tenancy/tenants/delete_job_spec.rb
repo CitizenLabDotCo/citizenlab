@@ -47,10 +47,30 @@ RSpec.describe MultiTenancy::Tenants::DeleteJob do
         expect(tenant.reload).to be_present
       end
 
-      it 'ignores removal jobs that expired' do
-        create_job('Matomo::RemoveUserFromMatomoJob', [['user-id']], expired_at: Time.zone.now)
+      it 'reports the users of removal jobs that expired, and still destroys the tenant' do
+        create_job(
+          'Matomo::RemoveUserFromMatomoJob', [%w[user-1 user-2]],
+          expired_at: Time.zone.now, last_error_message: 'Matomo::Client::MatomoApiError: 503'
+        )
+        create_job('PosthogIntegration::RemoveUserFromPosthogJob', ['user-3'], expired_at: Time.zone.now)
+        create_job('RemoveUserFromIntercomJob', [['user-4']], finished_at: Time.zone.now)
+        allow(ErrorReporter).to receive(:report_msg)
 
         described_class.perform_now(tenant, third_party_removal_queued: true)
+
+        expect(ErrorReporter).to have_received(:report_msg).twice
+        expect(ErrorReporter).to have_received(:report_msg).with(
+          anything,
+          extra: {
+            tenant_id: tenant.id,
+            job_class: 'Matomo::RemoveUserFromMatomoJob',
+            user_ids: %w[user-1 user-2],
+            last_error_message: 'Matomo::Client::MatomoApiError: 503'
+          }
+        )
+        expect(ErrorReporter).to have_received(:report_msg).with(
+          anything, extra: hash_including(job_class: 'PosthogIntegration::RemoveUserFromPosthogJob', user_ids: ['user-3'])
+        )
         expect { tenant.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
 

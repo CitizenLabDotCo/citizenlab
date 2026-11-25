@@ -33,6 +33,7 @@ module MultiTenancy
         # Destroying the tenant deletes its queued jobs, so the removals must be done first.
         return reschedule(tenant) if third_party_removal_pending?(tenant)
 
+        report_failed_third_party_removals(tenant)
         delete_avatars(tenant)
         tenant.destroy!
         MultiTenancy::SideFxTenantService.new.after_destroy(tenant)
@@ -57,13 +58,30 @@ module MultiTenancy
 
       def third_party_removal_pending?(tenant)
         THIRD_PARTY_REMOVAL_JOBS.any? do |job_class|
-          QueJob
-            .by_job_class(job_class)
-            .all_by_tenant_schema_name(tenant.schema_name)
-            .not_finished
-            .not_expired
-            .exists?
+          third_party_removal_jobs(job_class, tenant).not_finished.not_expired.exists?
         end
+      end
+
+      # Destroying the tenant deletes these jobs, which are the only record of the users whose data
+      # may be left in a third-party service.
+      def report_failed_third_party_removals(tenant)
+        THIRD_PARTY_REMOVAL_JOBS.each do |job_class|
+          third_party_removal_jobs(job_class, tenant).expired.each do |job|
+            ErrorReporter.report_msg(
+              'Users of a deleted tenant could not be removed from a third-party service',
+              extra: {
+                tenant_id: tenant.id,
+                job_class: job_class,
+                user_ids: Array(job.args[:arguments].first),
+                last_error_message: job.last_error_message
+              }
+            )
+          end
+        end
+      end
+
+      def third_party_removal_jobs(job_class, tenant)
+        QueJob.by_job_class(job_class).all_by_tenant_schema_name(tenant.schema_name)
       end
 
       # Dropping the schema doesn't delete files. The tenant's other files are kept for now.
