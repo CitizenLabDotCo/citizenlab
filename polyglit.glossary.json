@@ -86,6 +86,9 @@
   "space": {
     "de-DE": "Space"
   },
+  "question (input term)": {
+    "fr-FR": "question"
+  },
   "users": {
     "de-DE": "Nutzende",
     "nl-NL": "gebruikers"
