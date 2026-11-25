@@ -31,6 +31,32 @@ RSpec.describe MultiTenancy::Tenants::DeleteJob do
         expect(tenant.reload).to be_present
       end
 
+      context 'when the template of the tenant is still loading' do
+        let!(:template_job) do
+          create_job('MultiTenancy::ApplyTenantTemplateJob', ['base', { _aj_globalid: tenant.to_global_id.to_s }])
+        end
+
+        it 'waits until it is loaded' do
+          expect { described_class.perform_now(tenant) }
+            .to  have_enqueued_job(described_class).with(tenant, third_party_removal_queued: false)
+            .and not_have_enqueued_job(RemoveUserFromIntercomJob)
+        end
+
+        it 'goes ahead once loading has failed' do
+          template_job.update!(expired_at: Time.zone.now)
+
+          expect { described_class.perform_now(tenant) }
+            .to have_enqueued_job(described_class).with(tenant, third_party_removal_queued: true)
+        end
+      end
+
+      it 'is not held up by the template of another tenant' do
+        create_job('MultiTenancy::ApplyTenantTemplateJob', ['base', { _aj_globalid: 'gid://cl2-back/Tenant/other' }])
+
+        expect { described_class.perform_now(tenant) }
+          .to have_enqueued_job(described_class).with(tenant, third_party_removal_queued: true)
+      end
+
       it 'still runs jobs queued with the former arguments' do
         expect { described_class.perform_now(tenant, last_user_count: 5, retry_interval: 6.hours) }
           .to  have_enqueued_job(RemoveUserFromIntercomJob)

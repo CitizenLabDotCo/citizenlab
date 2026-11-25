@@ -26,6 +26,9 @@ module MultiTenancy
       #   previous version of this job (+last_user_count+, +retry_interval+).
       def run(tenant, third_party_removal_queued: false, **_legacy_options)
         unless third_party_removal_queued
+          # Loading a template can't be interrupted, and it can add users.
+          return reschedule(tenant, third_party_removal_queued: false) if template_loading?(tenant)
+
           queue_third_party_removal(tenant)
           return reschedule(tenant)
         end
@@ -52,8 +55,17 @@ module MultiTenancy
       # done. Don't call it inside +tenant.switch+: the job would then belong to the tenant's
       # schema, and destroying the tenant deletes every job of that schema
       # (+Tenant#delete_que_jobs+), including the run that is destroying it.
-      def reschedule(tenant)
-        DeleteJob.set(wait: CHECK_INTERVAL).perform_later(tenant, third_party_removal_queued: true)
+      def reschedule(tenant, third_party_removal_queued: true)
+        DeleteJob.set(wait: CHECK_INTERVAL).perform_later(tenant, third_party_removal_queued:)
+      end
+
+      def template_loading?(tenant)
+        QueJob
+          .by_job_class('MultiTenancy::ApplyTenantTemplateJob')
+          .by_args({ arguments: [{ _aj_globalid: tenant.to_global_id.to_s }] })
+          .not_finished
+          .not_expired
+          .exists?
       end
 
       def third_party_removal_pending?(tenant)
