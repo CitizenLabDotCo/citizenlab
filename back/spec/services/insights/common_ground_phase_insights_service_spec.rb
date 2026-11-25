@@ -59,13 +59,14 @@ RSpec.describe Insights::CommonGroundPhaseInsightsService do
     end
 
     it 'adds user custom field values as expected' do
-      create(:custom_field_answer, answerable: user1, key: 'field_1', value: 'value_1u')
-      create(:custom_field_answer, answerable: user1, key: 'field_2', value: 'value_2u')
+      field1, field2, field3, field4 = %w[field_1 field_2 field_3 field_4].map { |key| create(:custom_field, key: key) }
+      create(:custom_field_answer, answerable: user1, custom_field: field1, value: 'value_1u')
+      create(:custom_field_answer, answerable: user1, custom_field: field2, value: 'value_2u')
 
       prefix = UserFieldsInFormService.prefix
-      create(:custom_field_answer, answerable: idea2, key: "#{prefix}field_1", value: 'value_1i')
-      create(:custom_field_answer, answerable: idea2, key: 'field_3', value: 'value_3i')
-      create(:custom_field_answer, answerable: idea2, key: "#{prefix}field_4", value: 'value_4i')
+      create(:custom_field_answer, answerable: idea2, key: "#{prefix}field_1", custom_field: field1, value: 'value_1i')
+      create(:custom_field_answer, answerable: idea2, custom_field: field3, value: 'value_3i')
+      create(:custom_field_answer, answerable: idea2, key: "#{prefix}field_4", custom_field: field4, value: 'value_4i')
 
       participations_posting_idea = service.send(:participations_posting_idea)
       idea2_participation = participations_posting_idea.find { |p| p[:item_id] == idea2.id }
