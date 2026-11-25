@@ -86,6 +86,35 @@ RSpec.describe ApplicationJob, use_transactional_fixtures: false do
       end
     end
 
+    describe '.max_retry_count' do
+      around do |example|
+        initial_retry_interval = Que::Job.retry_interval
+        Que::Job.retry_interval = 0.001
+        example.run
+        Que::Job.retry_interval = initial_retry_interval
+      end
+
+      before do
+        stub_const('TestMaxRetryCountJob', Class.new(ApplicationJob) do
+          class_attribute :counter, default: 0
+          self.max_retry_count = 1
+
+          def run
+            self.class.counter += 1
+            no_such_method
+          end
+        end)
+      end
+
+      it 'expires the job once it has failed more often than that' do
+        que_job = QueJob.find(TestMaxRetryCountJob.perform_later.provider_job_id)
+        wait_until(wait_timeout * 5, interval: 0.05) { que_job.reload.expired_at.present? }
+        sleep wait_timeout
+
+        expect(TestMaxRetryCountJob.counter).to eq(2)
+      end
+    end
+
     # Que only rescues StandardError. Without ActiveJobQueExtension#_run, the exception below would
     # kill the worker thread and, through abort_on_exception, the whole process (TAN-8516).
     describe 'when a job raises an exception that is not a StandardError' do
