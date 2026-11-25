@@ -382,7 +382,12 @@ const InsightsContent = () => {
   );
 
   const dashboard = (
-    <Box display="flex" flexDirection="column" gap="16px" pt="16px">
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={redesigned ? '14px' : '16px'}
+      pt="16px"
+    >
       <PageBreakBox>
         <ParticipationMetrics phase={phase.data} />
       </PageBreakBox>
@@ -391,7 +396,7 @@ const InsightsContent = () => {
         <ParticipantsTimeline phase={phase.data} />
       </PageBreakBox>
 
-      <DemographicsSection phase={phase.data} />
+      {!redesigned && <DemographicsSection phase={phase.data} />}
 
       <PageBreakBox>
         <MethodSpecificInsights
@@ -399,6 +404,8 @@ const InsightsContent = () => {
           participationMethod={phase.data.attributes.participation_method}
         />
       </PageBreakBox>
+
+      {redesigned && <DemographicsSection phase={phase.data} />}
     </Box>
   );
   const header = (
