@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Wps, aeth rhywbeth o'i le.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Rhowch gynnig arall arni",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Gweler mwy o dempledi",
+  "app.components.ProjectTemplatePreview.successMessage2": "Mae eich prosiect yn cael ei greu. Dylai ymddangos yn y rhestr prosiectau yn fuan.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Nid oedd modd llwytho templedi. Rhowch gynnig arall arni.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Teipiwch enw'r prosiect",
   "app.components.ProjectTemplatePreview.useTemplate": "Defnyddiwch y templed hwn",

@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "حدث خطأ ما، حاول مجددًا في وقت لاحق، أو تواصل مع support@govocal.com.",
   "app.components.ProjectTemplatePreview.retryTemplates": "حاول مرة أخرى",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "شاهد المزيد من القوالب",
+  "app.components.ProjectTemplatePreview.successMessage2": "جاري إنشاء مشروعك. سيظهر في قائمة المشاريع قريباً.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "تعذر تحميل القوالب. يرجى المحاولة مرة أخرى.",
   "app.components.ProjectTemplatePreview.typeProjectName": "اكتب اسم المشروع",
   "app.components.ProjectTemplatePreview.useTemplate": "استخدم هذا القالب",

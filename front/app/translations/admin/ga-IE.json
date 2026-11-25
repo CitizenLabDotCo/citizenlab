@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Ó, chuaigh rud éigin mícheart.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Bain triail as arís",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Féach tuilleadh teimpléid",
+  "app.components.ProjectTemplatePreview.successMessage2": "Tá do thionscadal á chruthú. Ba cheart go mbeadh sé le feiceáil i liosta na dtionscadal go luath.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Níorbh fhéidir teimpléid a lódáil. Bain triail as arís, le do thoil.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Clóscríobh ainm an tionscadail",
   "app.components.ProjectTemplatePreview.useTemplate": "Úsáid an teimpléad seo",

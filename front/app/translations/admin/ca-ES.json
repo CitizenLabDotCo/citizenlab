@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Ui! Quelcom ha fallat.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Torna-ho a provar",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Veure més plantilles",
+  "app.components.ProjectTemplatePreview.successMessage2": "S'està creant el vostre projecte. Hauria d'aparèixer aviat a la llista de projectes.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "No s’han pogut carregar les plantilles. Torna-ho a provar.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Escriviu el nom del projecte",
   "app.components.ProjectTemplatePreview.useTemplate": "Utilitzeu aquesta plantilla",

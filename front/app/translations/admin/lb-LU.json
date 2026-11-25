@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Oops, something went wrong.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Nach eng Kéier probéieren",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "See more templates",
+  "app.components.ProjectTemplatePreview.successMessage2": "Äre Projet gëtt erstallt. E sollt geschwënn an der Lëscht vun de Projete erschéngen.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "D'Virlage konnte net geluede ginn. Probéiert wgl. nach eng Kéier.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Type the name of the project",
   "app.components.ProjectTemplatePreview.useTemplate": "Use this template",

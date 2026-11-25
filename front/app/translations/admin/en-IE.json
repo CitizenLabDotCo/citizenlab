@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Oops, something went wrong.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Try again",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "See more templates",
+  "app.components.ProjectTemplatePreview.successMessage2": "Your project is being created. It should appear in the projects list soon.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Templates could not be loaded. Please try again.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Type the name of the project",
   "app.components.ProjectTemplatePreview.useTemplate": "Use this template",

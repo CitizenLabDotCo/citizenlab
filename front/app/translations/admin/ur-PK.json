@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "افوہ، کچھ غلط ہو گیا۔",
   "app.components.ProjectTemplatePreview.retryTemplates": "دوبارہ کوشش کریں",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "مزید ٹیمپلیٹس دیکھیں",
+  "app.components.ProjectTemplatePreview.successMessage2": "آپ کا منصوبہ بنایا جا رہا ہے۔ یہ جلد ہی منصوبوں کی فہرست میں ظاہر ہو جائے گا۔",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "ٹیمپلیٹس لوڈ نہیں کیے جا سکے۔ براہ کرم دوبارہ کوشش کریں۔",
   "app.components.ProjectTemplatePreview.typeProjectName": "پروجیکٹ کا نام ٹائپ کریں۔",
   "app.components.ProjectTemplatePreview.useTemplate": "اس سانچے کو استعمال کریں۔",

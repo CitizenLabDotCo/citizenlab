@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "ਓਹੋ, ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ।",
   "app.components.ProjectTemplatePreview.retryTemplates": "ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "ਹੋਰ ਟੈਂਪਲੇਟ ਦੇਖੋ",
+  "app.components.ProjectTemplatePreview.successMessage2": "ਤੁਹਾਡਾ ਪ੍ਰੋਜੈਕਟ ਬਣਾਇਆ ਜਾ ਰਿਹਾ ਹੈ। ਇਹ ਜਲਦੀ ਹੀ ਪ੍ਰੋਜੈਕਟਾਂ ਦੀ ਸੂਚੀ ਵਿੱਚ ਦਿਖਾਈ ਦੇਣਾ ਚਾਹੀਦਾ ਹੈ।",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "ਟੈਂਪਲੇਟ ਲੋਡ ਨਹੀਂ ਕੀਤੇ ਜਾ ਸਕੇ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.components.ProjectTemplatePreview.typeProjectName": "ਪ੍ਰੋਜੈਕਟ ਦਾ ਨਾਮ ਟਾਈਪ ਕਰੋ",
   "app.components.ProjectTemplatePreview.useTemplate": "ਇਸ ਟੈਂਪਲੇਟ ਦੀ ਵਰਤੋਂ ਕਰੋ",

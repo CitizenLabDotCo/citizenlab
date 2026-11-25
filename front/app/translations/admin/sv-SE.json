@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Ojdå! Något gick fel.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Försök igen",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Se fler mallar",
+  "app.components.ProjectTemplatePreview.successMessage2": "Ditt projekt skapas. Det bör snart visas i projektlistan.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Mallarna kunde inte läsas in. Försök igen.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Skriv projektets namn",
   "app.components.ProjectTemplatePreview.useTemplate": "Använd den här mallen",

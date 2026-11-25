@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Ups, noget gik galt.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Prøv igen",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Se flere skabeloner",
+  "app.components.ProjectTemplatePreview.successMessage2": "Dit projekt er ved at blive oprettet. Det bør snart fremgå af projektlisten.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Skabelonerne kunne ikke indlæses. Prøv venligst igen.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Indtast navnet på projektet",
   "app.components.ProjectTemplatePreview.useTemplate": "Brug denne skabelon",

@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Ups, algo salió mal.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Intentar de nuevo",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Ver más plantillas",
+  "app.components.ProjectTemplatePreview.successMessage2": "Tu proyecto se está creando. Aparecerá en la lista de proyectos en breve.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "No se han podido cargar las plantillas. Inténtalo de nuevo.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Escriba el nombre del proyecto",
   "app.components.ProjectTemplatePreview.useTemplate": "Usar plantilla",

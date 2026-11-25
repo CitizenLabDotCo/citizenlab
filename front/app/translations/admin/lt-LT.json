@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Ups, kažkas nutiko ne taip.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Bandyti dar kartą",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Žiūrėti daugiau šablonų",
+  "app.components.ProjectTemplatePreview.successMessage2": "Jūsų projektas kuriamas. Netrukus jis turėtų atsirasti projektų sąraše.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Nepavyko įkelti šablonų. Bandykite dar kartą.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Įveskite projekto pavadinimą",
   "app.components.ProjectTemplatePreview.useTemplate": "Naudokite šį šabloną",

@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Ups, nešto je pošlo po krivu.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Pokušajte ponovno",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Pogledajte još predložaka",
+  "app.components.ProjectTemplatePreview.successMessage2": "Vaš se projekt kreira. Uskoro bi se trebao pojaviti na popisu projekata.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Nije moguće učitati predloške. Pokušajte ponovno.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Unesite naziv projekta",
   "app.components.ProjectTemplatePreview.useTemplate": "Iskoristite ovaj predložak",

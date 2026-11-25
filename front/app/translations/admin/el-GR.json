@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Ουπς, κάτι πήγε στραβά.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Δοκιμάστε ξανά",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Δείτε περισσότερα πρότυπα",
+  "app.components.ProjectTemplatePreview.successMessage2": "Το έργο σας δημιουργείται. Θα εμφανιστεί σύντομα στη λίστα των έργων.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Δεν ήταν δυνατή η φόρτωση των προτύπων. Παρακαλούμε δοκιμάστε ξανά.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Πληκτρολογήστε το όνομα του έργου",
   "app.components.ProjectTemplatePreview.useTemplate": "Χρησιμοποιήστε αυτό το πρότυπο",

@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Hups! Jotain meni pieleen.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Yritä uudelleen",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Katso lisää malleja",
+  "app.components.ProjectTemplatePreview.successMessage2": "Projektiasi luodaan. Sen pitäisi näkyä pian projektiluettelossa.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Malleja ei voitu ladata. Yritä uudelleen.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Kirjoita projektin nimi",
   "app.components.ProjectTemplatePreview.useTemplate": "Käytä tätä mallia",

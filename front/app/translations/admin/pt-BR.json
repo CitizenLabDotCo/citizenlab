@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Algo deu errado, tente novamente mais tarde ou entre em contato com support@govocal.com.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Tentar novamente",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Veja mais modelos",
+  "app.components.ProjectTemplatePreview.successMessage2": "Seu projeto está sendo criado. Ele deve aparecer na lista de projetos em breve.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Não foi possível carregar os modelos. Tente novamente.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Digite o nome do projeto",
   "app.components.ProjectTemplatePreview.useTemplate": "Usar este padrão ",

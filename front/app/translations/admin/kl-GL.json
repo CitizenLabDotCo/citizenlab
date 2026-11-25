@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Ups, ajutoortoqarpoq.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Misileqqiguk",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Skabelonit arlallit takukkit",
+  "app.components.ProjectTemplatePreview.successMessage2": "Pilersaarutit pilersinneqaleruttorpoq. Pilersaarutit allattorsimaffianni piaartumik saqqummerumaarpoq.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Ilisserutit aaneqarsinnaanngillat. Misileqqiguk.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Suliniutip suunera allaguk",
   "app.components.ProjectTemplatePreview.useTemplate": "Skabeloni una atoruk",

@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Oops, something went wrong.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Próbálja újra",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "See more templates",
+  "app.components.ProjectTemplatePreview.successMessage2": "A projekt létrehozása folyamatban van. Hamarosan meg fog jelenni a projektek listájában.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "A sablonok betöltése sikertelen. Kérjük, próbálja újra.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Type the name of the project",
   "app.components.ProjectTemplatePreview.useTemplate": "Use this template",

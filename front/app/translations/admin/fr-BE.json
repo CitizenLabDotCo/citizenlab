@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Oups... Une erreur est survenue.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Réessayer",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Voir plus de modèles",
+  "app.components.ProjectTemplatePreview.successMessage2": "Votre projet est en cours de création. Il devrait apparaître prochainement dans la liste des projets.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Les modèles n'ont pas pu être chargés. Veuillez réessayer.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Tapez le nom du projet",
   "app.components.ProjectTemplatePreview.useTemplate": "Utiliser le modèle",

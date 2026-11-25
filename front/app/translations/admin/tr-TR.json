@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Hay aksi! Bir şeyler ters gitti.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Tekrar dene",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Daha fazla şablon görüntüleyin",
+  "app.components.ProjectTemplatePreview.successMessage2": "Projeniz oluşturuluyor. Kısa süre içinde projeler listesinde görünecektir.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Şablonlar yüklenemedi. Lütfen tekrar deneyin.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Projenin adını yazın",
   "app.components.ProjectTemplatePreview.useTemplate": "Bu şablonu kullanın",

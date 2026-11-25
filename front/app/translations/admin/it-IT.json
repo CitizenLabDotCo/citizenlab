@@ -151,6 +151,7 @@
   "app.components.ProjectTemplatePreview.responseError": "Ops, qualcosa è andato storto.",
   "app.components.ProjectTemplatePreview.retryTemplates": "Riprova",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Vedi altri modelli",
+  "app.components.ProjectTemplatePreview.successMessage2": "Il tuo progetto è in fase di creazione. Dovrebbe apparire a breve nell'elenco dei progetti.",
   "app.components.ProjectTemplatePreview.templatesLoadFailed": "Impossibile caricare i modelli. Riprova.",
   "app.components.ProjectTemplatePreview.typeProjectName": "Scrivi il nome del progetto",
   "app.components.ProjectTemplatePreview.useTemplate": "Usa questo modello",
