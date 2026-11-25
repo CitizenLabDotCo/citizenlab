@@ -22,7 +22,6 @@
   "app.components.ProjectTemplatePreview.projectsOverviewPage": "pagina de prezentare a proiectelor",
   "app.components.ProjectTemplatePreview.responseError": "Oops, something went wrong.",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Vedeți mai multe șabloane",
-  "app.components.ProjectTemplatePreview.successMessage": "Proiectul a fost creat cu succes!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Tastați numele proiectului",
   "app.components.ProjectTemplatePreview.useTemplate": "Utilizați acest șablon",
   "app.components.UserSearch.addModerators": "Adaugă",

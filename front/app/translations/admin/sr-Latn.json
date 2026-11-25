@@ -92,7 +92,6 @@
   "app.components.ProjectTemplatePreview.projectsOverviewPage": "pregled projekata",
   "app.components.ProjectTemplatePreview.responseError": "Something went wrong, try again later or contact support@govocal.com.",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Pogledajte još šablona",
-  "app.components.ProjectTemplatePreview.successMessage": "Projekat je uspešno kreiran!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Unesite naziv projekta",
   "app.components.ProjectTemplatePreview.useTemplate": "Koristite ovaj šablon",
   "app.components.UserSearch.addModerators": "Dodajte",
