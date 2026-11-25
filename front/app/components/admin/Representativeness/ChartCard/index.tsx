@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-// TAN-9042: R-score hidden
+// TAN-9042: R-score hidden, lines commented 7, 60-63, 89, 132
 // import useRScore from 'api/r_score/useRScore';
 import {
   IUserCustomFieldData,
@@ -57,7 +57,6 @@ const ChartCard = injectIntl(
     projectFilter,
     intl: { formatMessage },
   }: Props & WrappedComponentProps) => {
-    // TAN-9042: R-score hidden
     // const { data: rScore } = useRScore({
     //   id: userCustomField.id,
     //   projectId: projectFilter,
@@ -87,7 +86,6 @@ const ChartCard = injectIntl(
 
     if (
       isNilOrError(referenceData) ||
-      // TAN-9042: R-score hidden
       // isNilOrError(rScore) ||
       isNilOrError(includedUsers) ||
       view === undefined
@@ -131,7 +129,6 @@ const ChartCard = injectIntl(
         <Header
           title={title}
           svgNode={currentChartRef}
-          // TAN-9042: R-score hidden
           // rScore={rScore.data.attributes.score}
           view={view}
           projectFilter={projectFilter}
