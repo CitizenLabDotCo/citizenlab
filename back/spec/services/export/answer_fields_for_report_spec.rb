@@ -10,9 +10,9 @@ describe Export::AnswerFieldsForReport do
   describe '#fields_for' do
     context 'for a plain question' do
       let(:field) do
-        create(:custom_field_text, resource: form, key: 'comment', title_multiloc: { 'en' => 'Comment' })
+        create(:custom_field_text, resource: form, title_multiloc: { 'en' => 'Comment' })
       end
-      let(:input) { create(:idea, custom_field_answers: [build(:custom_field_answer, key: 'comment', value: 'Nice one')]) }
+      let(:input) { create(:idea, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'Nice one')]) }
 
       it 'returns a single field with the question header and answer value' do
         fields = builder.fields_for(field)
@@ -67,8 +67,8 @@ describe Export::AnswerFieldsForReport do
 
     context 'for a user/registration field' do
       # `custom_field` defaults to a registration (resource_type User) field.
-      let(:field) { create(:custom_field, key: 'residence', title_multiloc: { 'en' => 'Residence' }) }
-      let(:author) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'residence', value: 'Manchester')]) }
+      let(:field) { create(:custom_field, title_multiloc: { 'en' => 'Residence' }) }
+      let(:author) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'Manchester')]) }
       let(:input) { create(:idea, author: author) }
 
       it 'returns a single field read from the author profile' do

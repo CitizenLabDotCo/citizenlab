@@ -570,7 +570,7 @@ RSpec.describe Idea do
     end
 
     it 'returns results matching custom field values' do
-      create(:idea, custom_field_answers: [build(:custom_field_answer, key: 'a_field_key', value: 'flabbergasted')])
+      create(:idea, custom_field_answers: [build(:custom_field_answer, value: 'flabbergasted')])
       srx_results = described_class.all.search_by_all 'flabbergasted'
       expect(srx_results.size).to eq 1
     end
