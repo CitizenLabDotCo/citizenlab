@@ -19,21 +19,9 @@ module PosthogIntegration
         assert_project_id!
       end
 
-      def persons(retries: 0, **params)
-        retry_request(retries: retries) do
-          http.get("#{@base_uri}/api/projects/#{@project_id}/persons", params: params)
-        end
-      end
-
-      def delete_person(id, retries: 0)
-        retry_request(retries: retries) do
-          http.delete("#{@base_uri}/api/projects/#{@project_id}/persons/#{id}")
-        end
-      end
-
       # Deletes the persons with the given distinct ids, without looking them up first. Distinct
-      # ids that don't match a person are ignored. As with +#delete_person+, their events are
-      # kept. PostHog accepts at most +BULK_DELETE_LIMIT+ ids per request.
+      # ids that don't match a person are ignored. Their events are kept. PostHog accepts at most
+      # +BULK_DELETE_LIMIT+ ids per request.
       #
       # @param [Array<String>] distinct_ids
       def delete_persons_by_distinct_ids(distinct_ids, retries: 0)
