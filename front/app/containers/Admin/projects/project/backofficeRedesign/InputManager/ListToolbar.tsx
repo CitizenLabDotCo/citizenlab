@@ -26,11 +26,8 @@ interface Props {
   displayToggle?: ReactNode;
   selectedIdeas: IIdeaData[];
   onUpdated: (ideas: IIdeaData[], attribute: BatchAttribute) => void;
-  onEdit: (ideaId: string) => void;
   onClearSelection: () => void;
   onDeleted: (ideaIds: string[]) => void;
-  onSelectAll: () => void;
-  isSelectingAll: boolean;
   selectAllFailed: boolean;
   searchTerm: string | undefined;
   onSearch: (term: string | null) => void;
@@ -45,11 +42,8 @@ const ListToolbar = ({
   displayToggle,
   selectedIdeas,
   onUpdated,
-  onEdit,
   onClearSelection,
   onDeleted,
-  onSelectAll,
-  isSelectingAll,
   selectAllFailed,
   searchTerm,
   onSearch,
@@ -73,14 +67,10 @@ const ListToolbar = ({
           type={type}
           projectId={projectId}
           ideas={selectedIdeas}
-          total={count}
           onUpdated={onUpdated}
           onFeedback={setFeedback}
-          onEdit={onEdit}
           onClear={onClearSelection}
           onDeleted={onDeleted}
-          onSelectAll={onSelectAll}
-          isSelectingAll={isSelectingAll}
           selectAllFailed={selectAllFailed}
         />
       ) : (

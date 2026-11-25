@@ -58,10 +58,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.agreeColumn',
     defaultMessage: 'Agree',
   },
-  selectAllOnPage: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.selectAllOnPage',
-    defaultMessage: 'Select all statements on this page',
-  },
   selectStatement: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.selectStatement',
     defaultMessage: 'Select this statement',

@@ -233,14 +233,11 @@ const CommonGroundManager = ({ project, phase }: Props) => {
       <StatementToolbar
         selectedIdeas={selection.selectedIdeas}
         listedTotal={listedTotal}
-        onEdit={setEditingId}
         onClearSelection={selection.clear}
         onDeleted={(ideaIds) => {
           selection.deselect(ideaIds);
           refreshAfterDelete();
         }}
-        onSelectAll={selection.selectAll}
-        isSelectingAll={selection.isSelectingAll}
         selectAllFailed={selection.selectAllFailed}
         search={search}
         onSearch={changeSearch}
@@ -277,6 +274,9 @@ const CommonGroundManager = ({ project, phase }: Props) => {
           currentPage={page}
           lastPage={lastPage}
           onSelectOnPage={selection.selectOnPage}
+          total={listedTotal}
+          onSelectAll={selection.selectAll}
+          onClearSelection={selection.clear}
           onOpen={setPreviewId}
           onChangePage={setPage}
         />

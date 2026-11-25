@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 
 import AlertDialog from 'design-system/AlertDialog';
 import Button from 'design-system/Button';
+import IconButton from 'design-system/IconButton';
 import { ListBoxOption } from 'design-system/ListBox';
 import { MenuTrigger } from 'design-system/Menu';
 import { DialogTrigger } from 'design-system/Popover';
 import SelectionBar from 'design-system/SelectionBar';
 import TagPicker from 'design-system/TagPicker';
+import Text from 'design-system/Text';
 import { Key } from 'design-system/types';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -27,7 +29,7 @@ import useInputTermLabels from '../useInputTermLabels';
 import usePickerOptions from '../usePickerOptions';
 import { phaseIds, topicIds } from '../utils';
 
-import SelectAllButton from './SelectAllButton';
+import OfficialUpdatePopover from './OfficialUpdatePopover';
 import StatusPicker from './StatusPicker';
 import useBatchActions, { BatchAttribute } from './useBatchActions';
 import { BatchFeedback } from './useBatchFeedback';
@@ -36,15 +38,10 @@ interface Props {
   type: ManagerType;
   projectId: string;
   ideas: IIdeaData[];
-  /** How many inputs match the current filters, on every page. */
-  total: number | undefined;
   onUpdated: (ideas: IIdeaData[], attribute: BatchAttribute) => void;
   onFeedback: (feedback: BatchFeedback) => void;
-  onEdit: (ideaId: string) => void;
   onClear: () => void;
   onDeleted: (ideaIds: string[]) => void;
-  onSelectAll: () => void;
-  isSelectingAll: boolean;
   selectAllFailed: boolean;
 }
 
@@ -67,14 +64,10 @@ const BatchBar = ({
   type,
   projectId,
   ideas,
-  total,
   onUpdated,
   onFeedback,
-  onEdit,
   onClear,
   onDeleted,
-  onSelectAll,
-  isSelectingAll,
   selectAllFailed,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -87,17 +80,24 @@ const BatchBar = ({
   );
   const assigneeOptions = useAssigneeOptions(projectId, getFullName);
   const { data: authUser } = useAuthUser();
-  const { setStatus, assign, toggleTag, copyToPhase, deleteAll, isDeleting } =
-    useBatchActions({
-      ideas,
-      inputTerm,
-      onFeedback,
-      onUpdated,
-      onDeleted: (ideaIds) => {
-        setDeleteModalOpen(false);
-        onDeleted(ideaIds);
-      },
-    });
+  const {
+    setStatus,
+    assign,
+    toggleTag,
+    copyToPhase,
+    postOfficialUpdate,
+    deleteAll,
+    isDeleting,
+  } = useBatchActions({
+    ideas,
+    inputTerm,
+    onFeedback,
+    onUpdated,
+    onDeleted: (ideaIds) => {
+      setDeleteModalOpen(false);
+      onDeleted(ideaIds);
+    },
+  });
 
   const statusIds = (idea: IIdeaData) => {
     const id = idea.relationships.idea_status.data?.id;
@@ -121,15 +121,10 @@ const BatchBar = ({
   return (
     <>
       <SelectionBar count={ideas.length} onClearSelection={onClear}>
-        {total !== undefined && ideas.length < total && (
-          <SelectAllButton
-            label={formatMessage(messages.selectAllTerms, {
-              termCount: termCount(total),
-            })}
-            processing={isSelectingAll}
-            failed={selectAllFailed}
-            onClick={onSelectAll}
-          />
+        {selectAllFailed && (
+          <Text as="span" variant="small" tone="danger" role="alert">
+            {formatMessage(messages.selectAllFailed)}
+          </Text>
         )}
 
         <StatusPicker
@@ -204,19 +199,14 @@ const BatchBar = ({
             </Button>
           ))}
 
-        {isSingle && (
-          <Button
-            size={28}
-            icon="square-pen-16"
-            onPress={() => onEdit(ideas[0].id)}
-          >
-            {formatMessage(messages.edit)}
-          </Button>
-        )}
+        <OfficialUpdatePopover
+          inputTerm={inputTerm}
+          count={ideas.length}
+          onSend={postOfficialUpdate}
+        />
 
-        <Button
-          variant="danger"
-          size={28}
+        <IconButton
+          variant="bordered"
           icon="trash-2-16"
           aria-label={
             isSingle
@@ -227,7 +217,6 @@ const BatchBar = ({
           }
           onPress={() => setDeleteModalOpen(true)}
         />
-
       </SelectionBar>
 
       <AlertDialog

@@ -9,6 +9,7 @@ import { IIdeaData, Sort } from 'api/ideas/types';
 import { useIntl } from 'utils/cl-intl';
 
 import { ColumnKey } from '../columns';
+import headerSelectionHandler from '../headerSelection';
 import messages from '../messages';
 import useInputTermLabels from '../useInputTermLabels';
 
@@ -30,6 +31,10 @@ interface Props {
   tagLabels: Map<string, string>;
   selectedIds: Set<string>;
   onSelectOnPage: (ideaIds: Set<string>) => void;
+  /** How many inputs match the current filters, on every page. */
+  total: number | undefined;
+  onSelectAll: () => void;
+  onClearSelection: () => void;
   openIdeaId: string | undefined;
   onOpen: (ideaId: string) => void;
   currentPage: number;
@@ -50,6 +55,9 @@ const IdeaTable = ({
   tagLabels,
   selectedIds,
   onSelectOnPage,
+  total,
+  onSelectAll,
+  onClearSelection,
   openIdeaId,
   onOpen,
   currentPage,
@@ -57,8 +65,15 @@ const IdeaTable = ({
   onChangePage,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { capitalizedTerms, term, terms } = useInputTermLabels();
+  const { capitalizedTerms, term, termCount } = useInputTermLabels();
   const pageIds = ideas.map((idea) => idea.id);
+  const handleSelection = headerSelectionHandler({
+    pageIds,
+    selectedIds,
+    onSelectOnPage,
+    onSelectAll,
+    onClearSelection,
+  });
 
   return (
     <div>
@@ -67,11 +82,10 @@ const IdeaTable = ({
         keyboardNavigationBehavior="tab"
         selection={{
           selectedKeys: pageIds.filter((id) => selectedIds.has(id)),
-          onSelectionChange: (keys) =>
-            onSelectOnPage(
-              new Set(keys === 'all' ? pageIds : [...keys].map(String))
-            ),
-          selectAll: formatMessage(messages.selectAllOnPage, { terms }),
+          onSelectionChange: handleSelection,
+          selectAll: formatMessage(messages.selectAllTerms, {
+            termCount: termCount(total ?? ideas.length),
+          }),
           selectRow: formatMessage(messages.selectTerm, { term }),
         }}
       >

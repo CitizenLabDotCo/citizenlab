@@ -214,15 +214,12 @@ const InputManager = ({ project, phase }: Props) => {
             ? selection.deselect(updatedIdeas.map((idea) => idea.id))
             : selection.refresh(updatedIdeas)
         }
-        onEdit={setEditingIdeaId}
         onClearSelection={selection.clear}
         onDeleted={(ideaIds) => {
           selection.deselect(ideaIds);
           // The current page may be gone after the delete.
           setPage(1);
         }}
-        onSelectAll={selection.selectAll}
-        isSelectingAll={selection.isSelectingAll}
         selectAllFailed={selection.selectAllFailed}
         searchTerm={searchTerm}
         onSearch={setSearchTerm}
@@ -283,6 +280,9 @@ const InputManager = ({ project, phase }: Props) => {
                 }
                 selectedIds={new Set(selection.selectedIds)}
                 onSelectOnPage={selection.selectOnPage}
+                total={filteredTotal}
+                onSelectAll={selection.selectAll}
+                onClearSelection={selection.clear}
                 openIdeaId={selectedIdeaId}
                 onOpen={openPanel}
                 currentPage={page}

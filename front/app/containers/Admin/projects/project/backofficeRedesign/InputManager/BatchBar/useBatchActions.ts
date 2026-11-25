@@ -2,12 +2,18 @@ import { useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import ideaOfficialFeedbackKeys from 'api/idea_official_feedback/keys';
+import { addIdeaOfficialFeedback } from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
+import ideasKeys from 'api/ideas/keys';
 import { IIdea, IIdeaData, IIdeaUpdate } from 'api/ideas/types';
 import { deleteIdea, invalidateAfterIdeaDelete } from 'api/ideas/useDeleteIdea';
 import { invalidateAfterIdeaUpdate, updateIdea } from 'api/ideas/useUpdateIdea';
 
+import useLocale from 'hooks/useLocale';
+
 import tracks from 'components/admin/PostManager/tracks';
 import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
+
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -48,6 +54,7 @@ const useBatchActions = ({
   onDeleted: (ideaIds: string[]) => void;
 }) => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
   const queryClient = useQueryClient();
   const [isDeleting, setIsDeleting] = useState(false);
   // isDeleting only updates after a render, so a double click needs this.
@@ -111,11 +118,13 @@ const useBatchActions = ({
 
     updateEach(targets, 'status', () => ({ idea_status_id: statusId }), {
       busy: formatMessage(messages.batchUpdating, {
-        inputTerm, count: targets.length,
+        inputTerm,
+        count: targets.length,
       }),
       done: (count) =>
         formatMessage(messages.batchStatusDone, {
-          inputTerm, count,
+          inputTerm,
+          count,
           status: statusLabel,
         }),
     });
@@ -181,7 +190,8 @@ const useBatchActions = ({
           done: (count) =>
             formatMessage(messages.batchTagRemovedDone, {
               tag: tagLabel,
-              inputTerm, count,
+              inputTerm,
+              count,
             }),
         }
       );
@@ -195,7 +205,8 @@ const useBatchActions = ({
           done: (count) =>
             formatMessage(messages.batchTagAddedDone, {
               tag: tagLabel,
-              inputTerm, count,
+              inputTerm,
+              count,
             }),
         }
       );
@@ -212,15 +223,65 @@ const useBatchActions = ({
       (idea) => ({ phase_ids: [...phaseIds(idea), phaseId] }),
       {
         busy: formatMessage(messages.batchCopying, {
-          inputTerm, count: targets.length,
+          inputTerm,
+          count: targets.length,
         }),
         done: (count) =>
           formatMessage(messages.batchCopiedDone, {
-            inputTerm, count,
+            inputTerm,
+            count,
             phase: phaseLabel,
           }),
       }
     );
+  };
+
+  // The update is written in the admin's language and posted on each input.
+  const postOfficialUpdate = async (body: string, author: string) => {
+    onFeedback({
+      state: 'busy',
+      message: formatMessage(messages.batchPostingUpdate, {
+        inputTerm,
+        count: ideas.length,
+      }),
+    });
+
+    let posted = 0;
+    for (const group of inGroupsOf(ideas, GROUP_SIZE)) {
+      const results = await Promise.allSettled(
+        group.map((idea) =>
+          addIdeaOfficialFeedback({
+            ideaId: idea.id,
+            body_multiloc: { [locale]: body },
+            author_multiloc: { [locale]: author },
+          })
+        )
+      );
+      posted += results.filter(
+        (result) => result.status === 'fulfilled'
+      ).length;
+    }
+
+    if (posted < ideas.length) {
+      reportFailure(
+        messages.batchPostUpdateFailed,
+        ideas.length - posted,
+        ideas.length
+      );
+    } else {
+      onFeedback({
+        state: 'done',
+        message: formatMessage(messages.batchUpdatePostedDone, {
+          inputTerm,
+          count: posted,
+        }),
+      });
+    }
+
+    queryClient.invalidateQueries({
+      queryKey: ideaOfficialFeedbackKeys.lists(),
+    });
+    queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
   };
 
   const deleteAll = async () => {
@@ -231,7 +292,8 @@ const useBatchActions = ({
     onFeedback({
       state: 'busy',
       message: formatMessage(messages.batchDeleting, {
-        inputTerm, count: ideas.length,
+        inputTerm,
+        count: ideas.length,
       }),
     });
 
@@ -256,7 +318,8 @@ const useBatchActions = ({
       onFeedback({
         state: 'done',
         message: formatMessage(messages.batchDeletedDone, {
-          inputTerm, count: deletedIds.length,
+          inputTerm,
+          count: deletedIds.length,
         }),
       });
     }
@@ -272,6 +335,7 @@ const useBatchActions = ({
     assign,
     toggleTag,
     copyToPhase,
+    postOfficialUpdate,
     deleteAll,
     isDeleting,
   };

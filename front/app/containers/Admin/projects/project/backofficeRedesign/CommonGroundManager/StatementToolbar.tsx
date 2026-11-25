@@ -20,11 +20,8 @@ import 'design-system/tokens.css';
 interface Props {
   selectedIdeas: IIdeaData[];
   listedTotal: number | undefined;
-  onEdit: (ideaId: string) => void;
   onClearSelection: () => void;
   onDeleted: (ideaIds: string[]) => void;
-  onSelectAll: () => void;
-  isSelectingAll: boolean;
   selectAllFailed: boolean;
   search: string | undefined;
   onSearch: (term: string | null) => void;
@@ -35,11 +32,8 @@ interface Props {
 const StatementToolbar = ({
   selectedIdeas,
   listedTotal,
-  onEdit,
   onClearSelection,
   onDeleted,
-  onSelectAll,
-  isSelectingAll,
   selectAllFailed,
   search,
   onSearch,
@@ -60,13 +54,9 @@ const StatementToolbar = ({
       ) : selectedIdeas.length > 0 ? (
         <StatementBatchBar
           ideas={selectedIdeas}
-          total={listedTotal}
-          onEdit={onEdit}
           onClear={onClearSelection}
           onFeedback={setFeedback}
           onDeleted={onDeleted}
-          onSelectAll={onSelectAll}
-          isSelectingAll={isSelectingAll}
           selectAllFailed={selectAllFailed}
         />
       ) : (

@@ -110,10 +110,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addColumns',
     defaultMessage: 'Add columns',
   },
-  selectAllOnPage: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllOnPage',
-    defaultMessage: 'Select all {terms} on this page',
-  },
   selectTerm: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectTerm',
     defaultMessage: 'Select this {term}',
@@ -506,6 +502,100 @@ export default defineMessages({
       statement {{count, plural, one {# statement} other {# statements}} deleted}
       other {{count, plural, one {# input} other {# inputs}} deleted}
     }`,
+  },
+  batchPostingUpdate: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchPostingUpdate',
+    defaultMessage: `{inputTerm, select,
+      idea {Posting an official update on {count, plural, one {# idea} other {# ideas}}…}
+      option {Posting an official update on {count, plural, one {# option} other {# options}}…}
+      project {Posting an official update on {count, plural, one {# project} other {# projects}}…}
+      question {Posting an official update on {count, plural, one {# question} other {# questions}}…}
+      issue {Posting an official update on {count, plural, one {# issue} other {# issues}}…}
+      contribution {Posting an official update on {count, plural, one {# contribution} other {# contributions}}…}
+      proposal {Posting an official update on {count, plural, one {# proposal} other {# proposals}}…}
+      initiative {Posting an official update on {count, plural, one {# initiative} other {# initiatives}}…}
+      petition {Posting an official update on {count, plural, one {# petition} other {# petitions}}…}
+      comment {Posting an official update on {count, plural, one {# comment} other {# comments}}…}
+      response {Posting an official update on {count, plural, one {# response} other {# responses}}…}
+      suggestion {Posting an official update on {count, plural, one {# suggestion} other {# suggestions}}…}
+      topic {Posting an official update on {count, plural, one {# topic} other {# topics}}…}
+      post {Posting an official update on {count, plural, one {# post} other {# posts}}…}
+      story {Posting an official update on {count, plural, one {# story} other {# stories}}…}
+      observation {Posting an official update on {count, plural, one {# observation} other {# observations}}…}
+      other {Posting an official update on {count, plural, one {# input} other {# inputs}}…}
+    }`,
+  },
+  batchUpdatePostedDone: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchUpdatePostedDone',
+    defaultMessage: `{inputTerm, select,
+      idea {Official update posted on {count, plural, one {# idea} other {# ideas}}}
+      option {Official update posted on {count, plural, one {# option} other {# options}}}
+      project {Official update posted on {count, plural, one {# project} other {# projects}}}
+      question {Official update posted on {count, plural, one {# question} other {# questions}}}
+      issue {Official update posted on {count, plural, one {# issue} other {# issues}}}
+      contribution {Official update posted on {count, plural, one {# contribution} other {# contributions}}}
+      proposal {Official update posted on {count, plural, one {# proposal} other {# proposals}}}
+      initiative {Official update posted on {count, plural, one {# initiative} other {# initiatives}}}
+      petition {Official update posted on {count, plural, one {# petition} other {# petitions}}}
+      comment {Official update posted on {count, plural, one {# comment} other {# comments}}}
+      response {Official update posted on {count, plural, one {# response} other {# responses}}}
+      suggestion {Official update posted on {count, plural, one {# suggestion} other {# suggestions}}}
+      topic {Official update posted on {count, plural, one {# topic} other {# topics}}}
+      post {Official update posted on {count, plural, one {# post} other {# posts}}}
+      story {Official update posted on {count, plural, one {# story} other {# stories}}}
+      observation {Official update posted on {count, plural, one {# observation} other {# observations}}}
+      other {Official update posted on {count, plural, one {# input} other {# inputs}}}
+    }`,
+  },
+  officialUpdateRecipients: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.officialUpdateRecipients',
+    defaultMessage: `{inputTerm, select,
+      idea {This update goes to {count, plural, one {# idea} other {# ideas}}}
+      option {This update goes to {count, plural, one {# option} other {# options}}}
+      project {This update goes to {count, plural, one {# project} other {# projects}}}
+      question {This update goes to {count, plural, one {# question} other {# questions}}}
+      issue {This update goes to {count, plural, one {# issue} other {# issues}}}
+      contribution {This update goes to {count, plural, one {# contribution} other {# contributions}}}
+      proposal {This update goes to {count, plural, one {# proposal} other {# proposals}}}
+      initiative {This update goes to {count, plural, one {# initiative} other {# initiatives}}}
+      petition {This update goes to {count, plural, one {# petition} other {# petitions}}}
+      comment {This update goes to {count, plural, one {# comment} other {# comments}}}
+      response {This update goes to {count, plural, one {# response} other {# responses}}}
+      suggestion {This update goes to {count, plural, one {# suggestion} other {# suggestions}}}
+      topic {This update goes to {count, plural, one {# topic} other {# topics}}}
+      post {This update goes to {count, plural, one {# post} other {# posts}}}
+      story {This update goes to {count, plural, one {# story} other {# stories}}}
+      observation {This update goes to {count, plural, one {# observation} other {# observations}}}
+      other {This update goes to {count, plural, one {# input} other {# inputs}}}
+    }`,
+  },
+  batchPostUpdateFailed: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchPostUpdateFailed',
+    defaultMessage: 'Could not post on {failed} of {total}. Please try again.',
+  },
+  officialUpdate: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.officialUpdate',
+    defaultMessage: 'Official update',
+  },
+  officialUpdatePlaceholder: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.officialUpdatePlaceholder',
+    defaultMessage: 'Add an official update',
+  },
+  officialUpdateAuthor: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.officialUpdateAuthor',
+    defaultMessage: 'Name shown with the update',
+  },
+  officialUpdateAuthorPlaceholder: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.officialUpdateAuthorPlaceholder',
+    defaultMessage: 'Choose how people see your name',
+  },
+  officialUpdateDefaultAuthor: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.officialUpdateDefaultAuthor',
+    defaultMessage: 'The project team',
+  },
+  sendOfficialUpdate: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.sendOfficialUpdate',
+    defaultMessage: 'Send',
   },
   deleteTerms: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTerms',
