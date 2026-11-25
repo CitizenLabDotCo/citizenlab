@@ -27,7 +27,7 @@ export default defineMessages({
     defaultMessage: 'Phase',
   },
   nInputsToLink: {
-    id: 'app.containers.Admin.projects.project.nInputsToLink',
+    id: 'app.containers.Admin.projects.project.nInputsToLink2',
     defaultMessage:
       '{count, plural, =0 {All inputs of this phase are already options} one {# input will be added} other {# inputs will be added}}',
   },
