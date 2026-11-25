@@ -28,7 +28,7 @@ const AssigneeProperty = ({ idea }: Props) => {
     idea.relationships.project.data.id,
     getFullName
   );
-  const { mutate: updateIdea } = useUpdateIdea();
+  const { mutate: updateIdea, isPending } = useUpdateIdea();
   const assigneeId = idea.relationships.assignee?.data?.id ?? UNASSIGNED;
   const current = options.find((option) => option.value === assigneeId);
 
@@ -47,7 +47,7 @@ const AssigneeProperty = ({ idea }: Props) => {
 
   return (
     <PropertyRow label={formatMessage(messages.filterAssignee)}>
-      <PropertyMenu label={current?.label}>
+      <PropertyMenu label={current?.label} isPending={isPending}>
         <OptionList
           aria-label={formatMessage(messages.filterAssignee)}
           options={options}
