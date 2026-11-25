@@ -28,16 +28,17 @@ module Matomo
     # to remove all the data of these users from Matomo. The users are looked up
     # +USERS_PER_REQUEST+ at a time.
     # @param [String,Array<String>] user_ids
+    # @param [Array<String>,NilClass] site_ids the sites to search, all sites if blank.
     # @return [Hash,NilClass] Summary of deleted data by aggregating results
     #   from the different `PrivacyManager.deleteDataSubjects` requests. `nil`
     #   if no data was found for these users.
-    def delete_user_data(user_ids)
+    def delete_user_data(user_ids, site_ids: nil)
       deletes_summary = {}
 
       Array(user_ids).each_slice(USERS_PER_REQUEST) do |batch|
         # `findDataSubjects` returns at most 401 visits, so this repeats until none are left.
         loop do
-          visits_response = retry_when_busy { find_data_subjects(batch) }
+          visits_response = retry_when_busy { find_data_subjects(batch, site_ids: site_ids) }
           raise_if_error(visits_response)
           break if visits_response.parsed_response.blank?
 
@@ -84,10 +85,12 @@ module Matomo
     end
 
     # @param [String,Array<String>] user_ids
+    # @param [Array<String>,NilClass] site_ids the sites to search, all sites if blank.
     # @return [HTTParty::Response]
-    def find_data_subjects(user_ids)
+    def find_data_subjects(user_ids, site_ids: nil)
       query = {
-        'idSite' => 'all',
+        # Searching all sites is much slower: Matomo then scans the visits of every site.
+        'idSite' => site_ids.presence&.join(',') || 'all',
         'module' => 'API',
         'method' => 'PrivacyManager.findDataSubjects',
         # A comma ORs the conditions of a segment.

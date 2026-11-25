@@ -119,6 +119,28 @@ RSpec.describe Matomo::Client do
     end
   end
 
+  describe '#find_data_subjects with sites' do
+    it 'only searches the given sites' do
+      allow(HTTParty).to receive(:post)
+
+      service.find_data_subjects('user-id', site_ids: %w[13 14])
+
+      expect(HTTParty).to have_received(:post) do |_path, options|
+        expect(options[:query]['idSite']).to eq('13,14')
+      end
+    end
+
+    it 'searches all sites when no site is given' do
+      allow(HTTParty).to receive(:post)
+
+      service.find_data_subjects('user-id', site_ids: [])
+
+      expect(HTTParty).to have_received(:post) do |_path, options|
+        expect(options[:query]['idSite']).to eq('all')
+      end
+    end
+  end
+
   describe '#find_data_subjects with several users' do
     it 'ORs the users in the segment' do
       allow(HTTParty).to receive(:post)
