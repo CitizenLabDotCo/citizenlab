@@ -302,6 +302,7 @@
     "fr-FR": "interrupteur"
   },
   "reactions (on inputs)": {
+    "da-DK": "likes / dislikes",
     "nl-NL": "likes / dislikes"
   },
   "approve": {
