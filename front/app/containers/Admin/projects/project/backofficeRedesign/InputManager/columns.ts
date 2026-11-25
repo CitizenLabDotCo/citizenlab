@@ -51,12 +51,9 @@ export const COLUMNS: Record<ColumnKey, Column> = {
     label: messages.offlineColumn,
     sort: 'manual_votes_amount',
   },
-  picks: {
-    label: postManagerMessages.participatoryBudgettingPicksOnline,
-    sort: 'baskets_count',
-  },
+  picks: { label: messages.onlineColumn, sort: 'baskets_count' },
   offlinePicks: {
-    label: postManagerMessages.offlinePicks,
+    label: messages.offlineColumn,
     sort: 'manual_votes_amount',
   },
   participants: {

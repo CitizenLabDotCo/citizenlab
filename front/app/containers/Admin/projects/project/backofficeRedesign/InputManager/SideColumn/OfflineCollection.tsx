@@ -31,11 +31,11 @@ interface Props {
 const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { term } = useInputTermLabels();
+  const { inputTerm } = useInputTermLabels();
   const [addOpened, setAddOpened] = useState(false);
   const { mutateAsync: addIdea } = useAddIdea();
   const { data: project } = useProjectById(phase.relationships.project.data.id);
-  const addLabel = formatMessage(messages.newTerm, { term });
+  const addLabel = formatMessage(messages.addInput, { inputTerm });
 
   return (
     <Card fillHeight={fillHeight}>

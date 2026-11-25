@@ -21,17 +21,17 @@ interface Props {
   onSort: (sort: Sort) => void;
 }
 
-// Today's table sized these columns to their content; the widths fit their
-// longest values, and the count columns fit their header with its sort arrow.
+// Today's table sized these columns to their content; the widths fit their longest values.
 const COLUMN_WIDTHS: Partial<Record<ColumnKey, number>> = {
   status: 160,
   tags: 200,
   totalVotes: 200,
   totalPicks: 200,
-  votes: 112,
-  offlineVotes: 112,
-  picks: 112,
-  offlinePicks: 112,
+  votes: 80,
+  offlineVotes: 80,
+  picks: 80,
+  offlinePicks: 80,
+  comments: 112,
 };
 const COLUMN_WIDTH = 120;
 
@@ -74,7 +74,8 @@ const HeaderRow = ({
         id="title"
         isRowHeader
         defaultWidth="1fr"
-        minWidth={200}
+        // Leaves room for the default proposals columns in the 764 px list.
+        minWidth={160}
         sortDirection={sortDirectionOf('title')}
         showChevron={false}
         sortAction={sortAction('title', capitalizedTerm)}

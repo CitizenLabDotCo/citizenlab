@@ -743,9 +743,27 @@ export default defineMessages({
     defaultMessage:
       'Once people take part, you can review and manage their {terms} here.',
   },
-  newTerm: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm',
-    defaultMessage: 'New {term}',
+  addInput: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addInput',
+    defaultMessage: `{inputTerm, select,
+      idea {Add an idea}
+      option {Add an option}
+      project {Add a project}
+      question {Add a question}
+      issue {Add an issue}
+      contribution {Add a contribution}
+      proposal {Add a proposal}
+      initiative {Add an initiative}
+      petition {Add a petition}
+      comment {Add a comment}
+      response {Add a response}
+      suggestion {Add a suggestion}
+      topic {Add a topic}
+      post {Add a post}
+      story {Add a story}
+      observation {Add an observation}
+      other {Add an input}
+    }`,
   },
   importPaperForm: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperForm',
