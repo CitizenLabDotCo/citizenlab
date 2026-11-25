@@ -46,6 +46,9 @@
   "rating": {
     "nl-NL": "beoordeling"
   },
+  "story": {
+    "de-DE": "Story"
+  },
   "homepage": {
     "nl-NL": "startpagina"
   },
