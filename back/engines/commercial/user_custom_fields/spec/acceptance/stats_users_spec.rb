@@ -286,7 +286,7 @@ resource 'Stats - Users' do
       describe 'when admins and moderators are excluded from statistics' do
         before do
           travel_to(start_at + 24.days) do
-            create_admins_and_moderators(answers: { @custom_field =>false }, manual_groups: [@group])
+            create_admins_and_moderators(answers: { @custom_field => false }, manual_groups: [@group])
           end
         end
 
@@ -347,7 +347,7 @@ resource 'Stats - Users' do
           before do
             enable_exclude_admins_and_moderators_from_statistics
             travel_to(start_at + 4.days) do
-              create_admins_and_moderators(answers: { @custom_field =>@option1.key }, manual_groups: [@group])
+              create_admins_and_moderators(answers: { @custom_field => @option1.key }, manual_groups: [@group])
             end
           end
 
