@@ -2699,7 +2699,7 @@
   "app.containers.landing.viewAllEventsText": "Se alle begivenheder",
   "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Tilbage til mappen",
   "app.designSystem.AlertDialog.cancel": "Annuller",
-  "app.designSystem.DateField.hourPlaceholder": "tt",
+  "app.designSystem.DateField.hourPlaceholder": "hh",
   "app.designSystem.DateField.minutePlaceholder": "mm",
   "app.designSystem.DropZone.browse": "gennemse",
   "app.designSystem.DropZone.dropOrBrowse": "Slip en fil her eller {browse}",
