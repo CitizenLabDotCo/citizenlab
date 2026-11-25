@@ -33,6 +33,10 @@
   padding: 0;
 }
 
+.unlabelled.size28 {
+  width: var(--gv-size-28);
+}
+
 .unlabelled.size32 {
   width: var(--gv-size-32);
 }
@@ -143,6 +147,9 @@
   background: var(--gv-surface-danger-strong-pressed);
 }
 
+/* Shrinks to share a row with a button beside it. */
 .fullWidth {
+  flex-shrink: 1;
   width: 100%;
+  min-width: 0;
 }
