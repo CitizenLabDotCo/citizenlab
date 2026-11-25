@@ -64,6 +64,9 @@
     "es-ES": "asientos",
     "nl-NL": "accounts"
   },
+  "issue": {
+    "de-DE": "Mangel"
+  },
   "template": {
     "nl-NL": "sjabloon"
   },
