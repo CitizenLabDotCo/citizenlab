@@ -7,6 +7,9 @@ module Matomo
     # How many users +#find_data_subjects+ looks for at once. Their ids are OR-ed in the
     # segment, which is sent in the URL: 50 ids keep it at about 2 KB.
     USERS_PER_REQUEST = 50
+    # Matomo turns privacy requests away with a 503 while it is handling too many of them at once.
+    # Such a request is sent again after each of these delays (in seconds) before giving up.
+    BUSY_RETRY_DELAYS = [2, 4, 8, 16, 32].freeze
 
     # @param [String] base_uri
     # @param [String] auth_token
@@ -34,11 +37,11 @@ module Matomo
       Array(user_ids).each_slice(USERS_PER_REQUEST) do |batch|
         # `findDataSubjects` returns at most 401 visits, so this repeats until none are left.
         loop do
-          visits_response = find_data_subjects(batch)
+          visits_response = retry_when_busy { find_data_subjects(batch) }
           raise_if_error(visits_response)
           break if visits_response.parsed_response.blank?
 
-          delete_response = delete_data_subjects(visits_response.parsed_response)
+          delete_response = retry_when_busy { delete_data_subjects(visits_response.parsed_response) }
           raise_if_error(delete_response)
           deletes_summary.merge!(delete_response.parsed_response) { |_key, v1, v2| v1 + v2 }
           sleep(0.5)
@@ -160,6 +163,18 @@ module Matomo
     end
 
     private
+
+    def retry_when_busy
+      BUSY_RETRY_DELAYS.each do |delay|
+        response = yield
+        return response unless response.code == 503
+
+        # The jitter spreads out the retries of jobs that were turned away at the same time.
+        sleep(delay * rand(1.0..1.5))
+      end
+
+      yield
+    end
 
     def format_visit(visit)
       {

@@ -169,6 +169,32 @@ RSpec.describe Matomo::Client do
       expect(service.delete_user_data('user-1')).to be_nil
       expect(delete_request).not_to have_been_requested
     end
+
+    context 'when Matomo is busy' do
+      before { stub_const("#{described_class}::BUSY_RETRY_DELAYS", [0, 0]) }
+
+      it 'sends the requests again' do
+        find_request = stub_request(:post, index_php)
+          .with(query: hash_including('method' => 'PrivacyManager.findDataSubjects'))
+          .to_return({ status: 503 }, json(visits), json([]))
+        delete_request = stub_request(:post, index_php)
+          .with(query: hash_including('method' => 'PrivacyManager.deleteDataSubjects'))
+          .to_return({ status: 503 }, json({ 'log_visit' => 1 }))
+
+        expect(service.delete_user_data('user-1')).to eq({ 'log_visit' => 1 })
+        expect(find_request).to have_been_requested.times(3)
+        expect(delete_request).to have_been_requested.twice
+      end
+
+      it 'raises when Matomo stays busy' do
+        find_request = stub_request(:post, index_php)
+          .with(query: hash_including('method' => 'PrivacyManager.findDataSubjects'))
+          .to_return(status: 503)
+
+        expect { service.delete_user_data('user-1') }.to raise_error(described_class::MatomoApiError)
+        expect(find_request).to have_been_requested.times(3)
+      end
+    end
   end
 
   describe '#error?' do
