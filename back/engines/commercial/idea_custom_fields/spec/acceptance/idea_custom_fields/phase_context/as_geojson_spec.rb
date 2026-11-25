@@ -160,8 +160,8 @@ resource 'Idea Custom Fields' do
 
     let(:user) do
       create(:user, custom_field_answers: [
-        build(:custom_field_answer, key: 'gender', value: 'female'),
-        build(:custom_field_answer, key: 'domicile', value: area.id)
+        build(:custom_field_answer, custom_field: custom_field_gender, value: 'female'),
+        build(:custom_field_answer, custom_field: custom_field_domicile, value: area.id)
       ])
     end
 

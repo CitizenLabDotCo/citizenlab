@@ -179,7 +179,8 @@ describe McpServer::Tools::ReplaceFormFields do
 
       it 'allows editing after responses exist and preserves their answers (continuous monitor)' do
         idea = create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
-        answer = create(:custom_field_answer, answerable: idea, key: 'place_to_live', custom_field: nil, value: 3)
+        place_to_live = cm_phase.pmethod.create_default_form!.custom_fields.find_by!(key: 'place_to_live')
+        answer = create(:custom_field_answer, answerable: idea, custom_field: place_to_live, value: 3)
 
         response = replace_cm(fetch_cm_fields)
 
