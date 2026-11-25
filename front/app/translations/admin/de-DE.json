@@ -2229,7 +2229,7 @@
   "app.containers.Admin.projects.project.issueFormTitle": "Mangelformular",
   "app.containers.Admin.projects.project.itemNotReady": "Nicht bereit",
   "app.containers.Admin.projects.project.itemReady": "Bereit",
-  "app.containers.Admin.projects.project.itemsReady": "{ready} von {total} bereit",
+  "app.containers.Admin.projects.project.itemsReady": "{ready} von {total} abgeschlossen",
   "app.containers.Admin.projects.project.linkCancel": "Abbrechen",
   "app.containers.Admin.projects.project.linkInputs": "Importieren",
   "app.containers.Admin.projects.project.linkPhaseDescription": "Wählen Sie eine frühere Phase dieses Projekts aus. Deren Beiträge werden zu Abstimmungsoptionen, wobei Kommentare und Reaktionen beibehalten werden.",
