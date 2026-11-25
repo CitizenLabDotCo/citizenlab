@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 
+import ActionStatus from 'design-system/ActionStatus';
 import Text from 'design-system/Text';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -10,6 +11,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import BatchBar from './BatchBar';
 import { BatchAttribute } from './BatchBar/useBatchActions';
+import useBatchFeedback from './BatchBar/useBatchFeedback';
 import FilterMenu from './FilterMenu';
 import { FilterCategory } from './FilterMenu/useFilterCategories';
 import styles from './ListToolbar.module.css';
@@ -56,16 +58,24 @@ const ListToolbar = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { terms, termCount } = useInputTermLabels();
+  const { feedback, setFeedback, dismiss } = useBatchFeedback();
 
   return (
     <div className={styles.toolbar}>
-      {selectedIdeas.length > 0 ? (
+      {feedback ? (
+        <ActionStatus
+          state={feedback.state}
+          message={feedback.message}
+          onDismiss={dismiss}
+        />
+      ) : selectedIdeas.length > 0 ? (
         <BatchBar
           type={type}
           projectId={projectId}
           ideas={selectedIdeas}
           total={count}
           onUpdated={onUpdated}
+          onFeedback={setFeedback}
           onEdit={onEdit}
           onClear={onClearSelection}
           onDeleted={onDeleted}

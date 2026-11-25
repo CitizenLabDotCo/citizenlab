@@ -200,6 +200,313 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchDeleteFailed',
     defaultMessage: 'Could not delete {failed} of {total}. Please try again.',
   },
+  batchUpdating: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchUpdating',
+    defaultMessage: `{inputTerm, select,
+      idea {Updating {count, plural, one {# idea} other {# ideas}}…}
+      option {Updating {count, plural, one {# option} other {# options}}…}
+      project {Updating {count, plural, one {# project} other {# projects}}…}
+      question {Updating {count, plural, one {# question} other {# questions}}…}
+      issue {Updating {count, plural, one {# issue} other {# issues}}…}
+      contribution {Updating {count, plural, one {# contribution} other {# contributions}}…}
+      proposal {Updating {count, plural, one {# proposal} other {# proposals}}…}
+      initiative {Updating {count, plural, one {# initiative} other {# initiatives}}…}
+      petition {Updating {count, plural, one {# petition} other {# petitions}}…}
+      comment {Updating {count, plural, one {# comment} other {# comments}}…}
+      response {Updating {count, plural, one {# response} other {# responses}}…}
+      suggestion {Updating {count, plural, one {# suggestion} other {# suggestions}}…}
+      topic {Updating {count, plural, one {# topic} other {# topics}}…}
+      post {Updating {count, plural, one {# post} other {# posts}}…}
+      story {Updating {count, plural, one {# story} other {# stories}}…}
+      observation {Updating {count, plural, one {# observation} other {# observations}}…}
+      statement {Updating {count, plural, one {# statement} other {# statements}}…}
+      other {Updating {count, plural, one {# input} other {# inputs}}…}
+    }`,
+  },
+  batchStatusDone: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchStatusDone',
+    defaultMessage: `{inputTerm, select,
+      idea {{count, plural, one {# idea} other {# ideas}} marked as {status}}
+      option {{count, plural, one {# option} other {# options}} marked as {status}}
+      project {{count, plural, one {# project} other {# projects}} marked as {status}}
+      question {{count, plural, one {# question} other {# questions}} marked as {status}}
+      issue {{count, plural, one {# issue} other {# issues}} marked as {status}}
+      contribution {{count, plural, one {# contribution} other {# contributions}} marked as {status}}
+      proposal {{count, plural, one {# proposal} other {# proposals}} marked as {status}}
+      initiative {{count, plural, one {# initiative} other {# initiatives}} marked as {status}}
+      petition {{count, plural, one {# petition} other {# petitions}} marked as {status}}
+      comment {{count, plural, one {# comment} other {# comments}} marked as {status}}
+      response {{count, plural, one {# response} other {# responses}} marked as {status}}
+      suggestion {{count, plural, one {# suggestion} other {# suggestions}} marked as {status}}
+      topic {{count, plural, one {# topic} other {# topics}} marked as {status}}
+      post {{count, plural, one {# post} other {# posts}} marked as {status}}
+      story {{count, plural, one {# story} other {# stories}} marked as {status}}
+      observation {{count, plural, one {# observation} other {# observations}} marked as {status}}
+      statement {{count, plural, one {# statement} other {# statements}} marked as {status}}
+      other {{count, plural, one {# input} other {# inputs}} marked as {status}}
+    }`,
+  },
+  batchAssigning: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchAssigning',
+    defaultMessage: `{inputTerm, select,
+      idea {Assigning {count, plural, one {# idea} other {# ideas}}…}
+      option {Assigning {count, plural, one {# option} other {# options}}…}
+      project {Assigning {count, plural, one {# project} other {# projects}}…}
+      question {Assigning {count, plural, one {# question} other {# questions}}…}
+      issue {Assigning {count, plural, one {# issue} other {# issues}}…}
+      contribution {Assigning {count, plural, one {# contribution} other {# contributions}}…}
+      proposal {Assigning {count, plural, one {# proposal} other {# proposals}}…}
+      initiative {Assigning {count, plural, one {# initiative} other {# initiatives}}…}
+      petition {Assigning {count, plural, one {# petition} other {# petitions}}…}
+      comment {Assigning {count, plural, one {# comment} other {# comments}}…}
+      response {Assigning {count, plural, one {# response} other {# responses}}…}
+      suggestion {Assigning {count, plural, one {# suggestion} other {# suggestions}}…}
+      topic {Assigning {count, plural, one {# topic} other {# topics}}…}
+      post {Assigning {count, plural, one {# post} other {# posts}}…}
+      story {Assigning {count, plural, one {# story} other {# stories}}…}
+      observation {Assigning {count, plural, one {# observation} other {# observations}}…}
+      statement {Assigning {count, plural, one {# statement} other {# statements}}…}
+      other {Assigning {count, plural, one {# input} other {# inputs}}…}
+    }`,
+  },
+  batchAssignedDone: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchAssignedDone',
+    defaultMessage: `{inputTerm, select,
+      idea {{count, plural, one {# idea} other {# ideas}} assigned to {assignee}}
+      option {{count, plural, one {# option} other {# options}} assigned to {assignee}}
+      project {{count, plural, one {# project} other {# projects}} assigned to {assignee}}
+      question {{count, plural, one {# question} other {# questions}} assigned to {assignee}}
+      issue {{count, plural, one {# issue} other {# issues}} assigned to {assignee}}
+      contribution {{count, plural, one {# contribution} other {# contributions}} assigned to {assignee}}
+      proposal {{count, plural, one {# proposal} other {# proposals}} assigned to {assignee}}
+      initiative {{count, plural, one {# initiative} other {# initiatives}} assigned to {assignee}}
+      petition {{count, plural, one {# petition} other {# petitions}} assigned to {assignee}}
+      comment {{count, plural, one {# comment} other {# comments}} assigned to {assignee}}
+      response {{count, plural, one {# response} other {# responses}} assigned to {assignee}}
+      suggestion {{count, plural, one {# suggestion} other {# suggestions}} assigned to {assignee}}
+      topic {{count, plural, one {# topic} other {# topics}} assigned to {assignee}}
+      post {{count, plural, one {# post} other {# posts}} assigned to {assignee}}
+      story {{count, plural, one {# story} other {# stories}} assigned to {assignee}}
+      observation {{count, plural, one {# observation} other {# observations}} assigned to {assignee}}
+      statement {{count, plural, one {# statement} other {# statements}} assigned to {assignee}}
+      other {{count, plural, one {# input} other {# inputs}} assigned to {assignee}}
+    }`,
+  },
+  batchAssignedToYouDone: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchAssignedToYouDone',
+    defaultMessage: `{inputTerm, select,
+      idea {{count, plural, one {# idea} other {# ideas}} assigned to you}
+      option {{count, plural, one {# option} other {# options}} assigned to you}
+      project {{count, plural, one {# project} other {# projects}} assigned to you}
+      question {{count, plural, one {# question} other {# questions}} assigned to you}
+      issue {{count, plural, one {# issue} other {# issues}} assigned to you}
+      contribution {{count, plural, one {# contribution} other {# contributions}} assigned to you}
+      proposal {{count, plural, one {# proposal} other {# proposals}} assigned to you}
+      initiative {{count, plural, one {# initiative} other {# initiatives}} assigned to you}
+      petition {{count, plural, one {# petition} other {# petitions}} assigned to you}
+      comment {{count, plural, one {# comment} other {# comments}} assigned to you}
+      response {{count, plural, one {# response} other {# responses}} assigned to you}
+      suggestion {{count, plural, one {# suggestion} other {# suggestions}} assigned to you}
+      topic {{count, plural, one {# topic} other {# topics}} assigned to you}
+      post {{count, plural, one {# post} other {# posts}} assigned to you}
+      story {{count, plural, one {# story} other {# stories}} assigned to you}
+      observation {{count, plural, one {# observation} other {# observations}} assigned to you}
+      statement {{count, plural, one {# statement} other {# statements}} assigned to you}
+      other {{count, plural, one {# input} other {# inputs}} assigned to you}
+    }`,
+  },
+  batchUnassigning: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchUnassigning',
+    defaultMessage: `{inputTerm, select,
+      idea {Unassigning {count, plural, one {# idea} other {# ideas}}…}
+      option {Unassigning {count, plural, one {# option} other {# options}}…}
+      project {Unassigning {count, plural, one {# project} other {# projects}}…}
+      question {Unassigning {count, plural, one {# question} other {# questions}}…}
+      issue {Unassigning {count, plural, one {# issue} other {# issues}}…}
+      contribution {Unassigning {count, plural, one {# contribution} other {# contributions}}…}
+      proposal {Unassigning {count, plural, one {# proposal} other {# proposals}}…}
+      initiative {Unassigning {count, plural, one {# initiative} other {# initiatives}}…}
+      petition {Unassigning {count, plural, one {# petition} other {# petitions}}…}
+      comment {Unassigning {count, plural, one {# comment} other {# comments}}…}
+      response {Unassigning {count, plural, one {# response} other {# responses}}…}
+      suggestion {Unassigning {count, plural, one {# suggestion} other {# suggestions}}…}
+      topic {Unassigning {count, plural, one {# topic} other {# topics}}…}
+      post {Unassigning {count, plural, one {# post} other {# posts}}…}
+      story {Unassigning {count, plural, one {# story} other {# stories}}…}
+      observation {Unassigning {count, plural, one {# observation} other {# observations}}…}
+      statement {Unassigning {count, plural, one {# statement} other {# statements}}…}
+      other {Unassigning {count, plural, one {# input} other {# inputs}}…}
+    }`,
+  },
+  batchUnassignedDone: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchUnassignedDone',
+    defaultMessage: `{inputTerm, select,
+      idea {{count, plural, one {# idea} other {# ideas}} unassigned}
+      option {{count, plural, one {# option} other {# options}} unassigned}
+      project {{count, plural, one {# project} other {# projects}} unassigned}
+      question {{count, plural, one {# question} other {# questions}} unassigned}
+      issue {{count, plural, one {# issue} other {# issues}} unassigned}
+      contribution {{count, plural, one {# contribution} other {# contributions}} unassigned}
+      proposal {{count, plural, one {# proposal} other {# proposals}} unassigned}
+      initiative {{count, plural, one {# initiative} other {# initiatives}} unassigned}
+      petition {{count, plural, one {# petition} other {# petitions}} unassigned}
+      comment {{count, plural, one {# comment} other {# comments}} unassigned}
+      response {{count, plural, one {# response} other {# responses}} unassigned}
+      suggestion {{count, plural, one {# suggestion} other {# suggestions}} unassigned}
+      topic {{count, plural, one {# topic} other {# topics}} unassigned}
+      post {{count, plural, one {# post} other {# posts}} unassigned}
+      story {{count, plural, one {# story} other {# stories}} unassigned}
+      observation {{count, plural, one {# observation} other {# observations}} unassigned}
+      statement {{count, plural, one {# statement} other {# statements}} unassigned}
+      other {{count, plural, one {# input} other {# inputs}} unassigned}
+    }`,
+  },
+  batchTagAdding: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchTagAdding',
+    defaultMessage: 'Adding {tag}…',
+  },
+  batchTagAddedDone: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchTagAddedDone',
+    defaultMessage: `{inputTerm, select,
+      idea {{tag} added to {count, plural, one {# idea} other {# ideas}}}
+      option {{tag} added to {count, plural, one {# option} other {# options}}}
+      project {{tag} added to {count, plural, one {# project} other {# projects}}}
+      question {{tag} added to {count, plural, one {# question} other {# questions}}}
+      issue {{tag} added to {count, plural, one {# issue} other {# issues}}}
+      contribution {{tag} added to {count, plural, one {# contribution} other {# contributions}}}
+      proposal {{tag} added to {count, plural, one {# proposal} other {# proposals}}}
+      initiative {{tag} added to {count, plural, one {# initiative} other {# initiatives}}}
+      petition {{tag} added to {count, plural, one {# petition} other {# petitions}}}
+      comment {{tag} added to {count, plural, one {# comment} other {# comments}}}
+      response {{tag} added to {count, plural, one {# response} other {# responses}}}
+      suggestion {{tag} added to {count, plural, one {# suggestion} other {# suggestions}}}
+      topic {{tag} added to {count, plural, one {# topic} other {# topics}}}
+      post {{tag} added to {count, plural, one {# post} other {# posts}}}
+      story {{tag} added to {count, plural, one {# story} other {# stories}}}
+      observation {{tag} added to {count, plural, one {# observation} other {# observations}}}
+      statement {{tag} added to {count, plural, one {# statement} other {# statements}}}
+      other {{tag} added to {count, plural, one {# input} other {# inputs}}}
+    }`,
+  },
+  batchTagRemoving: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchTagRemoving',
+    defaultMessage: 'Removing {tag}…',
+  },
+  batchTagRemovedDone: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchTagRemovedDone',
+    defaultMessage: `{inputTerm, select,
+      idea {{tag} removed from {count, plural, one {# idea} other {# ideas}}}
+      option {{tag} removed from {count, plural, one {# option} other {# options}}}
+      project {{tag} removed from {count, plural, one {# project} other {# projects}}}
+      question {{tag} removed from {count, plural, one {# question} other {# questions}}}
+      issue {{tag} removed from {count, plural, one {# issue} other {# issues}}}
+      contribution {{tag} removed from {count, plural, one {# contribution} other {# contributions}}}
+      proposal {{tag} removed from {count, plural, one {# proposal} other {# proposals}}}
+      initiative {{tag} removed from {count, plural, one {# initiative} other {# initiatives}}}
+      petition {{tag} removed from {count, plural, one {# petition} other {# petitions}}}
+      comment {{tag} removed from {count, plural, one {# comment} other {# comments}}}
+      response {{tag} removed from {count, plural, one {# response} other {# responses}}}
+      suggestion {{tag} removed from {count, plural, one {# suggestion} other {# suggestions}}}
+      topic {{tag} removed from {count, plural, one {# topic} other {# topics}}}
+      post {{tag} removed from {count, plural, one {# post} other {# posts}}}
+      story {{tag} removed from {count, plural, one {# story} other {# stories}}}
+      observation {{tag} removed from {count, plural, one {# observation} other {# observations}}}
+      statement {{tag} removed from {count, plural, one {# statement} other {# statements}}}
+      other {{tag} removed from {count, plural, one {# input} other {# inputs}}}
+    }`,
+  },
+  batchCopying: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchCopying',
+    defaultMessage: `{inputTerm, select,
+      idea {Copying {count, plural, one {# idea} other {# ideas}}…}
+      option {Copying {count, plural, one {# option} other {# options}}…}
+      project {Copying {count, plural, one {# project} other {# projects}}…}
+      question {Copying {count, plural, one {# question} other {# questions}}…}
+      issue {Copying {count, plural, one {# issue} other {# issues}}…}
+      contribution {Copying {count, plural, one {# contribution} other {# contributions}}…}
+      proposal {Copying {count, plural, one {# proposal} other {# proposals}}…}
+      initiative {Copying {count, plural, one {# initiative} other {# initiatives}}…}
+      petition {Copying {count, plural, one {# petition} other {# petitions}}…}
+      comment {Copying {count, plural, one {# comment} other {# comments}}…}
+      response {Copying {count, plural, one {# response} other {# responses}}…}
+      suggestion {Copying {count, plural, one {# suggestion} other {# suggestions}}…}
+      topic {Copying {count, plural, one {# topic} other {# topics}}…}
+      post {Copying {count, plural, one {# post} other {# posts}}…}
+      story {Copying {count, plural, one {# story} other {# stories}}…}
+      observation {Copying {count, plural, one {# observation} other {# observations}}…}
+      statement {Copying {count, plural, one {# statement} other {# statements}}…}
+      other {Copying {count, plural, one {# input} other {# inputs}}…}
+    }`,
+  },
+  batchCopiedDone: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchCopiedDone',
+    defaultMessage: `{inputTerm, select,
+      idea {{count, plural, one {# idea} other {# ideas}} copied to {phase}}
+      option {{count, plural, one {# option} other {# options}} copied to {phase}}
+      project {{count, plural, one {# project} other {# projects}} copied to {phase}}
+      question {{count, plural, one {# question} other {# questions}} copied to {phase}}
+      issue {{count, plural, one {# issue} other {# issues}} copied to {phase}}
+      contribution {{count, plural, one {# contribution} other {# contributions}} copied to {phase}}
+      proposal {{count, plural, one {# proposal} other {# proposals}} copied to {phase}}
+      initiative {{count, plural, one {# initiative} other {# initiatives}} copied to {phase}}
+      petition {{count, plural, one {# petition} other {# petitions}} copied to {phase}}
+      comment {{count, plural, one {# comment} other {# comments}} copied to {phase}}
+      response {{count, plural, one {# response} other {# responses}} copied to {phase}}
+      suggestion {{count, plural, one {# suggestion} other {# suggestions}} copied to {phase}}
+      topic {{count, plural, one {# topic} other {# topics}} copied to {phase}}
+      post {{count, plural, one {# post} other {# posts}} copied to {phase}}
+      story {{count, plural, one {# story} other {# stories}} copied to {phase}}
+      observation {{count, plural, one {# observation} other {# observations}} copied to {phase}}
+      statement {{count, plural, one {# statement} other {# statements}} copied to {phase}}
+      other {{count, plural, one {# input} other {# inputs}} copied to {phase}}
+    }`,
+  },
+  batchDeleting: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchDeleting',
+    defaultMessage: `{inputTerm, select,
+      idea {Deleting {count, plural, one {# idea} other {# ideas}}…}
+      option {Deleting {count, plural, one {# option} other {# options}}…}
+      project {Deleting {count, plural, one {# project} other {# projects}}…}
+      question {Deleting {count, plural, one {# question} other {# questions}}…}
+      issue {Deleting {count, plural, one {# issue} other {# issues}}…}
+      contribution {Deleting {count, plural, one {# contribution} other {# contributions}}…}
+      proposal {Deleting {count, plural, one {# proposal} other {# proposals}}…}
+      initiative {Deleting {count, plural, one {# initiative} other {# initiatives}}…}
+      petition {Deleting {count, plural, one {# petition} other {# petitions}}…}
+      comment {Deleting {count, plural, one {# comment} other {# comments}}…}
+      response {Deleting {count, plural, one {# response} other {# responses}}…}
+      suggestion {Deleting {count, plural, one {# suggestion} other {# suggestions}}…}
+      topic {Deleting {count, plural, one {# topic} other {# topics}}…}
+      post {Deleting {count, plural, one {# post} other {# posts}}…}
+      story {Deleting {count, plural, one {# story} other {# stories}}…}
+      observation {Deleting {count, plural, one {# observation} other {# observations}}…}
+      statement {Deleting {count, plural, one {# statement} other {# statements}}…}
+      other {Deleting {count, plural, one {# input} other {# inputs}}…}
+    }`,
+  },
+  batchDeletedDone: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchDeletedDone',
+    defaultMessage: `{inputTerm, select,
+      idea {{count, plural, one {# idea} other {# ideas}} deleted}
+      option {{count, plural, one {# option} other {# options}} deleted}
+      project {{count, plural, one {# project} other {# projects}} deleted}
+      question {{count, plural, one {# question} other {# questions}} deleted}
+      issue {{count, plural, one {# issue} other {# issues}} deleted}
+      contribution {{count, plural, one {# contribution} other {# contributions}} deleted}
+      proposal {{count, plural, one {# proposal} other {# proposals}} deleted}
+      initiative {{count, plural, one {# initiative} other {# initiatives}} deleted}
+      petition {{count, plural, one {# petition} other {# petitions}} deleted}
+      comment {{count, plural, one {# comment} other {# comments}} deleted}
+      response {{count, plural, one {# response} other {# responses}} deleted}
+      suggestion {{count, plural, one {# suggestion} other {# suggestions}} deleted}
+      topic {{count, plural, one {# topic} other {# topics}} deleted}
+      post {{count, plural, one {# post} other {# posts}} deleted}
+      story {{count, plural, one {# story} other {# stories}} deleted}
+      observation {{count, plural, one {# observation} other {# observations}} deleted}
+      statement {{count, plural, one {# statement} other {# statements}} deleted}
+      other {{count, plural, one {# input} other {# inputs}} deleted}
+    }`,
+  },
   deleteTerms: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTerms',
     defaultMessage: 'Delete {termCount}',

@@ -10,9 +10,9 @@ import warningModalMessages from 'components/WarningModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import BatchFailureAlert from '../InputManager/BatchBar/BatchFailureAlert';
 import SelectAllButton from '../InputManager/BatchBar/SelectAllButton';
 import useBatchActions from '../InputManager/BatchBar/useBatchActions';
+import { BatchFeedback } from '../InputManager/BatchBar/useBatchFeedback';
 import managerMessages from '../InputManager/messages';
 
 import messages from './messages';
@@ -23,6 +23,7 @@ interface Props {
   total: number | undefined;
   onEdit: (ideaId: string) => void;
   onClear: () => void;
+  onFeedback: (feedback: BatchFeedback) => void;
   onDeleted: (ideaIds: string[]) => void;
   onSelectAll: () => void;
   isSelectingAll: boolean;
@@ -34,6 +35,7 @@ const StatementBatchBar = ({
   total,
   onEdit,
   onClear,
+  onFeedback,
   onDeleted,
   onSelectAll,
   isSelectingAll,
@@ -41,8 +43,10 @@ const StatementBatchBar = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const { deleteAll, isDeleting, failure } = useBatchActions({
+  const { deleteAll, isDeleting } = useBatchActions({
     ideas,
+    inputTerm: 'statement',
+    onFeedback,
     onDeleted: (ideaIds) => {
       setDeleteModalOpen(false);
       onDeleted(ideaIds);
@@ -92,7 +96,6 @@ const StatementBatchBar = ({
               })}
         </Button>
 
-        <BatchFailureAlert failure={failure} />
       </SelectionBar>
 
       <AlertDialog

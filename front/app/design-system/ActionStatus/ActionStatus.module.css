@@ -1,0 +1,25 @@
+/* Same height as the selection bar it replaces, so the list does not jump. */
+.actionStatus {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: var(--gv-size-28);
+  gap: var(--gv-space-8);
+}
+
+.message {
+  composes: uiStrong from '../typography.module.css';
+  min-width: 0;
+}
+
+.busy .message {
+  color: var(--gv-text-secondary);
+}
+
+.done .message {
+  color: var(--gv-text-primary);
+}
+
+.failed .message {
+  color: var(--gv-text-danger);
+}

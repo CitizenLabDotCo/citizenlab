@@ -10,6 +10,7 @@ import TagPicker from 'design-system/TagPicker';
 import { Key } from 'design-system/types';
 
 import { IIdeaData } from 'api/ideas/types';
+import useAuthUser from 'api/me/useAuthUser';
 
 import { ManagerType } from 'components/admin/PostManager';
 import useAssigneeOptions, {
@@ -21,15 +22,15 @@ import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
-import OptionList from '../OptionList';
+import OptionList, { Option } from '../OptionList';
 import useInputTermLabels from '../useInputTermLabels';
 import usePickerOptions from '../usePickerOptions';
 import { phaseIds, topicIds } from '../utils';
 
-import BatchFailureAlert from './BatchFailureAlert';
 import SelectAllButton from './SelectAllButton';
 import StatusPicker from './StatusPicker';
 import useBatchActions, { BatchAttribute } from './useBatchActions';
+import { BatchFeedback } from './useBatchFeedback';
 
 interface Props {
   type: ManagerType;
@@ -38,6 +39,7 @@ interface Props {
   /** How many inputs match the current filters, on every page. */
   total: number | undefined;
   onUpdated: (ideas: IIdeaData[], attribute: BatchAttribute) => void;
+  onFeedback: (feedback: BatchFeedback) => void;
   onEdit: (ideaId: string) => void;
   onClear: () => void;
   onDeleted: (ideaIds: string[]) => void;
@@ -53,12 +55,21 @@ const shared = (ideas: IIdeaData[], values: (idea: IIdeaData) => string[]) =>
         ideas.every((idea) => values(idea).includes(value))
       );
 
+// The pickers report a value; the status line names what was picked.
+const withLabel =
+  (options: Option[], action: (value: string, label: string) => void) =>
+  (value: string) => {
+    const option = options.find((candidate) => candidate.value === value);
+    if (option) action(value, option.label);
+  };
+
 const BatchBar = ({
   type,
   projectId,
   ideas,
   total,
   onUpdated,
+  onFeedback,
   onEdit,
   onClear,
   onDeleted,
@@ -67,7 +78,7 @@ const BatchBar = ({
   selectAllFailed,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { term, terms, termCount } = useInputTermLabels();
+  const { inputTerm, term, terms, termCount } = useInputTermLabels();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [phaseMenuOpen, setPhaseMenuOpen] = useState(false);
   const { statusOptions, tagOptions, phaseOptions } = usePickerOptions(
@@ -75,22 +86,18 @@ const BatchBar = ({
     projectId
   );
   const assigneeOptions = useAssigneeOptions(projectId, getFullName);
-  const {
-    setStatus,
-    assign,
-    toggleTag,
-    copyToPhase,
-    deleteAll,
-    isDeleting,
-    failure,
-  } = useBatchActions({
-    ideas,
-    onUpdated,
-    onDeleted: (ideaIds) => {
-      setDeleteModalOpen(false);
-      onDeleted(ideaIds);
-    },
-  });
+  const { data: authUser } = useAuthUser();
+  const { setStatus, assign, toggleTag, copyToPhase, deleteAll, isDeleting } =
+    useBatchActions({
+      ideas,
+      inputTerm,
+      onFeedback,
+      onUpdated,
+      onDeleted: (ideaIds) => {
+        setDeleteModalOpen(false);
+        onDeleted(ideaIds);
+      },
+    });
 
   const statusIds = (idea: IIdeaData) => {
     const id = idea.relationships.idea_status.data?.id;
@@ -108,7 +115,7 @@ const BatchBar = ({
     tagOptions
       .map((option) => option.value)
       .filter((tagId) => keys.has(tagId) !== sharedTags.includes(tagId))
-      .forEach(toggleTag);
+      .forEach(withLabel(tagOptions, toggleTag));
   };
 
   return (
@@ -128,7 +135,7 @@ const BatchBar = ({
         <StatusPicker
           options={statusOptions}
           selected={shared(ideas, statusIds)}
-          onSelect={setStatus}
+          onSelect={withLabel(statusOptions, setStatus)}
         />
 
         <MenuTrigger>
@@ -139,7 +146,12 @@ const BatchBar = ({
             aria-label={formatMessage(messages.batchAssign)}
             options={assigneeOptions}
             selected={shared(ideas, assigneeIds)}
-            onToggle={assign}
+            onToggle={withLabel(assigneeOptions, (assigneeId, name) =>
+              assign(assigneeId, {
+                name,
+                isCurrentUser: assigneeId === authUser?.data.id,
+              })
+            )}
             selectionMode="single"
           />
         </MenuTrigger>
@@ -174,10 +186,10 @@ const BatchBar = ({
                   disabled: sharedPhases.includes(option.value),
                 }))}
                 selected={sharedPhases}
-                onToggle={(phaseId) => {
-                  copyToPhase(phaseId);
+                onToggle={withLabel(phaseOptions, (phaseId, phaseLabel) => {
+                  copyToPhase(phaseId, phaseLabel);
                   setPhaseMenuOpen(false);
-                }}
+                })}
               />
             </MenuTrigger>
           ) : (
@@ -216,7 +228,6 @@ const BatchBar = ({
           onPress={() => setDeleteModalOpen(true)}
         />
 
-        <BatchFailureAlert failure={failure} />
       </SelectionBar>
 
       <AlertDialog
