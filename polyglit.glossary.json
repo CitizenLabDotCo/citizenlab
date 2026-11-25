@@ -65,6 +65,9 @@
     "es-ES": "asientos",
     "nl-NL": "accounts"
   },
+  "option": {
+    "fr-FR": "option"
+  },
   "issue": {
     "de-DE": "Mangel"
   },
