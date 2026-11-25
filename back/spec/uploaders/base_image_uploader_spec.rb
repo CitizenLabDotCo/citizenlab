@@ -90,14 +90,15 @@ RSpec.describe BaseImageUploader do
   end
 
   describe '#download!' do
+    let(:user) { build(:user, avatar: nil) }
     let(:url) { 'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=1' }
-    let(:jpeg) { Rails.root.join('spec/fixtures/female_avatar_0.jpg') }
+    let(:jpeg) { file_fixture('female_avatar_0.jpg') }
 
     around do |example|
-      described_class.enable_processing = true
+      AvatarUploader.enable_processing = true
       example.run
-      uploader.remove! if uploader.file
-      described_class.enable_processing = false
+      user.avatar.remove! if user.avatar.file
+      AvatarUploader.enable_processing = false
     end
 
     before do
@@ -107,24 +108,39 @@ RSpec.describe BaseImageUploader do
     it 'names a JPEG served as image/avif after its content, so stripping succeeds' do
       stub_request(:get, url).to_return(body: jpeg.binread, headers: { 'Content-Type' => 'image/avif' })
 
-      uploader.download!(url)
+      user.remote_avatar_url = url
 
-      expect(uploader.file.filename).to eq('profilepic.jpg')
-      expect(uploader.file.content_type).to eq('image/jpeg')
+      expect(user.avatar.file.filename).to eq('profilepic.jpg')
+      expect(user.avatar.file.content_type).to eq('image/jpeg')
+      expect(user.errors[:avatar]).to be_empty
     end
 
     it 'keeps the name when the content matches the declared type' do
       stub_request(:get, url).to_return(body: jpeg.binread, headers: { 'Content-Type' => 'image/jpeg' })
 
-      uploader.download!(url)
+      user.remote_avatar_url = url
 
-      expect(uploader.file.filename).to eq('profilepic.jpg')
+      expect(user.avatar.file.filename).to eq('profilepic.jpg')
+    end
+
+    it 'keeps the name when the detected type has no accepted extension' do
+      # An AVIF with major brand mif1, which Marcel reads as image/heif.
+      avif_header = [24].pack('N') + 'ftypmif1'.b + "\x00\x00\x00\x00".b + 'mif1avif'.b
+      stub_request(:get, url).to_return(body: avif_header, headers: { 'Content-Type' => 'image/avif' })
+      AvatarUploader.enable_processing = false
+
+      user.remote_avatar_url = url
+
+      expect(user.avatar.file.filename).to eq('profilepic.avif')
     end
 
     it 'still rejects content that is not an image' do
       stub_request(:get, url).to_return(body: '<html></html>', headers: { 'Content-Type' => 'image/avif' })
 
-      expect { uploader.download!(url) }.to raise_error(CarrierWave::IntegrityError)
+      user.remote_avatar_url = url
+
+      expect(user).not_to be_valid
+      expect(user.errors.details[:avatar]).to include(a_hash_including(error: :carrierwave_processing_error))
     end
   end
 
@@ -136,14 +152,16 @@ RSpec.describe BaseImageUploader do
     end
 
     it 'raises a processing error when exiftool fails' do
-      jpeg_named_avif = Rails.root.join('tmp', "#{SecureRandom.uuid}.avif")
-      FileUtils.cp(Rails.root.join('spec/fixtures/female_avatar_0.jpg'), jpeg_named_avif)
+      jpeg_named_avif = Tempfile.new(['jpeg', '.avif'])
+      jpeg_named_avif.binmode
+      jpeg_named_avif.write(file_fixture('female_avatar_0.jpg').binread)
+      jpeg_named_avif.rewind
       allow(ErrorReporter).to receive(:report_msg)
 
-      expect { uploader.cache!(File.open(jpeg_named_avif)) }.to raise_error(CarrierWave::ProcessingError)
+      expect { uploader.cache!(jpeg_named_avif) }.to raise_error(CarrierWave::ProcessingError)
       expect(ErrorReporter).to have_received(:report_msg).with('Exiftool command failed during image stripping.', anything)
     ensure
-      FileUtils.rm_f(jpeg_named_avif)
+      jpeg_named_avif.close!
     end
   end
 

@@ -35,7 +35,8 @@ class BaseImageUploader < BaseUploader
   # Some servers send the wrong Content-Type: Facebook serves JPEG profile pictures as
   # image/avif. When the URL has no extension, CarrierWave takes it from that header,
   # and exiftool refuses to strip a file whose extension doesn't match its content.
-  # Mirrors CarrierWave::Uploader::Download#download!, so check it again on CarrierWave upgrades.
+  # Only the filename needs fixing: CarrierWave takes the content type from the file's
+  # bytes first, so the wrong header value passed on here doesn't win.
   def download!(uri, remote_headers = {})
     remote_file = downloader.new(self).download(uri, remote_headers)
     cache!(
@@ -89,13 +90,16 @@ class BaseImageUploader < BaseUploader
     %w[image/jpeg image/jpg].include?(@file.content_type)
   end
 
+  # Only renames to an extension we accept. Anything else keeps its name and is left to the
+  # allowlist and exiftool: Marcel reads some AVIFs (major brand mif1) as HEIF, and renaming
+  # those to .heif would get them rejected.
   def filename_matching_content(remote_file)
     filename = remote_file.original_filename
-    type = Marcel::Magic.by_magic(remote_file.file)
-    return filename unless type&.mediatype == 'image' && type.extensions.any?
-    return filename if type.extensions.include?(File.extname(filename).delete_prefix('.').downcase)
+    extensions = Marcel::Magic.by_magic(remote_file.file)&.extensions || []
+    return filename if extensions.include?(File.extname(filename).delete_prefix('.').downcase)
 
-    "#{File.basename(filename, '.*')}.#{type.extensions.first}"
+    extension = extensions.find { extension_allowlist.include?(_1) }
+    extension ? "#{File.basename(filename, '.*')}.#{extension}" : filename
   end
 
   # Modified from https://vivianbrown.net/blog/cropping-gifs.html
