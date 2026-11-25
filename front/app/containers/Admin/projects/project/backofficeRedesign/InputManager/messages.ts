@@ -350,9 +350,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm',
     defaultMessage: 'New {term}',
   },
-  importPaperTerms: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms',
-    defaultMessage: 'Import paper {terms}',
+  importPaperForm: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperForm',
+    defaultMessage: 'Import paper form',
   },
   paperAndExcelForms: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.paperAndExcelForms',

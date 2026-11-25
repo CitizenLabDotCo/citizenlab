@@ -210,6 +210,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.import',
     defaultMessage: 'Import',
   },
+  importPaperForm: {
+    id: 'app.containers.Admin.projects.project.insights.importPaperForm',
+    defaultMessage: 'Import paper form',
+  },
   aiAnalysis: {
     id: 'app.containers.Admin.projects.project.insights.aiAnalysis',
     defaultMessage: 'AI analysis',

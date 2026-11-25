@@ -31,7 +31,7 @@ interface Props {
 const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { term, terms } = useInputTermLabels();
+  const { term } = useInputTermLabels();
   const [addOpened, setAddOpened] = useState(false);
   const { mutateAsync: addIdea } = useAddIdea();
   const { data: project } = useProjectById(phase.relationships.project.data.id);
@@ -52,7 +52,7 @@ const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
       />
       <OfflineFormsButton
         participationMethod={phase.attributes.participation_method}
-        label={formatMessage(messages.importPaperTerms, { terms })}
+        label={formatMessage(messages.importPaperForm)}
         cardIcon="upload-16"
       />
       {children}
