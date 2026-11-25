@@ -29,12 +29,6 @@ RSpec.describe Idea do
           expect(idea.valid?(:create)).to be true
         end
 
-        it 'can persist an idea with a non-existing field' do
-          build_answer(required_field, 15)
-          idea.custom_field_answers.build(key: 'nonexisting_field', value: 22)
-          expect(idea.valid?(:create)).to be true
-        end
-
         it 'can persist an idea without required field values' do
           build_answer(optional_field, 'option1')
           expect(idea.valid?(:create)).to be true
@@ -63,19 +57,6 @@ RSpec.describe Idea do
         it 'can persist an idea without optional fields' do
           build_answer(required_field, 7)
           expect(idea.valid?(:publication)).to be true
-        end
-
-        it 'cannot persist an idea with a non-existing field', skip: 'Cannot be implemented yet' do
-          non_existing_key = 'nonexisting_field'
-          build_answer(required_field, 15)
-          idea.custom_field_answers.build(key: non_existing_key, value: 22)
-          expect(idea.valid?(:publication)).to be false
-          expect(idea.errors.details.to_h).to match(
-            custom_field_values: [{
-              error: start_with("The property '#/' contains additional properties [\"#{non_existing_key}\"] outside of the schema when none are allowed in schema"),
-              value: { required_field.key => 15, non_existing_key => 22 }
-            }]
-          )
         end
 
         it 'cannot persist an idea with an invalid field value' do
@@ -145,19 +126,6 @@ RSpec.describe Idea do
           it 'can persist an idea without optional fields' do
             build_answer(required_field, 7)
             expect(idea.valid?(validation_context)).to be true
-          end
-
-          it 'cannot persist an idea with a non-existing field', skip: 'Cannot be implemented yet' do
-            non_existing_key = 'nonexisting_field'
-            build_answer(required_field, 15)
-            idea.custom_field_answers.build(key: non_existing_key, value: 22)
-            expect(idea.valid?(validation_context)).to be false
-            expect(idea.errors.details.to_h).to match(
-              custom_field_values: [{
-                error: start_with("The property '#/' contains additional properties [\"#{non_existing_key}\"] outside of the schema when none are allowed in schema"),
-                value: { required_field.key => 15, non_existing_key => 22 }
-              }]
-            )
           end
 
           it 'cannot persist an idea with an invalid field value' do
