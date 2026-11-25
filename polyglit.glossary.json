@@ -178,6 +178,9 @@
   "file upload questions": {
     "nl-NL": "bestand upload vragen"
   },
+  "suggestion": {
+    "de-DE": "Anregung"
+  },
   "mapping questions": {
     "nl-NL": "kaart-gerelateerde vragen"
   },
