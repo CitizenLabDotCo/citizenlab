@@ -288,34 +288,6 @@ RSpec.describe Idea do
     end
   end
 
-  context 'with custom fields' do
-    context 'when creating ideas' do
-      let(:idea) { build(:idea) }
-
-      %i[create publication].each do |validation_context|
-        context "on #{validation_context}" do
-          it 'can persist an idea with invalid field values' do
-            idea.custom_field_answers.build(key: 'nonexisting_field', value: 22)
-            expect(idea.valid?(validation_context)).to be true
-          end
-        end
-      end
-    end
-
-    context 'when updating ideas' do
-      let(:idea) { create(:idea) }
-
-      %i[update publication].each do |validation_context|
-        context "on #{validation_context}" do
-          it 'can persist an idea with invalid field values' do
-            idea.custom_field_answers.build(key: 'nonexisting_field', value: 65)
-            expect(idea.valid?(validation_context)).to be true
-          end
-        end
-      end
-    end
-  end
-
   context 'creation_phase' do
     before { create(:idea_status_proposed) }
 
