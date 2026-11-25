@@ -132,7 +132,7 @@ describe('Moving a survey phase on and off the timeline', () => {
     // A moved row only changes list once the spotlight surveys are refetched.
     const moveFromSidebar = (label: string, placementType: string) => {
       cy.dataCy(`e2e-phase-options-${surveyPhaseId}`).click();
-      cy.get('.e2e-action-move-phase').should('contain', label).click();
+      cy.dataCy('e2e-action-move-phase').should('contain', label).click();
       confirmMove();
       cy.wait('@updatePhase')
         .its('response.body.data.attributes.placement_type')
@@ -253,7 +253,7 @@ describe('Moving a survey phase on and off the timeline', () => {
 
     it('deletes a spotlight survey from its menu in the sidebar', () => {
       cy.dataCy(`e2e-phase-options-${spotlightPhaseId}`).click();
-      cy.get('.e2e-action-delete-phase').click();
+      cy.dataCy('e2e-action-delete-phase').click();
       cy.dataCy('typed-confirmation-input').type('DELETE');
       cy.dataCy('typed-confirmation-delete-button').click();
 

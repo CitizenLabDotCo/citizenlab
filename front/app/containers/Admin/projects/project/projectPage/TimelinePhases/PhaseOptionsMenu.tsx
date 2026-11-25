@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
+import IconButton from 'design-system/IconButton';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+
 import { IPhaseData } from 'api/phases/types';
 import useDeletePhase from 'api/phases/useDeletePhase';
 import { isTimelinePhase } from 'api/phases/utils';
@@ -15,6 +18,7 @@ import phaseMessages from 'containers/Admin/projects/project/phase/messages';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
+import moreActionsMessages from 'components/UI/MoreActionsMenu/messages';
 import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
 import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
@@ -53,35 +57,63 @@ const PhaseOptionsMenu = ({ projectId, phase, variant = 'sidebar' }: Props) => {
     );
   };
 
+  const actionsLabel = formatMessage(moreActionsMessages.actionsMenu, {
+    title,
+  });
+  const actions = [
+    ...(canChangePlacement(phase)
+      ? [
+          {
+            label: formatMessage(
+              isTimelinePhase(phase)
+                ? placementMessages.moveToSpotlightSurveys
+                : placementMessages.moveToTimeline
+            ),
+            name: 'move-phase',
+            handler: () => setShowMoveModal(true),
+          },
+        ]
+      : []),
+    {
+      label: formatMessage(phaseMessages.deletePhase),
+      name: 'delete-phase',
+      handler: () => setShowDeleteModal(true),
+    },
+  ];
+
   return (
     <>
-      <MoreActionsMenu
-        showLabel={false}
-        color={colors.coolGrey500}
-        ideaTitle={title}
-        menuRight="-12px"
-        data-cy={`e2e-phase-options-${phase.id}`}
-        actions={[
-          ...(canChangePlacement(phase)
-            ? [
-                {
-                  label: formatMessage(
-                    isTimelinePhase(phase)
-                      ? placementMessages.moveToSpotlightSurveys
-                      : placementMessages.moveToTimeline
-                  ),
-                  name: 'move-phase',
-                  handler: () => setShowMoveModal(true),
-                },
-              ]
-            : []),
-          {
-            label: formatMessage(phaseMessages.deletePhase),
-            name: 'delete-phase',
-            handler: () => setShowDeleteModal(true),
-          },
-        ]}
-      />
+      {variant === 'panel' ? (
+        <MenuTrigger>
+          <IconButton
+            icon="more-horizontal-16"
+            tone="strong"
+            aria-label={actionsLabel}
+            data-cy={`e2e-phase-options-${phase.id}`}
+          />
+          <Menu aria-label={actionsLabel} placement="bottom end">
+            {actions.map(({ name, label, handler }) => (
+              <MenuItem
+                key={name}
+                id={name}
+                onAction={handler}
+                data-cy={`e2e-action-${name}`}
+              >
+                {label}
+              </MenuItem>
+            ))}
+          </Menu>
+        </MenuTrigger>
+      ) : (
+        <MoreActionsMenu
+          showLabel={false}
+          color={colors.coolGrey500}
+          ideaTitle={title}
+          menuRight="-12px"
+          data-cy={`e2e-phase-options-${phase.id}`}
+          actions={actions}
+        />
+      )}
       {showMoveModal && (
         <MovePhaseModal
           phase={phase}
