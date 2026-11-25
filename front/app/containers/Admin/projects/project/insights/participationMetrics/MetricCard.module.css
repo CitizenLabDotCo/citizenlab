@@ -1,5 +1,6 @@
+/* Methods show five or six metrics; they share one row. */
 .panelMetric {
-  flex: 0 0 calc((100% - 4 * var(--gv-space-10)) / 5);
+  flex: 1 1 0;
   min-width: 0;
 }
 

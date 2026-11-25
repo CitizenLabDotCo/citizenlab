@@ -21,16 +21,17 @@ interface Props {
   onSort: (sort: Sort) => void;
 }
 
-// Today's table sized these columns to their content; the widths fit their longest values.
+// Today's table sized these columns to their content; the widths fit their
+// longest values, and the count columns fit their header with its sort arrow.
 const COLUMN_WIDTHS: Partial<Record<ColumnKey, number>> = {
   status: 160,
   tags: 200,
   totalVotes: 200,
   totalPicks: 200,
-  votes: 80,
-  offlineVotes: 80,
-  picks: 80,
-  offlinePicks: 80,
+  votes: 112,
+  offlineVotes: 112,
+  picks: 112,
+  offlinePicks: 112,
 };
 const COLUMN_WIDTH = 120;
 
