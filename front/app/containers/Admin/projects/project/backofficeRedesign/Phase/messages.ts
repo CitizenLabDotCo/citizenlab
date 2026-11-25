@@ -61,7 +61,7 @@ export default defineMessages({
       'You can specify who can take each action, and ask additional questions to participants to collect more information.',
   },
   noTermsYet: {
-    id: 'app.containers.Admin.projects.project.noTermsYet2',
+    id: 'app.containers.Admin.projects.project.noTermsYet3',
     defaultMessage: `{inputTerm, select,
       idea {No ideas yet}
       option {No options yet}
@@ -83,7 +83,7 @@ export default defineMessages({
     }`,
   },
   noTermsYetDescription: {
-    id: 'app.containers.Admin.projects.project.noTermsYetDescription2',
+    id: 'app.containers.Admin.projects.project.noTermsYetDescription3',
     defaultMessage: `{inputTerm, select,
       idea {Ideas appear here as participants take part. You can follow each one and add the ones collected offline.}
       option {Options appear here as participants take part. You can follow each one and add the ones collected offline.}

@@ -91,7 +91,7 @@ export default defineMessages({
     defaultMessage: 'Add columns',
   },
   selectAllOnPage: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllOnPage2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllOnPage3',
     defaultMessage: `{inputTerm, select,
       idea {Select all ideas on this page}
       option {Select all options on this page}
@@ -113,7 +113,7 @@ export default defineMessages({
     }`,
   },
   selectTerm: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectTerm2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectTerm3',
     defaultMessage: `{inputTerm, select,
       idea {Select this idea}
       option {Select this option}
@@ -140,7 +140,7 @@ export default defineMessages({
   },
 
   searchTerms: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchTerms2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchTerms3',
     defaultMessage: `{inputTerm, select,
       idea {Search ideas}
       option {Search options}
@@ -219,7 +219,7 @@ export default defineMessages({
   },
 
   selectAllTerms: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllTerms2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllTerms3',
     defaultMessage: `{inputTerm, select,
       idea {Select all {count, plural, one {# idea} other {# ideas}}}
       option {Select all {count, plural, one {# option} other {# options}}}
@@ -254,7 +254,7 @@ export default defineMessages({
     defaultMessage: 'Could not delete {failed} of {total}. Please try again.',
   },
   deleteTerms: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTerms2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTerms3',
     defaultMessage: `{inputTerm, select,
       idea {Delete {count, plural, one {# idea} other {# ideas}}}
       option {Delete {count, plural, one {# option} other {# options}}}
@@ -277,7 +277,7 @@ export default defineMessages({
     }`,
   },
   deleteTermTitle: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermTitle2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermTitle3',
     defaultMessage: `{inputTerm, select,
       idea {Are you sure you want to delete this idea?}
       option {Are you sure you want to delete this option?}
@@ -300,7 +300,7 @@ export default defineMessages({
     }`,
   },
   deleteTermExplanation: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermExplanation2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermExplanation3',
     defaultMessage: `{inputTerm, select,
       idea {This means you will lose all data associated with this idea, like comments, reactions and votes. This action cannot be undone.}
       option {This means you will lose all data associated with this option, like comments, reactions and votes. This action cannot be undone.}
@@ -323,7 +323,7 @@ export default defineMessages({
     }`,
   },
   deleteTermsTitle3: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermsTitle3',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermsTitle4',
     defaultMessage: `{inputTerm, select,
       idea {Are you sure you want to delete {count, plural, one {# idea} other {# ideas}}?}
       option {Are you sure you want to delete {count, plural, one {# option} other {# options}}?}
@@ -346,7 +346,7 @@ export default defineMessages({
     }`,
   },
   deleteTermsExplanation: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermsExplanation2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermsExplanation3',
     defaultMessage: `{inputTerm, select,
       idea {This means you will lose all data associated with these ideas, like comments, reactions and votes. This action cannot be undone.}
       option {This means you will lose all data associated with these options, like comments, reactions and votes. This action cannot be undone.}
@@ -390,7 +390,7 @@ export default defineMessages({
       'The authors and other contributors get a notification of the new status.',
   },
   noOtherPhasesForTerms: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noOtherPhasesForTerms2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noOtherPhasesForTerms3',
     defaultMessage: `{inputTerm, select,
       idea {There is no other phase that can hold ideas.}
       option {There is no other phase that can hold options.}
@@ -413,7 +413,7 @@ export default defineMessages({
   },
 
   previousTerm: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.previousTerm2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.previousTerm3',
     defaultMessage: `{inputTerm, select,
       idea {Previous idea}
       option {Previous option}
@@ -435,7 +435,7 @@ export default defineMessages({
     }`,
   },
   nextTerm: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.nextTerm2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.nextTerm3',
     defaultMessage: `{inputTerm, select,
       idea {Next idea}
       option {Next option}
@@ -469,7 +469,7 @@ export default defineMessages({
     defaultMessage: 'Edit',
   },
   editTerm: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.editTerm2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.editTerm3',
     defaultMessage: `{inputTerm, select,
       idea {Edit idea}
       option {Edit option}
@@ -556,7 +556,7 @@ export default defineMessages({
   },
 
   noTermsTitle: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noTermsTitle2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noTermsTitle3',
     defaultMessage: `{inputTerm, select,
       idea {Ideas will appear here}
       option {Options will appear here}
@@ -578,7 +578,7 @@ export default defineMessages({
     }`,
   },
   noTermsDescription: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noTermsDescription2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noTermsDescription3',
     defaultMessage: `{inputTerm, select,
       idea {Once people take part, you can review and manage their ideas here.}
       option {Once people take part, you can review and manage their options here.}
@@ -600,7 +600,7 @@ export default defineMessages({
     }`,
   },
   importPaperTerms: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms2',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms3',
     defaultMessage: `{inputTerm, select,
       idea {Import paper ideas}
       option {Import paper options}

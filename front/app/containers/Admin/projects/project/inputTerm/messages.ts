@@ -2,17 +2,17 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   capitalizedSingular: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.term.capitalizedSingular',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.term.capitalizedSingular2',
     defaultMessage:
       '{term, select, idea {Idea} option {Option} project {Project} question {Question} issue {Issue} contribution {Contribution} proposal {Proposal} initiative {Initiative} petition {Petition} comment {Comment} response {Response} suggestion {Suggestion} topic {Topic} post {Post} story {Story} observation {Observation} other {Input}}',
   },
   capitalizedPlural: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.term.capitalizedPlural',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.term.capitalizedPlural2',
     defaultMessage:
       '{term, select, idea {Ideas} option {Options} project {Projects} question {Questions} issue {Issues} contribution {Contributions} proposal {Proposals} initiative {Initiatives} petition {Petitions} comment {Comments} response {Responses} suggestion {Suggestions} topic {Topics} post {Posts} story {Stories} observation {Observations} other {Inputs}}',
   },
   count: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.term.count',
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.term.count2',
     defaultMessage:
       '{term, select, idea {{count, plural, one {# idea} other {# ideas}}} option {{count, plural, one {# option} other {# options}}} project {{count, plural, one {# project} other {# projects}}} question {{count, plural, one {# question} other {# questions}}} issue {{count, plural, one {# issue} other {# issues}}} contribution {{count, plural, one {# contribution} other {# contributions}}} proposal {{count, plural, one {# proposal} other {# proposals}}} initiative {{count, plural, one {# initiative} other {# initiatives}}} petition {{count, plural, one {# petition} other {# petitions}}} comment {{count, plural, one {# comment} other {# comments}}} response {{count, plural, one {# response} other {# responses}}} suggestion {{count, plural, one {# suggestion} other {# suggestions}}} topic {{count, plural, one {# topic} other {# topics}}} post {{count, plural, one {# post} other {# posts}}} story {{count, plural, one {# story} other {# stories}}} observation {{count, plural, one {# observation} other {# observations}}} other {{count, plural, one {# input} other {# inputs}}}}',
   },

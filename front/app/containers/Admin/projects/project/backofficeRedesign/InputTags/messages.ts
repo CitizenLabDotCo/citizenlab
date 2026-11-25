@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   tagsTitle: {
-    id: 'app.containers.Admin.projects.project.phaseInputTagsTitle2',
+    id: 'app.containers.Admin.projects.project.phaseInputTagsTitle3',
     defaultMessage: `{inputTerm, select,
       idea {Idea tags}
       option {Option tags}

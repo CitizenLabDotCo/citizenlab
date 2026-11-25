@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'To the comment author, when their comment is deleted',
   },
   followedComment: {
-    id: 'app.containers.Admin.projects.project.participantEmail.followedComment2',
+    id: 'app.containers.Admin.projects.project.participantEmail.followedComment3',
     defaultMessage: `{inputTerm, select,
       idea {To participants who follow the idea, when someone comments}
       option {To participants who follow the option, when someone comments}
@@ -32,7 +32,7 @@ export default defineMessages({
     defaultMessage: 'To the comment author, when someone replies',
   },
   inputPublished: {
-    id: 'app.containers.Admin.projects.project.participantEmail.inputPublished2',
+    id: 'app.containers.Admin.projects.project.participantEmail.inputPublished3',
     defaultMessage: `{inputTerm, select,
       idea {To the author, when their idea is published}
       option {To the author, when their option is published}
@@ -58,7 +58,7 @@ export default defineMessages({
     defaultMessage: 'To a participant, when they are mentioned in an update',
   },
   officialFeedback: {
-    id: 'app.containers.Admin.projects.project.participantEmail.officialFeedback2',
+    id: 'app.containers.Admin.projects.project.participantEmail.officialFeedback3',
     defaultMessage: `{inputTerm, select,
       idea {To participants who follow the idea, when it receives official feedback}
       option {To participants who follow the option, when it receives official feedback}
@@ -85,7 +85,7 @@ export default defineMessages({
       'To participants who follow the project or took part, when a phase starts',
   },
   statusChanged: {
-    id: 'app.containers.Admin.projects.project.participantEmail.statusChanged2',
+    id: 'app.containers.Admin.projects.project.participantEmail.statusChanged3',
     defaultMessage: `{inputTerm, select,
       idea {To participants who follow the idea, when its status changes}
       option {To participants who follow the option, when its status changes}
@@ -107,7 +107,7 @@ export default defineMessages({
     }`,
   },
   screening: {
-    id: 'app.containers.Admin.projects.project.participantEmail.screening2',
+    id: 'app.containers.Admin.projects.project.participantEmail.screening3',
     defaultMessage: `{inputTerm, select,
       idea {To the author, when their idea is waiting for screening}
       option {To the author, when their option is waiting for screening}
