@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Statuss",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Birkas",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "Importēšanas opcijas",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "Importēt papīra formāta {terms}",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "ir",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "ir kāds no",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "Jauns {term}",

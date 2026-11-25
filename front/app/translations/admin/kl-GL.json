@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Inissisimaffik",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Nalunaaqutsersuutit",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "Toqqagassanik eqqussineq",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "Pappialatigut {terms} eqqussuk",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "tassaavoq",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "uku arlaanniippoq",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "{term} nutaaq",

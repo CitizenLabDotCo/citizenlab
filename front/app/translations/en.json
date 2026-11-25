@@ -2698,6 +2698,7 @@
   "app.containers.landing.verifyYourIdentity": "Verify your identity",
   "app.containers.landing.viewAllEventsText": "View all events",
   "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Back to folder",
+  "app.designSystem.ActionStatus.dismiss": "Dismiss",
   "app.designSystem.AlertDialog.cancel": "Cancel",
   "app.designSystem.DateField.hourPlaceholder": "hh",
   "app.designSystem.DateField.minutePlaceholder": "mm",

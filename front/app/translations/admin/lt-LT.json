@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Būsena",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Žymos",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "Importavimo parinktys",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "Importuoti popierinius {terms}",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "yra",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "yra bet kuris iš",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "Naujas {term}",

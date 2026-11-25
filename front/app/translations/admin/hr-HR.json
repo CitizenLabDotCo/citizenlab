@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Status",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Oznake",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "Opcije uvoza",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "Uvezi papirnate {terms}",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "je",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "je bilo koji od",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "Novi {term}",

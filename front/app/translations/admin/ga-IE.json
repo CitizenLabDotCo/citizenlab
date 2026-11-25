@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Stádas",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Clibeanna",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "Roghanna iompórtála",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "Iompórtáil {terms} páipéir",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "is",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "is ceann de",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "{term} nua",

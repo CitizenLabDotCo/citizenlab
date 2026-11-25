@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Statws",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Tagiau",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "Opsiynau mewnforio",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "Mewnforio {terms} papur",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "yn",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "yw unrhyw un o",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "{term} newydd",

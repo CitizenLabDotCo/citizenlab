@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Estat",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Etiquetes",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "Importa les opcions",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "Importa {terms} en paper",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "és",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "és algun de",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "Nou {term}",

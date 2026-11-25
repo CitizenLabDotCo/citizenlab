@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Κατάσταση",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Ετικέτες",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "Επιλογές εισαγωγής",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "Εισαγωγή έντυπων {terms}",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "είναι",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "είναι οποιοδήποτε από",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "Νέο {term}",

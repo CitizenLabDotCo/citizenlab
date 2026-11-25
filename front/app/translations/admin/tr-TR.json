@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Durum",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Etiketler",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "Seçenekleri içe aktar",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "Basılı {terms} içe aktar",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "şudur",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "şunlardan biridir",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "Yeni {term}",

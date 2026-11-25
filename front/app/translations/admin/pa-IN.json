@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "ਸਥਿਤੀ",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "ਟੈਗਸ",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "ਇੰਪੋਰਟ ਵਿਕਲਪ",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "ਪੇਪਰ {terms} ਇੰਪੋਰਟ ਕਰੋ",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "ਹੈ",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "ਇਹਨਾਂ ਵਿੱਚੋਂ ਕੋਈ ਵੀ ਹੈ",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "ਨਵਾਂ {term}",

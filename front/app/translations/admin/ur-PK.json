@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "صورتحال",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "ٹیگز",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "امپورٹ کے آپشنز",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "کاغذی {terms} درآمد کریں",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "ہے",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "ان میں سے کوئی بھی ہے",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "نیا {term}",

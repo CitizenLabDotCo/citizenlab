@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "الحالة",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "الوسوم",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "خيارات الاستيراد",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "استيراد {terms} ورقية",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "هو",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "هو أي من",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "{term} جديد",

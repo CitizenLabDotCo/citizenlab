@@ -1820,7 +1820,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Status",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Tags",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": "Importer valgmuligheder",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": "Importer {terms} på papir",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "er",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "er en af",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": "Ny {term}",
