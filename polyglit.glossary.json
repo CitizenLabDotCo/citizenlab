@@ -297,6 +297,7 @@
   },
   "post (input term)": {
     "da-DK": "input",
+    "fr-FR": "publication",
     "nl-NL": "bericht"
   },
   "toggle": {
