@@ -18,23 +18,15 @@ export interface StatementStatFilter {
 }
 
 interface Props {
-  statements: number;
   reactions: number;
-  participants: number;
   filters: StatementStatFilter[];
 }
 
-const StatementStats = ({
-  statements,
-  reactions,
-  participants,
-  filters,
-}: Props) => {
+const StatementStats = ({ reactions, filters }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
     <div className={styles.stats} data-cy="e2e-statement-stats">
-      <StatRow label={formatMessage(messages.statements)} value={statements} />
       {filters.map(({ label, value, active, toggle }) =>
         value === undefined ? null : (
           <StatRow
@@ -47,10 +39,6 @@ const StatementStats = ({
         )
       )}
       <StatRow label={formatMessage(messages.reactions)} value={reactions} />
-      <StatRow
-        label={formatMessage(messages.participants)}
-        value={participants}
-      />
     </div>
   );
 };

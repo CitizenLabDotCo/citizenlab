@@ -165,7 +165,7 @@ describe('Redesigned Common Ground manager', () => {
         `admin/projects/${projectId}/phases/${phaseId}/ideas?project_backoffice_redesign`
       );
     });
-    cy.contains('No inputs yet').should('be.visible');
+    cy.contains('Reactions will appear here').should('be.visible');
     cy.contains('0 statements').should('be.visible');
     cy.contains('button', 'Import inputs').click();
     // The project and phase options open in popovers outside the dialog.
@@ -195,7 +195,7 @@ describe('Redesigned Common Ground manager', () => {
     });
 
     cy.contains('2 statements').should('be.visible');
-    cy.contains('No inputs yet').should('not.exist');
+    cy.contains('Reactions will appear here').should('not.exist');
     cy.contains('[data-cy^="e2e-statement-row-"]', firstTitle).should(
       'be.visible'
     );

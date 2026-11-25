@@ -3,10 +3,7 @@ import React, { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
-import Icon from 'design-system/Icon';
 import Spinner from 'design-system/Spinner';
-import Text from 'design-system/Text';
 
 import commonGroundResultsKeys from 'api/common_ground/keys/commonGroundResultsKeys';
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
@@ -38,6 +35,7 @@ import ManageLayout from '../Phase/ManageLayout';
 import AddStatementModal from './AddStatementModal';
 import styles from './CommonGroundManager.module.css';
 import EditStatementModal from './EditStatementModal';
+import EmptyList from './EmptyList';
 import messages from './messages';
 import StatementSideColumn from './StatementSideColumn';
 import StatementTable from './StatementTable';
@@ -58,7 +56,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
   const [page, setPage] = useState(1);
   const [agreeSort, setAgreeSort] = useState<
     'new' | 'agree_percent' | '-agree_percent'
-  >('new');
+  >('agree_percent');
   const [participantFilter, setParticipantFilter] = useState(false);
   const [warningFilter, setWarningFilter] = useState(false);
   const [unassignedFilter, setUnassignedFilter] = useState(false);
@@ -189,7 +187,6 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         <StatementSideColumn
           projectId={project.id}
           stats={stats}
-          phaseTotal={phaseTotal}
           filters={[
             {
               label: messages.addedByParticipants,
@@ -258,26 +255,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
           <Spinner />
         </div>
       )}
-      {ideas && phaseTotal === 0 && !isError && (
-        <div className={styles.empty}>
-          <Icon name="message-square-16" />
-          <Text variant="uiStrong">
-            <FormattedMessage {...inputManagerMessages.noInputs} />
-          </Text>
-          <div className={styles.emptyActions}>
-            <Button variant="secondary" onPress={() => setAddOpened(true)}>
-              <FormattedMessage {...messages.addStatement} />
-            </Button>
-            <Button
-              variant="primary"
-              isDisabled={isImporting}
-              onPress={() => setImportOpened(true)}
-            >
-              <FormattedMessage {...inputManagerMessages.startFromPastInputs} />
-            </Button>
-          </div>
-        </div>
-      )}
+      {ideas && phaseTotal === 0 && !isError && <EmptyList />}
       {ideas && pageIdeas.length === 0 && !!phaseTotal && (
         <NoMatches onClearFilters={clearFilters} />
       )}

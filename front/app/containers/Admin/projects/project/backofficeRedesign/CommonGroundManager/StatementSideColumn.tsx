@@ -17,7 +17,6 @@ import 'design-system/tokens.css';
 interface Props {
   projectId: string;
   stats: CommonGroundResultsData['attributes']['stats'] | undefined;
-  phaseTotal: number | undefined;
   filters: StatementStatFilter[];
   selectedIds: string[];
   onAdd: () => void;
@@ -27,7 +26,6 @@ interface Props {
 const StatementSideColumn = ({
   projectId,
   stats,
-  phaseTotal,
   filters,
   selectedIds,
   onAdd,
@@ -39,9 +37,7 @@ const StatementSideColumn = ({
     <>
       {stats && (
         <StatementStats
-          statements={phaseTotal ?? stats.num_ideas}
           reactions={totalReactions(stats.votes)}
-          participants={stats.num_participants}
           filters={filters}
         />
       )}

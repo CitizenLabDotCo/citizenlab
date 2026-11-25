@@ -34,10 +34,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.reactions',
     defaultMessage: 'Reactions',
   },
-  participants: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.participants',
-    defaultMessage: 'Participants',
-  },
   addStatement: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.addStatement',
     defaultMessage: 'Add new statement',
@@ -101,5 +97,14 @@ export default defineMessages({
   mostlyDisagree: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.mostlyDisagree',
     defaultMessage: 'Mostly disagree',
+  },
+  noReactionsTitle: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.noReactionsTitle',
+    defaultMessage: 'Reactions will appear here',
+  },
+  noReactionsDescription: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.noReactionsDescription',
+    defaultMessage:
+      'Once people take part, you can review and manage their reactions here.',
   },
 });
