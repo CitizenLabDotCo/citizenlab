@@ -62,7 +62,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       end
 
       it 'works with exclude_admins_and_moderators filter' do
-        create_admins_and_moderators(answers: { @custom_field.key => @option1.key })
+        create_admins_and_moderators(answers: { @custom_field => @option1.key })
 
         expect(query.run_query(custom_field_id: @custom_field.id)[:series]).to match({
           @option1.key => 8,
@@ -156,7 +156,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
         create(
           :user,
           registration_completed_at: start_at + 4.days,
-          custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: 1977)]
+          custom_field_answers: [build(:custom_field_answer, custom_field: @birthyear_field, value: 1977)]
         )
 
         AppConfiguration.instance.update!(
