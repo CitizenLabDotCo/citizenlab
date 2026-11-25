@@ -41,8 +41,8 @@ RSpec.describe Surveys::ResultsGenerator do
           build(:custom_field_answer, key: "#{sentiment_linear_scale_field.key}_follow_up", value: 'Great thanks very much', custom_field: sentiment_linear_scale_field)
         ],
         author: create(:user, custom_field_answers: [
-          build(:custom_field_answer, key: 'gender', value: 'female'),
-          build(:custom_field_answer, key: 'domicile', value: domicile_user_custom_field.options[1].area.id)
+          build(:custom_field_answer, custom_field: gender_user_custom_field, value: 'female'),
+          build(:custom_field_answer, custom_field: domicile_user_custom_field, value: domicile_user_custom_field.options[1].area.id)
         ]),
         created_at: '2025-04-05'
       )

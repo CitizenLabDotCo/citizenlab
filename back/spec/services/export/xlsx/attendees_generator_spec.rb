@@ -20,9 +20,9 @@ describe Export::Xlsx::AttendeesGenerator do
     end
 
     it 'contains extra columns for custom user fields' do
-      create(:custom_field_domicile)
+      domicile_field = create(:custom_field_domicile)
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      create(:custom_field_answer, answerable: users.first, key: 'domicile', value: area.id)
+      create(:custom_field_answer, answerable: users.first, custom_field: domicile_field, value: area.id)
       users.first.custom_field_answers.reset
 
       title_row = worksheet[0].cells.map(&:value)
@@ -32,9 +32,9 @@ describe Export::Xlsx::AttendeesGenerator do
     end
 
     it 'allows duplicate column headers' do
-      create(:custom_field, title_multiloc: { 'en' => 'Last name' }, key: 'last_name', resource_type: 'User')
+      last_name_field = create(:custom_field, title_multiloc: { 'en' => 'Last name' }, key: 'last_name', resource_type: 'User')
       user_last_name = users.first.last_name
-      create(:custom_field_answer, answerable: users.first, key: 'last_name', value: 'Doe')
+      create(:custom_field_answer, answerable: users.first, custom_field: last_name_field, value: 'Doe')
       users.first.custom_field_answers.reset
       title_row = worksheet[0].cells.map(&:value)
       user_rows = worksheet.map { |row| row.cells.map(&:value) }

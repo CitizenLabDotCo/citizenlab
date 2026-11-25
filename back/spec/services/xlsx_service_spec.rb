@@ -27,13 +27,13 @@ describe XlsxService do
     end
 
     it 'contains extra columns for custom user fields' do
-      create(:custom_field_domicile)
+      domicile_field = create(:custom_field_domicile)
       custom_select = create(:custom_field_select, title_multiloc: { 'en' => 'Select' })
       custom_multiselect = create(:custom_field_multiselect, title_multiloc: { 'en' => 'Multiselect' })
       select_option = create(:custom_field_option, custom_field: custom_select, title_multiloc: { 'en' => 'Option 1' })
       multiselect_option = create(:custom_field_option, custom_field: custom_multiselect, title_multiloc: { 'en' => 'Option 2' })
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      create(:custom_field_answer, answerable: users.first, key: 'domicile', value: area.id)
+      create(:custom_field_answer, answerable: users.first, custom_field: domicile_field, value: area.id)
       create(:custom_field_answer, answerable: users.first, custom_field: custom_select, value: select_option.key)
       create(:custom_field_answer, answerable: users.first, custom_field: custom_multiselect, value: [multiselect_option.key])
       users.first.custom_field_answers.reset

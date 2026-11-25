@@ -33,14 +33,15 @@ resource 'Analytics - FactParticipations' do
         create(:dimension_type, name: type[:name], parent: type[:parent])
       end
 
-      male = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male')])
-      female = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female')])
-      _unspecified = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'unspecified')])
+      gender_field = create(:custom_field_gender, :with_options)
+      male = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: gender_field, value: 'male')])
+      female = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: gender_field, value: 'female')])
+      _unspecified = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: gender_field, value: 'unspecified')])
 
       # Create participations (3 by citizens, 1 by admin)
       idea = create(:idea, created_at: times[0], author: male)
       create(:comment, created_at: times[2], idea: idea, author: female)
-      create(:reaction, created_at: times[3], user: create(:admin, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female')]), reactable: idea)
+      create(:reaction, created_at: times[3], user: create(:admin, custom_field_answers: [build(:custom_field_answer, custom_field: gender_field, value: 'female')]), reactable: idea)
     end
 
     example 'group participations by month' do
