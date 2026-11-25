@@ -306,6 +306,7 @@
   },
   "post (input term)": {
     "da-DK": "input",
+    "de-DE": "Post",
     "fr-FR": "publication",
     "nl-NL": "bericht"
   },
