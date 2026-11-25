@@ -65,6 +65,16 @@ describe 'single_use:repair_custom_field_answers_without_field' do
       expect(answer.reload.custom_field_id).to eq field.id
     end
 
+    it 're-attaches the answer to a question whose own key ends in _other' do
+      field = project_with_question('any_other', created_at: 3.days.ago)
+      answer = answer_without_field(idea, 'any_other')
+      log_move(idea, from: field.resource.participation_context)
+
+      run
+
+      expect(answer.reload.custom_field_id).to eq field.id
+    end
+
     it 'deletes the answer when two projects that existed at its creation have the question' do
       field = project_with_question('only_there', created_at: 3.days.ago)
       project_with_question('only_there', created_at: 4.days.ago)

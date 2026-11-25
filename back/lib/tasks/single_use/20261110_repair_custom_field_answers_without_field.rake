@@ -74,12 +74,16 @@ def rake_20261110_moved?(idea)
     Activity.where(item: idea, action: 'changed').where("payload->'change' ? 'project_id'").exists?
 end
 
-# An _other or _follow_up answer belongs to the question of its base key.
+# An _other or _follow_up answer belongs to the question of its base key, unless a
+# question has that exact key.
 def rake_20261110_fields_at_creation(idea, key)
-  base_key = key.delete_suffix('_other').delete_suffix('_follow_up')
   projects = Project.where(created_at: ..idea.created_at)
   forms = CustomForm.where(participation_context_type: 'Project', participation_context_id: projects.select(:id))
-  CustomField.where(resource: forms, key: base_key)
+  fields = CustomField.where(resource: forms)
+  exact = fields.where(key: key)
+  return exact if exact.exists?
+
+  fields.where(key: key.delete_suffix('_other').delete_suffix('_follow_up'))
 end
 
 # Without the value, which can be personal data.
