@@ -59,8 +59,17 @@ class SideFxUserService
     )
 
     UpdateMemberCountJob.perform_later if update_member_counts
-    RemoveUserFromIntercomJob.perform_later(frozen_user.id)
-    RemoveUsersFromSegmentJob.perform_later([frozen_user.id])
+    after_destroy_all([frozen_user.id])
+  end
+
+  # Removes users that are deleted (or about to be) from third-party services, with one
+  # job per service for all of them. Used for a single user by +#after_destroy+, and for
+  # all the users of a tenant when it is deleted (see +MultiTenancy::Tenants::DeleteJob+).
+  #
+  # @param [Array<String>] user_ids
+  def after_destroy_all(user_ids)
+    RemoveUserFromIntercomJob.perform_later(user_ids)
+    RemoveUsersFromSegmentJob.perform_later(user_ids)
   end
 
   def after_block(user, current_user)
