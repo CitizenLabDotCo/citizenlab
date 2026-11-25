@@ -400,9 +400,93 @@ describe SanitizationService do
         end
       end
 
-      it 'still keeps the attributes of other features on every tag' do
+      it 'still keeps the attributes other features keep on their own tags' do
         input = '<p class="ql-align-center">Text</p>'
         expect(service.sanitize(input, %i[alignment blocks])).to eq input
+      end
+    end
+
+    # Rich text is rendered as is, inside the app's own CSS: a class from the app, or a size taken
+    # from the viewport, lets the content cover the page.
+    describe 'classes and styles' do
+      using RSpec::Parameterized::TableSyntax
+
+      let(:features) { Idea::BODY_SANITIZE_FEATURES }
+
+      wistia = 'https://fast.wistia.com/embed/iframe/x'
+
+      # What the editor stores when every toolbar tool is used.
+      it 'keeps what the editor writes' do
+        input = <<~HTML
+          <h2>Heading line</h2>
+          <p><b>bold</b><em> italic</em></p>
+          <p class="ql-align-center">centered line</p>
+          <p class="ql-align-right">right line</p>
+          <ol><li>ordered item</li></ol>
+          <ul><li>bullet item<img width="80px" height="auto" alt="a rocket" title="rocket title" data-align="right" style="display:inline;float:right;margin:0 0 1em 1em;" data-cl2-text-image-text-reference="252499e5-b007-41b8-97ac-f29c25a1497d" src="https://example.com/a.png">
+          </li></ul>
+          <p><a href="https://example.com" rel="noreferrer noopener nofollow" target="_blank">a link</a></p>
+          <iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/dQw4w9WgXcQ?showinfo=0" title="Embedded video" referrerpolicy="strict-origin-when-cross-origin" width="242px" height="121px" style="display:block;margin:auto;" data-align="center"></iframe>
+        HTML
+
+        expect(service.sanitize(input, features)).to eq input
+      end
+
+      where(:case_name, :input, :output) do
+        'app classes on a video' | %(<iframe class="ql-video sc-bmToVj cWOqIK" src="#{wistia}"></iframe>) | %(<iframe class="ql-video" src="#{wistia}"></iframe>)
+        'app class on an alignment' | '<p class="ql-align-center sc-x">t</p>' | '<p class="ql-align-center">t</p>'
+        'only app classes' | '<h2 class="sc-x cWOqIK">t</h2>' | '<h2>t</h2>'
+        'class on a list item' | '<ol><li class="sc-x">t</li></ol>' | '<ol><li>t</li></ol>'
+        'class on an image' | '<img src="https://example.com/a.png" class="sc-x">' | '<img src="https://example.com/a.png">'
+        'class on a link' | '<a href="https://e.com" class="sc-x">t</a>' | '<a href="https://e.com" rel="nofollow">t</a>'
+        'class on bold text' | '<b class="sc-x">t</b>' | '<b>t</b>'
+        'video class on a paragraph' | '<p class="ql-video">t</p>' | '<p>t</p>'
+        'app class on an older video' | %(<iframe class="ql-video ql-align-center sc-x" src="#{wistia}"></iframe>) | %(<iframe class="ql-video ql-align-center" src="#{wistia}"></iframe>)
+        'style on a paragraph' | '<p style="font-family:x;line-height:normal;">t</p>' | '<p>t</p>'
+        'style on a link' | '<a href="https://e.com" style="display:block;">t</a>' | '<a href="https://e.com" rel="nofollow">t</a>'
+        'viewport size on a video' | %(<iframe src="#{wistia}" style="width:100vw;height:100vh;"></iframe>) | %(<iframe src="#{wistia}"></iframe>)
+        'viewport size on an image' | '<img src="https://example.com/a.png" style="width:100vw;">' | '<img src="https://example.com/a.png">'
+        'overlay among layout styles' | %(<iframe src="#{wistia}" style="display:block;margin:auto;position:fixed;z-index:1004;background:white;"></iframe>) | %(<iframe src="#{wistia}" style="display:block;margin:auto;"></iframe>)
+        'viewport size as attributes' | %(<iframe src="#{wistia}" width="100vw" height="100vh"></iframe>) | %(<iframe src="#{wistia}"></iframe>)
+        'comment hiding a semicolon' | %(<iframe src="#{wistia}" style="width:100px/*;*/position:fixed;"></iframe>) | %(<iframe src="#{wistia}"></iframe>)
+        'escaped property' | %(<iframe src="#{wistia}" style="\\77idth:100vw;"></iframe>) | %(<iframe src="#{wistia}"></iframe>)
+        'semicolon in a url' | %(<iframe src="#{wistia}" style="background:url(data:image/png;base64,AA);display:block;"></iframe>) | %(<iframe src="#{wistia}" style="display:block;"></iframe>)
+        'upper case property' | %(<iframe src="#{wistia}" style="Margin:auto;DISPLAY:block;"></iframe>) | %(<iframe src="#{wistia}" style="margin:auto;display:block;"></iframe>)
+        'empty declarations' | %(<iframe src="#{wistia}" style=";display:block;;margin:auto;"></iframe>) | %(<iframe src="#{wistia}" style="display:block;margin:auto;"></iframe>)
+        'negative margin on an image' | '<img src="https://e.com/a.png" style="display:block;margin:-500px 0 0;">' | '<img src="https://e.com/a.png" style="display:block;">'
+        'reported payload' | %(<iframe class="ql-video dzUxwG fXHwxu" src="#{wistia}" width="1920" height="1000" style="width:100%;height:100vh;background:white;border:0;"></iframe>) | %(<iframe class="ql-video" src="#{wistia}" width="1920" height="1000" style="width:100%;"></iframe>)
+        # Found in stored content, written by the editor or pasted from a word processor.
+        'button link' | '<a href="https://e.com" class="custom-button sc-x">t</a>' | '<a href="https://e.com" class="custom-button" rel="nofollow">t</a>'
+        'pasted alignment' | '<p style="text-align:justify;line-height:normal;">t</p>' | '<p style="text-align:justify;">t</p>'
+        'pasted colours' | '<p style="color:rgb(1, 2, 3);font-size:9px;"><strong style="color:#ddd;position:fixed;">a</strong><a href="https://e.com" style="color:black;display:block;">b</a></p>' | '<p style="color:rgb(1, 2, 3);"><strong style="color:#ddd;">a</strong><a href="https://e.com" style="color:black;" rel="nofollow">b</a></p>'
+        'colour hiding a url' | '<p style="color:url(https://e.com/x);">t</p>' | '<p>t</p>'
+        'editor image' | '<img src="https://e.com/a.png" class="ql-alt-text-input-container keepHTML">' | '<img src="https://e.com/a.png" class="keepHTML">'
+        'pasted image sizes' | '<img src="https://e.com/a.png" style="width:.5in;height:1.25in;max-width:100%;margin:9.75pt 0cm;">' | '<img src="https://e.com/a.png" style="width:.5in;height:1.25in;max-width:100%;margin:9.75pt 0cm;">'
+      end
+
+      with_them do
+        it 'keeps only what the editor writes' do
+          expect(service.sanitize(input, features)).to eq output
+        end
+      end
+
+      it 'keeps only the mention class on a mention' do
+        input = '<span class="cl-mention-user sc-x" data-user-id="abc">@Ann</span>'
+        expect(service.sanitize(input, [:mention])).to eq '<span class="cl-mention-user" data-user-id="abc">@Ann</span>'
+      end
+
+      it 'keeps only border, spacing and size styles on a table' do
+        input = <<~HTML.squish
+          <table class="sc-x" style="width:100%;position:fixed;">
+          <tr style="display:table-row !important;"><td style="border:1px solid #ddd;border-bottom:0px solid rgb(227, 227, 227);padding:5px;height:100vh;border-top:100vh solid white;">c</td></tr>
+          </table>
+        HTML
+
+        expect(service.sanitize(input, [:table])).to eq <<~HTML.squish
+          <table style="width:100%;">
+          <tr style="display:table-row !important;"><td style="border:1px solid #ddd;border-bottom:0px solid rgb(227, 227, 227);padding:5px;">c</td></tr>
+          </table>
+        HTML
       end
     end
   end
@@ -751,6 +835,13 @@ describe SanitizationService do
         }.each do |input, forbidden|
           expect(service.sanitize_comment_body(input)).not_to include forbidden
         end
+      end
+
+      # The app's own classes would let a link in a comment cover the whole page.
+      it 'drops a class from a link' do
+        output = service.sanitize_comment_body('<a href="https://e.com" class="sc-bmToVj cWOqIK">https://e.com</a>')
+
+        expect(output).to eq '<a href="https://e.com" target="_blank" rel="noreferrer noopener nofollow">https://e.com</a>'
       end
 
       # A label only survives when `linkify` rebuilds this link from it, so one that reads like a
