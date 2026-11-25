@@ -29,8 +29,8 @@ const DESCRIPTIONS: Partial<Record<CampaignName, MessageDescriptor>> = {
 
 const useNotificationDescription = (name: CampaignName) => {
   const { formatMessage } = useIntl();
-  const { term } = useInputTermLabels();
+  const { inputTerm } = useInputTermLabels();
   const message = DESCRIPTIONS[name];
-  return message ? formatMessage(message, { term }) : undefined;
+  return message ? formatMessage(message, { inputTerm }) : undefined;
 };
 export default useNotificationDescription;

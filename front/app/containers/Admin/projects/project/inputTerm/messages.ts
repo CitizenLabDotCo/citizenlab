@@ -1,18 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-// The phase's naming option, for use inside other messages. `other` is the
-// wording until the phase has loaded.
 export default defineMessages({
-  singular: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.term.singular',
-    defaultMessage:
-      '{term, select, idea {idea} option {option} project {project} question {question} issue {issue} contribution {contribution} proposal {proposal} initiative {initiative} petition {petition} comment {comment} response {response} suggestion {suggestion} topic {topic} post {post} story {story} observation {observation} other {input}}',
-  },
-  plural: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.term.plural',
-    defaultMessage:
-      '{term, select, idea {ideas} option {options} project {projects} question {questions} issue {issues} contribution {contributions} proposal {proposals} initiative {initiatives} petition {petitions} comment {comments} response {responses} suggestion {suggestions} topic {topics} post {posts} story {stories} observation {observations} other {inputs}}',
-  },
   capitalizedSingular: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.term.capitalizedSingular',
     defaultMessage:

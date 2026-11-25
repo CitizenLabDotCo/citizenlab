@@ -61,13 +61,48 @@ export default defineMessages({
       'You can specify who can take each action, and ask additional questions to participants to collect more information.',
   },
   noTermsYet: {
-    id: 'app.containers.Admin.projects.project.noTermsYet',
-    defaultMessage: 'No {terms} yet',
+    id: 'app.containers.Admin.projects.project.noTermsYet2',
+    defaultMessage: `{inputTerm, select,
+      idea {No ideas yet}
+      option {No options yet}
+      project {No projects yet}
+      question {No questions yet}
+      issue {No issues yet}
+      contribution {No contributions yet}
+      proposal {No proposals yet}
+      initiative {No initiatives yet}
+      petition {No petitions yet}
+      comment {No comments yet}
+      response {No responses yet}
+      suggestion {No suggestions yet}
+      topic {No topics yet}
+      post {No posts yet}
+      story {No stories yet}
+      observation {No observations yet}
+      other {No inputs yet}
+    }`,
   },
   noTermsYetDescription: {
-    id: 'app.containers.Admin.projects.project.noTermsYetDescription',
-    defaultMessage:
-      '{capitalizedTerms} appear here as participants take part. You can follow each one and add the ones collected offline.',
+    id: 'app.containers.Admin.projects.project.noTermsYetDescription2',
+    defaultMessage: `{inputTerm, select,
+      idea {Ideas appear here as participants take part. You can follow each one and add the ones collected offline.}
+      option {Options appear here as participants take part. You can follow each one and add the ones collected offline.}
+      project {Projects appear here as participants take part. You can follow each one and add the ones collected offline.}
+      question {Questions appear here as participants take part. You can follow each one and add the ones collected offline.}
+      issue {Issues appear here as participants take part. You can follow each one and add the ones collected offline.}
+      contribution {Contributions appear here as participants take part. You can follow each one and add the ones collected offline.}
+      proposal {Proposals appear here as participants take part. You can follow each one and add the ones collected offline.}
+      initiative {Initiatives appear here as participants take part. You can follow each one and add the ones collected offline.}
+      petition {Petitions appear here as participants take part. You can follow each one and add the ones collected offline.}
+      comment {Comments appear here as participants take part. You can follow each one and add the ones collected offline.}
+      response {Responses appear here as participants take part. You can follow each one and add the ones collected offline.}
+      suggestion {Suggestions appear here as participants take part. You can follow each one and add the ones collected offline.}
+      topic {Topics appear here as participants take part. You can follow each one and add the ones collected offline.}
+      post {Posts appear here as participants take part. You can follow each one and add the ones collected offline.}
+      story {Stories appear here as participants take part. You can follow each one and add the ones collected offline.}
+      observation {Observations appear here as participants take part. You can follow each one and add the ones collected offline.}
+      other {Inputs appear here as participants take part. You can follow each one and add the ones collected offline.}
+    }`,
   },
   noInsightsYet: {
     id: 'app.containers.Admin.projects.project.noInsightsYet',

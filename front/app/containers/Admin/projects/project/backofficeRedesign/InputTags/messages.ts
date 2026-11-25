@@ -2,8 +2,26 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   tagsTitle: {
-    id: 'app.containers.Admin.projects.project.phaseInputTagsTitle',
-    defaultMessage: '{term} tags',
+    id: 'app.containers.Admin.projects.project.phaseInputTagsTitle2',
+    defaultMessage: `{inputTerm, select,
+      idea {Idea tags}
+      option {Option tags}
+      project {Project tags}
+      question {Question tags}
+      issue {Issue tags}
+      contribution {Contribution tags}
+      proposal {Proposal tags}
+      initiative {Initiative tags}
+      petition {Petition tags}
+      comment {Comment tags}
+      response {Response tags}
+      suggestion {Suggestion tags}
+      topic {Topic tags}
+      post {Post tags}
+      story {Story tags}
+      observation {Observation tags}
+      other {Input tags}
+    }`,
   },
   tagCount: {
     id: 'app.containers.Admin.projects.project.inputTagCount',

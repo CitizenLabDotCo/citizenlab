@@ -28,7 +28,7 @@ interface Props {
 
 const PhasesProperty = ({ idea }: Props) => {
   const { formatMessage } = useIntl();
-  const { terms } = useInputTermLabels();
+  const { inputTerm } = useInputTermLabels();
   const { phaseOptions } = usePickerOptions(
     'ProjectIdeas',
     idea.relationships.project.data.id
@@ -66,7 +66,7 @@ const PhasesProperty = ({ idea }: Props) => {
       icon="plus-16"
       disabledReason={
         otherPhases.length === 0
-          ? formatMessage(messages.noOtherPhasesForTerms, { terms })
+          ? formatMessage(messages.noOtherPhasesForTerms, { inputTerm })
           : undefined
       }
     >

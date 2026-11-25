@@ -53,7 +53,7 @@ const ListToolbar = ({
   onClearFilters,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { terms, termCount } = useInputTermLabels();
+  const { inputTerm, termCount } = useInputTermLabels();
 
   return (
     <div className={styles.toolbar}>
@@ -78,7 +78,7 @@ const ListToolbar = ({
       )}
       <div className={styles.display}>
         <SearchToggle
-          label={formatMessage(messages.searchTerms, { terms })}
+          label={formatMessage(messages.searchTerms, { inputTerm })}
           searchTerm={searchTerm}
           onChange={onSearch}
           resultCount={count ?? 0}

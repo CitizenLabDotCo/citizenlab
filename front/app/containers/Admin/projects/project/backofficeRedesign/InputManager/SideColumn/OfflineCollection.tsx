@@ -7,6 +7,7 @@ import { IPhaseData } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import tracks from 'containers/Admin/projects/_shared/components/NewIdeaButton/tracks';
+import getNewInputMessage from 'containers/Admin/projects/_shared/components/NewIdeaButton/getNewInputMessage';
 import AddInputModal from 'containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/BuildFields/MethodSection/AddInputModal';
 import FullFormLink from 'containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/BuildFields/MethodSection/FullFormLink';
 
@@ -15,7 +16,6 @@ import { useIntl } from 'utils/cl-intl';
 import { useLocation } from 'utils/router';
 
 import messages from '../messages';
-import useInputTermLabels from '../useInputTermLabels';
 
 import Card from './Card';
 import OfflineFormsButton from './OfflineFormsButton';
@@ -31,11 +31,11 @@ interface Props {
 const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { term, terms } = useInputTermLabels();
+  const { input_term: inputTerm } = phase.attributes;
   const [addOpened, setAddOpened] = useState(false);
   const { mutateAsync: addIdea } = useAddIdea();
   const { data: project } = useProjectById(phase.relationships.project.data.id);
-  const addLabel = formatMessage(messages.newTerm, { term });
+  const addLabel = formatMessage(getNewInputMessage(inputTerm));
 
   return (
     <Card fillHeight={fillHeight}>
@@ -52,7 +52,7 @@ const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
       />
       <OfflineFormsButton
         participationMethod={phase.attributes.participation_method}
-        label={formatMessage(messages.importPaperTerms, { terms })}
+        label={formatMessage(messages.importPaperTerms, { inputTerm })}
         cardIcon="upload-16"
       />
       {children}

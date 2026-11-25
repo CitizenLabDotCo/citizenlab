@@ -67,7 +67,7 @@ const BatchBar = ({
   selectAllFailed,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { term, terms, termCount } = useInputTermLabels();
+  const { inputTerm } = useInputTermLabels();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [phaseMenuOpen, setPhaseMenuOpen] = useState(false);
   const { statusOptions, tagOptions, phaseOptions } = usePickerOptions(
@@ -117,7 +117,8 @@ const BatchBar = ({
         {total !== undefined && ideas.length < total && (
           <SelectAllButton
             label={formatMessage(messages.selectAllTerms, {
-              termCount: termCount(total),
+              inputTerm,
+              count: total,
             })}
             processing={isSelectingAll}
             failed={selectAllFailed}
@@ -185,7 +186,7 @@ const BatchBar = ({
               size={28}
               icon="arrow-right-16"
               disabledReason={formatMessage(messages.noOtherPhasesForTerms, {
-                terms,
+                inputTerm,
               })}
             >
               {formatMessage(messages.copyToPhase)}
@@ -211,7 +212,8 @@ const BatchBar = ({
           {isSingle
             ? formatMessage(messages.delete)
             : formatMessage(messages.deleteTerms, {
-                termCount: termCount(ideas.length),
+                inputTerm,
+                count: ideas.length,
               })}
         </Button>
 
@@ -224,17 +226,18 @@ const BatchBar = ({
         isPending={isDeleting}
         title={
           isSingle
-            ? formatMessage(messages.deleteTermTitle, { term })
-            : formatMessage(messages.deleteTermsTitle2, {
-                termCount: termCount(ideas.length),
+            ? formatMessage(messages.deleteTermTitle, { inputTerm })
+            : formatMessage(messages.deleteTermsTitle3, {
+                inputTerm,
+                count: ideas.length,
               })
         }
         confirmLabel={formatMessage(warningModalMessages.confirm)}
         onConfirm={deleteAll}
       >
         {isSingle
-          ? formatMessage(messages.deleteTermExplanation, { term })
-          : formatMessage(messages.deleteTermsExplanation, { terms })}
+          ? formatMessage(messages.deleteTermExplanation, { inputTerm })
+          : formatMessage(messages.deleteTermsExplanation, { inputTerm })}
       </AlertDialog>
     </>
   );

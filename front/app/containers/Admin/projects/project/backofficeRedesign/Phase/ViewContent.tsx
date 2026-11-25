@@ -12,7 +12,6 @@ import projectMessages from 'containers/Admin/projects/project/messages';
 import { useIntl } from 'utils/cl-intl';
 
 import OfflineCollection from '../InputManager/SideColumn/OfflineCollection';
-import useInputTermLabels from '../InputManager/useInputTermLabels';
 
 import EmptyState from './EmptyState';
 import ManageLayout from './ManageLayout';
@@ -91,7 +90,7 @@ interface Props {
 
 const ViewContent = ({ phase, view, children }: Props) => {
   const { formatMessage } = useIntl();
-  const { terms, capitalizedTerms } = useInputTermLabels();
+  const { input_term: inputTerm } = phase.attributes;
   const onInsights = view === 'insights';
   const supportsMetrics =
     onInsights &&
@@ -126,8 +125,8 @@ const ViewContent = ({ phase, view, children }: Props) => {
   const emptyState = (
     <EmptyState
       size="large"
-      title={formatMessage(copy.title, { terms })}
-      description={formatMessage(copy.description, { capitalizedTerms })}
+      title={formatMessage(copy.title, { inputTerm })}
+      description={formatMessage(copy.description, { inputTerm })}
     />
   );
 
