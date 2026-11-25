@@ -2,7 +2,7 @@ import React, { useId } from 'react';
 
 import Button from 'design-system/Button';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
-import TooltipMark from 'design-system/Tooltip/TooltipMark';
+import Tooltip, { TooltipTarget } from 'design-system/Tooltip';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
@@ -46,18 +46,23 @@ const ProjectAssignee = ({
 
   return (
     <div className={styles.row}>
-      <div className={redesign ? styles.tooltipLabel : styles.text}>
-        <span id={labelId} className={styles.label}>
-          {title}
-        </span>
-        {redesign ? (
-          <TooltipMark label={title} content={description} />
-        ) : (
+      {redesign ? (
+        // The label itself explains the setting; there is no separate info mark.
+        <Tooltip content={description}>
+          <TooltipTarget className={styles.tooltipLabel}>
+            <span id={labelId}>{title}</span>
+          </TooltipTarget>
+        </Tooltip>
+      ) : (
+        <div className={styles.text}>
+          <span id={labelId} className={styles.label}>
+            {title}
+          </span>
           <span id={descriptionId} className={styles.description}>
             {description}
           </span>
-        )}
-      </div>
+        </div>
+      )}
       <MenuTrigger
         defaultOpen={defaultOpen}
         onOpenChange={(isOpen) => {

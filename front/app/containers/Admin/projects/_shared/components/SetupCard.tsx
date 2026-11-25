@@ -3,8 +3,7 @@ import React, { ReactNode } from 'react';
 import Banner from 'design-system/Banner';
 import Disclosure from 'design-system/Disclosure';
 import ReviewStatus from 'design-system/ReviewStatus';
-import tooltipMessages from 'design-system/Tooltip/messages';
-import TooltipMark from 'design-system/Tooltip/TooltipMark';
+import Tooltip, { TooltipTarget } from 'design-system/Tooltip';
 
 import { SetupReviewCard } from 'api/phases/types';
 
@@ -62,17 +61,11 @@ const SetupCard = ({
     </SummaryReviewedContext.Provider>
   );
 
+  // The title itself opens the explanation; cards carry no info mark.
   const staticTitle = titleTooltip ? (
-    <span className={styles.titleRow}>
-      {title}
-      <TooltipMark
-        label={formatMessage(tooltipMessages.moreInformationAbout, {
-          subject: title,
-        })}
-        content={titleTooltip}
-        className={styles.infoMark}
-      />
-    </span>
+    <Tooltip content={titleTooltip}>
+      <TooltipTarget className={styles.titleTarget}>{title}</TooltipTarget>
+    </Tooltip>
   ) : (
     title
   );
