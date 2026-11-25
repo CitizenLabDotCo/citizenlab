@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { colors } from '@citizenlab/cl2-component-library';
 
 import IconButton from 'design-system/IconButton';
-import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import { IPhaseData } from 'api/phases/types';
 import useDeletePhase from 'api/phases/useDeletePhase';
@@ -18,7 +17,6 @@ import phaseMessages from 'containers/Admin/projects/project/phase/messages';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import moreActionsMessages from 'components/UI/MoreActionsMenu/messages';
 import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
 import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
@@ -57,9 +55,6 @@ const PhaseOptionsMenu = ({ projectId, phase, variant = 'sidebar' }: Props) => {
     );
   };
 
-  const actionsLabel = formatMessage(moreActionsMessages.actionsMenu, {
-    title,
-  });
   const actions = [
     ...(canChangePlacement(phase)
       ? [
@@ -84,26 +79,15 @@ const PhaseOptionsMenu = ({ projectId, phase, variant = 'sidebar' }: Props) => {
   return (
     <>
       {variant === 'panel' ? (
-        <MenuTrigger>
-          <IconButton
-            icon="more-horizontal-16"
-            tone="strong"
-            aria-label={actionsLabel}
-            data-cy={`e2e-phase-options-${phase.id}`}
-          />
-          <Menu aria-label={actionsLabel} placement="bottom end">
-            {actions.map(({ name, label, handler }) => (
-              <MenuItem
-                key={name}
-                id={name}
-                onAction={handler}
-                data-cy={`e2e-action-${name}`}
-              >
-                {label}
-              </MenuItem>
-            ))}
-          </Menu>
-        </MenuTrigger>
+        // Moving a survey between the timeline and Spotlight happens in the
+        // phase itself, so the redesigned rail only offers delete.
+        <IconButton
+          icon="trash-2-16"
+          tone="strong"
+          aria-label={formatMessage(phaseMessages.deletePhase)}
+          onPress={() => setShowDeleteModal(true)}
+          data-cy={`e2e-delete-phase-${phase.id}`}
+        />
       ) : (
         <MoreActionsMenu
           showLabel={false}
@@ -117,7 +101,6 @@ const PhaseOptionsMenu = ({ projectId, phase, variant = 'sidebar' }: Props) => {
       {showMoveModal && (
         <MovePhaseModal
           phase={phase}
-          variant={variant === 'panel' ? variant : 'default'}
           hasUnsavedChanges={pageSave?.dirty}
           onMoved={() => pageSave?.discardAll()}
           onClose={() => setShowMoveModal(false)}

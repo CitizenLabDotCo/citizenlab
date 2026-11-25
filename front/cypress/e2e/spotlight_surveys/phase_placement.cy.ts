@@ -129,22 +129,21 @@ describe('Moving a survey phase on and off the timeline', () => {
       });
     });
 
-    // A moved row only changes list once the spotlight surveys are refetched.
-    const moveFromSidebar = (label: string, placementType: string) => {
-      cy.dataCy(`e2e-phase-options-${surveyPhaseId}`).click();
-      cy.dataCy('e2e-action-move-phase').should('contain', label).click();
+    // The rail only offers delete; a survey moves from its placement setting.
+    const moveFromSetup = (label: string, placementType: string) => {
+      cy.contains('label', label).click();
       confirmMove();
       cy.wait('@updatePhase')
         .its('response.body.data.attributes.placement_type')
         .should('eq', placementType);
-      cy.wait('@spotlightSurveys', {
-        requestTimeout: PAGE_DATA_REQUEST_TIMEOUT,
-      });
     };
 
-    it('moves the survey from its menu in the sidebar', () => {
-      moveFromSidebar('Move to spotlight surveys', 'standalone');
-      moveFromSidebar('Move to timeline', 'on_timeline');
+    it('moves the survey from its placement setting', () => {
+      cy.visit(
+        `/admin/projects/${projectId}/phases/${surveyPhaseId}/setup?project_backoffice_redesign`
+      );
+      moveFromSetup('Spotlight', 'standalone');
+      moveFromSetup('Appears on the timeline', 'on_timeline');
     });
 
     it('shows conflicting dates in the survey setup and allows cancelling the move', () => {
@@ -251,13 +250,12 @@ describe('Moving a survey phase on and off the timeline', () => {
       });
     });
 
-    it('deletes a spotlight survey from its menu in the sidebar', () => {
-      cy.dataCy(`e2e-phase-options-${spotlightPhaseId}`).click();
-      cy.dataCy('e2e-action-delete-phase').click();
+    it('deletes a spotlight survey from its trash button in the rail', () => {
+      cy.dataCy(`e2e-delete-phase-${spotlightPhaseId}`).click({ force: true });
       cy.dataCy('typed-confirmation-input').type('DELETE');
       cy.dataCy('typed-confirmation-delete-button').click();
 
-      cy.dataCy(`e2e-phase-options-${spotlightPhaseId}`).should('not.exist');
+      cy.dataCy(`e2e-delete-phase-${spotlightPhaseId}`).should('not.exist');
     });
   });
 });
