@@ -35,7 +35,7 @@ module Matomo
     def delete_user_data(user_ids, site_ids: nil)
       deletes_summary = {}
 
-      Array(user_ids).each_slice(USERS_PER_REQUEST) do |batch|
+      Array(user_ids).compact_blank.each_slice(USERS_PER_REQUEST) do |batch|
         # `findDataSubjects` returns at most 401 visits, so this repeats until none are left.
         loop do
           visits_response = retry_when_busy { find_data_subjects(batch, site_ids: site_ids) }
@@ -88,13 +88,17 @@ module Matomo
     # @param [Array<String>,NilClass] site_ids the sites to search, all sites if blank.
     # @return [HTTParty::Response]
     def find_data_subjects(user_ids, site_ids: nil)
+      user_ids = Array(user_ids)
+      # A blank id gives a bare `userId==` condition, which matches the visits of every user.
+      raise ArgumentError, 'user_ids must not be blank' if user_ids.empty? || user_ids.any?(&:blank?)
+
       query = {
         # Searching all sites is much slower: Matomo then scans the visits of every site.
         'idSite' => site_ids.presence&.join(',') || 'all',
         'module' => 'API',
         'method' => 'PrivacyManager.findDataSubjects',
         # A comma ORs the conditions of a segment.
-        'segment' => Array(user_ids).map { |user_id| "userId==#{user_id}" }.join(','),
+        'segment' => user_ids.map { |user_id| "userId==#{user_id}" }.join(','),
         'format' => 'JSON'
       }
 

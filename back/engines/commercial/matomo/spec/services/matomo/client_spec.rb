@@ -119,6 +119,16 @@ RSpec.describe Matomo::Client do
     end
   end
 
+  describe '#find_data_subjects with blank user ids' do
+    it 'raises instead of searching the visits of every user' do
+      allow(HTTParty).to receive(:post)
+
+      expect { service.find_data_subjects(['user-1', '']) }.to raise_error(ArgumentError)
+      expect { service.find_data_subjects([]) }.to raise_error(ArgumentError)
+      expect(HTTParty).not_to have_received(:post)
+    end
+  end
+
   describe '#find_data_subjects with sites' do
     it 'only searches the given sites' do
       allow(HTTParty).to receive(:post)
@@ -190,6 +200,19 @@ RSpec.describe Matomo::Client do
 
       expect(service.delete_user_data('user-1')).to be_nil
       expect(delete_request).not_to have_been_requested
+    end
+
+    it 'ignores blank user ids' do
+      find_request = stub_find_data_subjects('userId==user-1', [])
+
+      service.delete_user_data(['user-1', '', nil])
+
+      expect(find_request).to have_been_requested.once
+    end
+
+    it 'does not call Matomo when all user ids are blank' do
+      expect(service.delete_user_data(['', nil])).to be_nil
+      expect(a_request(:post, index_php)).not_to have_been_made
     end
 
     context 'when Matomo is busy' do
