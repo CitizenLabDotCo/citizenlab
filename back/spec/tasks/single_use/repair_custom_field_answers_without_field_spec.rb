@@ -75,6 +75,19 @@ describe 'single_use:repair_custom_field_answers_without_field' do
       expect(answer.reload.custom_field_id).to eq field.id
     end
 
+    it 'keeps and reports the answer when re-attaching it fails' do
+      field = project_with_question('only_there', created_at: 3.days.ago)
+      answer = answer_without_field(idea, 'only_there')
+      log_move(idea, from: field.resource.participation_context)
+      allow_any_instance_of(CustomFieldAnswer).to receive(:update).and_return(false)
+
+      run
+
+      expect(answer.reload.custom_field_id).to be_nil
+      errors = JSON.parse(File.read('repair_custom_field_answers_without_field.json'))['errors']
+      expect(errors.sole).to include('error' => start_with('not re-attached'), 'context' => include('key' => 'only_there'))
+    end
+
     it 'deletes the answer when two projects that existed at its creation have the question' do
       field = project_with_question('only_there', created_at: 3.days.ago)
       project_with_question('only_there', created_at: 4.days.ago)
