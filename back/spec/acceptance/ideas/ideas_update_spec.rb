@@ -908,13 +908,14 @@ resource 'Ideas' do
         permission = phase.permissions.find_by(action: 'posting_idea')
         permission.update!(custom_fields_behavior: 'custom')
         permission.permissions_custom_fields = [
-          create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
+          create(:permissions_custom_field, custom_field: age_field)
         ]
 
         project
       end
 
-      let(:author) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)]) }
+      let(:age_field) { create(:custom_field, key: 'age') }
+      let(:author) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: age_field, value: 30)]) }
       let(:input) { create(:native_survey_response, project: project, author: author) }
 
       context 'when author' do

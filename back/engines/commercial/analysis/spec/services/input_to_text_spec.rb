@@ -93,7 +93,7 @@ describe Analysis::InputToText do
         :idea,
         custom_field_answers: [
           build(:custom_field_answer, custom_field: custom_field, value: 'other'),
-          build(:custom_field_answer, key: "#{custom_field.key}_other", value: 'Because none of the above')
+          build(:custom_field_answer, key: "#{custom_field.key}_other", custom_field:, value: 'Because none of the above')
         ]
       )
       expect(service.execute(input)).to eq({

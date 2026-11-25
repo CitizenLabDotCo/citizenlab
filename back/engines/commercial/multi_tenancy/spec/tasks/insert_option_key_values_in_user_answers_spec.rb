@@ -16,7 +16,8 @@ describe 'rake cl2_back:insert_option_key_values_in_user_answers' do # rubocop:d
     create(:custom_field_option, custom_field: custom_field, key: '9876zy_ak7', title_multiloc: { en: '9876ZY' })
   end
   let!(:user1) do
-    create(:user, id: csv_data[0]['id'], custom_field_answers: [build(:custom_field_answer, key: 'unrelated_key', value: 'some_value')])
+    unrelated_field = create(:custom_field, key: 'unrelated_key')
+    create(:user, id: csv_data[0]['id'], custom_field_answers: [build(:custom_field_answer, custom_field: unrelated_field, value: 'some_value')])
   end
   let!(:user2) { create(:user, id: csv_data[1]['id']) }
   let!(:user3) { create(:user, id: csv_data[2]['id']) }

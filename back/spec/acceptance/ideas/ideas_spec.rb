@@ -405,7 +405,7 @@ resource 'Ideas' do
       let!(:text_field) { create(:custom_field_text, key: extra_field_key, required: true, resource: form) }
       let!(:idea) do
         create(:native_survey_response, project: project, author: @user, custom_field_answers: [
-          build(:custom_field_answer, key: extra_field_key, value: extra_field_answer)
+          build(:custom_field_answer, custom_field: text_field, value: extra_field_answer)
         ])
       end
       let!(:id) { idea.id }
@@ -494,12 +494,13 @@ resource 'Ideas' do
 
       context 'idea authored by user' do
         let!(:idea) do
+          field = phase.custom_form.custom_fields.find_by!(key: 'field')
           create(
             :native_survey_response,
             project: phase.project,
             author: @user, publication_status:
             'draft',
-            custom_field_answers: [build(:custom_field_answer, key: 'field', value: 'value')]
+            custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'value')]
           )
         end
 

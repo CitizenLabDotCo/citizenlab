@@ -148,8 +148,8 @@ RSpec.describe CustomFieldValuesTransitionService do
   describe '#custom_field_values' do
     it 'returns the answers as a hash, without the answers marked for destruction' do
       user = build(:user, custom_field_answers: [
-        build(:custom_field_answer, key: 'kept', value: 'yes'),
-        build(:custom_field_answer, key: 'gone', value: 'no').tap(&:mark_for_destruction)
+        build(:custom_field_answer, custom_field: create(:custom_field, key: 'kept'), value: 'yes'),
+        build(:custom_field_answer, custom_field: create(:custom_field, key: 'gone'), value: 'no').tap(&:mark_for_destruction)
       ])
 
       expect(service.custom_field_values(user)).to eq('kept' => 'yes')
@@ -163,8 +163,8 @@ RSpec.describe CustomFieldValuesTransitionService do
   describe '#changed_values' do
     let(:user) do
       build(:user, custom_field_answers: [
-        build(:custom_field_answer, key: 'pet', value: 'cat'),
-        build(:custom_field_answer, key: 'colour', value: 'red')
+        build(:custom_field_answer, custom_field: field, value: 'cat'),
+        build(:custom_field_answer, custom_field: create(:custom_field, key: 'colour'), value: 'red')
       ])
     end
 
