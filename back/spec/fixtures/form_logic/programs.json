@@ -1,0 +1,1178 @@
+{
+  "cases": [
+    {
+      "description": "no logic walks every page in order",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {
+        "colour": "red"
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p2",
+          "p3"
+        ],
+        "visible_keys": [
+          "colour",
+          "why",
+          "age"
+        ],
+        "required_keys": [
+          "colour",
+          "age"
+        ],
+        "answers": {
+          "colour": "red"
+        }
+      }
+    },
+    {
+      "description": "page default jump skips a page",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ],
+            "next": "p3"
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {
+        "colour": "red",
+        "why": "x"
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p3"
+        ],
+        "visible_keys": [
+          "colour",
+          "age"
+        ],
+        "required_keys": [
+          "colour",
+          "age"
+        ],
+        "answers": {
+          "colour": "red"
+        }
+      }
+    },
+    {
+      "description": "page default can end the form",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ],
+            "next": "end"
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {},
+      "expected": {
+        "path": [
+          "p1"
+        ],
+        "visible_keys": [
+          "colour"
+        ],
+        "required_keys": [
+          "colour"
+        ],
+        "answers": {}
+      }
+    },
+    {
+      "description": "select: matching option jumps",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "key": "colour",
+                  "op": "one_of",
+                  "value": [
+                    "red"
+                  ]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {
+        "colour": "red"
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p3"
+        ],
+        "visible_keys": [
+          "colour",
+          "age"
+        ],
+        "required_keys": [
+          "colour",
+          "age"
+        ],
+        "answers": {
+          "colour": "red"
+        }
+      }
+    },
+    {
+      "description": "select: unmatched option falls back to next",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "key": "colour",
+                  "op": "one_of",
+                  "value": [
+                    "red"
+                  ]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {
+        "colour": "blue"
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p2",
+          "p3"
+        ],
+        "visible_keys": [
+          "colour",
+          "why",
+          "age"
+        ],
+        "required_keys": [
+          "colour",
+          "age"
+        ],
+        "answers": {
+          "colour": "blue"
+        }
+      }
+    },
+    {
+      "description": "first matching jump wins (any_other_answer compiles to present after explicit cases)",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "key": "colour",
+                  "op": "one_of",
+                  "value": [
+                    "red"
+                  ]
+                },
+                "goto": "p2"
+              },
+              {
+                "when": {
+                  "key": "colour",
+                  "op": "present"
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {
+        "colour": "red"
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p2",
+          "p3"
+        ],
+        "visible_keys": [
+          "colour",
+          "why",
+          "age"
+        ],
+        "required_keys": [
+          "colour",
+          "age"
+        ],
+        "answers": {
+          "colour": "red"
+        }
+      }
+    },
+    {
+      "description": "any other answer takes the present jump",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "key": "colour",
+                  "op": "one_of",
+                  "value": [
+                    "red"
+                  ]
+                },
+                "goto": "p2"
+              },
+              {
+                "when": {
+                  "key": "colour",
+                  "op": "present"
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {
+        "colour": "green"
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p3"
+        ],
+        "visible_keys": [
+          "colour",
+          "age"
+        ],
+        "required_keys": [
+          "colour",
+          "age"
+        ],
+        "answers": {
+          "colour": "green"
+        }
+      }
+    },
+    {
+      "description": "no answer (absent) can end the form",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "key": "colour",
+                  "op": "absent"
+                },
+                "goto": "end"
+              }
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {
+        "colour": ""
+      },
+      "expected": {
+        "path": [
+          "p1"
+        ],
+        "visible_keys": [
+          "colour"
+        ],
+        "required_keys": [
+          "colour"
+        ],
+        "answers": {
+          "colour": ""
+        }
+      }
+    },
+    {
+      "description": "multiselect contains_any",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "key": "colour",
+                  "op": "contains_any",
+                  "value": [
+                    "red",
+                    "blue"
+                  ]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {
+        "colour": [
+          "green",
+          "blue"
+        ]
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p3"
+        ],
+        "visible_keys": [
+          "colour",
+          "age"
+        ],
+        "required_keys": [
+          "colour",
+          "age"
+        ],
+        "answers": {
+          "colour": [
+            "green",
+            "blue"
+          ]
+        }
+      }
+    },
+    {
+      "description": "empty multiselect is absent",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "key": "colour",
+                  "op": "absent"
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {
+        "colour": []
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p3"
+        ],
+        "visible_keys": [
+          "colour",
+          "age"
+        ],
+        "required_keys": [
+          "colour",
+          "age"
+        ],
+        "answers": {
+          "colour": []
+        }
+      }
+    },
+    {
+      "description": "linear scale gte",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "key": "colour",
+                  "op": "gte",
+                  "value": 4
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {
+        "colour": 4
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p3"
+        ],
+        "visible_keys": [
+          "colour",
+          "age"
+        ],
+        "required_keys": [
+          "colour",
+          "age"
+        ],
+        "answers": {
+          "colour": 4
+        }
+      }
+    },
+    {
+      "description": "numeric operators never match a string",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "colour"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "key": "colour",
+                  "op": "eq",
+                  "value": 3
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "why"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "age"
+            ]
+          }
+        ],
+        "fields": {
+          "colour": {
+            "required": true
+          },
+          "why": {
+            "required": false
+          },
+          "age": {
+            "required": true
+          }
+        }
+      },
+      "answers": {
+        "colour": "3"
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p2",
+          "p3"
+        ],
+        "visible_keys": [
+          "colour",
+          "why",
+          "age"
+        ],
+        "required_keys": [
+          "colour",
+          "age"
+        ],
+        "answers": {
+          "colour": "3"
+        }
+      }
+    },
+    {
+      "description": "AND/OR groups",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "a",
+              "b"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "all": [
+                    {
+                      "key": "a",
+                      "op": "one_of",
+                      "value": [
+                        "yes"
+                      ]
+                    },
+                    {
+                      "any": [
+                        {
+                          "key": "b",
+                          "op": "gt",
+                          "value": 5
+                        },
+                        {
+                          "not": {
+                            "key": "b",
+                            "op": "present"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "c"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "d"
+            ]
+          }
+        ],
+        "fields": {}
+      },
+      "answers": {
+        "a": "yes",
+        "b": 7
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p3"
+        ],
+        "visible_keys": [
+          "a",
+          "b",
+          "d"
+        ],
+        "required_keys": [],
+        "answers": {
+          "a": "yes",
+          "b": 7
+        }
+      }
+    },
+    {
+      "description": "show/hide: hidden question is not visible, not required, answer dropped",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "owns_car",
+              "car_brand"
+            ]
+          }
+        ],
+        "fields": {
+          "owns_car": {
+            "required": true
+          },
+          "car_brand": {
+            "required": true,
+            "display": {
+              "key": "owns_car",
+              "op": "one_of",
+              "value": [
+                "yes"
+              ]
+            }
+          }
+        }
+      },
+      "answers": {
+        "owns_car": "no",
+        "car_brand": "volvo"
+      },
+      "expected": {
+        "path": [
+          "p1"
+        ],
+        "visible_keys": [
+          "owns_car"
+        ],
+        "required_keys": [
+          "owns_car"
+        ],
+        "answers": {
+          "owns_car": "no"
+        }
+      }
+    },
+    {
+      "description": "show/hide: shown question is required",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "owns_car",
+              "car_brand"
+            ]
+          }
+        ],
+        "fields": {
+          "owns_car": {
+            "required": true
+          },
+          "car_brand": {
+            "required": true,
+            "display": {
+              "key": "owns_car",
+              "op": "one_of",
+              "value": [
+                "yes"
+              ]
+            }
+          }
+        }
+      },
+      "answers": {
+        "owns_car": "yes"
+      },
+      "expected": {
+        "path": [
+          "p1"
+        ],
+        "visible_keys": [
+          "owns_car",
+          "car_brand"
+        ],
+        "required_keys": [
+          "owns_car",
+          "car_brand"
+        ],
+        "answers": {
+          "owns_car": "yes"
+        }
+      }
+    },
+    {
+      "description": "an answer left on a hidden question does not trigger a jump",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "owns_car",
+              "car_brand"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "key": "car_brand",
+                  "op": "one_of",
+                  "value": [
+                    "volvo"
+                  ]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "x"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "y"
+            ]
+          }
+        ],
+        "fields": {
+          "car_brand": {
+            "display": {
+              "key": "owns_car",
+              "op": "one_of",
+              "value": [
+                "yes"
+              ]
+            }
+          }
+        }
+      },
+      "answers": {
+        "owns_car": "no",
+        "car_brand": "volvo"
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p2",
+          "p3"
+        ],
+        "visible_keys": [
+          "owns_car",
+          "x",
+          "y"
+        ],
+        "required_keys": [],
+        "answers": {
+          "owns_car": "no"
+        }
+      }
+    },
+    {
+      "description": "an answer left on a skipped page does not trigger a jump later",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "a"
+            ],
+            "next": "p3"
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "b"
+            ]
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "c"
+            ],
+            "jumps": [
+              {
+                "when": {
+                  "key": "b",
+                  "op": "present"
+                },
+                "goto": "end"
+              }
+            ]
+          },
+          {
+            "key": "p4",
+            "fields": [
+              "d"
+            ]
+          }
+        ],
+        "fields": {}
+      },
+      "answers": {
+        "b": "stale"
+      },
+      "expected": {
+        "path": [
+          "p1",
+          "p3",
+          "p4"
+        ],
+        "visible_keys": [
+          "a",
+          "c",
+          "d"
+        ],
+        "required_keys": [],
+        "answers": {}
+      }
+    },
+    {
+      "description": "required_if",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "rating",
+              "reason"
+            ]
+          }
+        ],
+        "fields": {
+          "reason": {
+            "required_if": {
+              "key": "rating",
+              "op": "lte",
+              "value": 2
+            }
+          }
+        }
+      },
+      "answers": {
+        "rating": 1
+      },
+      "expected": {
+        "path": [
+          "p1"
+        ],
+        "visible_keys": [
+          "rating",
+          "reason"
+        ],
+        "required_keys": [
+          "reason"
+        ],
+        "answers": {
+          "rating": 1
+        }
+      }
+    },
+    {
+      "description": "a backward target ends the walk",
+      "program": {
+        "pages": [
+          {
+            "key": "p1",
+            "fields": [
+              "a"
+            ]
+          },
+          {
+            "key": "p2",
+            "fields": [
+              "b"
+            ],
+            "next": "p1"
+          },
+          {
+            "key": "p3",
+            "fields": [
+              "c"
+            ]
+          }
+        ],
+        "fields": {}
+      },
+      "answers": {},
+      "expected": {
+        "path": [
+          "p1",
+          "p2"
+        ],
+        "visible_keys": [
+          "a",
+          "b"
+        ],
+        "required_keys": [],
+        "answers": {}
+      }
+    }
+  ]
+}

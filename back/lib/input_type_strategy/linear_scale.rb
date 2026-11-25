@@ -20,6 +20,10 @@ module InputTypeStrategy
       true
     end
 
+    def logic_operators
+      %w[eq one_of gt gte lt lte present absent]
+    end
+
     def answers_eq(answers, value)
       answers.where("#{INTEGER_VALUE} = ?", value)
     end
