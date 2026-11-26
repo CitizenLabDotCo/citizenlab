@@ -293,6 +293,19 @@ export class PreviewSession {
     }
     if (
       this.snapshot.unsaved &&
+      path.startsWith(`/phases/${this.phaseId}/permissions/`) &&
+      path.endsWith('/access_denied_explanation')
+    ) {
+      // An unsaved phase has no custom message for a blocked action.
+      return {
+        data: {
+          type: 'access_denied_explanation',
+          attributes: { access_denied_explanation_multiloc: {} },
+        },
+      };
+    }
+    if (
+      this.snapshot.unsaved &&
       (path.startsWith(`/phases/${this.phaseId}/`) || path === '/events')
     ) {
       return { data: [], links: {} };

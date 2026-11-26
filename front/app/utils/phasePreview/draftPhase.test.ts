@@ -76,6 +76,16 @@ it('keeps absent dates empty and adds the virtual phase only to its own project 
   expect(session.read(`/phases/${UNSAVED_PHASE_ID}/permissions`)).toMatchObject(
     { data: [] }
   );
+  expect(
+    session.read(
+      `/phases/${UNSAVED_PHASE_ID}/permissions/voting/access_denied_explanation`
+    )
+  ).toEqual({
+    data: {
+      type: 'access_denied_explanation',
+      attributes: { access_denied_explanation_multiloc: {} },
+    },
+  });
 });
 
 it('updates unsaved visual fields without changing its temporary identity', () => {
