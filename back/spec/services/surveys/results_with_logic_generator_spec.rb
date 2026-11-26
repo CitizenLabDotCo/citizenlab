@@ -376,7 +376,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
     context 'linear scale logic stored with a string value' do
       before { linear_scale_field.reload.update!(logic: { rules: [{ if: '2', goto_page_id: mid_page_field2.id }] }) }
 
-      it 'does not match the integer answer (current behaviour)' do
+      it 'does not match the integer answer (current behaviour, B14)' do
         CustomFieldValuesTransitionService.new.assign(input, { linear_scale_field.key => 2 })
         input.save!
 

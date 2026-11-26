@@ -837,7 +837,7 @@ describe('determineNextPageNumber edge cases', () => {
         endPage(),
       ]);
 
-    it('uses the last matching question, even when its target is nearer', () => {
+    it('uses the last matching question, even when its target is nearer (current behaviour, N2)', () => {
       const pages = buildPages(
         [{ if: 'id-a', goto_page_id: 'p4' }],
         [{ if: 'id-a', goto_page_id: 'p3' }]

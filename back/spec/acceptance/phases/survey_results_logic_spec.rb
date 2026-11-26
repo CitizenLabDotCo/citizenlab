@@ -93,7 +93,7 @@ resource 'Phases' do
       expect(seen_counts).to eq [1, 1, 1]
     end
 
-    example 'Lets the last matching question on a page win', document: false do
+    example 'Lets the last matching question on a page win (current behaviour, N2)', document: false do
       select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: page3.id }] })
       scale_field.update!(logic: { rules: [{ if: 1, goto_page_id: form_end.id }] })
       respond(select_field: 'cat', scale_field: 2)
@@ -132,7 +132,7 @@ resource 'Phases' do
       expect(seen_counts).to eq [1, 0, 0]
     end
 
-    example 'Ignores a linear scale rule stored with a string value (current behaviour)', document: false do
+    example 'Ignores a linear scale rule stored with a string value (current behaviour, B14)', document: false do
       scale_field.update!(logic: { rules: [{ if: '3', goto_page_id: form_end.id }, { if: 4, goto_page_id: form_end.id }] })
       respond(scale_field: 3)
       respond(scale_field: 4)
@@ -154,7 +154,7 @@ resource 'Phases' do
       expect([page2_question, page3_question].map { |field| result_for(field)[:totalResponseCount] }).to eq [1, 1]
     end
 
-    example 'Counts no question after a jump to a disabled page as seen (current behaviour)', document: false do
+    example 'Counts no question after a jump to a disabled page as seen (current behaviour, N4)', document: false do
       page2.update!(enabled: false)
       select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: page2.id }] })
       respond(select_field: 'cat', page2_question: 'b', page3_question: 'c')

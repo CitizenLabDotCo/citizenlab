@@ -50,7 +50,7 @@ describe CustomFields::Options::DestroyService do
 
       before { ranking_field.update!(logic: { rules: [{ if: option.id, goto_page_id: page.id }] }) }
 
-      it 'leaves the rule of the deleted option in place (current behaviour)' do
+      it 'leaves the rule of the deleted option in place (current behaviour, B8)' do
         service.destroy!(option, current_user)
 
         expect(ranking_field.reload.logic['rules'].pluck('if')).to eq [option.id]
