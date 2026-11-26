@@ -67,7 +67,11 @@ module EmailCampaigns
 
     def handle_event(event)
       # `email_headers` is an array of `{ "key" => ..., "value" => ... }` pairs.
-      headers = Array.wrap(event['email_headers']).to_h { |header| [header['key'].to_s.downcase, header['value']] }
+      headers = Array
+        .wrap(event['email_headers'])
+        .grep(Hash) # skip malformed entries
+        .to_h { |header| [header['key'].to_s.downcase, header['value']] }
+
       tenant_id = headers[ApplicationMailer::TENANT_ID_HEADER.downcase]
       return log_ignored(event, 'no tenant header') if tenant_id.blank?
 

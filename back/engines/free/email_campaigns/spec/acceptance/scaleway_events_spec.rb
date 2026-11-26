@@ -156,6 +156,14 @@ resource 'Scaleway TEM events' do
       expect(confirmation).to have_been_made
     end
 
+    example 'Skips malformed entries in email_headers', document: false do
+      event['email_headers'] += [nil, 1, 'junk']
+      do_request(envelope)
+
+      expect(response_status).to eq(200)
+      expect(delivery.reload.delivery_status).to eq('delivered')
+    end
+
     example '[error] Refuse an invalid envelope', document: false do
       allow(EmailCampaigns::ScalewaySnsMessage).to receive(:parse!).and_call_original
 

@@ -112,6 +112,7 @@ RSpec.describe EmailCampaigns::ScalewaySnsMessage do
     message = described_class.parse!(envelope)
 
     expect(message.subscribe_url).to eq(subscribe_url)
+    expect(message.event).to be_nil
   end
 
   it 'does not expose fields that are neither signed nor checked' do
@@ -121,6 +122,12 @@ RSpec.describe EmailCampaigns::ScalewaySnsMessage do
 
     expect(message.subscribe_url).to be_nil
     expect(message.envelope).not_to include('SubscribeURL', 'UnsubscribeURL')
+  end
+
+  it 'refuses an event that is not a JSON object' do
+    message = described_class.parse!(signed_envelope(type: 'Notification', 'Message' => '[]').to_json)
+
+    expect { message.event }.to raise_error(described_class::InvalidMessage, /object/)
   end
 
   it 'cannot be instantiated without going through verification' do

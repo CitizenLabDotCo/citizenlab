@@ -92,12 +92,16 @@ module EmailCampaigns
 
     # The TEM event carried by a `Notification`.
     #
-    # @return [Hash] the parsed event
-    # @raise [InvalidMessage] when `Message` is not valid JSON
+    # @return [Hash, nil] the parsed event, or nil for other message types
+    # @raise [InvalidMessage] when `Message` is not a JSON object
     def event
       # `Message` holds the TEM event as a JSON string for a `Notification`, but a plain
       # sentence for the other envelope types.
-      @event ||= JSON.parse(envelope['Message'].to_s)
+      return unless type == 'Notification'
+
+      @event ||= JSON.parse(envelope['Message'].to_s).tap do |event|
+        raise InvalidMessage, 'Message is not a JSON object' unless event.is_a?(Hash)
+      end
     rescue JSON::ParserError
       raise InvalidMessage, 'Message is not JSON'
     end
