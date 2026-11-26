@@ -9,29 +9,24 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.earlyAccess.turnOnNoticeTitle',
     defaultMessage: 'Try the new project back office.',
   },
-  turnOnBannerDescription: {
-    id: 'app.containers.Admin.projects.project.earlyAccess.turnOnBannerDescription',
+  turnOnBannerHint: {
+    id: 'app.containers.Admin.projects.project.earlyAccess.turnOnBannerHint',
     defaultMessage:
-      'It is in internal early access for Go Vocal staff only. Turn it on here, or anytime under "Early access" in your {profileSettingsLink}.',
+      'To switch to it, turn it on here or in your {profileSettingsLink}.',
   },
-  turnOnBannerDescriptionGeneral: {
-    id: 'app.containers.Admin.projects.project.earlyAccess.turnOnBannerDescriptionGeneral',
+  turnOnBannerHintInternal: {
+    id: 'app.containers.Admin.projects.project.earlyAccess.turnOnBannerHintInternal',
     defaultMessage:
-      'It is in early access. Turn it on here, or anytime under "Early access" in your {profileSettingsLink}.',
+      'It is in early access for Go Vocal staff only. To switch to it, turn it on here or in your {profileSettingsLink}.',
   },
   feedbackNoticeTitle: {
     id: 'app.containers.Admin.projects.project.earlyAccess.feedbackNoticeTitle',
     defaultMessage: 'You are using the new project back office.',
   },
-  turnOffBannerDescription: {
-    id: 'app.containers.Admin.projects.project.earlyAccess.turnOffBannerDescription',
+  turnOffBannerHint: {
+    id: 'app.containers.Admin.projects.project.earlyAccess.turnOffBannerHint',
     defaultMessage:
-      'We are still improving it, and your feedback at any point helps shape it: share it in the {slackChannelLink} Slack channel. To go back to the previous version, turn it off here or under "Early access" in your {profileSettingsLink}.',
-  },
-  turnOffBannerDescriptionWithoutSlack: {
-    id: 'app.containers.Admin.projects.project.earlyAccess.turnOffBannerDescriptionWithoutSlack',
-    defaultMessage:
-      'We are still improving it. To go back to the previous version, turn it off here or under "Early access" in your {profileSettingsLink}.',
+      'To go back to the previous version, turn it off here or in your {profileSettingsLink}.',
   },
   switchLabel: {
     id: 'app.containers.Admin.projects.project.earlyAccess.switchLabel',

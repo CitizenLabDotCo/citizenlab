@@ -12,10 +12,6 @@
   text-decoration: underline;
 }
 
-.title {
-  composes: uiStrong from '../../../../../design-system/typography.module.css';
-}
-
 .error {
   display: block;
   margin-top: var(--gv-space-4);

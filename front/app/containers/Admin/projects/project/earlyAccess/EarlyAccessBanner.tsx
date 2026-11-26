@@ -4,20 +4,16 @@ import AlertDialog from 'design-system/AlertDialog';
 import Banner from 'design-system/Banner';
 import Switch from 'design-system/Switch';
 
-import useAuthUser from 'api/me/useAuthUser';
-
 import useDismissed from 'hooks/useDismissed';
 import useEarlyAccess from 'hooks/useEarlyAccess';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isSuperAdmin } from 'utils/permissions/roles';
 
 import styles from './EarlyAccessBanner.module.css';
 import messages from './messages';
 import ProfileSettingsLink from './ProfileSettingsLink';
-import SlackChannelLink from './SlackChannelLink';
 import useSwitchBackOffice, {
   BACK_OFFICE_FEATURE,
 } from './useSwitchBackOffice';
@@ -32,7 +28,6 @@ interface Props {
 // Shown in both versions to the admins the new one is offered to.
 const EarlyAccessBanner = ({ inset = false }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: authUser } = useAuthUser();
   const { offered, tier, optedIn } = useEarlyAccess(BACK_OFFICE_FEATURE);
   const { switchBackOffice, isPending, isError } = useSwitchBackOffice();
   const pageSave = usePageSave();
@@ -51,28 +46,11 @@ const EarlyAccessBanner = ({ inset = false }: Props) => {
   // so it always asks before reloading.
   const mayLoseChanges = pageSave ? pageSave.dirty : true;
 
-  const profileSettingsLink = <ProfileSettingsLink />;
-  const description = optedIn ? (
-    // The Slack channel is internal, so only Go Vocal staff can open it.
-    isSuperAdmin(authUser) ? (
-      <FormattedMessage
-        {...messages.turnOffBannerDescription}
-        values={{ profileSettingsLink, slackChannelLink: <SlackChannelLink /> }}
-      />
-    ) : (
-      <FormattedMessage
-        {...messages.turnOffBannerDescriptionWithoutSlack}
-        values={{ profileSettingsLink }}
-      />
-    )
-  ) : (
-    <FormattedMessage
-      {...(tier === 'internal'
-        ? messages.turnOnBannerDescription
-        : messages.turnOnBannerDescriptionGeneral)}
-      values={{ profileSettingsLink }}
-    />
-  );
+  const hint = optedIn
+    ? messages.turnOffBannerHint
+    : tier === 'internal'
+    ? messages.turnOnBannerHintInternal
+    : messages.turnOnBannerHint;
 
   return (
     <div className={`${styles.banner} ${inset ? styles.inset : ''}`}>
@@ -80,7 +58,7 @@ const EarlyAccessBanner = ({ inset = false }: Props) => {
         tone="info"
         action={
           <Switch
-            size={36}
+            size={28}
             isSelected={optedIn}
             isDisabled={isPending}
             onChange={() =>
@@ -93,14 +71,15 @@ const EarlyAccessBanner = ({ inset = false }: Props) => {
         onDismiss={dismiss}
       >
         <span className={styles.message}>
-          <strong className={styles.title}>
-            <FormattedMessage
-              {...(optedIn
-                ? messages.feedbackNoticeTitle
-                : messages.turnOnNoticeTitle)}
-            />
-          </strong>{' '}
-          {description}
+          <FormattedMessage
+            {...(optedIn
+              ? messages.feedbackNoticeTitle
+              : messages.turnOnNoticeTitle)}
+          />{' '}
+          <FormattedMessage
+            {...hint}
+            values={{ profileSettingsLink: <ProfileSettingsLink /> }}
+          />
           {isError && (
             <span className={styles.error} role="alert">
               {formatMessage(messages.switchFailed)}
