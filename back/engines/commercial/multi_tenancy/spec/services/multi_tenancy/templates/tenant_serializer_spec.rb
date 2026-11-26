@@ -282,7 +282,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       field = create(:custom_field, :for_custom_form, resource: form)
 
       create(:idea, project: timeline_project, phases: [ideation_phase])
-      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_answers: [build(:custom_field_answer, key: field.key, value: 'My value')])
+      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'My value')])
 
       template = tenant_serializer.run(deserializer_format: true)
 
@@ -304,6 +304,19 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(new_survey_phase.ideas_count).to eq 1
         expect(new_survey_phase.ideas.first.answer_for_key(new_field.key)&.value).to eq 'My value'
       end
+    end
+
+    it 'leaves survey logic out of the template (currently existing bug, B10)' do
+      survey_phase = create(:native_survey_phase)
+      form = create(:custom_form, participation_context: survey_phase)
+      page = create(:custom_field_page, resource: form, key: 'page_with_logic')
+      page.update!(logic: { next_page_id: create(:custom_field_form_end_page, resource: form).id })
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      exported_page = template['models']['custom_field'].find { |field| field['key'] == 'page_with_logic' }
+      expect(exported_page).to be_present
+      expect(exported_page).not_to have_key('logic')
     end
 
     it 'successfully exports custom field' do

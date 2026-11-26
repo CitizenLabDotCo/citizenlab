@@ -122,7 +122,7 @@ resource 'Ideas' do
         :idea,
         author: user,
         project: project,
-        custom_field_answers: [build(:custom_field_answer, key: 'custom_field_name1', value: 'Cat')],
+        custom_field_answers: [build(:custom_field_answer, custom_field:, value: 'Cat')],
         creation_phase: creation_phase,
         phases: [creation_phase].compact
       )

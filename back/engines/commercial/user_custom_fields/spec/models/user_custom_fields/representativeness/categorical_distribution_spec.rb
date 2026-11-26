@@ -65,7 +65,7 @@ RSpec.describe UserCustomFields::Representativeness::CategoricalDistribution do
     let(:users) do
       custom_field = ref_distribution.custom_field
       users = custom_field.options.map do |option|
-        create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: option.key)])
+        create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field, value: option.key)])
       end
       # Users whose custom field value is unknown should not affect the score.
       users << create(:user)

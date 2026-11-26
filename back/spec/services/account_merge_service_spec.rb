@@ -249,10 +249,11 @@ describe AccountMergeService do
     end
 
     it "fills gaps in the target's profile without overwriting its answers" do
-      create(:custom_field, key: 'hobby')
-      source.custom_field_answers.create!(key: 'birthyear', value: 1980)
-      source.custom_field_answers.create!(key: 'hobby', value: 'chess')
-      target.custom_field_answers.create!(key: 'birthyear', value: 1990)
+      hobby_field = create(:custom_field, key: 'hobby')
+      birthyear_field = create(:custom_field, key: 'birthyear')
+      create(:custom_field_answer, answerable: source, custom_field: birthyear_field, value: 1980)
+      create(:custom_field_answer, answerable: source, custom_field: hobby_field, value: 'chess')
+      create(:custom_field_answer, answerable: target, custom_field: birthyear_field, value: 1990)
 
       merge!
 
@@ -263,9 +264,9 @@ describe AccountMergeService do
 
     # bogus locks gender, so the source's answer is the provider's and wins.
     it 'lets a locked answer from the source win over the target' do
-      create(:custom_field_gender, :with_options)
-      source.custom_field_answers.create!(key: 'gender', value: 'female')
-      target.custom_field_answers.create!(key: 'gender', value: 'male')
+      gender_field = create(:custom_field_gender, :with_options)
+      create(:custom_field_answer, answerable: source, custom_field: gender_field, value: 'female')
+      create(:custom_field_answer, answerable: target, custom_field: gender_field, value: 'male')
       create(:verification, user: source, method_name: 'bogus', hashed_uid: 'aaa')
 
       merge!

@@ -168,7 +168,8 @@ resource 'Areas' do
       end
 
       example "Deleting an area that's still referenced in a user's setting", document: false do
-        user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)])
+        domicile_field = CustomField.find_by!(code: 'domicile')
+        user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: domicile_field, value: area.id)])
         expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [['domicile', area.id]]
         do_request
         expect(response_status).to eq 200

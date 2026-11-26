@@ -212,7 +212,8 @@ describe Permissions::PhasePermissionsService do
       end
 
       context 'for a verified user' do
-        let(:user) { create(:user, verified: true, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: 2008)]) }
+        let(:birthyear) { create(:custom_field_birthyear) }
+        let(:user) { create(:user, verified: true, custom_field_answers: [build(:custom_field_answer, custom_field: birthyear, value: 2008)]) }
 
         it 'returns nil' do
           permission = project.phases.first.permissions.find_by(action: 'posting_idea')
@@ -223,7 +224,6 @@ describe Permissions::PhasePermissionsService do
 
         it 'returns `user_not_in_group` when not permitted' do
           permission = project.phases.first.permissions.find_by(action: 'posting_idea')
-          birthyear = create(:custom_field_birthyear)
           verified_members = create(
             :smart_group,
             rules: [

@@ -203,13 +203,11 @@ module MultiTenancy
       end
 
       # File values reference uploads and domicile values reference areas, which
-      # both get new ids in the destination tenant; answers without a field have
-      # nothing to attach to.
+      # both get new ids in the destination tenant.
       def serializable_custom_field_answers(ideas, users)
         excluded_fields = CustomField.where(input_type: %w[file_upload shapefile_upload]).or(CustomField.where(code: 'domicile'))
         CustomFieldAnswer
           .where(answerable: ideas).or(CustomFieldAnswer.where(answerable: users))
-          .where.not(custom_field_id: nil)
           .where.not(custom_field_id: excluded_fields.select(:id))
       end
 

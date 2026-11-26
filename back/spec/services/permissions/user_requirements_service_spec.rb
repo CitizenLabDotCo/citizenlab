@@ -6,10 +6,12 @@ describe Permissions::UserRequirementsService do
   let(:service) { described_class.new }
 
   describe '#requirements' do
-    before do
-      create(:custom_field_birthyear, required: true)
-      create(:custom_field_gender, required: false)
+    let!(:birthyear_field) { create(:custom_field_birthyear, required: true) }
+    let!(:gender_field) { create(:custom_field_gender, required: false) }
+    let!(:extra_required_field) do
       create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_required_field')
+    end
+    let!(:extra_optional_field) do
       create(:custom_field_number, resource_type: 'User', required: false, key: 'extra_optional_field')
     end
 
@@ -20,10 +22,10 @@ describe Permissions::UserRequirementsService do
         last_name: 'Jacobs',
         email: 'jane@jacobs.com',
         custom_field_answers: [
-          build(:custom_field_answer, key: 'gender', value: 'female'),
-          build(:custom_field_answer, key: 'birthyear', value: 1975),
-          build(:custom_field_answer, key: 'extra_required_field', value: false),
-          build(:custom_field_answer, key: 'extra_optional_field', value: 29)
+          build(:custom_field_answer, custom_field: gender_field, value: 'female'),
+          build(:custom_field_answer, custom_field: birthyear_field, value: 1975),
+          build(:custom_field_answer, custom_field: extra_required_field, value: false),
+          build(:custom_field_answer, custom_field: extra_optional_field, value: 29)
         ],
         password: 'supersecret',
         email_confirmed_at: Time.now

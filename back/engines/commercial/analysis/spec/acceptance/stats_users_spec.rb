@@ -46,7 +46,7 @@ resource 'Analysis - Stats - Users' do
       @somewhere_else_option = cf_domicile.options.left_joins(:area).find_by(areas: { id: nil })
 
       authors = [@area1.id, @area1.id, @area2.id, nil, 'outside'].map do |domicile|
-        answers = domicile ? [build(:custom_field_answer, key: 'domicile', value: domicile)] : []
+        answers = domicile ? [build(:custom_field_answer, custom_field: cf_domicile, value: domicile)] : []
         create(:user, custom_field_answers: answers)
       end
       create(:idea, project: project, author: authors[0], likes_count: 5)
@@ -78,7 +78,7 @@ resource 'Analysis - Stats - Users' do
     describe 'when admins and moderators are excluded from statistics' do
       before do
         enable_exclude_admins_and_moderators_from_statistics
-        create_admins_and_moderators(project: project, answers: { 'domicile' => @area2.id }).each do |author|
+        create_admins_and_moderators(project: project, answers: { cf_domicile => @area2.id }).each do |author|
           create(:idea, project: project, author: author, likes_count: 5)
         end
       end
@@ -102,7 +102,7 @@ resource 'Analysis - Stats - Users' do
     before do
       birthyears = [1962, 1976, 1980, 1990, 1991]
       authors = birthyears.map do |year|
-        create(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: year)])
+        create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf_birthyear, value: year)])
       end
       author_without_birthyear = create(:user)
       create(:idea, project: project, author: authors[0])
@@ -131,7 +131,7 @@ resource 'Analysis - Stats - Users' do
 
     describe 'when admins and moderators are excluded from statistics' do
       before do
-        create_admins_and_moderators(project: project, answers: { 'birthyear' => 1990 }).each do |author|
+        create_admins_and_moderators(project: project, answers: { cf_birthyear => 1990 }).each do |author|
           create(:idea, project: project, author: author)
         end
       end
@@ -168,8 +168,8 @@ resource 'Analysis - Stats - Users' do
         before do
           @custom_field = create(:custom_field_select)
           @option1, @option2, = create_list(:custom_field_option, 2, custom_field: @custom_field)
-          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option1.key)])
-          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option2.key)])
+          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: @option1.key)])
+          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: @option2.key)])
           user3 = create(:user)
           create(:idea, project: project, author: user1)
           create(:idea, project: project, author: user2)
@@ -198,7 +198,7 @@ resource 'Analysis - Stats - Users' do
         describe 'when admins and moderators are excluded from statistics' do
           before do
             enable_exclude_admins_and_moderators_from_statistics
-            create_admins_and_moderators(project: project, answers: { @custom_field.key => @option1.key }).each do |author|
+            create_admins_and_moderators(project: project, answers: { @custom_field => @option1.key }).each do |author|
               create(:idea, project: project, author: author)
             end
           end
@@ -218,8 +218,8 @@ resource 'Analysis - Stats - Users' do
         before do
           @custom_field = create(:custom_field_multiselect)
           @option1, @option2 = create_list(:custom_field_option, 2, custom_field: @custom_field)
-          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key])])
-          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key, @option2.key])])
+          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: [@option1.key])])
+          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: [@option1.key, @option2.key])])
           user3 = create(:user)
           create(:idea, project: project, author: user1)
           create(:idea, project: project, author: user2)
@@ -250,8 +250,8 @@ resource 'Analysis - Stats - Users' do
         before do
           @custom_field = create(:custom_field_checkbox)
           user1 = create(:user)
-          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: false)])
-          user3 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: true)])
+          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: false)])
+          user3 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: true)])
           create(:idea, project: project, author: user1)
           create(:idea, project: project, author: user1)
           create(:idea, project: project, author: user2)

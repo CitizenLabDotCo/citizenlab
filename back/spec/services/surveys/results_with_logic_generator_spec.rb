@@ -206,21 +206,21 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       end
 
       it 'returns the correct next_page_id from linear scale logic' do
-        CustomFieldValuesTransitionService.new.assign(input, { linear_scale_field.key => 2 })
+        CustomFieldValuesTransitionService.new.assign!(input, { linear_scale_field.key => 2 })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input, page_ids)
         expect(logic_next_page_id).to eq mid_page_field2.id
       end
 
       it 'returns the correct next_page_id from no answer logic' do
-        CustomFieldValuesTransitionService.new.assign(input, {})
+        CustomFieldValuesTransitionService.new.assign!(input, {})
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input, page_ids)
         expect(logic_next_page_id).to eq last_page_field.id
       end
 
       it 'returns no next_page_id when no logic present for the answer' do
-        CustomFieldValuesTransitionService.new.assign(input, { linear_scale_field.key => 3 })
+        CustomFieldValuesTransitionService.new.assign!(input, { linear_scale_field.key => 3 })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input, page_ids)
         expect(logic_next_page_id).to be_nil
@@ -240,21 +240,21 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       end
 
       it 'returns the correct next_page_id from a single selection' do
-        CustomFieldValuesTransitionService.new.assign(input, { select_field.key => 'la' })
+        CustomFieldValuesTransitionService.new.assign!(input, { select_field.key => 'la' })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, select_field, input, page_ids)
         expect(logic_next_page_id).to eq mid_page_field1.id
       end
 
       it 'returns the correct next_page_id when there is no answer' do
-        CustomFieldValuesTransitionService.new.assign(input, {})
+        CustomFieldValuesTransitionService.new.assign!(input, {})
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, select_field, input, page_ids)
         expect(logic_next_page_id).to eq last_page_field.id
       end
 
       it 'returns the correct next_page_id for any other answer' do
-        CustomFieldValuesTransitionService.new.assign(input, { select_field.key => 'ny' })
+        CustomFieldValuesTransitionService.new.assign!(input, { select_field.key => 'ny' })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, select_field, input, page_ids)
         expect(logic_next_page_id).to eq mid_page_field2.id
@@ -275,31 +275,112 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       end
 
       it 'returns the correct next_page_id from a single selection' do
-        CustomFieldValuesTransitionService.new.assign(input, { multiselect_field.key => ['cat'] })
+        CustomFieldValuesTransitionService.new.assign!(input, { multiselect_field.key => ['cat'] })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
         expect(logic_next_page_id).to eq mid_page_field1.id
       end
 
       it 'returns the correct next_page_id from a multiple selection' do
-        CustomFieldValuesTransitionService.new.assign(input, { multiselect_field.key => %w[cat dog] })
+        CustomFieldValuesTransitionService.new.assign!(input, { multiselect_field.key => %w[cat dog] })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
         expect(logic_next_page_id).to eq mid_page_field2.id
       end
 
       it 'returns the correct next_page_id when there is no answer' do
-        CustomFieldValuesTransitionService.new.assign(input, {})
+        CustomFieldValuesTransitionService.new.assign!(input, {})
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
         expect(logic_next_page_id).to eq last_page_field.id
       end
 
       it 'returns no next_page_id when no logic present for the answer' do
-        CustomFieldValuesTransitionService.new.assign(input, { multiselect_field.key => ['cow'] })
+        CustomFieldValuesTransitionService.new.assign!(input, { multiselect_field.key => ['cow'] })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
         expect(logic_next_page_id).to be_nil
+      end
+    end
+
+    context 'legacy multiselect logic with an any_other_answer rule' do
+      before do
+        multiselect_field.update_columns(logic: {
+          rules: [
+            { if: multiselect_field.options.first.id, goto_page_id: mid_page_field1.id },
+            { if: multiselect_field.options.second.id, goto_page_id: last_page_field.id },
+            { if: 'any_other_answer', goto_page_id: mid_page_field2.id },
+            { if: 'no_answer', goto_page_id: page_field.id }
+          ]
+        })
+      end
+
+      def next_page_for(value)
+        CustomFieldValuesTransitionService.new.assign(input, { multiselect_field.key => value })
+        input.save!
+        generator.send(:next_page_id_from_logic, multiselect_field.reload, input, page_ids)
+      end
+
+      it 'returns the farthest target whatever the order of the selected options' do
+        expect(next_page_for(%w[dog cat])).to eq last_page_field.id
+      end
+
+      it 'returns the any_other_answer target for options without a rule' do
+        expect(next_page_for(%w[cow])).to eq mid_page_field2.id
+      end
+
+      it 'raises when options with and without a rule are selected together (currently existing bug, N1)' do
+        expect { next_page_for(%w[cat cow]) }.to raise_error(ArgumentError, /comparison of/)
+      end
+    end
+
+    context 'logic stored on input types that can no longer get logic' do
+      it 'still applies the rules of a rating question' do
+        rating_field.update_columns(logic: { rules: [{ if: 3, goto_page_id: mid_page_field2.id }] })
+        CustomFieldValuesTransitionService.new.assign(input, { rating_field.key => 3 })
+        input.save!
+
+        expect(generator.send(:next_page_id_from_logic, rating_field.reload, input, page_ids)).to eq mid_page_field2.id
+      end
+
+      it 'still applies the rules of a sentiment scale question' do
+        sentiment_linear_scale_field.update_columns(logic: { rules: [{ if: 'any_other_answer', goto_page_id: mid_page_field2.id }] })
+        CustomFieldValuesTransitionService.new.assign(input, { sentiment_linear_scale_field.key => 1 })
+        input.save!
+
+        expect(generator.send(:next_page_id_from_logic, sentiment_linear_scale_field.reload, input, page_ids)).to eq mid_page_field2.id
+      end
+    end
+
+    context 'ranking logic' do
+      let(:by_bike) { ranking_field.options.find_by(key: 'by_bike') }
+
+      before { ranking_field.reload.update!(logic: { rules: [{ if: by_bike.id, goto_page_id: mid_page_field2.id }] }) }
+
+      it 'applies an option rule like a multiselect when the only ranked option has a rule' do
+        CustomFieldValuesTransitionService.new.assign(input, { ranking_field.key => %w[by_bike] })
+        input.save!
+
+        expect(generator.send(:next_page_id_from_logic, ranking_field.reload, input, page_ids)).to eq mid_page_field2.id
+      end
+
+      it 'raises when the ranking also has options without a rule (currently existing bug, N1)' do
+        CustomFieldValuesTransitionService.new.assign(input, { ranking_field.key => %w[by_train by_foot by_bike] })
+        input.save!
+
+        expect { generator.send(:next_page_id_from_logic, ranking_field.reload, input, page_ids) }
+          .to raise_error(ArgumentError, /comparison of/)
+      end
+    end
+
+    context 'linear scale logic stored with a string value' do
+      before { linear_scale_field.reload.update!(logic: { rules: [{ if: '2', goto_page_id: mid_page_field2.id }] }) }
+
+      it 'does not match the integer answer (current behaviour)' do
+        CustomFieldValuesTransitionService.new.assign(input, { linear_scale_field.key => 2 })
+        input.save!
+
+        expect(generator.send(:next_page_id_from_logic, linear_scale_field.reload, input, page_ids)).to be_nil
       end
     end
   end
@@ -315,7 +396,6 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       create(
         :custom_field_select,
         resource: new_form,
-        key: 'page1_select',
         options: [
           create(:custom_field_option, key: 'first'),
           create(:custom_field_option, key: 'second')
@@ -323,14 +403,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       )
     end
     let_it_be(:page2) { create(:custom_field_page, resource: new_form) }
-    let_it_be(:page2_linear_scale) do
-      create(
-        :custom_field_linear_scale,
-        resource: new_form,
-        key: 'page2_linear_scale',
-        maximum: 5
-      )
-    end
+    let_it_be(:page2_linear_scale) { create(:custom_field_linear_scale, resource: new_form, maximum: 5) }
     let_it_be(:page3) { create(:custom_field_page, resource: new_form) }
     let_it_be(:page3_text) { create(:custom_field, resource: new_form) }
     let_it_be(:page4) { create(:custom_field_page, resource: new_form) }
@@ -340,20 +413,20 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
     # Add some responses that will influence logic
     let_it_be(:response1) do
       create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_answers: [
-        build(:custom_field_answer, key: 'page1_select', value: 'first'),
-        build(:custom_field_answer, key: 'page2_linear_scale', value: 1)
+        build(:custom_field_answer, custom_field: page1_select, value: 'first'),
+        build(:custom_field_answer, custom_field: page2_linear_scale, value: 1)
       ])
     end
     let_it_be(:response2) do
       create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_answers: [
-        build(:custom_field_answer, key: 'page1_select', value: 'second'),
-        build(:custom_field_answer, key: 'page2_linear_scale', value: 1)
+        build(:custom_field_answer, custom_field: page1_select, value: 'second'),
+        build(:custom_field_answer, custom_field: page2_linear_scale, value: 1)
       ])
     end
     let_it_be(:response3) do
       create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_answers: [
-        build(:custom_field_answer, key: 'page1_select', value: 'first'),
-        build(:custom_field_answer, key: 'page2_linear_scale', value: 2)
+        build(:custom_field_answer, custom_field: page1_select, value: 'first'),
+        build(:custom_field_answer, custom_field: page2_linear_scale, value: 2)
       ])
     end
 

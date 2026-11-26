@@ -461,12 +461,10 @@ resource 'Ideas' do
           context 'with a draft input' do
             let(:publication_status) { 'draft' }
 
-            example_request 'Create a draft input with a value that is not an option' do
-              assert_status 201
-              expect(project.reload.ideas.first.custom_field_answers.pluck(:key, :value)).to contain_exactly(
-                %w[custom_field_name1 Cat],
-                %w[select_field unlisted_animal]
-              )
+            example_request '[error] Create a draft input with a value that is not an option' do
+              assert_status 422
+              expect(json_response_body.dig(:errors, :custom_field_values)).to be_present
+              expect(project.reload.ideas).to be_empty
             end
           end
         end
@@ -499,12 +497,22 @@ resource 'Ideas' do
     let(:active_phase) { project.phases.first }
     let(:custom_form) { create(:custom_form, participation_context: active_phase) }
     let(:creation_phase) { active_phase }
+    let!(:text_field) do
+      create(
+        :custom_field,
+        resource: custom_form,
+        key: 'custom_field_name1',
+        enabled: true,
+        title_multiloc: { 'en' => 'What is your favourite pet?' },
+        description_multiloc: { 'en' => 'Enter one pet.' }
+      )
+    end
     let!(:input) do
       create(
         :idea,
         author: user,
         project: project,
-        custom_field_answers: [build(:custom_field_answer, key: 'custom_field_name1', value: 'Cat')],
+        custom_field_answers: [build(:custom_field_answer, custom_field: text_field, value: 'Cat')],
         creation_phase: creation_phase,
         phases: [creation_phase].compact
       )
@@ -513,16 +521,6 @@ resource 'Ideas' do
     let(:project_id) { project.id }
 
     context 'with active participation context' do
-      let!(:text_field) do
-        create(
-          :custom_field,
-          resource: custom_form,
-          key: 'custom_field_name1',
-          enabled: true,
-          title_multiloc: { 'en' => 'What is your favourite pet?' },
-          description_multiloc: { 'en' => 'Enter one pet.' }
-        )
-      end
       let!(:files_field) do
         create(
           :custom_field,
@@ -663,14 +661,14 @@ resource 'Ideas' do
               author: user,
               project: project,
               custom_field_answers: [
-                build(:custom_field_answer, key: 'custom_field_name1', value: 'Cat'),
-                build(:custom_field_answer, key: 'select_field', value: 'other'),
-                build(:custom_field_answer, key: 'select_field_other', value: 'A ferret', custom_field: select_cf),
-                build(:custom_field_answer, key: 'multiselect_field', value: %w[option1 option2]),
-                build(:custom_field_answer, key: 'checkbox_field', value: true),
-                build(:custom_field_answer, key: 'number_field', value: 42),
-                build(:custom_field_answer, key: 'matrix_field', value: { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 2 }),
-                build(:custom_field_answer, key: 'disabled_field', value: 'legacy value')
+                build(:custom_field_answer, custom_field: text_field, value: 'Cat'),
+                build(:custom_field_answer, custom_field: select_cf, value: 'other'),
+                build(:custom_field_answer, key: 'select_field_other', custom_field: select_cf, value: 'A ferret'),
+                build(:custom_field_answer, custom_field: multiselect_cf, value: %w[option1 option2]),
+                build(:custom_field_answer, custom_field: checkbox_cf, value: true),
+                build(:custom_field_answer, custom_field: number_cf, value: 42),
+                build(:custom_field_answer, custom_field: matrix_cf, value: { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 2 }),
+                build(:custom_field_answer, custom_field: disabled_cf, value: 'legacy value')
               ],
               creation_phase: creation_phase,
               phases: [creation_phase]

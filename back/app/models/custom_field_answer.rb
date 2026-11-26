@@ -7,7 +7,7 @@
 #  id              :uuid             not null, primary key
 #  answerable_type :string           not null
 #  answerable_id   :uuid             not null
-#  custom_field_id :uuid
+#  custom_field_id :uuid             not null
 #  key             :string           not null
 #  value           :jsonb            not null
 #  created_at      :datetime         not null
@@ -27,9 +27,7 @@ class CustomFieldAnswer < ApplicationRecord
   ANSWERABLE_TYPES = %w[Idea User].freeze
 
   belongs_to :answerable, polymorphic: true
-  # nil for legacy answers, for answers of an input moved to another project, and for
-  # unknown keys written by the MCP demo tools.
-  belongs_to :custom_field, optional: true
+  belongs_to :custom_field
 
   # Only the answers under the field's own key, not its _other and _follow_up
   # companions, which also reference the field.

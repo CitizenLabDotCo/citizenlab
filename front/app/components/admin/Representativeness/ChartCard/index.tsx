@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-import useRScore from 'api/r_score/useRScore';
+// TAN-9042: R-score hidden, lines commented 7, 60-63, 89, 132
+// import useRScore from 'api/r_score/useRScore';
 import {
   IUserCustomFieldData,
   TCustomFieldCode,
@@ -56,10 +57,10 @@ const ChartCard = injectIntl(
     projectFilter,
     intl: { formatMessage },
   }: Props & WrappedComponentProps) => {
-    const { data: rScore } = useRScore({
-      id: userCustomField.id,
-      projectId: projectFilter,
-    });
+    // const { data: rScore } = useRScore({
+    //   id: userCustomField.id,
+    //   projectId: projectFilter,
+    // });
     const { referenceData, includedUsers } = useReferenceData(
       userCustomField,
       projectFilter
@@ -85,7 +86,7 @@ const ChartCard = injectIntl(
 
     if (
       isNilOrError(referenceData) ||
-      isNilOrError(rScore) ||
+      // isNilOrError(rScore) ||
       isNilOrError(includedUsers) ||
       view === undefined
     ) {
@@ -128,7 +129,7 @@ const ChartCard = injectIntl(
         <Header
           title={title}
           svgNode={currentChartRef}
-          rScore={rScore.data.attributes.score}
+          // rScore={rScore.data.attributes.score}
           view={view}
           projectFilter={projectFilter}
           xlsxEndpoint={xlsxEndpoint}

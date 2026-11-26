@@ -676,24 +676,20 @@ RSpec.describe User do
   end
 
   describe 'demographic fields' do
-    before do
-      create(:custom_field_birthyear)
-      create(:custom_field_gender, :with_options)
-      create(:custom_field_domicile)
-    end
+    let(:gender_field) { create(:custom_field_gender, :with_options) }
 
-    def user_with_answer(key, value)
-      build(:user, custom_field_answers: [build(:custom_field_answer, key: key, value: value)])
+    def user_with_answer(field, value)
+      build(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: value)])
     end
 
     it 'is valid with valid built-in answers' do
-      expect(user_with_answer('gender', 'male')).to be_valid
-      expect(user_with_answer('birthyear', Time.now.year - 13)).to be_valid
-      expect(user_with_answer('domicile', 'outside')).to be_valid
+      expect(user_with_answer(gender_field, 'male')).to be_valid
+      expect(user_with_answer(create(:custom_field_birthyear), Time.now.year - 13)).to be_valid
+      expect(user_with_answer(create(:custom_field_domicile), 'outside')).to be_valid
     end
 
     it 'is invalid with an invalid built-in answer' do
-      user = user_with_answer('gender', 'somethingelse')
+      user = user_with_answer(gender_field, 'somethingelse')
       expect { user.valid? }.to(change { user.errors[:'custom_field_answers.value'] })
     end
   end

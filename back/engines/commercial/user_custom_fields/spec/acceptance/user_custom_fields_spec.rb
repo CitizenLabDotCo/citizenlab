@@ -279,10 +279,10 @@ resource 'User Custom Fields' do
       example 'Delete a custom field, user saved values and permission relationships' do
         permission = create(:permission)
         permissions_custom_field = create(:permissions_custom_field, custom_field: custom_field, permission: permission)
-        user_with_fields = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'field_to_delete', value: 'a value')])
+        user_with_fields = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field:, value: 'a value')])
         input = create(:idea, custom_field_answers: [
-          build(:custom_field_answer, key: 'u_field_to_delete', value: 'a value', custom_field: custom_field),
-          build(:custom_field_answer, key: 'another_field', value: 'another value')
+          build(:custom_field_answer, key: 'u_field_to_delete', custom_field:, value: 'a value'),
+          build(:custom_field_answer, custom_field: create(:custom_field, key: 'another_field'), value: 'another value')
         ])
 
         do_request

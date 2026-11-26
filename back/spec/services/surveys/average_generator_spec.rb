@@ -94,15 +94,16 @@ RSpec.describe Surveys::AverageGenerator do
       survey_phase.pmethod.create_default_form!
       # Additional question with no category
       create(:custom_field_sentiment_linear_scale, key: 'another_question', resource: survey_phase.custom_form)
+      fields = survey_phase.custom_form.custom_fields.index_by(&:key)
       create(:idea_status_proposed)
       create(:native_survey_response,
         project: survey_phase.project,
         creation_phase: survey_phase,
         phases: [survey_phase],
         custom_field_answers: [
-          build(:custom_field_answer, key: 'place_to_live', value: 3),
-          build(:custom_field_answer, key: 'overall_value', value: 3),
-          build(:custom_field_answer, key: 'trust_in_government', value: 3)
+          build(:custom_field_answer, custom_field: fields['place_to_live'], value: 3),
+          build(:custom_field_answer, custom_field: fields['overall_value'], value: 3),
+          build(:custom_field_answer, custom_field: fields['trust_in_government'], value: 3)
         ],
         created_at: '2025-01-20')
       create(:native_survey_response,
@@ -110,9 +111,9 @@ RSpec.describe Surveys::AverageGenerator do
         creation_phase: survey_phase,
         phases: [survey_phase],
         custom_field_answers: [
-          build(:custom_field_answer, key: 'sense_of_safety', value: 2),
-          build(:custom_field_answer, key: 'quality_of_services', value: 2),
-          build(:custom_field_answer, key: 'responsiveness_of_officials', value: 1)
+          build(:custom_field_answer, custom_field: fields['sense_of_safety'], value: 2),
+          build(:custom_field_answer, custom_field: fields['quality_of_services'], value: 2),
+          build(:custom_field_answer, custom_field: fields['responsiveness_of_officials'], value: 1)
         ],
         created_at: '2025-01-20')
       create(:native_survey_response,
@@ -120,10 +121,10 @@ RSpec.describe Surveys::AverageGenerator do
         creation_phase: survey_phase,
         phases: [survey_phase],
         custom_field_answers: [
-          build(:custom_field_answer, key: 'affordable_housing', value: 4),
-          build(:custom_field_answer, key: 'cleanliness_and_maintenance', value: 3),
-          build(:custom_field_answer, key: 'transparency_of_money_spent', value: 1),
-          build(:custom_field_answer, key: 'another_question', value: 2)
+          build(:custom_field_answer, custom_field: fields['affordable_housing'], value: 4),
+          build(:custom_field_answer, custom_field: fields['cleanliness_and_maintenance'], value: 3),
+          build(:custom_field_answer, custom_field: fields['transparency_of_money_spent'], value: 1),
+          build(:custom_field_answer, custom_field: fields['another_question'], value: 2)
         ],
         created_at: '2025-04-20')
       create(:native_survey_response,
@@ -131,10 +132,10 @@ RSpec.describe Surveys::AverageGenerator do
         creation_phase: survey_phase,
         phases: [survey_phase],
         custom_field_answers: [
-          build(:custom_field_answer, key: 'sense_of_safety', value: 1),
-          build(:custom_field_answer, key: 'quality_of_services', value: 5),
-          build(:custom_field_answer, key: 'responsiveness_of_officials', value: 2),
-          build(:custom_field_answer, key: 'another_question', value: 1)
+          build(:custom_field_answer, custom_field: fields['sense_of_safety'], value: 1),
+          build(:custom_field_answer, custom_field: fields['quality_of_services'], value: 5),
+          build(:custom_field_answer, custom_field: fields['responsiveness_of_officials'], value: 2),
+          build(:custom_field_answer, custom_field: fields['another_question'], value: 1)
         ],
         created_at: '2025-04-20')
     end

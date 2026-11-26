@@ -25,7 +25,7 @@ describe SideFxAreaService do
   describe 'before_destroy' do
     it 'destroys custom field option values for domicile that refer to this area' do
       domicile_cf = create(:custom_field_select, code: 'domicile', key: 'domicile')
-      lives_in_area = create(:user, custom_field_answers: [build(:custom_field_answer, key: domicile_cf.key, value: area.id)])
+      lives_in_area = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: domicile_cf, value: area.id)])
       service.before_destroy(area, user)
       expect(lives_in_area.reload.custom_field_answers).to be_empty
     end
