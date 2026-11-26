@@ -1,0 +1,421 @@
+{
+  "description": "Number comparisons: `gt`, `gte`, `lt`, `lte`.",
+  "cases": [
+    {
+      "description": "gt above",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gt", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 4},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 4}}
+    },
+    {
+      "description": "gt equal",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gt", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 3},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 3}}
+    },
+    {
+      "description": "gt below",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gt", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 2},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 2}}
+    },
+    {
+      "description": "gte above",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gte", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 4},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 4}}
+    },
+    {
+      "description": "gte equal",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gte", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 3},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 3}}
+    },
+    {
+      "description": "gte below",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gte", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 2},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 2}}
+    },
+    {
+      "description": "lt above",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "lt", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 4},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 4}}
+    },
+    {
+      "description": "lt equal",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "lt", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 3},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 3}}
+    },
+    {
+      "description": "lt below",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "lt", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 2},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 2}}
+    },
+    {
+      "description": "lte above",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "lte", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 4},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 4}}
+    },
+    {
+      "description": "lte equal",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "lte", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 3},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 3}}
+    },
+    {
+      "description": "lte below",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "lte", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 2},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 2}}
+    },
+    {
+      "description": "floats compare as numbers",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gt", "value": 2.5}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 3},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 3}}
+    },
+    {
+      "description": "floats compare as numbers below",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gt", "value": 2.5}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 2},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 2}}
+    },
+    {
+      "description": "zero is a number",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "lt", "value": 1}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 0},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 0}}
+    },
+    {
+      "description": "negative numbers compare",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "lt", "value": 0}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": -1},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": -1}}
+    },
+    {
+      "description": "3.0 is equal to 3 for gte",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gte", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 3.0},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 3.0}}
+    },
+    {
+      "description": "a numeric string is not a number",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gt", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "5"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "5"}
+      }
+    },
+    {
+      "description": "a boolean is not a number",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gt", "value": 0}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": true},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": true}
+      }
+    },
+    {
+      "description": "null is not a number",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "lt", "value": 5}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": null},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": null}
+      }
+    },
+    {
+      "description": "a missing answer is not a number",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "lt", "value": 5}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "a list is not a number",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gt", "value": 0}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": [5]},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": [5]}
+      }
+    },
+    {
+      "description": "a string value never compares",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "gt", "value": "3"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 5},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 5}}
+    },
+    {
+      "description": "a missing value never compares",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "gt"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 5},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 5}}
+    },
+    {
+      "description": "a null value never compares",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "lte", "value": null}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 5},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 5}}
+    }
+  ]
+}

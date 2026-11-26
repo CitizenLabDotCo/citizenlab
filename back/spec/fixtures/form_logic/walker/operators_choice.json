@@ -1,0 +1,646 @@
+{
+  "description": "Single-value comparisons: `eq`, `one_of`, `none_of`.",
+  "cases": [
+    {
+      "description": "eq matches the same string",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": "red"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": "red"}}
+    },
+    {
+      "description": "eq is case sensitive",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": "red"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "Red"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "Red"}
+      }
+    },
+    {
+      "description": "eq matches the same number",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 3},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 3}}
+    },
+    {
+      "description": "eq treats 3 and 3.0 as equal",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 3.0},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 3.0}}
+    },
+    {
+      "description": "eq never matches a number against a string",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": 3}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "3"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "3"}
+      }
+    },
+    {
+      "description": "eq never matches a string against a number",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": "3"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 3},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 3}}
+    },
+    {
+      "description": "eq matches booleans",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": true}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": true},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": true}}
+    },
+    {
+      "description": "eq does not treat 1 as true",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": true}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 1},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 1}}
+    },
+    {
+      "description": "eq with a list answer never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": "a"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["a"]},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": ["a"]}
+      }
+    },
+    {
+      "description": "eq with a list value never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": ["a"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["a"]},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": ["a"]}
+      }
+    },
+    {
+      "description": "eq with an object value never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": {"a": 1}}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": {"a": 1}},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": {"a": 1}}
+      }
+    },
+    {
+      "description": "eq with a missing value never matches",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "eq"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "a"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "a"}
+      }
+    },
+    {
+      "description": "eq with a null value never matches a null answer",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": null}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": null},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": null}
+      }
+    },
+    {
+      "description": "eq matches an empty string with an empty string",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": ""}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ""},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": ""}}
+    },
+    {
+      "description": "eq does not match a missing answer",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "eq", "value": "red"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "one_of matches a listed value",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red", "blue"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "blue"},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": "blue"}}
+    },
+    {
+      "description": "one_of does not match an unlisted value",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red", "blue"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "green"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "green"}
+      }
+    },
+    {
+      "description": "one_of with an empty list never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": []}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "red"}
+      }
+    },
+    {
+      "description": "one_of does not match a missing answer",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "one_of does not match an empty string even if listed",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": [""]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ""},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": ""}}
+    },
+    {
+      "description": "one_of matches numbers",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": [1, 2]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 2},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 2}}
+    },
+    {
+      "description": "one_of treats 2 and 2.0 as equal",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": [2]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 2.0},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 2.0}}
+    },
+    {
+      "description": "one_of never matches a number against a string",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["2"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 2},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 2}}
+    },
+    {
+      "description": "one_of with a list answer never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["red"]},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": ["red"]}
+      }
+    },
+    {
+      "description": "one_of with an object answer never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": {"red": true}},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": {"red": true}}
+      }
+    },
+    {
+      "description": "one_of with a string value never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": "red"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "red"}
+      }
+    },
+    {
+      "description": "one_of with a string value never matches a substring",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": "reddish"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "red"}
+      }
+    },
+    {
+      "description": "one_of with a list containing a list never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": [["red"]]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "red"}
+      }
+    },
+    {
+      "description": "none_of matches an unlisted value",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "none_of", "value": ["red"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "blue"},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": "blue"}}
+    },
+    {
+      "description": "none_of does not match a listed value",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "none_of", "value": ["red"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "red"}
+      }
+    },
+    {
+      "description": "none_of does not match a missing answer",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "none_of", "value": ["red"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "none_of does not match an empty string",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "none_of", "value": ["red"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ""},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": ""}}
+    },
+    {
+      "description": "none_of with an empty list matches any answer",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "none_of", "value": []}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": "red"}}
+    },
+    {
+      "description": "none_of with a list answer never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "none_of", "value": ["red"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["blue"]},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": ["blue"]}
+      }
+    },
+    {
+      "description": "none_of with a string value never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "none_of", "value": "red"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "blue"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "blue"}
+      }
+    }
+  ]
+}

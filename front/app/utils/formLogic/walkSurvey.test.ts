@@ -49,12 +49,12 @@ const resolveProgram = (fixture: FixtureFile, program: Program | string) => {
 describe('walkSurvey', () => {
   // `it.each` over an empty corpus generates no tests, so a truncated fixture would pass.
   it('still has a full corpus', () => {
-    expect(files.length).toBeGreaterThanOrEqual(3);
+    expect(files.length).toBeGreaterThanOrEqual(8);
     const caseCount = files.reduce(
       (sum, name) => sum + readFixture(name).cases.length,
       0
     );
-    expect(caseCount).toBeGreaterThanOrEqual(45);
+    expect(caseCount).toBeGreaterThanOrEqual(150);
   });
 
   describe.each(files)('%s', (name) => {
