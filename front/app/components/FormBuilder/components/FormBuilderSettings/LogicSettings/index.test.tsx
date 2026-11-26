@@ -7,35 +7,17 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
+import { makeCustomField } from 'utils/testUtils/customFields';
 import { render, screen } from 'utils/testUtils/rtl';
 
 import LogicSettings from '.';
 
-const baseField = (
-  attributes: Partial<IFlatCustomField> &
-    Pick<IFlatCustomField, 'id' | 'input_type'>
-): IFlatCustomField => ({
-  type: 'custom_field',
-  key: attributes.id,
-  title_multiloc: { en: attributes.id },
-  description_multiloc: {},
-  required: false,
-  answers_visible_to: 'moderators',
-  show_as_filter: false,
-  enabled: true,
-  ordering: 0,
-  created_at: '',
-  updated_at: '',
-  logic: {},
-  ...attributes,
-});
-
 const renderLogicSettings = (question: IFlatCustomField) => {
   const customFields = [
-    baseField({ id: 'page-1', input_type: 'page' }),
+    makeCustomField({ id: 'page-1', input_type: 'page' }),
     question,
-    baseField({ id: 'page-2', input_type: 'page' }),
-    baseField({ id: 'page-end', key: 'form_end', input_type: 'page' }),
+    makeCustomField({ id: 'page-2', input_type: 'page' }),
+    makeCustomField({ id: 'page-end', key: 'form_end', input_type: 'page' }),
   ];
   const field: IFlatCustomFieldWithIndex = { ...question, index: 1 };
 
@@ -53,7 +35,7 @@ const renderLogicSettings = (question: IFlatCustomField) => {
 };
 
 const select = (required: boolean) =>
-  baseField({
+  makeCustomField({
     id: 'q',
     input_type: 'select',
     required,
@@ -94,7 +76,7 @@ describe('LogicSettings answers', () => {
     'offers a rule per value from 1 to the maximum for a $inputType question$label',
     ({ inputType }) => {
       renderLogicSettings(
-        baseField({ id: 'q', input_type: inputType, maximum: 3 })
+        makeCustomField({ id: 'q', input_type: inputType, maximum: 3 })
       );
 
       ['1', '2', '3'].forEach((value) =>

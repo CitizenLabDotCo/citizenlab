@@ -1,4 +1,4 @@
-import { IFlatCustomField } from 'api/custom_fields/types';
+import { makeCustomField } from 'utils/testUtils/customFields';
 
 import {
   getLinearOrRatingOptions,
@@ -8,29 +8,10 @@ import {
   getTitleFromPageId,
 } from './utils';
 
-const field = (
-  attributes: Partial<IFlatCustomField> &
-    Pick<IFlatCustomField, 'id' | 'input_type'>
-): IFlatCustomField => ({
-  type: 'custom_field',
-  key: attributes.id,
-  title_multiloc: {},
-  description_multiloc: {},
-  required: false,
-  answers_visible_to: 'moderators',
-  show_as_filter: false,
-  enabled: true,
-  ordering: 0,
-  created_at: '',
-  updated_at: '',
-  logic: {},
-  ...attributes,
-});
-
 const savedOption = { id: 'option-a', title_multiloc: { en: 'Option A' } };
 const newOption = { temp_id: 'TEMP-b', title_multiloc: { en: 'Option B' } };
 
-const select = field({
+const select = makeCustomField({
   id: 'q',
   input_type: 'select',
   options: [savedOption, newOption],
@@ -56,7 +37,7 @@ describe('getOptionRule', () => {
   });
 
   it('finds the rule of a new option by its temporary id', () => {
-    const withTarget = field({
+    const withTarget = makeCustomField({
       ...select,
       logic: { rules: [{ if: 'TEMP-b', goto_page_id: 'page-2' }] },
     });
@@ -74,7 +55,7 @@ describe('getOptionRule', () => {
 
 describe('getLinearScaleRule', () => {
   it('finds a rule stored with an integer value', () => {
-    const scale = field({
+    const scale = makeCustomField({
       id: 'q',
       input_type: 'linear_scale',
       logic: { rules: [{ if: 3, goto_page_id: 'page-2' }] },
@@ -87,7 +68,7 @@ describe('getLinearScaleRule', () => {
   });
 
   it('does not find a rule stored with a string value, although the survey follows it', () => {
-    const scale = field({
+    const scale = makeCustomField({
       id: 'q',
       input_type: 'linear_scale',
       logic: { rules: [{ if: '3', goto_page_id: 'page-2' }] },
@@ -132,9 +113,9 @@ describe('getTitleFromAnswerId', () => {
 
 describe('getTitleFromPageId', () => {
   const fields = [
-    field({ id: 'page-1', input_type: 'page' }),
-    field({ id: 'page-2', input_type: 'page' }),
-    field({ id: 'page-end', key: 'form_end', input_type: 'page' }),
+    makeCustomField({ id: 'page-1', input_type: 'page' }),
+    makeCustomField({ id: 'page-2', input_type: 'page' }),
+    makeCustomField({ id: 'page-end', key: 'form_end', input_type: 'page' }),
   ];
   const fieldNumbers = { 'page-1': 1, 'page-2': 2, 'page-end': 3 };
   const title = (pageId: string | undefined) =>

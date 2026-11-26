@@ -1,32 +1,15 @@
 import { IFlatCustomField } from 'api/custom_fields/types';
 
+import { makeCustomField } from 'utils/testUtils/customFields';
+
 import { replaceIdsWithNewUuids, replaceUuidsInText } from './utils';
 
-const field = (
-  attributes: Partial<IFlatCustomField> &
-    Pick<IFlatCustomField, 'id' | 'input_type'>
-): IFlatCustomField => ({
-  type: 'custom_field',
-  key: attributes.id,
-  title_multiloc: {},
-  description_multiloc: {},
-  required: false,
-  answers_visible_to: 'moderators',
-  show_as_filter: false,
-  enabled: true,
-  ordering: 0,
-  created_at: '',
-  updated_at: '',
-  logic: {},
-  ...attributes,
-});
-
-const pageOne = field({
+const pageOne = makeCustomField({
   id: 'page-1',
   input_type: 'page',
   logic: { next_page_id: 'page-3' },
 });
-const select = field({
+const select = makeCustomField({
   id: 'select-q',
   input_type: 'select',
   options: [
@@ -41,15 +24,19 @@ const select = field({
     ],
   },
 });
-const pageTwo = field({ id: 'page-2', input_type: 'page' });
-const scale = field({
+const pageTwo = makeCustomField({ id: 'page-2', input_type: 'page' });
+const scale = makeCustomField({
   id: 'scale-q',
   input_type: 'linear_scale',
   maximum: 5,
   logic: { rules: [{ if: 3, goto_page_id: 'page-end' }] },
 });
-const pageThree = field({ id: 'page-3', input_type: 'page' });
-const endPage = field({ id: 'page-end', key: 'form_end', input_type: 'page' });
+const pageThree = makeCustomField({ id: 'page-3', input_type: 'page' });
+const endPage = makeCustomField({
+  id: 'page-end',
+  key: 'form_end',
+  input_type: 'page',
+});
 
 const fields = [pageOne, select, pageTwo, scale, pageThree, endPage];
 
@@ -93,7 +80,7 @@ describe('replaceIdsWithNewUuids', () => {
   });
 
   it('keeps ids in rules that refer to nothing in the copied fields', () => {
-    const orphan = field({
+    const orphan = makeCustomField({
       id: 'q',
       input_type: 'select',
       logic: {
@@ -109,12 +96,12 @@ describe('replaceIdsWithNewUuids', () => {
   });
 
   it('keeps temporary ids and rules that point to them unchanged', () => {
-    const tempPage = field({
+    const tempPage = makeCustomField({
       id: 'page-x',
       temp_id: 'TEMP-page-x',
       input_type: 'page',
     });
-    const question = field({
+    const question = makeCustomField({
       id: 'q',
       input_type: 'select',
       logic: { rules: [{ if: 'TEMP-option', goto_page_id: 'TEMP-page-x' }] },

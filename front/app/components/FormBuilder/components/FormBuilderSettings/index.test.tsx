@@ -9,6 +9,7 @@ import {
 
 import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 
+import { makeCustomField } from 'utils/testUtils/customFields';
 import { render, screen } from 'utils/testUtils/rtl';
 
 import FormBuilderSettings from '.';
@@ -36,21 +37,14 @@ const makeField = (
   inputType: ICustomFieldInputType,
   attributes: Partial<IFlatCustomFieldWithIndex> = {}
 ): IFlatCustomFieldWithIndex => ({
-  id: 'field-1',
+  ...makeCustomField({
+    id: 'field-1',
+    key: 'field_1',
+    input_type: inputType,
+    title_multiloc: { en: 'Field' },
+    created_at: '2025-06-01T00:00:00.000Z',
+  }),
   index: 0,
-  type: 'custom_field',
-  key: 'field_1',
-  input_type: inputType,
-  title_multiloc: { en: 'Field' },
-  description_multiloc: {},
-  required: false,
-  answers_visible_to: 'moderators',
-  show_as_filter: false,
-  enabled: true,
-  ordering: 0,
-  created_at: '2025-06-01T00:00:00.000Z',
-  updated_at: '',
-  logic: {},
   ...attributes,
 });
 

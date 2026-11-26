@@ -5,6 +5,8 @@ import {
   QuestionRuleType,
 } from 'api/custom_fields/types';
 
+import { makeCustomField } from 'utils/testUtils/customFields';
+
 import { convertCustomFieldsToNestedPages, Pages } from '../util';
 
 import {
@@ -640,27 +642,8 @@ describe('Survey form logic', () => {
   });
 });
 
-const field = (
-  attributes: Partial<IFlatCustomField> &
-    Pick<IFlatCustomField, 'id' | 'input_type'>
-): IFlatCustomField => ({
-  type: 'custom_field',
-  key: attributes.id,
-  title_multiloc: { en: attributes.id },
-  description_multiloc: {},
-  required: false,
-  answers_visible_to: 'moderators',
-  show_as_filter: false,
-  enabled: true,
-  ordering: 0,
-  created_at: '',
-  updated_at: '',
-  logic: {},
-  ...attributes,
-});
-
 const pageField = (id: string, logic: LogicType = {}, key = id) =>
-  field({ id, key, input_type: 'page', logic });
+  makeCustomField({ id, key, input_type: 'page', logic });
 
 const endPage = () => pageField('page-end', {}, 'form_end');
 
@@ -692,7 +675,12 @@ describe('determineNextPageNumber edge cases', () => {
     const buildPages = (options: IOptionsType[], rules: QuestionRuleType[]) =>
       convertCustomFieldsToNestedPages([
         pageField('p1'),
-        field({ id: 'q', input_type: 'select', options, logic: { rules } }),
+        makeCustomField({
+          id: 'q',
+          input_type: 'select',
+          options,
+          logic: { rules },
+        }),
         pageField('p2'),
         pageField('p3'),
         pageField('p4'),
@@ -778,7 +766,7 @@ describe('determineNextPageNumber edge cases', () => {
     const buildPages = (questionLogic: LogicType) =>
       convertCustomFieldsToNestedPages([
         pageField('p1', { next_page_id: 'p4' }),
-        field({
+        makeCustomField({
           id: 'q',
           input_type: 'select',
           options: abcOptions,
@@ -819,13 +807,13 @@ describe('determineNextPageNumber edge cases', () => {
     ) =>
       convertCustomFieldsToNestedPages([
         pageField('p1'),
-        field({
+        makeCustomField({
           id: 'q1',
           input_type: 'select',
           options: abcOptions,
           logic: { rules: firstRules },
         }),
-        field({
+        makeCustomField({
           id: 'q2',
           input_type: 'select',
           options: abcOptions,
@@ -864,7 +852,12 @@ describe('determineNextPageNumber edge cases', () => {
     ) =>
       convertCustomFieldsToNestedPages([
         pageField('p1'),
-        field({ id: 'q', input_type: inputType, options, logic: { rules } }),
+        makeCustomField({
+          id: 'q',
+          input_type: inputType,
+          options,
+          logic: { rules },
+        }),
         pageField('p2'),
         pageField('p3'),
         pageField('p4'),
@@ -928,7 +921,12 @@ describe('determineNextPageNumber edge cases', () => {
     const buildPages = (rules: QuestionRuleType[]) =>
       convertCustomFieldsToNestedPages([
         pageField('p1'),
-        field({ id: 'q', input_type: inputType, maximum: 5, logic: { rules } }),
+        makeCustomField({
+          id: 'q',
+          input_type: inputType,
+          maximum: 5,
+          logic: { rules },
+        }),
         pageField('p2'),
         pageField('p3'),
         pageField('p4'),
@@ -1011,7 +1009,7 @@ describe('determineNextPageNumber edge cases', () => {
     ) =>
       convertCustomFieldsToNestedPages([
         pageField('p1'),
-        field({ id: 'q', ...attributes, logic: { rules } }),
+        makeCustomField({ id: 'q', ...attributes, logic: { rules } }),
         pageField('p2'),
         pageField('p3'),
         endPage(),
@@ -1068,7 +1066,12 @@ describe('determineNextPageNumber edge cases', () => {
 
 describe('getValidPagePath and getSkippedPageIndices edge cases', () => {
   const selectOn = (id: string, rules: QuestionRuleType[]) =>
-    field({ id, input_type: 'select', options: abcOptions, logic: { rules } });
+    makeCustomField({
+      id,
+      input_type: 'select',
+      options: abcOptions,
+      logic: { rules },
+    });
 
   it('stops the path at a page whose rule targets a page that is not in the form (current behaviour, N4)', () => {
     const pages = convertCustomFieldsToNestedPages([
@@ -1145,7 +1148,11 @@ describe('getValidPagePath and getSkippedPageIndices edge cases', () => {
       selectOn('q', [{ if: 'id-a', goto_page_id: 'random-user-page-id' }]),
       pageField('p2'),
       pageField('random-user-page-id', {}, 'user_page'),
-      field({ id: 'u_gender', input_type: 'select', options: abcOptions }),
+      makeCustomField({
+        id: 'u_gender',
+        input_type: 'select',
+        options: abcOptions,
+      }),
       endPage(),
     ]);
 
@@ -1163,11 +1170,11 @@ describe('getValidPagePath and getSkippedPageIndices edge cases', () => {
         { if: 'id-b', goto_page_id: 'p4' },
       ]),
       pageField('p2'),
-      field({ id: 'q2', input_type: 'text' }),
+      makeCustomField({ id: 'q2', input_type: 'text' }),
       pageField('p3', { next_page_id: 'page-end' }),
-      field({ id: 'q3', input_type: 'text' }),
+      makeCustomField({ id: 'q3', input_type: 'text' }),
       pageField('p4'),
-      field({ id: 'q4', input_type: 'text' }),
+      makeCustomField({ id: 'q4', input_type: 'text' }),
       endPage(),
     ]);
 

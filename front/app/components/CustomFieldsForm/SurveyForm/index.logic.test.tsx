@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
+import { LogicType } from 'api/custom_fields/types';
 
+import { makeCustomField } from 'utils/testUtils/customFields';
 import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
 
 import SurveyForm from './index';
@@ -85,26 +86,8 @@ jest.mock('api/phases/usePhases', () => () => ({
   data: { data: [phaseData] },
 }));
 
-const field = (
-  attributes: Partial<IFlatCustomField> &
-    Pick<IFlatCustomField, 'id' | 'key' | 'input_type'>
-): IFlatCustomField => ({
-  type: 'custom_field',
-  title_multiloc: { en: attributes.id },
-  description_multiloc: {},
-  required: false,
-  answers_visible_to: 'moderators',
-  show_as_filter: false,
-  enabled: true,
-  ordering: 0,
-  created_at: '',
-  updated_at: '',
-  logic: {},
-  ...attributes,
-});
-
 const page = (id: string, title: string, logic: LogicType = {}) =>
-  field({
+  makeCustomField({
     id,
     key: id === 'page-end' ? 'form_end' : id.replace('-', '_'),
     input_type: 'page',
@@ -115,7 +98,7 @@ const page = (id: string, title: string, logic: LogicType = {}) =>
   });
 
 const textQuestion = (id: string, title: string) =>
-  field({
+  makeCustomField({
     id,
     key: id,
     input_type: 'text',
@@ -125,7 +108,7 @@ const textQuestion = (id: string, title: string) =>
 
 // Option ids differ from the keys that answers hold, as with real data.
 const choiceQuestion = (rules: LogicType['rules']) =>
-  field({
+  makeCustomField({
     id: 'choice',
     key: 'choice',
     input_type: 'select',
