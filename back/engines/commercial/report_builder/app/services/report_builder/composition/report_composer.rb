@@ -342,7 +342,7 @@ module ReportBuilder
       end
 
       def run_query(query)
-        result = McpServer::ReportingQueryRunner.run(query.to_s, scope: McpServer::QueryScope.all)
+        result = McpServer::ReportingQueryRunner.run(query.to_s, scope: query_scope)
         sample = result.rows.first(SAMPLE_ROWS)
         note = result.rows.size > SAMPLE_ROWS ? " (showing the first #{SAMPLE_ROWS})" : ''
 
@@ -351,6 +351,13 @@ module ReportBuilder
         { error: true, text: e.message }
       rescue ActiveRecord::StatementInvalid => e
         { error: true, text: "The query failed to run: #{e.message}" }
+      end
+
+      # The reported project's rows, for an admin as for a moderator, so a report holds
+      # the same data whoever asked for it; and none at all for an author who may not
+      # read that project. Resolved once, so a run does not change scope part-way.
+      def query_scope
+        @query_scope ||= McpServer::QueryScope.for(@author, within: [@project.id])
       end
 
       def author_block(input)
