@@ -137,11 +137,17 @@ export const textQuestion = (title: string): FieldParams => ({
   description_multiloc: {},
 });
 
-export const createSurveyWithFields = (fields: FieldParams[]) =>
+// onProjectCreated runs before the fields are saved, so a test can still
+// clean up the project when saving them fails.
+export const createSurveyWithFields = (
+  fields: FieldParams[],
+  onProjectCreated: (projectId: string) => void
+) =>
   cy
     .createProjectWithNativeSurveyPhase()
-    .then(({ projectId, projectSlug, phaseId }) =>
-      setSurveyFields(cy, phaseId, fields).then((response) => {
+    .then(({ projectId, projectSlug, phaseId }) => {
+      onProjectCreated(projectId);
+      return setSurveyFields(cy, phaseId, fields).then((response) => {
         const body: CustomFieldsResponse = response.body;
         const survey: LogicSurvey = {
           projectId,
@@ -150,8 +156,8 @@ export const createSurveyWithFields = (fields: FieldParams[]) =>
           fields: body,
         };
         return survey;
-      })
-    );
+      });
+    });
 
 export const fieldByTitle = (fields: CustomFieldsResponse, title: string) => {
   const field = fields.data.find(
