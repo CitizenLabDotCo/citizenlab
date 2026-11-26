@@ -29,6 +29,13 @@ describe ReportBuilder::Composition::ChartBlockWriter do
     TSX
   end
   let(:messages) { { 'en' => { 'total' => 'Contributions' } } }
+  let(:explanation) do
+    {
+      'included' => 'Every contribution in this project, by week.',
+      'calculation' => 'Each contribution counts once, so one person who did three things counts three times.',
+      'caveat' => 'Weeks start on a Monday.'
+    }
+  end
 
   before do
     allow(ENV).to receive(:fetch).and_call_original
@@ -48,7 +55,8 @@ describe ReportBuilder::Composition::ChartBlockWriter do
 
   def author_with(config_schema = nil)
     chart_writer.create(
-      title: 'Chart', source: source, config_schema: config_schema, messages: messages
+      title: 'Chart', source: source, config_schema: config_schema, messages: messages,
+      explanation: explanation
     )
   end
 
@@ -83,6 +91,52 @@ describe ReportBuilder::Composition::ChartBlockWriter do
     it 'refuses a source that is empty' do
       expect { chart_writer.create(title: 'Chart', source: ' ', messages: messages) }
         .to raise_error described_class::Rejected, /source is required/
+    end
+
+    it 'stores the explanation of what the chart counts' do
+      expect(stored_version(author_with).explanation).to eq explanation
+    end
+
+    it 'drops a caveat the author had none to give' do
+      result = chart_writer.create(
+        title: 'Chart', source: source, messages: messages,
+        explanation: explanation.merge('caveat' => '  ')
+      )
+
+      expect(stored_version(result).explanation).to eq explanation.except('caveat')
+    end
+
+    it 'finishes a part the author left unpunctuated' do
+      result = chart_writer.create(
+        title: 'Chart', source: source, messages: messages,
+        explanation: explanation.merge('included' => 'Every contribution in this project')
+      )
+
+      expect(stored_version(result).explanation['included']).to eq 'Every contribution in this project.'
+    end
+
+    it 'keeps a part the author invented out of the manifest' do
+      result = chart_writer.create(
+        title: 'Chart', source: source, messages: messages,
+        explanation: explanation.merge('sql' => 'SELECT 1')
+      )
+
+      expect(stored_version(result).explanation).to eq explanation
+    end
+
+    it 'refuses a chart that explains nothing' do
+      expect { chart_writer.create(title: 'Chart', source: source, messages: messages, explanation: ' ') }
+        .to raise_error described_class::Rejected, /explanation must be an object/
+    end
+
+    it 'refuses an explanation that says what is counted but not how' do
+      expect do
+        chart_writer.create(
+          title: 'Chart', source: source, messages: messages,
+          explanation: explanation.except('calculation')
+        )
+      end
+        .to raise_error described_class::Rejected, /missing calculation/
     end
   end
 
@@ -202,7 +256,11 @@ describe ReportBuilder::Composition::ChartBlockWriter do
 
   describe 'messages' do
     it 'refuses a shape the renderer could not read' do
-      expect { chart_writer.create(title: 'Chart', source: source, messages: { 'en' => 'Contributions' }) }
+      expect do
+        chart_writer.create(
+          title: 'Chart', source: source, messages: { 'en' => 'Contributions' }, explanation: explanation
+        )
+      end
         .to raise_error described_class::Rejected, /locale to key-value pairs/
     end
   end
@@ -230,6 +288,26 @@ describe ReportBuilder::Composition::ChartBlockWriter do
       chart_writer.edit(block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')")
 
       expect(previous.reload).to have_attributes(before)
+    end
+
+    it 'keeps the explanation the chart was stored with' do
+      result = chart_writer.edit(block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')")
+
+      expect(stored_version(result).explanation).to eq explanation
+    end
+
+    it 'takes a new explanation when the edit changes what is counted' do
+      rewritten = {
+        'included' => 'The people who took part in this project, by week.',
+        'calculation' => 'Each person counts once per week in which they did anything.'
+      }
+
+      result = chart_writer.edit(
+        block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')",
+        explanation: rewritten
+      )
+
+      expect(stored_version(result).explanation).to eq rewritten
     end
 
     it 'carries the catalogues over, so the edit does not silently drop them' do

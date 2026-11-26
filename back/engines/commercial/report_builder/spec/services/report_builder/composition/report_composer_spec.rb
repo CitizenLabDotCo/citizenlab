@@ -34,7 +34,11 @@ describe ReportBuilder::Composition::ReportComposer do
       'title' => 'Contributions',
       'source' => block_source,
       'messages' => { 'en' => { 'total' => 'Contributions' } },
-      'config_schema' => { 'type' => 'object', 'properties' => {} }
+      'config_schema' => { 'type' => 'object', 'properties' => {} },
+      'explanation' => {
+        'included' => 'Every contribution in this project.',
+        'calculation' => 'Each contribution counts once, not each person.'
+      }
     }
   end
   let(:block_source) do

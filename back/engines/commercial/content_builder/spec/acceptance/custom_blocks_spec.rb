@@ -27,7 +27,7 @@ resource 'CustomBlocks' do
 
       expect(response_data).to include(id: version.id, type: 'custom_block_version')
       expect(response_data[:attributes].keys).to match_array(
-        %i[number sdk_version manifest messages created_at block_title_multiloc block_status]
+        %i[number sdk_version manifest messages created_at block_title_multiloc block_status data_sources]
       )
       expect(response_data[:attributes]).to include(
         number: 1,
@@ -35,6 +35,10 @@ resource 'CustomBlocks' do
         block_status: 'published'
       )
       expect(response_data[:attributes][:manifest]).to include(targets: ['report'])
+    end
+
+    example_request 'The reporting tables the block reads come with it', document: false do
+      expect(response_data[:attributes][:data_sources]).to eq ['reporting_contributions']
     end
 
     example_request 'Neither the source nor the bundle is exposed', document: false do

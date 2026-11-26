@@ -103,6 +103,34 @@ RSpec.describe ContentBuilder::CustomBlockVersion do
       expect(version).to be_invalid
       expect(version.errors.details[:manifest]).to include(hash_including(error: :queries_invalid))
     end
+
+    it 'accepts an explanation with a caveat and one without' do
+      parts = { 'included' => 'Every contribution.', 'calculation' => 'One per contribution.' }
+
+      expect(build(:custom_block_version, manifest: { 'explanation' => parts })).to be_valid
+      expect(build(:custom_block_version, manifest: { 'explanation' => parts.merge('caveat' => 'Mondays.') }))
+        .to be_valid
+    end
+
+    it 'rejects an explanation that says what is counted but not how' do
+      version = build(:custom_block_version, manifest: { 'explanation' => { 'included' => 'Every contribution.' } })
+
+      expect(version).to be_invalid
+      expect(version.errors.details[:manifest]).to include(hash_including(error: :explanation_invalid))
+    end
+
+    it 'rejects the single string an explanation used to be' do
+      version = build(:custom_block_version, manifest: { 'explanation' => 'Counts contributions.' })
+
+      expect(version).to be_invalid
+      expect(version.errors.details[:manifest]).to include(hash_including(error: :explanation_invalid))
+    end
+  end
+
+  describe '#explanation' do
+    it 'is nil on a block authored before explanations were asked for' do
+      expect(build(:custom_block_version, manifest: {}).explanation).to be_nil
+    end
   end
 
   describe '#queries' do

@@ -26,6 +26,12 @@ module ContentBuilder
         attribute :block_status do |version|
           version.custom_block.status
         end
+
+        # Derived from the stored SQL on every read, so blocks authored before the
+        # settings panel showed this still answer for themselves.
+        attribute :data_sources do |version|
+          ContentBuilder::CustomBlocks::DataSources.for_queries(version.queries)
+        end
       end
     end
   end

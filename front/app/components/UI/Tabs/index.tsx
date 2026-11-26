@@ -11,9 +11,10 @@ import styled from 'styled-components';
 
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-const Container = styled.div`
+const Container = styled.div<{ fullWidth?: boolean }>`
   display: flex;
   align-items: center;
+  ${({ fullWidth }) => fullWidth && 'width: 100%;'}
 `;
 
 const TabText = styled.span`
@@ -29,7 +30,11 @@ const TabIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
-const Tab = styled.button<{ minWidth?: number; disabled?: boolean }>`
+const Tab = styled.button<{
+  minWidth?: number;
+  disabled?: boolean;
+  fullWidth?: boolean;
+}>`
   display: flex;
   align-items: center;
   margin: 0;
@@ -43,8 +48,12 @@ const Tab = styled.button<{ minWidth?: number; disabled?: boolean }>`
   justify-content: center;
   height: ${stylingConsts.inputHeight}px;
   ${(props) => props.minWidth && `min-width: ${props.minWidth}px;`}
+  ${(props) => props.fullWidth && 'flex: 1;'}
 
   &.first {
+    /* The -1px that collapses the shared borders would put the left border of
+       the row outside its container, where a panel edge clips it. */
+    margin-left: 0;
     border-top-left-radius: ${({ theme }) => theme.borderRadius};
     border-bottom-left-radius: ${({ theme }) => theme.borderRadius};
   }
@@ -88,6 +97,9 @@ export interface Props {
   onClick: (itemName: string) => void;
   minTabWidth?: number;
   disabled?: boolean;
+  // Share the full width of the container between the tabs, rather than letting each
+  // one be as wide as its label.
+  fullWidth?: boolean;
 }
 
 const Tabs = memo<Props>(
@@ -98,6 +110,7 @@ const Tabs = memo<Props>(
     className,
     minTabWidth,
     disabled = false,
+    fullWidth = false,
   }) => {
     const handleTabOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
       const newSelectedValue = event.currentTarget.dataset.itemvalue as string;
@@ -106,7 +119,7 @@ const Tabs = memo<Props>(
     }, []);
 
     return (
-      <Container className={className} role="tablist">
+      <Container className={className} role="tablist" fullWidth={fullWidth}>
         {items.map((item: ITabItem, index) => (
           <Tab
             id={item.name}
@@ -123,6 +136,7 @@ const Tabs = memo<Props>(
             type="button"
             minWidth={minTabWidth}
             disabled={disabled}
+            fullWidth={fullWidth}
           >
             <TabText>{item.label}</TabText>
             {item.icon && <TabIcon name={item.icon} />}

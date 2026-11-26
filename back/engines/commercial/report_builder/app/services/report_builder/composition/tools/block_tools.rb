@@ -5,6 +5,36 @@ module ReportBuilder
     module Tools
       # Writing a chart, and changing one already written.
       module BlockTools
+        # The three parts of the Data tab, so a chart answers the questions an admin
+        # asks of it in the order they ask them. Shared by both tools: an edit that
+        # changes what is counted replaces the whole explanation, not one part.
+        EXPLANATION_SCHEMA = {
+          type: 'object',
+          description: 'What this chart counts, for the admin checking whether it says what ' \
+                       'they think it says. Write it in the words an admin sees in the ' \
+                       'platform, never table or column names, and carry over the caveats ' \
+                       'the reporting schema states for the data you read.',
+          properties: {
+            included: {
+              type: 'string',
+              description: 'One or two sentences on what is in the chart: the thing being ' \
+                           'counted, the period it covers, and how it is grouped.'
+            },
+            calculation: {
+              type: 'string',
+              description: 'One or two sentences on how the number is arrived at: whether one ' \
+                           'counted thing is a person or an action, how a period is bucketed, ' \
+                           'and who or what is left out.'
+            },
+            caveat: {
+              type: 'string',
+              description: 'The one thing that would make an admin read this chart wrongly, in ' \
+                           'a single sentence. Leave it out when there is nothing to single out.'
+            }
+          },
+          required: %w[included calculation]
+        }.freeze
+
         DEFINITIONS = [
           {
             tool_spec: {
@@ -49,9 +79,10 @@ module ReportBuilder
                         required: { type: 'array', items: { type: 'string' } }
                       },
                       required: %w[type properties]
-                    }
+                    },
+                    explanation: EXPLANATION_SCHEMA
                   },
-                  required: %w[title source messages config_schema]
+                  required: %w[title source messages config_schema explanation]
                 }
               }
             }
@@ -73,7 +104,12 @@ module ReportBuilder
                       type: 'string',
                       description: 'The exact text to replace, whitespace included.'
                     },
-                    replace: { type: 'string', description: 'What to put in its place.' }
+                    replace: { type: 'string', description: 'What to put in its place.' },
+                    explanation: EXPLANATION_SCHEMA.merge(
+                      description: "#{EXPLANATION_SCHEMA[:description]} Send it only when the " \
+                                   'edit changes what the chart counts; leave it out and the ' \
+                                   'one already stored is kept.'
+                    )
                   },
                   required: %w[block_id find replace]
                 }

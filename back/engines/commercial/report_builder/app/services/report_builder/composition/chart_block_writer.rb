@@ -33,6 +33,11 @@ module ReportBuilder
       # presentation.
       CONFIG_PICKERS = %w[project].freeze
 
+      # The parts of the explanation the Data tab renders. A caveat is optional: most
+      # charts have nothing worth singling out, and an invented one reads as noise.
+      EXPLANATION_PARTS = %w[included calculation caveat].freeze
+      REQUIRED_EXPLANATION_PARTS = %w[included calculation].freeze
+
       # `x-multiloc` marks a string field whose value is a multiloc object, so the
       # sidebar offers one input per locale. Plain JSON Schema has no notion of a
       # translated string, and a chart title that only exists in one language is not
@@ -53,13 +58,16 @@ module ReportBuilder
       # @param source [String] the complete TSX of the block.
       # @param config_schema [Hash] a JSON Schema object describing the sidebar fields.
       # @param messages [Hash] locale => { key => text }, for every string the block shows.
+      # @param explanation [Hash] what the chart counts, in plain language, for the
+      #   admin checking it: +included+, +calculation+ and an optional +caveat+.
       # @raise [Rejected] with a message the composer can correct itself from.
-      def create(title:, source:, config_schema: nil, messages: nil)
+      def create(title:, source:, config_schema: nil, messages: nil, explanation: nil)
         raise Rejected, 'source is required.' if source.blank?
 
+        parts = validate_explanation!(explanation)
         schema = validate_config_schema!(config_schema)
         catalogues = normalize_messages(messages)
-        built = build!(source, schema, catalogues)
+        built = build!(source, schema, catalogues, parts)
 
         block = ContentBuilder::CustomBlock.create!(
           title_multiloc: { locale => title.to_s.strip.presence || 'Chart' },
@@ -97,8 +105,10 @@ module ReportBuilder
       # @param block_id [String] a block authored in this run.
       # @param find [String] the passage to replace. Must appear exactly once.
       # @param replace [String] what to put there.
+      # @param explanation [Hash, nil] a replacement explanation, when the edit changes
+      #   what the chart counts. The stored one is kept otherwise.
       # @raise [Rejected] with a message the composer can correct itself from.
-      def edit(block_id:, find:, replace:)
+      def edit(block_id:, find:, replace:, explanation: nil)
         raise Rejected, 'find is required.' if find.blank?
 
         block = ContentBuilder::CustomBlock.find_by(id: block_id)
@@ -108,7 +118,10 @@ module ReportBuilder
         raise Rejected, "Block #{block_id} has no version to edit." if previous.nil?
 
         source = replace_once!(previous.source, find, replace.to_s)
-        built = build!(source, previous.manifest['config_schema'], previous.messages)
+        built = build!(
+          source, previous.manifest['config_schema'], previous.messages,
+          explanation.present? ? validate_explanation!(explanation) : previous.manifest['explanation']
+        )
 
         version = block.versions.create!(
           source: source,
@@ -153,10 +166,10 @@ module ReportBuilder
         @locale.presence || AppConfiguration.instance.settings('core', 'locales')&.first || 'en'
       end
 
-      def build!(source, schema, catalogues)
+      def build!(source, schema, catalogues, explanation)
         result = ContentBuilder::CustomBlocks::BlockBuilder.new.call(
           source: source,
-          manifest: manifest(schema),
+          manifest: manifest(schema, explanation),
           messages: catalogues,
           locales: [locale]
         )
@@ -181,6 +194,31 @@ module ReportBuilder
         end
 
         messages
+      end
+
+      # Keeps only the parts the tab renders, so a part the model invented cannot reach
+      # the manifest, and a caveat it left empty is stored as absent rather than blank.
+      def validate_explanation!(explanation)
+        unless explanation.is_a?(Hash)
+          raise Rejected, 'explanation must be an object with included, calculation and an optional caveat.'
+        end
+
+        parts = explanation
+          .stringify_keys
+          .slice(*EXPLANATION_PARTS)
+          .transform_values { |text| text.to_s.strip }
+          .reject { |_, text| text.empty? }
+          .transform_values { |text| end_with_stop(text) }
+
+        missing = REQUIRED_EXPLANATION_PARTS - parts.keys
+        raise Rejected, "explanation is missing #{missing.join(' and ')}." if missing.any?
+
+        parts
+      end
+
+      # Each part is read as prose, so it ends like prose however the model finished it.
+      def end_with_stop(text)
+        text.end_with?('.', '!', '?') ? text : "#{text}."
       end
 
       # Rejected rather than silently dropped: a field the builder cannot render is a
@@ -275,15 +313,17 @@ module ReportBuilder
       end
 
       # `queries` is deliberately absent: the build extracts it from the source, so the
-      # manifest cannot disagree with the code about what the block reads.
-      def manifest(schema)
+      # manifest cannot disagree with the code about what the block reads. An
+      # explanation that no edit carried forward is left out rather than stored null.
+      def manifest(schema, explanation)
         {
           'manifest_version' => 1,
           'sdk_version' => 'v1',
           'targets' => ['report'],
           'data_uses' => ['useReportingData'],
-          'config_schema' => schema || { 'type' => 'object', 'properties' => {} }
-        }
+          'config_schema' => schema || { 'type' => 'object', 'properties' => {} },
+          'explanation' => explanation.presence
+        }.compact
       end
     end
   end

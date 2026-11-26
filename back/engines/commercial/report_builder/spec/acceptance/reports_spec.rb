@@ -144,7 +144,8 @@ resource 'Reports' do
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
             owner: { data: { id: report.owner_id, type: 'user' } },
-            phase: { data: nil }
+            phase: { data: nil },
+            project: { data: nil }
           }
         )
 
@@ -377,7 +378,8 @@ resource 'Reports' do
           relationships: {
             layout: { data: { id: be_a(String), type: 'content_builder_layout' } },
             owner: { data: { id: be_a(String), type: 'user' } },
-            phase: { data: nil }
+            phase: { data: nil },
+            project: { data: nil }
           }
         )
 

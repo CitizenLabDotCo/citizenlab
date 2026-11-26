@@ -358,7 +358,8 @@ module ReportBuilder
           title: input['title'],
           source: input['source'],
           config_schema: input['config_schema'],
-          messages: input['messages']
+          messages: input['messages'],
+          explanation: input['explanation']
         )
         @authored_blocks << result.block_id
 
@@ -375,7 +376,10 @@ module ReportBuilder
           return { error: true, text: "No block #{block_id} was authored in this run." }
         end
 
-        result = block_writer.edit(block_id: block_id, find: input['find'].to_s, replace: input['replace'].to_s)
+        result = block_writer.edit(
+          block_id: block_id, find: input['find'].to_s, replace: input['replace'].to_s,
+          explanation: input['explanation']
+        )
 
         { text: "Edited. The chart is now #{placement(result)} — patch the node that places it." }
       rescue ChartBlockWriter::Rejected => e
