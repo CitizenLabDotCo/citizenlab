@@ -14,11 +14,12 @@
   height: var(--gv-size-48);
 }
 
+/* Over the trigger while open, so the menu's own back button is the one under the pointer. */
 .overlay {
   position: fixed;
   bottom: 0;
   left: 0;
-  z-index: 0;
+  z-index: 2;
 }
 
 /* The sidebar's fixed nav takes the overlay's top; its wrapper is static, so inherit passes the value through. */
