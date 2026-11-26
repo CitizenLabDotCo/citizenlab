@@ -11,6 +11,7 @@ import {
 
 import { InCardContext } from '../Field';
 import Icon, { IconName } from '../Icon';
+import CardMenuContext from '../Menu/CardMenuContext';
 import { SpinnerGraphic } from '../Spinner';
 import Tooltip from '../Tooltip';
 
@@ -162,7 +163,7 @@ const MenuCard = ({
     <div className={styles.card} data-disabled={isDisabled || undefined}>
       <MenuTrigger>
         {tooltip ? <Tooltip content={tooltip}>{trigger}</Tooltip> : trigger}
-        {menu}
+        <CardMenuContext.Provider value>{menu}</CardMenuContext.Provider>
       </MenuTrigger>
     </div>
   );

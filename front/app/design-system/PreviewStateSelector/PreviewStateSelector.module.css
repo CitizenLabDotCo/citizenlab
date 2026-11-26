@@ -6,7 +6,8 @@
   composes: button from '../reset.module.css';
   composes: ui from '../typography.module.css';
   composes: ringInside from '../focus.module.css';
-  padding: var(--gv-space-4) var(--gv-space-14);
+  /* 30 high, in the 36 high track. */
+  padding: 5px var(--gv-space-14);
   border-radius: 5px;
   color: var(--gv-text-on-muted);
   white-space: nowrap;

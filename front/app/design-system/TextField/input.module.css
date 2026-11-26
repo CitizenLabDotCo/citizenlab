@@ -34,6 +34,10 @@
   opacity: 1;
 }
 
+.size40 {
+  height: var(--gv-size-40);
+}
+
 .size36 {
   height: var(--gv-size-36);
 }

@@ -2,6 +2,11 @@
   composes: popover from '../collection.module.css';
 }
 
+/* A card's menu: under the card's right edge, narrower than a dropdown. */
+.popover.cardPopover {
+  width: 190px;
+}
+
 /* A submenu is navigation inside the menu: it fades in at once and leaves in the same frame. */
 .popover[data-trigger='SubmenuTrigger'][data-entering] {
   animation: submenu-fade var(--gv-motion-duration-instant)

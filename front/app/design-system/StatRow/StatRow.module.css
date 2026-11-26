@@ -24,9 +24,9 @@
   background: var(--gv-surface-hovered);
 }
 
-/* A toggle row that is on (isPressed): the picked-row surface. */
+/* A toggle row that is on (isPressed): the library's pressed fill. */
 .pressable[aria-pressed='true'] {
-  background: var(--gv-surface-selected-row);
+  background: var(--gv-surface-control-subtle);
 }
 
 .label {

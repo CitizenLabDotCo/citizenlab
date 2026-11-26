@@ -59,6 +59,29 @@
   text-align: center;
 }
 
+/* A row's box shows on hover, on focus or once checked. While any row is
+   checked, every box shows, so the rest can be added. */
+.selectionCell > * {
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.row[data-hovered] > .selectionCell > *,
+.row[data-focus-visible] > .selectionCell > *,
+.row[data-selected] > .selectionCell > *,
+.selectionCell > [data-focus-visible],
+tbody:has(> .row[data-selected]) > .row > .selectionCell > * {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .selectionCell > * {
+    transition: none;
+  }
+}
+
 .actionsCell {
   width: var(--gv-size-28);
 }

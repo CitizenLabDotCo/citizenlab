@@ -35,7 +35,9 @@ const InputTermCard = ({ value, onChange }: Props) => {
       reviewKey="input_term"
       label={title}
       labelTooltip={<FormattedMessage {...messages.inputTermDescription} />}
-      action={selected && <SummaryPill label={selected.label} />}
+      action={
+        selected && <SummaryPill label={selected.label} icon="lightbulb-16" />
+      }
       menu={
         <Menu
           aria-label={title}

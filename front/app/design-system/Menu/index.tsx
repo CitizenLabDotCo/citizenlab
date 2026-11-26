@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 
 import {
   Key,
@@ -15,6 +15,7 @@ import {
 } from '../disabledReason/reasonKeys';
 import surfaces from '../surfaces.module.css';
 
+import CardMenuContext from './CardMenuContext';
 import styles from './Menu.module.css';
 import '../tokens.css';
 
@@ -56,6 +57,7 @@ const Menu = ({
     (next, current) => togglesReasonKey(reasonKeys, next, current)
   );
   const hasSelection = selectionMode !== undefined;
+  const inCard = useContext(CardMenuContext);
 
   const handleAction = (key: Key) => {
     if (reasonKeys.has(key)) return;
@@ -64,8 +66,14 @@ const Menu = ({
 
   return (
     <Popover
-      placement={placement}
-      className={`${surfaces.dropdown} ${styles.popover}`}
+      placement={placement ?? (inCard ? 'bottom end' : undefined)}
+      className={[
+        surfaces.dropdown,
+        styles.popover,
+        inCard && styles.cardPopover,
+      ]
+        .filter(Boolean)
+        .join(' ')}
     >
       <ReasonKeysContext.Provider value={reasonKeys}>
         <AriaMenu

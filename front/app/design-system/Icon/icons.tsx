@@ -238,22 +238,6 @@ export const icons = defineIcons({
       </>
     ),
   },
-  'chevrons-up-down-16': {
-    size: 16,
-    height: 16,
-    viewBox: '0 0 16 16',
-    paths: (
-      <>
-        <path
-          d="M5 10L8 13L11 10M5 6L8 3L11 6"
-          strokeWidth="1.16667"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          stroke="currentColor"
-        />
-      </>
-    ),
-  },
   'circle-check-filled-16': {
     size: 16,
     height: 16,
@@ -508,6 +492,22 @@ export const icons = defineIcons({
       </>
     ),
   },
+  'lightbulb-16': {
+    size: 16,
+    height: 16,
+    viewBox: '0 0 16 16',
+    paths: (
+      <>
+        <path
+          d="M10 9.333C10.133 8.667 10.467 8.2 11 7.667C11.667 7.067 12 6.2 12 5.333A4 4 0 0 0 4 5.333C4 6 4.133 6.8 5 7.667C5.467 8.133 5.867 8.667 6 9.333M6 12H10M6.667 14.667H9.333"
+          strokeWidth="1.16667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          stroke="currentColor"
+        />
+      </>
+    ),
+  },
   'link-14': {
     size: 14,
     height: 14,
@@ -707,6 +707,22 @@ export const icons = defineIcons({
       <>
         <path
           d="M3.33334 7.99998H8.00001M8.00001 7.99998H12.6667M8.00001 7.99998V3.33331M8.00001 7.99998V12.6666"
+          strokeWidth="1.16667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          stroke="currentColor"
+        />
+      </>
+    ),
+  },
+  'rows-expand-16': {
+    size: 16,
+    height: 16,
+    viewBox: '0 0 16 16',
+    paths: (
+      <>
+        <path
+          d="M1.5 3.5H8M1.5 8H8M1.5 12.5H8M10 6L12 4L14 6M10 10L12 12L14 10"
           strokeWidth="1.16667"
           strokeLinecap="round"
           strokeLinejoin="round"

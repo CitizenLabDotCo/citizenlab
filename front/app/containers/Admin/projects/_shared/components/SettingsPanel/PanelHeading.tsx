@@ -25,7 +25,7 @@ const PanelHeading = ({ label, expandable = false }: Props) => {
         expandable &&
         toggle && (
           <IconButton
-            icon="chevrons-up-down-16"
+            icon="rows-expand-16"
             aria-label={formatMessage(
               opened ? messages.collapseAll : messages.expandAll
             )}
