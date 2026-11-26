@@ -10,9 +10,9 @@ import {
 import { BlockExplanation } from 'api/custom_blocks/types';
 import useReport from 'api/reports/useReport';
 
-import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
-
 import useLocalize from 'hooks/useLocalize';
+
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -49,25 +49,12 @@ const DataTab = ({ explanation, dataSources, createdAt }: Props) => {
     <Box>
       {explanation && (
         <>
-          <Text
-            variant="boSection"
-            fontSize="base"
-            fontWeight="bold"
-            m="0"
-            mb="4px"
-          >
+          <Text fontWeight="bold" m="0" mb="4px">
             <FormattedMessage {...messages.whatsIncluded} />
           </Text>
           <Text m="0">{localize(explanation.included)}</Text>
 
-          <Text
-            variant="boSection"
-            fontSize="base"
-            fontWeight="bold"
-            m="0"
-            mt="20px"
-            mb="4px"
-          >
+          <Text fontWeight="bold" m="0" mt="20px" mb="4px">
             <FormattedMessage {...messages.howItsCalculated} />
           </Text>
           <Text m="0">{localize(explanation.calculation)}</Text>
@@ -79,7 +66,7 @@ const DataTab = ({ explanation, dataSources, createdAt }: Props) => {
               bgColor={colors.grey100}
               borderRadius={stylingConsts.borderRadius}
             >
-              <Text variant="boHelper" m="0">
+              <Text variant="bodyS" color="textSecondary" m="0">
                 {localize(explanation.caveat)}
               </Text>
             </Box>
@@ -96,10 +83,10 @@ const DataTab = ({ explanation, dataSources, createdAt }: Props) => {
             mt="24px"
             mb="12px"
           >
-            <Text variant="boSection" fontSize="base" m="0">
+            <Text fontWeight="semi-bold" m="0">
               <FormattedMessage {...messages.sources} />
             </Text>
-            <Text variant="boHelper" m="0">
+            <Text variant="bodyS" color="textSecondary" m="0">
               <FormattedMessage
                 {...messages.sourceCount}
                 values={{ count: sources.length }}
@@ -114,7 +101,7 @@ const DataTab = ({ explanation, dataSources, createdAt }: Props) => {
         </>
       )}
 
-      <Text variant="boHelper" m="0" mt="24px">
+      <Text variant="bodyS" color="textSecondary" m="0" mt="24px">
         <FormattedMessage
           {...messages.writtenWhenGenerated}
           values={{

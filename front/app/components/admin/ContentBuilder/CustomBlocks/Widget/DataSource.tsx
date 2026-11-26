@@ -175,11 +175,11 @@ const DataSource = ({ table, projectId }: Props) => {
         <Text m="0" fontWeight="semi-bold">
           <FormattedMessage {...source.name} />
         </Text>
-        <Text variant="boHelper" m="0">
+        <Text variant="bodyS" color="textSecondary" m="0">
           <FormattedMessage {...source.description} />
         </Text>
         {link && (
-          <Text variant="boHelper" m="0" mt="2px">
+          <Text variant="bodyS" m="0" mt="2px">
             {link}
           </Text>
         )}
