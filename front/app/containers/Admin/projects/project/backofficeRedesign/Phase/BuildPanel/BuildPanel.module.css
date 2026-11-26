@@ -97,5 +97,5 @@
 .questionActions {
   display: flex;
   gap: var(--gv-space-8);
-  padding-left: calc(18px + var(--gv-space-10));
+  padding-left: calc(var(--gv-size-16) + var(--gv-space-10));
 }

@@ -20,7 +20,7 @@
   cursor: default;
 }
 
-/* 18 px ring with a 1.5 px border: both off-scale, kept as drawn. */
+/* 16 px ring with a 1 px border, as in the library: #CBD5E1, #044D6C when selected. */
 .indicator {
   composes: ringOutside from '../focus.module.css';
   box-sizing: border-box;
@@ -28,9 +28,9 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
-  border: 1.5px solid var(--gv-border-control-hovered);
+  width: var(--gv-size-16);
+  height: var(--gv-size-16);
+  border: 1px solid var(--gv-border-strong);
   border-radius: var(--gv-radius-full);
   background: var(--gv-surface-panel);
   transition-property: background-color, border-color;
@@ -59,7 +59,7 @@
 
 .radio[data-selected] .indicator {
   background: var(--gv-surface-panel);
-  border-color: var(--gv-surface-brand-strong);
+  border-color: var(--gv-border-selected);
 }
 
 .radio[data-selected] .dot {
