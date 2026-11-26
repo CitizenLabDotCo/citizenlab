@@ -30,7 +30,20 @@
   color: var(--gv-text-primary);
 }
 
-.field[data-disabled] .label {
+/* Inside a setting card: 12/16 grey, 4 above its input. */
+.labelInCard {
+  composes: small from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+/* Each field's own root holds the label row, so the gap is set on that parent. */
+*:has(> .labelRow > .labelInCard),
+*:has(> .labelRowWithAccessory > .labelInCard) {
+  gap: var(--gv-space-4);
+}
+
+.field[data-disabled] .label,
+.field[data-disabled] .labelInCard {
   color: var(--gv-text-disabled);
 }
 

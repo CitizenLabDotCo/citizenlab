@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from 'react';
+import React, { createContext, ReactNode, useContext } from 'react';
 
 import { FieldErrorContext, Label, Text } from 'react-aria-components';
 
@@ -10,6 +10,10 @@ import styles from './Field.module.css';
 import FieldError from './FieldError';
 import messages from './messages';
 import '../tokens.css';
+
+// True inside a setting card, where a field label is 12/16 grey: never bigger
+// or darker than the card title.
+export const InCardContext = createContext(false);
 
 // The grey Required marker: a dot and the word. Never red.
 export const RequiredMarker = () => (
@@ -30,15 +34,23 @@ export const FieldLabel = ({
   children,
   tooltip,
   labelAccessory,
-}: FieldLabelProps) => (
-  <div
-    className={labelAccessory ? styles.labelRowWithAccessory : styles.labelRow}
-  >
-    <Label className={styles.label}>{children}</Label>
-    {labelAccessory}
-    {tooltip && <TooltipMark label={tooltip} />}
-  </div>
-);
+}: FieldLabelProps) => {
+  const inCard = useContext(InCardContext);
+
+  return (
+    <div
+      className={
+        labelAccessory ? styles.labelRowWithAccessory : styles.labelRow
+      }
+    >
+      <Label className={inCard ? styles.labelInCard : styles.label}>
+        {children}
+      </Label>
+      {labelAccessory}
+      {tooltip && <TooltipMark label={tooltip} />}
+    </div>
+  );
+};
 
 type FieldHelpProps = {
   description?: ReactNode;

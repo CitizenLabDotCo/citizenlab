@@ -9,6 +9,7 @@ import {
   PressEvent,
 } from 'react-aria-components';
 
+import { InCardContext } from '../Field';
 import Icon, { IconName } from '../Icon';
 import { SpinnerGraphic } from '../Spinner';
 import Tooltip from '../Tooltip';
@@ -102,7 +103,9 @@ const DisclosureCard = ({
         {tooltip ? <Tooltip content={tooltip}>{trigger}</Tooltip> : trigger}
       </Heading>
       <DisclosurePanel className={styles.panel}>
-        <div className={styles.panelContent}>{children}</div>
+        <div className={styles.panelContent}>
+          <InCardContext.Provider value>{children}</InCardContext.Provider>
+        </div>
       </DisclosurePanel>
     </AriaDisclosure>
   );
@@ -181,7 +184,11 @@ const StaticCard = ({
         content.status && <span className={styles.iconBox} aria-hidden />
       )}
     </div>
-    {children && <div className={styles.body}>{children}</div>}
+    {children && (
+      <div className={styles.body}>
+        <InCardContext.Provider value>{children}</InCardContext.Provider>
+      </div>
+    )}
   </div>
 );
 
