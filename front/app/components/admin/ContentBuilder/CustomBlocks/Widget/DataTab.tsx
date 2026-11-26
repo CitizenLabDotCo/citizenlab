@@ -12,6 +12,8 @@ import useReport from 'api/reports/useReport';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -30,6 +32,7 @@ interface Props {
 // back off the SQL.
 const DataTab = ({ explanation, dataSources, createdAt }: Props) => {
   const { formatDate } = useIntl();
+  const localize = useLocalize();
 
   // A phase report reaches its project through the phase; a report about a whole
   // project carries it directly.
@@ -46,15 +49,28 @@ const DataTab = ({ explanation, dataSources, createdAt }: Props) => {
     <Box>
       {explanation && (
         <>
-          <Text variant="boSection" fontSize="base" m="0" mb="4px">
+          <Text
+            variant="boSection"
+            fontSize="base"
+            fontWeight="bold"
+            m="0"
+            mb="4px"
+          >
             <FormattedMessage {...messages.whatsIncluded} />
           </Text>
-          <Text m="0">{explanation.included}</Text>
+          <Text m="0">{localize(explanation.included)}</Text>
 
-          <Text variant="boSection" fontSize="base" m="0" mt="20px" mb="4px">
+          <Text
+            variant="boSection"
+            fontSize="base"
+            fontWeight="bold"
+            m="0"
+            mt="20px"
+            mb="4px"
+          >
             <FormattedMessage {...messages.howItsCalculated} />
           </Text>
-          <Text m="0">{explanation.calculation}</Text>
+          <Text m="0">{localize(explanation.calculation)}</Text>
 
           {explanation.caveat && (
             <Box
@@ -64,7 +80,7 @@ const DataTab = ({ explanation, dataSources, createdAt }: Props) => {
               borderRadius={stylingConsts.borderRadius}
             >
               <Text variant="boHelper" m="0">
-                {explanation.caveat}
+                {localize(explanation.caveat)}
               </Text>
             </Box>
           )}

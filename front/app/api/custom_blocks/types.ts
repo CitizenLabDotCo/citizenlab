@@ -43,9 +43,9 @@ export interface ConfigSchema {
 // The three questions an admin asks of a chart. A caveat is only there when the
 // chart has one worth singling out.
 export interface BlockExplanation {
-  included: string;
-  calculation: string;
-  caveat?: string;
+  included: Multiloc;
+  calculation: Multiloc;
+  caveat?: Multiloc;
 }
 
 export interface BlockManifest {
