@@ -275,14 +275,15 @@ resource 'Ideas' do
     context 'with array and hash valued answers' do
       before { header_token_for author }
 
-      let!(:ranking_field) { create(:custom_field_ranking, :with_options, resource: custom_form, key: 'ranking_field') }
-      let!(:matrix_field) { create(:custom_field_matrix_linear_scale, resource: custom_form, key: 'matrix_field') }
+      let(:ranking_field) { create(:custom_field_ranking, :with_options, resource: custom_form, key: 'ranking_field') }
+      let(:matrix_field) { create(:custom_field_matrix_linear_scale, resource: custom_form, key: 'matrix_field') }
+      # Referencing the fields creates them before the outer input builds its answers.
       let(:stored_answers) do
         {
           'text_field' => 'Hello',
           'multiselect_field' => %w[option1],
-          'ranking_field' => %w[by_bike by_train],
-          'matrix_field' => { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 2 }
+          ranking_field.key => %w[by_bike by_train],
+          matrix_field.key => { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 2 }
         }
       end
 
