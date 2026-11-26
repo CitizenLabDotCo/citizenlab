@@ -18,6 +18,8 @@ interface Props {
   defaultOpen?: boolean;
   /** Shown as a pill in the card header while the group is closed. */
   summary?: string;
+  /** Turns the pill blue, e.g. once its value is edited from the default. */
+  summaryActive?: boolean;
   // Holds it open while a field inside shows an error, so the error can be seen.
   hasError?: boolean;
   onClose?: () => void;
@@ -30,6 +32,7 @@ const PanelGroup = ({
   reviewNeedsChoice,
   defaultOpen = false,
   summary,
+  summaryActive,
   hasError = false,
   onClose,
   children,
@@ -56,7 +59,9 @@ const PanelGroup = ({
         title={label}
         reviewKey={reviewKey}
         reviewNeedsChoice={reviewNeedsChoice}
-        action={summary && <SummaryPill label={summary} />}
+        action={
+          summary && <SummaryPill label={summary} active={summaryActive} />
+        }
         button={{
           icon: isOpen ? 'chevron-up' : 'chevron-down',
           expanded: isOpen,

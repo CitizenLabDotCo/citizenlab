@@ -15,5 +15,5 @@
 .fields {
   display: flex;
   flex-direction: column;
-  gap: var(--gv-space-16);
+  gap: var(--gv-space-12);
 }

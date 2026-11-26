@@ -102,6 +102,7 @@ const NativeSurveyInputs = ({
     const ctaError = getApiErrorMessage(
       apiErrors?.native_survey_button_multiloc
     );
+    const surveyTitle = localize(formData.native_survey_title_multiloc);
 
     return (
       <>
@@ -168,6 +169,12 @@ const NativeSurveyInputs = ({
         </PanelGroup>
         <PanelGroup
           label={formatMessage(parentMessages.surveyTitleAndButtonGroup)}
+          // Collapsed, the pill shows the title: blue once edited from the default.
+          summary={surveyTitle}
+          summaryActive={
+            surveyTitle !==
+            formatMessage(parentMessages.defaultSurveyTitleLabel)
+          }
           defaultOpen
         >
           <LanguageGroup
@@ -179,6 +186,10 @@ const NativeSurveyInputs = ({
                 id="native-survey-title"
                 locale={group.selectedLocale}
                 label={formatMessage(parentMessages.surveyTitleLabel)}
+                placeholder={group.placeholder(
+                  parentMessages.addSurveyTitleInLanguage,
+                  parentMessages.addSurveyTitle
+                )}
                 valueMultiloc={formData.native_survey_title_multiloc}
                 onChange={handleSurveyTitleChange}
                 errorMessage={titleError}
@@ -187,6 +198,10 @@ const NativeSurveyInputs = ({
                 id="native-survey-button"
                 locale={group.selectedLocale}
                 label={formatMessage(parentMessages.surveyCTALabel)}
+                placeholder={group.placeholder(
+                  parentMessages.addButtonTextInLanguage,
+                  parentMessages.addButtonText
+                )}
                 valueMultiloc={formData.native_survey_button_multiloc}
                 onChange={handleSurveyCTAChange}
                 errorMessage={ctaError}
