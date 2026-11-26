@@ -17,6 +17,8 @@ import { usePhasePreviewDraft } from 'components/admin/PhasePreview/DraftContext
 import { useIntl } from 'utils/cl-intl';
 import { createDraftPhase } from 'utils/phasePreview/draftPhase';
 
+import StageSkeleton from '../WorkspaceSkeleton/StageSkeleton';
+
 import messages from './messages';
 
 interface Props {
@@ -33,7 +35,7 @@ const PhasePreview = ({ projectId, phase, draft }: Props) => {
   const { data: phases } = usePhases(projectId);
   const edits = usePhasePreviewDraft(phase?.id);
 
-  if (!project || !phases) return null;
+  if (!project || !phases) return <StageSkeleton />;
 
   const previewPhase =
     phase ?? (draft ? createDraftPhase(projectId, draft) : undefined);
@@ -62,6 +64,7 @@ const PhasePreview = ({ projectId, phase, draft }: Props) => {
           draft: draft ?? edits,
           unsaved: !!draft,
         }}
+        skeleton
       />
     </PhonePreviewBackdrop>
   );

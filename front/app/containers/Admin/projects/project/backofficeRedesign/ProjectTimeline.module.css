@@ -1,4 +1,5 @@
 .timeline {
+  composes: reveal from '../../../../../design-system/Skeleton/Skeleton.module.css';
   padding: var(--gv-space-18) var(--gv-space-8) var(--gv-space-24);
 }
 

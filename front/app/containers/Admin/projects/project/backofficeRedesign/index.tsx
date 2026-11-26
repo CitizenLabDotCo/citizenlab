@@ -13,6 +13,7 @@ import { IPhaseData, InputTerm } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
+import PageLoadingFallbackContext from 'components/UI/PageLoading/FallbackContext';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { useLocation, useSearch } from 'utils/router';
@@ -31,6 +32,9 @@ import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
 import ProjectTimeline from './ProjectTimeline';
 import styles from './ProjectWorkspace.module.css';
+import PhasePanelSkeleton from './WorkspaceSkeleton/PhasePanelSkeleton';
+import StageSkeleton from './WorkspaceSkeleton/StageSkeleton';
+import TimelineSkeleton from './WorkspaceSkeleton/TimelineSkeleton';
 import 'design-system/tokens.css';
 
 const InputTags = lazy(() => import('./InputTags'));
@@ -51,6 +55,8 @@ interface Draft {
 interface Props {
   project: IProjectData;
   phase?: IPhaseData;
+  // The URL names a phase that has not loaded yet.
+  phasePending?: boolean;
   draft?: Draft;
   sidePanel?: ReactNode;
   withParticipation?: boolean;
@@ -62,6 +68,7 @@ interface Props {
 const ProjectWorkspace = ({
   project,
   phase,
+  phasePending = false,
   draft,
   sidePanel,
   withParticipation = true,
@@ -80,7 +87,7 @@ const ProjectWorkspace = ({
   const section = sectionFromPathname(pathname, project.id);
   const activeView = providedActiveView ?? viewFromPathname(pathname);
 
-  const inPhase = !!(phase || draft);
+  const inPhase = !!(phase || draft || phasePending);
   const workspaceRef = useRef<HTMLDivElement>(null);
   const wasSaving = useRef(false);
   const saving = pageSave?.saving ?? false;
@@ -130,7 +137,7 @@ const ProjectWorkspace = ({
   const setupSlot = !section && (
     <div className={styles.setupSlot}>{settingsPanel}</div>
   );
-  const showParticipation = withParticipation && !pending && !editingEmail;
+  const showParticipation = withParticipation && !editingEmail;
   const participationSlot = showParticipation && (
     <div
       className={styles.participationSlot}
@@ -144,7 +151,11 @@ const ProjectWorkspace = ({
         data-animate={animate || undefined}
         aria-hidden={collapsed}
       >
-        <ProjectTimeline projectId={project.id} withNewMethod={!draft} />
+        {pending ? (
+          <TimelineSkeleton />
+        ) : (
+          <ProjectTimeline projectId={project.id} withNewMethod={!draft} />
+        )}
       </div>
       {inPhase && collapsed && (
         <div className={styles.railToggle}>
@@ -156,11 +167,15 @@ const ProjectWorkspace = ({
   // A phase has a single panel: its build fields, then its settings.
   const phaseSlot = (
     <div className={`${styles.phaseSlot} ${showPanels ? '' : styles.hidden}`}>
-      <div className={editingTags ? styles.hidden : undefined}>
-        {sidePanel}
-        {settingsPanel}
-        <GoesLiveNote project={project} />
-      </div>
+      {phasePending ? (
+        <PhasePanelSkeleton />
+      ) : (
+        <div className={editingTags ? styles.hidden : undefined}>
+          {sidePanel}
+          {settingsPanel}
+          <GoesLiveNote project={project} />
+        </div>
+      )}
       {tagsOpened && (
         <div className={editingTags ? undefined : styles.hidden}>
           <Suspense fallback={<Spinner />}>
@@ -177,6 +192,9 @@ const ProjectWorkspace = ({
       )}
     </div>
   );
+
+  // A page loading on the build stage shows an empty phone, not a spinner.
+  const viewSkeleton = showPanels ? <StageSkeleton /> : undefined;
 
   const mainSlot = (
     <div
@@ -196,7 +214,11 @@ const ProjectWorkspace = ({
           </Suspense>
         </div>
       )}
-      {!editingMap && children}
+      {!editingMap && (
+        <PageLoadingFallbackContext.Provider value={viewSkeleton}>
+          {children}
+        </PageLoadingFallbackContext.Provider>
+      )}
     </div>
   );
 

@@ -1,0 +1,50 @@
+.fill {
+  height: 100%;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+}
+
+.spread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+/* Lines up with a phase in the timeline: dot, then name and dates. */
+.phaseRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gv-space-10);
+  padding: var(--gv-space-10);
+}
+
+.phasePanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+  padding: var(--gv-space-18);
+}
+
+.phaseSettings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+  padding: 0 var(--gv-space-18) var(--gv-space-18);
+}
+

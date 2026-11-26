@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { ideaSortValues } from 'api/ideas/types';
 import { participationMethods } from 'api/phases/types';
 
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageLoading from 'components/UI/PageLoading';
 
 import Navigate from 'utils/cl-router/Navigate';
@@ -14,6 +15,7 @@ import { createRoute, useParams } from 'utils/router';
 import { adminRoute } from '../routes';
 
 import { projectsIndexSearchSchema } from './all/_shared/searchSchema';
+import WorkspaceLoading from './project/backofficeRedesign/WorkspaceSkeleton/WorkspaceLoading';
 
 const AdminProjectIdeaPreviewIndex = lazy(
   () => import('./AdminProjectIdeaPreviewIndex')
@@ -190,7 +192,9 @@ const projectRoute = createRoute({
   getParentRoute: () => projectsRoute,
   path: '$projectId',
   component: () => (
-    <PageLoading>
+    <PageLoading
+      fallback={<WorkspaceLoading fallback={<FullPageSpinner admin />} />}
+    >
       <AdminProjectsProjectIndex />
     </PageLoading>
   ),

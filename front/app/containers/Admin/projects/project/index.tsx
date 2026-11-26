@@ -22,6 +22,7 @@ import NewPhase from './backofficeRedesign/NewPhase';
 import { ParticipationPanelProvider } from './backofficeRedesign/ParticipationPanelContext';
 import PhaseSetup from './backofficeRedesign/Phase/PhaseSetup';
 import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
+import WorkspaceLoading from './backofficeRedesign/WorkspaceSkeleton/WorkspaceLoading';
 import TurnOnNotice from './earlyAccess/TurnOnNotice';
 import ProjectHeader from './projectHeader';
 import ProjectSidebar from './projectPage/ProjectSidebar';
@@ -40,7 +41,7 @@ const workspacePage = (
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: authUser } = useAuthUser();
   const { phaseId } = useParams({ strict: false });
-  const { data: phase } = usePhase(phaseId);
+  const { data: phase, isLoading: phaseLoading } = usePhase(phaseId);
   const workspaceEnabled = useProjectBackofficeRedesign();
   const matchRoute = useMatchRoute();
   const onNewPhaseRoute = !!matchRoute({
@@ -71,6 +72,7 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
                 <ProjectWorkspace
                   project={project}
                   phase={selectedPhase}
+                  phasePending={!!phaseId && phaseLoading}
                   sidePanel={
                     selectedPhase && (
                       <PhaseSetup
@@ -115,7 +117,7 @@ const AdminProjectsProjectIndexWrapper = () => {
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: project } = useProjectById(projectId);
 
-  if (!project) return null;
+  if (!project) return <WorkspaceLoading fallback={null} />;
 
   return <AdminProjectsProjectIndex project={project.data} />;
 };
