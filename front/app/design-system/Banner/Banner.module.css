@@ -19,6 +19,17 @@
   min-width: 0;
 }
 
+/* The prototype's toggle banner: the control and close button sit 24 px from the
+   text, 16 px apart, on the first line. */
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-16);
+  height: var(--gv-size-20);
+  margin-left: var(--gv-space-12);
+}
+
 .info {
   background: var(--gv-surface-info);
 }

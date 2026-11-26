@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Switch from '../Switch';
+
 import Banner from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -34,6 +36,25 @@ export const AllVariants: Story = {
         platform. Go Vocal only shows the document; responses, comments and
         annotations stay in Konveio and are not part of the exports or the
         insights of this project.
+      </Banner>
+    </div>
+  ),
+};
+
+export const WithSwitch: Story = {
+  render: () => (
+    <div style={{ width: 1180 }}>
+      <Banner
+        tone="info"
+        action={
+          <Switch size={36} isSelected>
+            New project back office
+          </Switch>
+        }
+        onDismiss={() => {}}
+      >
+        You are using the new project back office. To go back to the previous
+        version, turn it off here or in your profile settings.
       </Banner>
     </div>
   ),

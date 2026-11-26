@@ -1,0 +1,74 @@
+/* The prototype's announcement modal: 520 wide, the picture inset 8 px. Not in the
+   Figma library yet, so its 520 width and 16 px radius have no token; update both
+   from there once it is added. */
+.modal {
+  width: 520px;
+  max-width: calc(100vw - var(--gv-space-32));
+  border-radius: 16px;
+}
+
+.dialog {
+  padding: var(--gv-space-8) var(--gv-space-8) var(--gv-space-24);
+  outline: none;
+}
+
+.media {
+  height: 316px;
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-control-subtle);
+  overflow: hidden;
+}
+
+.body {
+  padding: var(--gv-space-24) var(--gv-space-16) 0;
+}
+
+.title {
+  composes: title from '../typography.module.css';
+  margin: 0 0 var(--gv-space-12);
+  color: var(--gv-text-primary);
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  margin: 0 0 var(--gv-space-24);
+  padding: 0;
+  list-style: none;
+}
+
+.point {
+  composes: body from '../typography.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  color: var(--gv-text-body-subtle);
+}
+
+.check {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-16);
+  height: var(--gv-size-16);
+  color: var(--gv-icon-tertiary);
+}
+
+.actions {
+  display: flex;
+  gap: var(--gv-space-8);
+}
+
+.error {
+  composes: small from '../typography.module.css';
+  margin: var(--gv-space-12) 0 0;
+  color: var(--gv-text-danger);
+}
+
+.note {
+  composes: small from '../typography.module.css';
+  margin: var(--gv-space-16) 0 0;
+  color: var(--gv-text-tertiary);
+}
