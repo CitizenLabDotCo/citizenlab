@@ -1,8 +1,28 @@
+/* A darker band sweeps left to right. The gradient is fixed to the viewport,
+   so neighbouring skeletons show one continuous band, not a shine each. */
 .skeleton {
+  --skeleton-base: var(--gv-surface-control-subtle);
+  --skeleton-shine: var(--gv-surface-muted-hovered);
+
   display: block;
   flex-shrink: 0;
   max-width: 100%;
-  background: var(--gv-surface-control-subtle);
+  background: var(--skeleton-base)
+    linear-gradient(
+      100deg,
+      var(--skeleton-base) 0%,
+      var(--skeleton-base) 36%,
+      var(--skeleton-shine) 50%,
+      var(--skeleton-base) 64%,
+      var(--skeleton-base) 100%
+    )
+    0 0 / 160vw 100vh repeat-x fixed;
+  animation: wave 1.6s linear infinite;
+}
+
+.onGrey {
+  --skeleton-base: var(--gv-surface-track);
+  --skeleton-shine: var(--gv-surface-muted-strong);
 }
 
 .line {
@@ -12,4 +32,36 @@
 
 .block {
   border-radius: var(--gv-radius-8);
+}
+
+@keyframes wave {
+  from {
+    background-position-x: 0;
+  }
+
+  to {
+    background-position-x: 160vw;
+  }
+}
+
+/* For content that replaces a skeleton: it fades in where it sits. */
+.reveal {
+  animation: reveal 160ms var(--gv-motion-easing-enter) backwards;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    background-image: none;
+    animation: none;
+  }
+
+  .reveal {
+    animation: none;
+  }
 }
