@@ -1,6 +1,4 @@
-import React, { ReactNode } from 'react';
-
-import Text from 'design-system/Text';
+import React from 'react';
 
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
@@ -12,8 +10,11 @@ import inputFormMessages from 'containers/Admin/projects/project/inputForm/messa
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
+import phaseMessages from '../../../../messages';
+import SaveFirstCard from '../../../../SaveFirstCard';
 import PanelField from '../../../PanelField';
 import DemographicsCard from '../DemographicsCard';
+import methodSectionMessages from '../messages';
 
 import FormQuestionsCard from './FormQuestionsCard';
 import formTitle from './formTitle';
@@ -31,7 +32,6 @@ interface Props {
   inputTerm?: InputTerm;
   /** Survey options already shows the form and offline collection. */
   formInSurveyOptions: boolean;
-  draftQuestionsAction?: ReactNode;
 }
 
 const FormSection = ({
@@ -40,7 +40,6 @@ const FormSection = ({
   phaseId,
   inputTerm,
   formInSurveyOptions,
-  draftQuestionsAction,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -66,13 +65,11 @@ const FormSection = ({
           survey={survey}
         />
       ) : (
-        <PanelField label={title}>
-          {draftQuestionsAction || (
-            <Text variant="ui" tone="secondary">
-              {formatMessage(messages.saveToEditForm)}
-            </Text>
-          )}
-        </PanelField>
+        <SaveFirstCard
+          title={title}
+          actionLabel={formatMessage(methodSectionMessages.addQuestions)}
+          reason={formatMessage(phaseMessages.saveFirstToAddQuestions)}
+        />
       )}
 
       {!survey && <InputTagsCard projectId={projectId} inputTerm={inputTerm} />}

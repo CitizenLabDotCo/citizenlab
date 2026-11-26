@@ -48,6 +48,7 @@ interface Props {
   draftLabel?: string;
   draftParentLabel?: string;
   saveLabel?: string;
+  saveDisabledReason?: string;
   activeView: PhaseViewKey;
   viewSwitch?: ReactNode;
   /** The back button then returns from the map to the phase. */
@@ -63,6 +64,7 @@ const WorkspaceHeader = ({
   draftLabel,
   draftParentLabel,
   saveLabel,
+  saveDisabledReason,
   activeView,
   viewSwitch,
   editingMap,
@@ -186,7 +188,11 @@ const WorkspaceHeader = ({
       <div className={styles.actions}>
         {!editingMap &&
           (inPhase || pageSave?.dirty ? (
-            <SaveChangesButton key={phase?.id} label={saveButtonLabel} />
+            <SaveChangesButton
+              key={phase?.id}
+              label={saveButtonLabel}
+              disabledReason={saveDisabledReason}
+            />
           ) : (
             <>
               <div className={styles.dropdowns}>

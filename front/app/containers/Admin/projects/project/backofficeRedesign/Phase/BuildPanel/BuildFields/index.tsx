@@ -216,7 +216,6 @@ const BuildFields = ({
             phaseId={phaseId}
             inputTerm={formData.input_term}
             formInSurveyOptions={surveyOptionsShown}
-            draftQuestionsAction={draftQuestionsAction}
           />
         </div>
 

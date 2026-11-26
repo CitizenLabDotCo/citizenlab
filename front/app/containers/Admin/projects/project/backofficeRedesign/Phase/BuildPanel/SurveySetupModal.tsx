@@ -39,11 +39,6 @@ interface Props {
   onClose: () => void;
   initialAction?: FollowUpAction;
   onCloseAction?: () => void;
-  draft?: {
-    onChoose: (action: SurveySetupAction) => void;
-    saving: boolean;
-    uploading: boolean;
-  };
 }
 
 const SurveySetupModal = ({
@@ -53,7 +48,6 @@ const SurveySetupModal = ({
   onClose,
   initialAction,
   onCloseAction,
-  draft,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: updateQuestions, isPending: updatingQuestions } =
@@ -79,7 +73,7 @@ const SurveySetupModal = ({
   const hasSavedQuestions =
     !!phase?.data.attributes.custom_form_persisted && !!hasQuestions;
   const noResponses = submissionCount?.data.attributes.totalSubmissions === 0;
-  const canCopy = !!draft || (noResponses && !hasSavedQuestions);
+  const canCopy = noResponses && !hasSavedQuestions;
   const canDelete =
     noResponses &&
     customFields?.every(
@@ -130,10 +124,6 @@ const SurveySetupModal = ({
   const choose = (choice: SurveySetupAction) => {
     if (updatingQuestions || (choice === 'copy' && !canCopy)) return;
     setDeletedQuestions(undefined);
-    if (draft) {
-      draft.onChoose(choice);
-      return;
-    }
 
     onClose();
     if (choice === 'edit') {
@@ -161,38 +151,24 @@ const SurveySetupModal = ({
       <Modal
         isOpen={opened}
         onOpenChange={(isOpen) => {
-          if (!isOpen && !draft?.saving) onClose();
+          if (!isOpen) onClose();
         }}
-        showClose={!draft?.saving}
         title={formatMessage(
-          !draft && hasQuestions !== false
+          hasQuestions !== false
             ? methodSectionMessages.editSurvey
             : methodSectionMessages.addQuestions
         )}
       >
         <div className={styles.setupBody}>
-          {draft?.saving ? (
-            <div role="status" className={styles.setupStatus}>
-              <Spinner />
-              <Text variant="ui" tone="primary">
-                {formatMessage(messages.savingAndOpening)}
-              </Text>
-            </div>
-          ) : draft?.uploading ? (
-            <Text role="status" variant="ui" tone="primary">
-              {formatMessage(messages.waitingForAttachment)}
-            </Text>
-          ) : (
-            <>
               <Text variant="ui" tone="secondary" className={styles.setupLead}>
                 {formatMessage(messages.surveySetupLead)}
               </Text>
-              {!draft && questionsPending ? (
+              {questionsPending ? (
                 <Spinner />
               ) : (
                 <NavCard
                   label={formatMessage(
-                    !draft && hasQuestions !== false
+                    hasQuestions !== false
                       ? methodSectionMessages.editForm
                       : messages.startFromScratch
                   )}
@@ -254,8 +230,6 @@ const SurveySetupModal = ({
                   onClickExcelImport={() => choose('excel')}
                 />
               </PanelGroup>
-            </>
-          )}
         </div>
       </Modal>
       {phaseId && (

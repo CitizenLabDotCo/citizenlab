@@ -7,7 +7,7 @@ import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import ProjectAssignee from 'components/admin/ProjectAssignee';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { useSearch } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 interface Props {
   phaseId?: string;
@@ -15,10 +15,13 @@ interface Props {
 
 const ModerationAssignee = ({ phaseId }: Props) => {
   const { setup_action } = useSearch({ strict: false });
+  // The assignee belongs to the project, so a phase not saved yet can set it too.
+  const { projectId: routeProjectId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
   const { mutateAsync: updateProject } = useUpdateProject();
   const [assignee, setAssignee] = useState<string | null | undefined>();
-  const projectId = phase?.data.relationships.project.data.id;
+  const projectId =
+    phase?.data.relationships.project.data.id ?? (phaseId ? undefined : routeProjectId);
 
   useRegisterPageSaver('assignee', {
     dirty: assignee !== undefined,

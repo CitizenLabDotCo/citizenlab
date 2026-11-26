@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import { IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
@@ -43,7 +43,6 @@ import 'design-system/tokens.css';
 const NO_EXPAND_ALL = { count: 0, opened: false };
 
 interface Props {
-  moderationAction?: ReactNode;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   submission_enabled?: boolean | null;
@@ -100,7 +99,6 @@ interface Props {
 }
 
 const IdeationInputs = ({
-  moderationAction,
   input_term,
   handleInputTermChange,
   submission_enabled,
@@ -335,12 +333,10 @@ const IdeationInputs = ({
         <div id="phase-moderation-settings">
           <PanelGroup
             label={formatMessage(configMessages.moderationGroup)}
-            // An unsaved phase keeps it open for its save-first action.
-            defaultOpen={!phaseId || setup_action === 'moderation'}
+            defaultOpen={setup_action === 'moderation'}
             summary={assigneeSummary}
           >
             <div className={styles.moderation}>
-              {!phaseId && moderationAction}
               <ModerationAssignee phaseId={phaseId} />
               {screening}
               {anonymity}

@@ -51,6 +51,8 @@ interface Draft {
   label: string;
   parentLabel?: string;
   saveLabel?: string;
+  // Why Save is off, while a required field is still empty.
+  saveDisabledReason?: string;
   methodSettings?: ReactNode;
 }
 
@@ -240,6 +242,7 @@ const ProjectWorkspace = ({
         draftLabel={draft?.label}
         draftParentLabel={draft?.parentLabel}
         saveLabel={draft?.saveLabel}
+        saveDisabledReason={draft?.saveDisabledReason}
         activeView={activeView}
         viewSwitch={viewSwitch}
         editingMap={editingMap}

@@ -13,9 +13,11 @@ import 'design-system/tokens.css';
 
 interface Props {
   label: string;
+  // Why there is nothing to save yet, e.g. a required field is empty.
+  disabledReason?: string;
 }
 
-const SaveChangesButton = ({ label }: Props) => {
+const SaveChangesButton = ({ label, disabledReason }: Props) => {
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
   const returnToPhaseAfterSave = useReturnToPhaseAfterSave();
@@ -39,6 +41,7 @@ const SaveChangesButton = ({ label }: Props) => {
       size={32}
       icon={showSaved ? 'check-14' : undefined}
       isDisabled={!pageSave.dirty}
+      disabledReason={disabledReason}
       isPending={pageSave.saving}
       onPress={handleClick}
     >

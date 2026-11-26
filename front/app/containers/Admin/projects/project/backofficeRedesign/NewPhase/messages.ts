@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.newPhaseCrumb',
     defaultMessage: 'New phase',
   },
+  addDatesAndTitleToSave: {
+    id: 'app.containers.Admin.projects.project.addDatesAndTitleToSave',
+    defaultMessage: 'Add the dates and a title to save',
+  },
   newSurveyCrumb: {
     id: 'app.containers.Admin.projects.project.newSurveyCrumb',
     defaultMessage: 'New survey',

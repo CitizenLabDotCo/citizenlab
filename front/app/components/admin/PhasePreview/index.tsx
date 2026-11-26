@@ -153,16 +153,6 @@ const PhasePreview = ({ src, title, snapshot, skeleton = false }: Props) => {
           </Text>
         )}
       </Box>
-      {snapshot.unsaved && !isInformation && (
-        <Text
-          fontSize="s"
-          color="textSecondary"
-          textAlign="center"
-          m="0 16px 8px"
-        >
-          {formatMessage(messages.newPhase)}
-        </Text>
-      )}
       {!isInformation && (
         <SimulateBar>
           <PreviewStateSelector

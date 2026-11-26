@@ -41,19 +41,14 @@ import markSaved from '../_shared/markSaved';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
 import methodSectionMessages from '../Phase/BuildPanel/BuildFields/MethodSection/messages';
 import PlacementCard from '../Phase/BuildPanel/PlacementCard';
-import SurveySetupModal, {
-  SurveySetupAction,
-} from '../Phase/BuildPanel/SurveySetupModal';
-import DraftMethodSettings, {
-  SetupSettingsAction,
-} from '../Phase/DraftMethodSettings';
+import DraftMethodSettings from '../Phase/DraftMethodSettings';
 import EmptyState from '../Phase/EmptyState';
+import phaseMessages from '../Phase/messages';
 import PhasePreview from '../Phase/PhasePreview';
 import { PhaseViewKey } from '../Phase/usePhaseViews';
 
 import DraftPhaseViewSwitch from './DraftPhaseViewSwitch';
 import messages from './messages';
-import SavedInputForm from './SavedInputForm';
 import 'design-system/tokens.css';
 
 interface DraftValues {
@@ -114,11 +109,7 @@ const NewPhaseWorkspace = ({
     id: string;
     reviewedCards: SetupReviewCard[];
   }>();
-  const [surveySetupOpened, setSurveySetupOpened] = useState(false);
-  const [destination, setDestination] = useState<{
-    phaseId: string;
-    action?: SurveySetupAction | 'input' | SetupSettingsAction;
-  }>();
+  const [destination, setDestination] = useState<{ phaseId: string }>();
 
   const files = usePhaseFileAttachments({
     projectId,
@@ -207,63 +198,23 @@ const NewPhaseWorkspace = ({
 
   useRegisterPageSaver('draft', { dirty: isDirty || filesChanged, save });
 
-  const saveAndOpenAction = async (
-    action: SurveySetupAction | 'input' | SetupSettingsAction
-  ) => {
-    if (!pageSave || pageSave.saving || files.isUploadingFile) return;
-
-    const failed = await pageSave.saveAll('leave', 'draft');
-    setSurveySetupOpened(false);
-    if (failed.length > 0 || !savedPhase.current) return;
-
-    pageSave.leave();
-    setDestination({ phaseId: savedPhase.current.id, action });
-  };
+  const hasTitle = Object.values(formData.title_multiloc ?? {}).some(
+    (title) => !!title.trim()
+  );
+  const saveDisabledReason =
+    formData.start_at && hasTitle
+      ? undefined
+      : formatMessage(messages.addDatesAndTitleToSave);
 
   // The header button also saves the other panels. The saved phase only opens
   // once none of them has changes left, so a failed one keeps its edits.
   const settled = !pageSave?.dirty && !pageSave?.saving;
 
-  if (destination && (destination.action || settled)) {
-    const params = { projectId, phaseId: destination.phaseId };
-
-    if (destination.action === 'input') {
-      return (
-        <SavedInputForm projectId={projectId} phaseId={destination.phaseId} />
-      );
-    }
-
-    if (destination.action === 'edit') {
-      return (
-        <Navigate
-          to="/admin/projects/$projectId/phases/$phaseId/survey-form/edit"
-          params={params}
-          replace
-        />
-      );
-    }
-
-    if (
-      destination.action === 'access' ||
-      destination.action === 'notifications' ||
-      destination.action === 'moderation'
-    ) {
-      return (
-        <Navigate
-          to="/admin/projects/$projectId/phases/$phaseId/setup"
-          params={params}
-          search={{ setup_action: destination.action }}
-          replace
-        />
-      );
-    }
-
+  if (destination && settled) {
     return (
       <Navigate
         to="/admin/projects/$projectId/phases/$phaseId/setup"
-        params={params}
-        search={{ survey_action: destination.action }}
-        replace={!!destination.action}
+        params={{ projectId, phaseId: destination.phaseId }}
       />
     );
   }
@@ -295,6 +246,7 @@ const NewPhaseWorkspace = ({
             label: formatMessage(
               standalone ? messages.newSurveyCrumb : messages.newPhaseCrumb
             ),
+            saveDisabledReason,
             methodSettings: (
               <DraftMethodSettings
                 surveyPlacement={
@@ -311,9 +263,6 @@ const NewPhaseWorkspace = ({
                     />
                   )
                 }
-                onOpenSetting={saveAndOpenAction}
-                saving={!!pageSave?.saving}
-                uploading={files.isUploadingFile}
                 formData={formData}
                 validationErrors={validationErrors}
                 apiErrors={errors}
@@ -332,33 +281,13 @@ const NewPhaseWorkspace = ({
               standalone={standalone}
               files={files}
               draftQuestionsAction={
-                ['native_survey', 'ideation', 'proposals'].includes(
-                  participationMethod
-                ) && (
+                // The other forms show the same reason on their own card.
+                participationMethod === 'native_survey' && (
                   <Button
-                    // A survey's sits next to the download button.
-                    fullWidth={participationMethod !== 'native_survey'}
                     variant="secondary"
-                    data-cy={
-                      participationMethod === 'native_survey'
-                        ? 'add-draft-survey-questions'
-                        : 'add-draft-input-questions'
-                    }
-                    isPending={
-                      participationMethod !== 'native_survey' &&
-                      !!pageSave?.saving
-                    }
-                    isDisabled={
-                      participationMethod !== 'native_survey' &&
-                      files.isUploadingFile
-                    }
-                    onPress={() => {
-                      if (participationMethod === 'native_survey') {
-                        setSurveySetupOpened(true);
-                      } else {
-                        saveAndOpenAction('input');
-                      }
-                    }}
+                    disabledReason={formatMessage(
+                      phaseMessages.saveFirstToAddQuestions
+                    )}
                   >
                     {formatMessage(methodSectionMessages.addQuestions)}
                   </Button>
@@ -398,18 +327,6 @@ const NewPhaseWorkspace = ({
                     })
                   : formatMessage(messages.draftInsightsEmpty)
               }
-            />
-          )}
-          {participationMethod === 'native_survey' && (
-            <SurveySetupModal
-              projectId={projectId}
-              opened={surveySetupOpened}
-              onClose={() => setSurveySetupOpened(false)}
-              draft={{
-                onChoose: saveAndOpenAction,
-                saving: !!pageSave?.saving,
-                uploading: files.isUploadingFile,
-              }}
             />
           )}
         </ProjectWorkspace>

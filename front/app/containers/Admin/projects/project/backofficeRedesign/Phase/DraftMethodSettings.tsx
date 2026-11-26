@@ -1,8 +1,6 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 
 import { CLErrors } from 'typings';
-
-import Button from 'design-system/Button';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
@@ -10,15 +8,16 @@ import ExpandAllContext from 'containers/Admin/projects/_shared/components/Setti
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import useExpandAll from 'containers/Admin/projects/_shared/components/SettingsPanel/useExpandAll';
 import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
+import ModerationAssignee from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/inputs/_shared/ModerationAssignee';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
 import postManagerMessages from 'components/admin/PostManager/messages';
-import assigneeMessages from 'components/admin/ProjectAssignee/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './DraftMethodSettings.module.css';
 import messages from './messages';
+import SaveFirstCard from './SaveFirstCard';
 import 'design-system/tokens.css';
 
 // Information has nothing to set here, and document annotation's Konveio link
@@ -28,13 +27,8 @@ const METHODS_WITHOUT_SETTINGS: ParticipationMethod[] = [
   'document_annotation',
 ];
 
-export type SetupSettingsAction = 'access' | 'notifications' | 'moderation';
-
 interface Props {
   surveyPlacement?: ReactNode;
-  onOpenSetting: (action: SetupSettingsAction) => Promise<void>;
-  saving: boolean;
-  uploading: boolean;
   formData: IUpdatedPhaseProperties;
   validationErrors: ValidationErrors;
   apiErrors: CLErrors | null;
@@ -44,9 +38,6 @@ interface Props {
 
 const DraftMethodSettings = ({
   surveyPlacement,
-  onOpenSetting,
-  saving,
-  uploading,
   formData,
   validationErrors,
   apiErrors,
@@ -55,31 +46,6 @@ const DraftMethodSettings = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const expandAll = useExpandAll();
-  const [opening, setOpening] = useState<SetupSettingsAction>();
-
-  const open = async (action: SetupSettingsAction) => {
-    if (saving || uploading || opening) return;
-
-    setOpening(action);
-    try {
-      await onOpenSetting(action);
-    } finally {
-      setOpening(undefined);
-    }
-  };
-
-  const moderationAction = (
-    <Button
-      variant="secondary"
-      size={32}
-      data-cy="draft-moderation-settings"
-      isDisabled={saving || uploading}
-      isPending={opening === 'moderation'}
-      onPress={() => open('moderation')}
-    >
-      {formatMessage(assigneeMessages.assignee)}
-    </Button>
-  );
 
   return (
     <ExpandAllContext.Provider value={expandAll}>
@@ -88,7 +54,6 @@ const DraftMethodSettings = ({
           (method) => method === formData.participation_method
         ) && (
           <PhaseParticipationConfig
-            moderationAction={moderationAction}
             formData={formData}
             validationErrors={validationErrors}
             apiErrors={apiErrors}
@@ -101,37 +66,19 @@ const DraftMethodSettings = ({
         )}
 
         <div className={styles.actions}>
-          <Button
-            variant="secondary"
-            size={32}
-            data-cy="draft-access-settings"
-            isDisabled={saving || uploading}
-            isPending={opening === 'access'}
-            onPress={() => open('access')}
-          >
-            {formatMessage(messages.editAccess)}
-          </Button>
-          <PanelGroup
-            label={formatMessage(messages.participantCommunications)}
-            defaultOpen
-          >
-            <Button
-              variant="secondary"
-              size={32}
-              data-cy="draft-notification-settings"
-              isDisabled={saving || uploading}
-              isPending={opening === 'notifications'}
-              onPress={() => open('notifications')}
-            >
-              {formatMessage(messages.participantCommunications)}
-            </Button>
-          </PanelGroup>
+          <SaveFirstCard
+            title={formatMessage(messages.draftAccessTitle)}
+            actionLabel={formatMessage(messages.editAccess)}
+            reason={formatMessage(messages.saveFirstToEditAccess)}
+          />
+          <SaveFirstCard
+            title={formatMessage(messages.participantCommunications)}
+            actionLabel={formatMessage(messages.editCommunications)}
+            reason={formatMessage(messages.saveFirstToEditCommunications)}
+          />
           {formData.participation_method === 'voting' && (
-            <PanelGroup
-              label={formatMessage(postManagerMessages.assignee)}
-              defaultOpen
-            >
-              {moderationAction}
+            <PanelGroup label={formatMessage(postManagerMessages.assignee)}>
+              <ModerationAssignee />
             </PanelGroup>
           )}
         </div>

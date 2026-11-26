@@ -91,6 +91,26 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.phasePreviewTitle',
     defaultMessage: 'Preview of this phase',
   },
+  draftAccessTitle: {
+    id: 'app.containers.Admin.projects.project.draftAccessTitle',
+    defaultMessage: 'Who can take part',
+  },
+  saveFirstToEditAccess: {
+    id: 'app.containers.Admin.projects.project.saveFirstToEditAccess',
+    defaultMessage: 'Save the phase first to edit access',
+  },
+  editCommunications: {
+    id: 'app.containers.Admin.projects.project.editCommunications',
+    defaultMessage: 'Edit',
+  },
+  saveFirstToEditCommunications: {
+    id: 'app.containers.Admin.projects.project.saveFirstToEditCommunications',
+    defaultMessage: 'Save the phase first to edit emails and notifications',
+  },
+  saveFirstToAddQuestions: {
+    id: 'app.containers.Admin.projects.project.saveFirstToAddQuestions',
+    defaultMessage: 'Save the phase first to add questions',
+  },
   editAccess: {
     id: 'app.containers.Admin.projects.project.editAccess',
     defaultMessage: 'Edit access',

@@ -27,12 +27,6 @@
   margin-bottom: var(--gv-space-6);
 }
 
-.setupStatus {
-  display: flex;
-  align-items: center;
-  gap: var(--gv-space-12);
-}
-
 .setupRow {
   display: flex;
   align-items: center;
