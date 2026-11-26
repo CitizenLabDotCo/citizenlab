@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import { AiAssistantToolName } from 'api/ai_assistant_tool_calls/types';
 import customFieldsKeys from 'api/custom_fields/keys';
 import customFormKeys from 'api/custom_form/keys';
 import phasesKeys from 'api/phases/keys';
@@ -31,7 +32,7 @@ type Props = {
 const SurveyAssistant = ({ phaseId, projectId, onFormReplaced }: Props) => {
   const queryClient = useQueryClient();
 
-  const handleToolExecuted = async (toolName: string) => {
+  const handleToolExecuted = async (toolName: AiAssistantToolName) => {
     if (toolName !== 'replace_form_fields') return;
 
     await Promise.all([
