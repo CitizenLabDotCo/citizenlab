@@ -52,6 +52,10 @@ module AIAssistant
       tools.find { |tool| tool.name == name }
     end
 
+    def llm_tools(turn)
+      tools.map { |tool| Turn::LLMTool.new(tool, turn) } + [AskUserTool.new(turn)]
+    end
+
     def stale?(_tool_call)
       false
     end

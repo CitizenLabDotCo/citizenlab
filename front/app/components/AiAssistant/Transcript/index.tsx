@@ -8,20 +8,21 @@ import { AiAssistantToolName } from 'api/ai_assistant_tool_calls/types';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { getErrorMessage } from '../errors';
+import { AiAssistantToolDisplays } from '../types';
+
 import AssistantMessage from './AssistantMessage';
-import { getErrorMessage } from './errors';
-import ToolCallCard from './ToolCallCard';
-import { AiAssistantToolViews } from './types';
+import TranscriptToolCall from './TranscriptToolCall';
 import UserMessage from './UserMessage';
 import WorkingIndicator from './WorkingIndicator';
 
 type Props = {
   conversation: IAiAssistantConversation;
-  toolViews: AiAssistantToolViews;
+  toolDisplays: AiAssistantToolDisplays;
   onToolExecuted: (toolName: AiAssistantToolName) => void;
 };
 
-const Transcript = ({ conversation, toolViews, onToolExecuted }: Props) => {
+const Transcript = ({ conversation, toolDisplays, onToolExecuted }: Props) => {
   const { formatMessage } = useIntl();
   const endRef = useRef<HTMLDivElement>(null);
   const { attributes } = conversation.data;
@@ -46,13 +47,12 @@ const Transcript = ({ conversation, toolViews, onToolExecuted }: Props) => {
               <AssistantMessage content={message.attributes.content} />
             )}
             {toolCalls.map((toolCall) => (
-              <ToolCallCard
+              <TranscriptToolCall
                 key={toolCall.id}
                 toolCall={toolCall}
-                conversationId={conversation.data.id}
-                decidable={attributes.status === 'awaiting_user'}
-                view={toolViews[toolCall.attributes.name]}
-                onExecuted={onToolExecuted}
+                conversation={conversation}
+                toolDisplays={toolDisplays}
+                onToolExecuted={onToolExecuted}
               />
             ))}
           </Box>

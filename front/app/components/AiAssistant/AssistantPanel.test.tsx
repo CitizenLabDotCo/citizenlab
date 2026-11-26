@@ -50,6 +50,9 @@ jest.mock('api/ai_assistant_tool_calls/useApproveAiAssistantToolCall', () =>
 jest.mock('api/ai_assistant_tool_calls/useRejectAiAssistantToolCall', () =>
   jest.fn(() => ({ mutate: jest.fn(), isPending: false, error: null }))
 );
+jest.mock('api/ai_assistant_tool_calls/useAnswerAiAssistantToolCall', () =>
+  jest.fn(() => ({ mutate: jest.fn(), isPending: false, error: null }))
+);
 
 const conversation = (
   attributes: IAiAssistantConversationData['attributes']
@@ -126,7 +129,7 @@ const renderPanel = () =>
       subjectId="phase-1"
       projectId="project-1"
       intro={{ id: 'test.intro', defaultMessage: 'Describe your survey' }}
-      toolViews={{}}
+      toolDisplays={{}}
       onToolExecuted={jest.fn()}
     />
   );
@@ -137,6 +140,45 @@ describe('AssistantPanel', () => {
     renderPanel();
 
     expect(screen.getByText('Describe your survey')).toBeInTheDocument();
+  });
+
+  it('asks to answer the questions instead of deciding on a change', () => {
+    const asking = conversation({
+      ...baseAttributes,
+      status: 'awaiting_user',
+      last_error_code: null,
+    });
+    mockConversation = {
+      ...asking,
+      included: asking.included.map((resource) =>
+        resource.type === 'ai_assistant_tool_call'
+          ? {
+              ...resource,
+              attributes: {
+                ...resource.attributes,
+                name: 'ask_user',
+                arguments: {
+                  questions: [
+                    {
+                      question: 'Who is it for?',
+                      options: ['Residents', 'Businesses'],
+                    },
+                  ],
+                },
+              },
+            }
+          : resource
+      ),
+    };
+    renderPanel();
+
+    expect(screen.getByText('Who is it for?')).toBeInTheDocument();
+    expect(
+      screen.getByText("Answer the assistant's questions above to continue.")
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText('Approve or reject the proposed change to continue.')
+    ).not.toBeInTheDocument();
   });
 
   it('blocks new messages until the proposed change is decided on', () => {

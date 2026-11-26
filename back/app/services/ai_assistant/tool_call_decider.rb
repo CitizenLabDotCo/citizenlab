@@ -5,8 +5,8 @@ module AIAssistant
   # the deciding user, through the tool's own authorization. Once every call of the turn is
   # decided, the conversation continues so the model can react to the outcome.
   #
-  # Returns :ok, :busy (the conversation isn't waiting for a decision), :expired, or
-  # :not_awaiting_user (already decided).
+  # Returns :ok, :busy (the conversation isn't waiting for a decision), :expired,
+  # :not_awaiting_user (already decided), or for answers :not_a_question or :too_long.
   class ToolCallDecider
     def initialize(tool_call, user)
       @tool_call = tool_call
@@ -15,16 +15,33 @@ module AIAssistant
     end
 
     def approve!
-      decide(approved: true)
+      decide(approved: true, action: 'approved') { run_tool }
     end
 
     def reject!(reason = nil)
-      decide(approved: false, reason: reason.presence)
+      reason = reason.presence
+      decide(approved: false, action: 'rejected', reason:) do
+        { result: { denied: true, reason: }.compact.to_json }
+      end
+    end
+
+    # The answers to an ask_user call become its result, like the output of any other tool.
+    def answer!(answers)
+      return :not_a_question unless question?
+
+      result = { answers: }.to_json
+      return :too_long if result.size > Message::MAX_CONTENT_LENGTH
+
+      decide(approved: true, action: 'answered') { { status: 'executed', result: } }
     end
 
     private
 
-    def decide(approved:, reason: nil)
+    def question?
+      @tool_call.name == AskUserTool::NAME
+    end
+
+    def decide(approved:, action:, reason: nil)
       return :busy unless @conversation.awaiting_user?
 
       if @tool_call.expired?
@@ -36,14 +53,14 @@ module AIAssistant
 
       # Runs outside any transaction: the tool opens its own, which a surrounding one would
       # not roll back correctly.
-      outcome = approved ? run_tool : { result: { denied: true, reason: }.compact.to_json }
+      outcome = yield
 
       @conversation.with_lock do
         @tool_call.update!(outcome)
         continue_conversation if @conversation.awaiting_user? && @conversation.tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none?
       end
 
-      log_activity(approved)
+      log_activity(action)
       :ok
     end
 
@@ -76,10 +93,10 @@ module AIAssistant
       TurnJob.perform_later(@conversation)
     end
 
-    def log_activity(approved)
+    def log_activity(action)
       LogActivityJob.perform_later(
         @tool_call,
-        approved ? 'approved' : 'rejected',
+        action,
         @user,
         @tool_call.decided_at.to_i,
         payload: { name: @tool_call.name, conversation_id: @conversation.id, status: @tool_call.status, reason: @tool_call.reason }.compact,
