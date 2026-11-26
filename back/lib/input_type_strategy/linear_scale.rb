@@ -21,7 +21,7 @@ module InputTypeStrategy
     end
 
     def logic_operators
-      %w[eq one_of gt gte lt lte present absent]
+      %w[eq one_of none_of gt gte lt lte present absent]
     end
 
     def answers_eq(answers, value)

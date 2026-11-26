@@ -33,5 +33,9 @@ module InputTypeStrategy
     def answers_lteq(answers, value)
       answers.where("(value #>> '{}')::integer <= ?", value)
     end
+
+    def logic_operators
+      %w[eq one_of none_of gt gte lt lte present absent]
+    end
   end
 end

@@ -16,7 +16,7 @@ RSpec.describe InputTypeStrategy::Base do
       'ranking' => %w[present absent]
     }
 
-    Dir[Rails.root.join('lib/input_type_strategy/*.rb')].map { |file| File.basename(file, '.rb') }.excluding('base').each do |input_type|
+    Rails.root.glob('lib/input_type_strategy/*.rb').map { |file| File.basename(file, '.rb') }.excluding('base').each do |input_type|
       it "is #{expected.fetch(input_type, []).inspect} for #{input_type}" do
         strategy = "InputTypeStrategy::#{input_type.camelize}".constantize.new(nil)
 
