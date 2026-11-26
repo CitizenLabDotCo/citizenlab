@@ -31,6 +31,14 @@ export default defineMessages({
     defaultMessage:
       'Are you sure you want to delete this page? This cannot be undone.',
   },
+  defaultItem: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.PagesTab.defaultItem',
+    defaultMessage: 'Default',
+  },
+  addToMenu: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.PagesTab.addToMenu',
+    defaultMessage: 'Add to menu',
+  },
   noPages: {
     id: 'app.containers.Admin.pagesAndMenu.containers.PagesTab.noPages',
     defaultMessage: 'You haven’t created any custom pages yet.',

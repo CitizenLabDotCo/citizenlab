@@ -1436,6 +1436,8 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "Label",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Folder",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Project",
+  "app.containers.Admin.pagesAndMenu.containers.PagesTab.addToMenu": "Add to menu",
+  "app.containers.Admin.pagesAndMenu.containers.PagesTab.defaultItem": "Default",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "Delete page",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePageConfirmation": "Are you sure you want to delete this page? This cannot be undone.",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.editPage": "Edit page",
