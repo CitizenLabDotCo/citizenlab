@@ -10,8 +10,9 @@ import SettingsSections from 'containers/Admin/projects/project/backofficeRedesi
 import SlugInput from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SlugInput';
 
 import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
+import MissingLanguages from 'components/admin/MultilocFields/MissingLanguages';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
-import useSelectedLocale from 'components/admin/MultilocFields/useSelectedLocale';
+import { LanguageGroupState } from 'components/admin/MultilocFields/useLanguageGroup';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -23,6 +24,7 @@ import 'design-system/tokens.css';
 interface Props {
   projectId: string;
   titleMultiloc: Multiloc;
+  titleGroup: LanguageGroupState;
   spaceId: string | null;
   folderId: string | null;
   projectInRoot: boolean;
@@ -39,6 +41,7 @@ interface Props {
 const GeneralSection = ({
   projectId,
   titleMultiloc,
+  titleGroup,
   spaceId,
   folderId,
   projectInRoot,
@@ -53,7 +56,7 @@ const GeneralSection = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const getApiErrorMessage = useApiErrorText();
-  const { locales, selectedLocale, setSelectedLocale } = useSelectedLocale();
+  const { locales, selectedLocale, setSelectedLocale } = titleGroup;
 
   const titleLabel = formatMessage(messages.settingsProjectName);
   const titleError = getApiErrorMessage(
@@ -72,7 +75,7 @@ const GeneralSection = ({
               locales={locales}
               selectedLocale={selectedLocale}
               onChange={setSelectedLocale}
-              valueMultiloc={titleMultiloc}
+              valueMultiloc={titleGroup.translations}
             />
           )
         }
@@ -89,6 +92,7 @@ const GeneralSection = ({
             errorMessage={titleError}
           />
         )}
+        <MissingLanguages message={titleGroup.error} />
       </SettingsSection>
       <SettingsSection title={formatMessage(messages.settingsProjectUrl)}>
         <SlugInput

@@ -11,8 +11,10 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import generalMessages from 'containers/Admin/projects/project/general/messages';
 
+import LanguageGroup from 'components/admin/MultilocFields/LanguageGroup';
 import MultilocTitleField from 'components/admin/MultilocFields/MultilocTitleField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+import useLanguageGroup from 'components/admin/MultilocFields/useLanguageGroup';
 
 import { useIntl } from 'utils/cl-intl';
 import validateTitle from 'utils/validateTitle';
@@ -58,6 +60,16 @@ const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
   const [visibleTo, setVisibleTo] = useState<Visibility>('admins');
   const [groupIds, setGroupIds] = useState<string[]>([]);
   const [groupsError, setGroupsError] = useState(false);
+  const titleGroup = useLanguageGroup(
+    [
+      {
+        value: titleMultiloc,
+        name: formatMessage(messages.projectTitleField),
+        required: true,
+      },
+    ],
+    { ownCheck: true }
+  );
 
   if (!locales) return null;
 
@@ -89,21 +101,25 @@ const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
-    const error = validateTitle(
-      locales,
-      titleMultiloc,
-      formatMessage(
-        locales.length === 1
-          ? messages.titleRequiredSingleLocale
-          : messages.titleRequired
-      )
-    );
+    // In the new back office, the line under the title names the languages left.
+    const languagesDone = titleGroup.check();
+    const error = languagesDone
+      ? validateTitle(
+          locales,
+          titleMultiloc,
+          formatMessage(
+            locales.length === 1
+              ? messages.titleRequiredSingleLocale
+              : messages.titleRequired
+          )
+        )
+      : {};
     const hasTitleError = Object.keys(error).length > 0;
     const hasGroupsError = visibleTo === 'groups' && groupIds.length === 0;
 
     setTitleError(hasTitleError ? error : null);
     setGroupsError(hasGroupsError);
-    if (hasTitleError || hasGroupsError) return;
+    if (!languagesDone || hasTitleError || hasGroupsError) return;
 
     onSubmit({
       title_multiloc: titleMultiloc,
@@ -121,14 +137,23 @@ const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
       className={`intercom-projects-new-project-name ${styles.form}`}
     >
       <div className={styles.titleField}>
-        <MultilocTitleField
-          id="e2e-project-title-setting-field"
-          valueMultiloc={titleMultiloc}
-          onChange={handleTitleChange}
-          placeholder={formatMessage(messages.titlePlaceholder)}
+        <LanguageGroup
+          group={titleGroup}
           aria-label={formatMessage(generalMessages.projectName)}
-          errorMultiloc={titleError}
-        />
+        >
+          <MultilocTitleField
+            id="e2e-project-title-setting-field"
+            locale={titleGroup.selectedLocale}
+            valueMultiloc={titleMultiloc}
+            onChange={handleTitleChange}
+            placeholder={titleGroup.placeholder(
+              messages.titlePlaceholderInLanguage,
+              messages.titlePlaceholder
+            )}
+            aria-label={formatMessage(generalMessages.projectName)}
+            errorMultiloc={titleError}
+          />
+        </LanguageGroup>
         {titleApiErrorText && <Banner tone="error">{titleApiErrorText}</Banner>}
       </div>
 

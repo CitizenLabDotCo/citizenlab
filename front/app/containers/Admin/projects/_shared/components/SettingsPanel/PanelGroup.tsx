@@ -1,9 +1,11 @@
-import React, { ReactNode, useContext, useState } from 'react';
+import React, { ReactNode, useCallback, useContext, useState } from 'react';
 
 import { SetupReviewCard } from 'api/phases/types';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
+
+import RevealGroupContext from 'components/admin/MultilocFields/RevealGroupContext';
 
 import ExpandAllContext from './ExpandAllContext';
 import styles from './PanelGroup.module.css';
@@ -42,6 +44,7 @@ const PanelGroup = ({
     setOpen(true);
   }
   const isOpen = open || hasError;
+  const reveal = useCallback(() => setOpen(true), []);
   const toggle = () => {
     if (isOpen) onClose?.();
     setOpen(!isOpen);
@@ -61,7 +64,9 @@ const PanelGroup = ({
         }}
       >
         {/* Kept mounted while closed, so unsaved edits inside stay registered for saving. */}
-        {children}
+        <RevealGroupContext.Provider value={reveal}>
+          {children}
+        </RevealGroupContext.Provider>
       </SetupCard>
     </div>
   );

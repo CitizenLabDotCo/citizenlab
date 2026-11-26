@@ -25,6 +25,7 @@ interface Props {
   projectId: string;
   phaseId?: string;
   locale?: SupportedLocale;
+  placeholder: string;
   value: Multiloc | undefined;
   errors: CLErrors | null;
   onChange: (description_multiloc: Multiloc) => void;
@@ -34,6 +35,7 @@ const DescriptionField = ({
   projectId,
   phaseId,
   locale,
+  placeholder,
   value,
   errors,
   onChange,
@@ -81,7 +83,7 @@ const DescriptionField = ({
         id="phase-description"
         locale={locale}
         aria-label={formatMessage(descriptionMessages.descriptionLabel)}
-        placeholder={formatMessage(messages.addDescription)}
+        placeholder={placeholder}
         valueMultiloc={value}
         onChange={onChange}
         errorMessage={errorText}

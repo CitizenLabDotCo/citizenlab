@@ -9,8 +9,10 @@ import TextField from 'design-system/TextField';
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
+import LanguageGroup from 'components/admin/MultilocFields/LanguageGroup';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+import useLanguageGroup from 'components/admin/MultilocFields/useLanguageGroup';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -31,6 +33,16 @@ const RegistrationCard = ({ form }: Props) => {
     'maximum_attendees'
   );
   const usingUrlError = apiErrorText(errors?.using_url);
+  const group = useLanguageGroup(
+    form.customButtonOn
+      ? [
+          {
+            value: attributes.attend_button_multiloc,
+            name: formatMessage(messages.buttonTextField),
+          },
+        ]
+      : []
+  );
 
   return (
     <SetupCard title={formatMessage(messages.registration)}>
@@ -74,16 +86,24 @@ const RegistrationCard = ({ form }: Props) => {
             isInvalid={!!usingUrlError}
             errorMessage={usingUrlError}
           />
-          <MultilocTextField
-            id="event-custom-button-text"
-            label={formatMessage(eventMessages.customButtonText)}
-            description={formatMessage(eventMessages.customButtonTextTooltip3)}
-            valueMultiloc={attributes.attend_button_multiloc}
-            onChange={(attend_button_multiloc: Multiloc) =>
-              form.updateAttributes({ attend_button_multiloc })
-            }
-            maxCharCount={28}
-          />
+          <LanguageGroup
+            group={group}
+            aria-label={formatMessage(eventMessages.customButtonText)}
+          >
+            <MultilocTextField
+              id="event-custom-button-text"
+              locale={group.selectedLocale}
+              label={formatMessage(eventMessages.customButtonText)}
+              description={formatMessage(
+                eventMessages.customButtonTextTooltip3
+              )}
+              valueMultiloc={attributes.attend_button_multiloc}
+              onChange={(attend_button_multiloc: Multiloc) =>
+                form.updateAttributes({ attend_button_multiloc })
+              }
+              maxCharCount={28}
+            />
+          </LanguageGroup>
         </>
       )}
     </SetupCard>

@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.manageView',
     defaultMessage: 'Manage',
   },
+  eventContentLanguage: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.eventContentLanguage',
+    defaultMessage: 'Event content language',
+  },
   eventView: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.eventView',
     defaultMessage: 'Event view',
@@ -206,5 +210,25 @@ export default defineMessages({
   linkToOnlineEvent: {
     id: 'app.containers.Admin.projects.project.event.linkToOnlineEvent',
     defaultMessage: 'Link to online event',
+  },
+  addEventNameInLanguage: {
+    id: 'app.containers.Admin.projects.project.event.addEventNameInLanguage',
+    defaultMessage: 'Add an event name in {language}',
+  },
+  addDescriptionInLanguage: {
+    id: 'app.containers.Admin.projects.project.event.addDescriptionInLanguage',
+    defaultMessage: 'Add a description in {language}',
+  },
+  nameField: {
+    id: 'app.containers.Admin.projects.project.event.nameField',
+    defaultMessage: 'name',
+  },
+  addressDetailsField: {
+    id: 'app.containers.Admin.projects.project.event.addressDetailsField',
+    defaultMessage: 'address details',
+  },
+  buttonTextField: {
+    id: 'app.containers.Admin.projects.project.event.buttonTextField',
+    defaultMessage: 'button text',
   },
 });

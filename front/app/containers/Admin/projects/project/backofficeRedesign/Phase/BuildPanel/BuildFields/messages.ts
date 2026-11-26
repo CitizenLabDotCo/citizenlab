@@ -70,4 +70,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.nativeSurveyOptionDescription',
     defaultMessage: 'AI-powered insights and a wide range of question types',
   },
+  phaseTitleInLanguage: {
+    id: 'app.containers.Admin.projects.project.phaseTitleInLanguage',
+    defaultMessage: 'Add a title in {language}',
+  },
+  addDescriptionInLanguage: {
+    id: 'app.containers.Admin.projects.project.addDescriptionInLanguage',
+    defaultMessage: 'Add a short description in {language}',
+  },
 });

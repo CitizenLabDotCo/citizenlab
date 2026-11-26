@@ -29,4 +29,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.NewProjectForm.createError',
     defaultMessage: 'Something went wrong. Please try again.',
   },
+  titlePlaceholderInLanguage: {
+    id: 'app.containers.Admin.projects.NewProjectForm.titlePlaceholderInLanguage',
+    defaultMessage: 'Add a project title in {language}',
+  },
+  projectTitleField: {
+    id: 'app.containers.Admin.projects.NewProjectForm.projectTitleField',
+    defaultMessage: 'project title',
+  },
 });

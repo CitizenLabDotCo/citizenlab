@@ -10,6 +10,9 @@ import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import { IProjectData } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import LanguageChecksContext, {
+  useLanguageChecks,
+} from 'components/admin/MultilocFields/LanguageChecksContext';
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import { PROJECT_SETUP_SAVER_KEY } from 'components/admin/PageSaveContext/constants';
 
@@ -122,7 +125,10 @@ export const SetupDraftProvider = ({ project, children }: Props) => {
     }
   };
 
+  const { checks, checkLanguages } = useLanguageChecks();
+
   const save = async () => {
+    if (!checkLanguages()) throw new Error('Languages left to translate');
     const projectChanged = projectForm.formState.isDirty;
     const imageChanged = imageForm.formState.isDirty;
     // Copies, so edits made while saving don't change what was sent.
@@ -170,7 +176,9 @@ export const SetupDraftProvider = ({ project, children }: Props) => {
 
   return (
     <SetupDraftContext.Provider value={value}>
-      {children}
+      <LanguageChecksContext.Provider value={checks}>
+        {children}
+      </LanguageChecksContext.Provider>
     </SetupDraftContext.Provider>
   );
 };

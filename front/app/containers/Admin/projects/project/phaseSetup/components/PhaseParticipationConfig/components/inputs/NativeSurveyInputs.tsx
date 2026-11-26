@@ -14,8 +14,10 @@ import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/P
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 
+import LanguageGroup from 'components/admin/MultilocFields/LanguageGroup';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+import useLanguageGroup from 'components/admin/MultilocFields/useLanguageGroup';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import SettingToggleRow from 'components/admin/SettingToggleRow';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -65,6 +67,17 @@ const NativeSurveyInputs = ({
   const { data: project } = useProjectById(
     phase?.data.relationships.project.data.id
   );
+
+  const group = useLanguageGroup([
+    {
+      value: formData.native_survey_title_multiloc,
+      name: formatMessage(parentMessages.surveyTitleField),
+    },
+    {
+      value: formData.native_survey_button_multiloc,
+      name: formatMessage(parentMessages.surveyButtonField),
+    },
+  ]);
 
   const toggleAllowMultipleResponses = () =>
     handleAllowMultipleResponsesChange(!formData.allow_multiple_responses);
@@ -157,22 +170,29 @@ const NativeSurveyInputs = ({
           label={formatMessage(parentMessages.surveyTitleAndButtonGroup)}
           defaultOpen
         >
-          <div className={styles.fields}>
-            <MultilocTextField
-              id="native-survey-title"
-              label={formatMessage(parentMessages.surveyTitleLabel)}
-              valueMultiloc={formData.native_survey_title_multiloc}
-              onChange={handleSurveyTitleChange}
-              errorMessage={titleError}
-            />
-            <MultilocTextField
-              id="native-survey-button"
-              label={formatMessage(parentMessages.surveyCTALabel)}
-              valueMultiloc={formData.native_survey_button_multiloc}
-              onChange={handleSurveyCTAChange}
-              errorMessage={ctaError}
-            />
-          </div>
+          <LanguageGroup
+            group={group}
+            aria-label={formatMessage(parentMessages.surveyTitleAndButtonGroup)}
+          >
+            <div className={styles.fields}>
+              <MultilocTextField
+                id="native-survey-title"
+                locale={group.selectedLocale}
+                label={formatMessage(parentMessages.surveyTitleLabel)}
+                valueMultiloc={formData.native_survey_title_multiloc}
+                onChange={handleSurveyTitleChange}
+                errorMessage={titleError}
+              />
+              <MultilocTextField
+                id="native-survey-button"
+                locale={group.selectedLocale}
+                label={formatMessage(parentMessages.surveyCTALabel)}
+                valueMultiloc={formData.native_survey_button_multiloc}
+                onChange={handleSurveyCTAChange}
+                errorMessage={ctaError}
+              />
+            </div>
+          </LanguageGroup>
         </PanelGroup>
       </>
     );

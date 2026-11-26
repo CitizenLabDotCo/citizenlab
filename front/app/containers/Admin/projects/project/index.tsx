@@ -9,6 +9,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
+import LanguageButtonContext from 'components/admin/MultilocFields/LanguageButtonContext';
 import { PageSaveProvider } from 'components/admin/PageSaveContext';
 import { PhasePreviewDraftProvider } from 'components/admin/PhasePreview/DraftContext';
 
@@ -59,32 +60,34 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
 
   if (workspaceEnabled) {
     return (
-      <ParticipationPanelProvider projectId={projectId}>
-        <PhasePreviewDraftProvider>
-          <PageSaveProvider>
-            <UnsavedChangesGuard />
-            {page === 'newPhase' && <NewPhase project={project} />}
-            {page === 'event' && <Event project={project} />}
-            {page === 'project' && (
-              <ProjectWorkspace
-                project={project}
-                phase={selectedPhase}
-                sidePanel={
-                  selectedPhase && (
-                    <PhaseSetup
-                      key={selectedPhase.id}
-                      projectId={projectId}
-                      phase={selectedPhase}
-                    />
-                  )
-                }
-              >
-                <RouterOutlet />
-              </ProjectWorkspace>
-            )}
-          </PageSaveProvider>
-        </PhasePreviewDraftProvider>
-      </ParticipationPanelProvider>
+      <LanguageButtonContext.Provider value>
+        <ParticipationPanelProvider projectId={projectId}>
+          <PhasePreviewDraftProvider>
+            <PageSaveProvider>
+              <UnsavedChangesGuard />
+              {page === 'newPhase' && <NewPhase project={project} />}
+              {page === 'event' && <Event project={project} />}
+              {page === 'project' && (
+                <ProjectWorkspace
+                  project={project}
+                  phase={selectedPhase}
+                  sidePanel={
+                    selectedPhase && (
+                      <PhaseSetup
+                        key={selectedPhase.id}
+                        projectId={projectId}
+                        phase={selectedPhase}
+                      />
+                    )
+                  }
+                >
+                  <RouterOutlet />
+                </ProjectWorkspace>
+              )}
+            </PageSaveProvider>
+          </PhasePreviewDraftProvider>
+        </ParticipationPanelProvider>
+      </LanguageButtonContext.Provider>
     );
   }
 

@@ -27,6 +27,9 @@ interface Props {
   header: string | JSX.Element;
   sections: SettingsModalSection[];
   initialSection?: string;
+  // Set both to pick the section from outside, e.g. to show an error.
+  section?: string;
+  onSectionChange?: (section: string) => void;
   // Shown above the tabs, e.g. an error after saving.
   notice?: React.ReactNode;
   primaryAction?: DialogAction;
@@ -59,6 +62,8 @@ const SettingsModal = ({
   header,
   sections,
   initialSection,
+  section,
+  onSectionChange,
   notice,
   primaryAction,
   size = 866,
@@ -73,7 +78,7 @@ const SettingsModal = ({
 
   const orderedSections = groupSections(sections);
   const selected =
-    orderedSections.find(({ name }) => name === selectedSection) ??
+    orderedSections.find(({ name }) => name === (section ?? selectedSection)) ??
     orderedSections[0];
 
   return (
@@ -91,7 +96,10 @@ const SettingsModal = ({
         <VerticalTabs
           className={styles.layout}
           selectedKey={selected.name}
-          onSelectionChange={(key) => setSelectedSection(String(key))}
+          onSelectionChange={(key) => {
+            setSelectedSection(String(key));
+            onSectionChange?.(String(key));
+          }}
         >
           <VerticalTabList tabStyle={tabStyle} className={styles.tabList}>
             {orderedSections.map(({ name, label, icon }) => (

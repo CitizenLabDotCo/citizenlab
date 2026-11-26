@@ -24,6 +24,9 @@ import configMessages from 'containers/Admin/projects/project/phaseSetup/compone
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
+import LanguageChecksContext, {
+  useLanguageChecks,
+} from 'components/admin/MultilocFields/LanguageChecksContext';
 import {
   usePageSave,
   useRegisterPageSaver,
@@ -142,14 +145,19 @@ const MethodSettings = ({ phase }: Props) => {
     setFormData(config);
   };
 
+  const { checks, checkLanguages } = useLanguageChecks();
+
   const save = async () => {
+    const languagesDone = checkLanguages();
     const { isValidated, errors } = validateParticipation(
       formData,
       formatMessage
     );
 
     setValidationErrors(errors);
-    if (!isValidated) throw new Error('Invalid participation settings');
+    if (!isValidated || !languagesDone) {
+      throw new Error('Invalid participation settings');
+    }
 
     try {
       await updatePhase({ phaseId: phase.id, ...changes });
@@ -168,90 +176,96 @@ const MethodSettings = ({ phase }: Props) => {
   });
 
   return (
-    <ExpandAllContext.Provider value={expandAll}>
-      <div className={styles.panel}>
-        {accessOnlyActions ? (
-          <>
-            <div className={styles.heading}>
-              <PanelHeading
-                label={formatMessage(configMessages.settingsGroup)}
-                expandable
+    <LanguageChecksContext.Provider value={checks}>
+      <ExpandAllContext.Provider value={expandAll}>
+        <div className={styles.panel}>
+          {accessOnlyActions ? (
+            <>
+              <div className={styles.heading}>
+                <PanelHeading
+                  label={formatMessage(configMessages.settingsGroup)}
+                  expandable
+                />
+              </div>
+              <ParticipantActionsGroup
+                phaseId={phase.id}
+                actions={accessOnlyActions}
+                summary={accessOnlySummary}
               />
-            </div>
-            <ParticipantActionsGroup
-              phaseId={phase.id}
-              actions={accessOnlyActions}
-              summary={accessOnlySummary}
+            </>
+          ) : (
+            <PhaseParticipationConfig
+              phase={phaseWithRelationships}
+              formData={formData}
+              validationErrors={validationErrors}
+              apiErrors={errors}
+              onChange={handleChange}
+              setValidationErrors={setValidationErrors}
+              hideMethodPicker
+              layout="panel"
+              surveyPlacement={
+                <SurveyPlacement
+                  phase={phase}
+                  hasUnsavedChanges={!!pageSave?.dirty}
+                  onMoved={(updated) => setFormData(updated.attributes)}
+                />
+              }
             />
-          </>
-        ) : (
-          <PhaseParticipationConfig
-            phase={phaseWithRelationships}
-            formData={formData}
-            validationErrors={validationErrors}
-            apiErrors={errors}
-            onChange={handleChange}
-            setValidationErrors={setValidationErrors}
-            hideMethodPicker
-            layout="panel"
-            surveyPlacement={
-              <SurveyPlacement
-                phase={phase}
-                hasUnsavedChanges={!!pageSave?.dirty}
-                onMoved={(updated) => setFormData(updated.attributes)}
-              />
-            }
-          />
-        )}
+          )}
 
-        <EditAccessButton
-          phaseId={phase.id}
-          initialOpened={setup_action === 'access'}
-          showButton={
-            !accessOnlyActions &&
-            !METHODS_WITH_ACTION_ROWS.includes(participationMethod)
-          }
-          onClose={() => {
-            if (setup_action === 'access') removeSearchParams(['setup_action']);
-          }}
-        />
-
-        <div ref={setup_action === 'notifications' ? openedSection : undefined}>
-          <PanelGroup
-            label={formatMessage(messages.participantCommunications)}
-            defaultOpen={setup_action === 'notifications'}
-            summary={
-              campaigns.loading
-                ? undefined
-                : formatMessage(messages.notificationsOnSummary, {
-                    count: campaigns.campaigns.filter(
-                      ({ attributes }) => attributes.enabled
-                    ).length,
-                  })
+          <EditAccessButton
+            phaseId={phase.id}
+            initialOpened={setup_action === 'access'}
+            showButton={
+              !accessOnlyActions &&
+              !METHODS_WITH_ACTION_ROWS.includes(participationMethod)
             }
             onClose={() => {
-              if (setup_action === 'notifications') {
+              if (setup_action === 'access') {
                 removeSearchParams(['setup_action']);
               }
             }}
-          >
-            <PhaseNotifications phase={phase} />
-          </PanelGroup>
-        </div>
+          />
 
-        {participationMethod === 'voting' && (
-          <div id="phase-moderation-settings">
+          <div
+            ref={setup_action === 'notifications' ? openedSection : undefined}
+          >
             <PanelGroup
-              label={formatMessage(postManagerMessages.assignee)}
-              defaultOpen={setup_action === 'moderation'}
-              summary={assigneeSummary}
+              label={formatMessage(messages.participantCommunications)}
+              defaultOpen={setup_action === 'notifications'}
+              summary={
+                campaigns.loading
+                  ? undefined
+                  : formatMessage(messages.notificationsOnSummary, {
+                      count: campaigns.campaigns.filter(
+                        ({ attributes }) => attributes.enabled
+                      ).length,
+                    })
+              }
+              onClose={() => {
+                if (setup_action === 'notifications') {
+                  removeSearchParams(['setup_action']);
+                }
+              }}
             >
-              <ModerationAssignee phaseId={phase.id} />
+              <PhaseNotifications phase={phase} />
             </PanelGroup>
           </div>
-        )}
-      </div>
-    </ExpandAllContext.Provider>
+
+          {participationMethod === 'voting' && (
+            <div id="phase-moderation-settings">
+              <PanelGroup
+                label={formatMessage(postManagerMessages.assignee)}
+                defaultOpen={setup_action === 'moderation'}
+                summary={assigneeSummary}
+              >
+                <ModerationAssignee phaseId={phase.id} />
+              </PanelGroup>
+            </div>
+          )}
+        </div>
+      </ExpandAllContext.Provider>
+    </LanguageChecksContext.Provider>
   );
 };
 

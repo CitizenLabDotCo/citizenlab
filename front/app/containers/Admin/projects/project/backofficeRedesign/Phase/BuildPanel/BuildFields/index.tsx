@@ -7,6 +7,8 @@ import Text from 'design-system/Text';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import AttachmentsCard from 'containers/Admin/projects/_shared/components/AttachmentsCard';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import usePhaseFileAttachments from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
@@ -15,10 +17,11 @@ import { isSurveyMethod } from 'containers/Admin/projects/project/phaseSetup/com
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
-import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
+import LanguageGroup from 'components/admin/MultilocFields/LanguageGroup';
+import fieldMessages from 'components/admin/MultilocFields/messages';
 import MultilocTitleField from 'components/admin/MultilocFields/MultilocTitleField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
-import useSelectedLocale from 'components/admin/MultilocFields/useSelectedLocale';
+import useLanguageGroup from 'components/admin/MultilocFields/useLanguageGroup';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -70,14 +73,26 @@ const BuildFields = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const apiErrorText = useApiErrorText();
-  const { locales, selectedLocale, setSelectedLocale } = useSelectedLocale();
-  const translations = Object.fromEntries(
-    locales.map((locale) => [
-      locale,
-      formData.title_multiloc?.[locale] &&
-        formData.description_multiloc?.[locale],
-    ])
-  );
+  const draftDescriptionEnabled = useFeatureFlag({
+    name: 'draft_phase_description',
+  });
+  // A draft description publishes on its own, with its own switcher.
+  const descriptionInGroup = !(draftDescriptionEnabled && phaseId);
+  const group = useLanguageGroup([
+    {
+      value: formData.title_multiloc,
+      name: formatMessage(fieldMessages.title),
+      required: true,
+    },
+    ...(descriptionInGroup
+      ? [
+          {
+            value: formData.description_multiloc,
+            name: formatMessage(fieldMessages.description),
+          },
+        ]
+      : []),
+  ]);
   const baseError = apiErrorText(errors?.base);
   const { survey_action } = useSearch({ strict: false });
   const [surveySetupOpened, setSurveySetupOpened] = useState(false);
@@ -102,39 +117,42 @@ const BuildFields = ({
             standalone={standalone}
             onChange={onDatesChange}
           />
-          <div className={styles.group}>
-            {selectedLocale && (
-              <LocaleSwitcher
-                aria-label={formatMessage(messages.phaseContentLanguage)}
-                locales={locales}
-                selectedLocale={selectedLocale}
-                onChange={setSelectedLocale}
-                valueMultiloc={translations}
-              />
-            )}
-            <div className="intercom-admin-phase-name">
-              <MultilocTitleField
-                id="phase-build-panel-title"
-                locale={selectedLocale}
-                aria-label={formatMessage(phaseSetupMessages.titleLabel)}
-                placeholder={formatMessage(messages.phaseTitle)}
-                valueMultiloc={formData.title_multiloc}
-                onChange={(title_multiloc) => onChange({ title_multiloc })}
-                errorMessage={apiErrorText(errors?.title_multiloc)}
+          <LanguageGroup
+            group={group}
+            aria-label={formatMessage(messages.phaseContentLanguage)}
+          >
+            <div className={styles.group}>
+              <div className="intercom-admin-phase-name">
+                <MultilocTitleField
+                  id="phase-build-panel-title"
+                  locale={group.selectedLocale}
+                  aria-label={formatMessage(phaseSetupMessages.titleLabel)}
+                  placeholder={group.placeholder(
+                    messages.phaseTitleInLanguage,
+                    messages.phaseTitle
+                  )}
+                  valueMultiloc={formData.title_multiloc}
+                  onChange={(title_multiloc) => onChange({ title_multiloc })}
+                  errorMessage={apiErrorText(errors?.title_multiloc)}
+                />
+              </div>
+
+              <DescriptionField
+                projectId={projectId}
+                phaseId={phaseId}
+                locale={group.selectedLocale}
+                placeholder={group.placeholder(
+                  messages.addDescriptionInLanguage,
+                  messages.addDescription
+                )}
+                value={formData.description_multiloc}
+                errors={errors}
+                onChange={(description_multiloc) =>
+                  onChange({ description_multiloc })
+                }
               />
             </div>
-
-            <DescriptionField
-              projectId={projectId}
-              phaseId={phaseId}
-              locale={selectedLocale}
-              value={formData.description_multiloc}
-              errors={errors}
-              onChange={(description_multiloc) =>
-                onChange({ description_multiloc })
-              }
-            />
-          </div>
+          </LanguageGroup>
           <AttachmentsCard
             id="phase-build-panel-file-uploader"
             title={formatMessage(messages.attachments)}

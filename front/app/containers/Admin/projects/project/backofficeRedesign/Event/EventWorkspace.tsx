@@ -6,6 +6,9 @@ import useLocalize from 'hooks/useLocalize';
 
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
+import LanguageChecksContext, {
+  useLanguageChecks,
+} from 'components/admin/MultilocFields/LanguageChecksContext';
 import {
   usePageSave,
   useRegisterPageSaver,
@@ -37,7 +40,15 @@ const EventWorkspace = ({ project, eventId, onCreate }: Props) => {
   const [activeView, setActiveView] = useState<EventView>('build');
   const form = useEventForm({ projectId: project.id, eventId, onCreate });
 
-  useRegisterPageSaver('event', { dirty: form.dirty, save: form.save });
+  const { checks, checkLanguages } = useLanguageChecks();
+
+  useRegisterPageSaver('event', {
+    dirty: form.dirty,
+    save: async () => {
+      if (!checkLanguages()) throw new Error('Languages left to translate');
+      return form.save();
+    },
+  });
 
   // A new event moves to its own URL once nothing is left to save, so the
   // guard against leaving with unsaved changes doesn't stop it.
@@ -57,27 +68,29 @@ const EventWorkspace = ({ project, eventId, onCreate }: Props) => {
     : backofficeRedesignMessages.newEvent;
 
   return (
-    <ProjectWorkspace
-      project={project}
-      draft={{
-        label: title || formatMessage(fallbackTitle),
-        saveLabel: formatMessage(
-          form.event ? eventMessages.saveButtonLabel : messages.create
-        ),
-      }}
-      sidePanel={<EventSetup projectId={project.id} form={form} />}
-      withParticipation={false}
-      activeView={activeView}
-      viewSwitch={
-        <EventViewSwitch activeView={activeView} onChange={setActiveView} />
-      }
-    >
-      {activeView === 'build' ? (
-        <EventPreview project={project} form={form} />
-      ) : (
-        <EventManager event={form.event} />
-      )}
-    </ProjectWorkspace>
+    <LanguageChecksContext.Provider value={checks}>
+      <ProjectWorkspace
+        project={project}
+        draft={{
+          label: title || formatMessage(fallbackTitle),
+          saveLabel: formatMessage(
+            form.event ? eventMessages.saveButtonLabel : messages.create
+          ),
+        }}
+        sidePanel={<EventSetup projectId={project.id} form={form} />}
+        withParticipation={false}
+        activeView={activeView}
+        viewSwitch={
+          <EventViewSwitch activeView={activeView} onChange={setActiveView} />
+        }
+      >
+        {activeView === 'build' ? (
+          <EventPreview project={project} form={form} />
+        ) : (
+          <EventManager event={form.event} />
+        )}
+      </ProjectWorkspace>
+    </LanguageChecksContext.Provider>
   );
 };
 

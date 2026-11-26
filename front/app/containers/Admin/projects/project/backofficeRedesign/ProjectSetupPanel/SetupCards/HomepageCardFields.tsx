@@ -21,9 +21,10 @@ import {
 } from 'containers/Admin/projects/project/backofficeRedesign/Event/imageUpload';
 import eventMessages from 'containers/Admin/projects/project/backofficeRedesign/Event/messages';
 
-import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
+import LanguageGroup from 'components/admin/MultilocFields/LanguageGroup';
+import fieldMessages from 'components/admin/MultilocFields/messages';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
-import useSelectedLocale from 'components/admin/MultilocFields/useSelectedLocale';
+import useLanguageGroup from 'components/admin/MultilocFields/useLanguageGroup';
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
 import { useIntl } from 'utils/cl-intl';
@@ -52,11 +53,6 @@ const HomepageCardFields = ({ project }: Props) => {
   const [savedAltText, setSavedAltText] = useState<Multiloc | null>(null);
   const [cropOpened, setCropOpened] = useState(false);
   const [imageTooLarge, setImageTooLarge] = useState(false);
-  const {
-    locales,
-    selectedLocale: descriptionLocale,
-    setSelectedLocale: setDescriptionLocale,
-  } = useSelectedLocale();
 
   const loadRemoteCardImage = useCallback(async () => {
     setSavedImage(null);
@@ -120,10 +116,19 @@ const HomepageCardFields = ({ project }: Props) => {
     }
   };
 
-  if (!descriptionLocale) return null;
-
   const altText = imageChanges.altText ?? savedAltText;
   const description = values.description_preview_multiloc;
+  const altTextGroup = useLanguageGroup(
+    cardImage
+      ? [{ value: altText, name: formatMessage(fieldMessages.altText) }]
+      : []
+  );
+  const descriptionGroup = useLanguageGroup([
+    { value: description, name: formatMessage(fieldMessages.description) },
+  ]);
+  const descriptionLocale = descriptionGroup.selectedLocale;
+
+  if (!descriptionLocale) return null;
 
   return (
     <div>
@@ -141,13 +146,19 @@ const HomepageCardFields = ({ project }: Props) => {
               onRemove={removeImage}
               stackActions
             />
-            <MultilocTextField
-              id="homepage-card-image-alt-text"
-              label={formatMessage(eventMessages.altText)}
-              placeholder={formatMessage(eventMessages.altTextPlaceholder)}
-              valueMultiloc={altText}
-              onChange={(altText) => changeImage('altText', altText)}
-            />
+            <LanguageGroup
+              group={altTextGroup}
+              aria-label={formatMessage(eventMessages.altText)}
+            >
+              <MultilocTextField
+                id="homepage-card-image-alt-text"
+                locale={altTextGroup.selectedLocale}
+                label={formatMessage(eventMessages.altText)}
+                placeholder={formatMessage(eventMessages.altTextPlaceholder)}
+                valueMultiloc={altText}
+                onChange={(altText) => changeImage('altText', altText)}
+              />
+            </LanguageGroup>
           </div>
         ) : (
           <>
@@ -179,32 +190,26 @@ const HomepageCardFields = ({ project }: Props) => {
         />
       </div>
 
-      <div className={`${styles.field} ${styles.multiloc}`}>
-        {locales.length > 1 && (
-          <div className={styles.localeSwitch}>
-            <LocaleSwitcher
-              aria-label={formatMessage(messages.homepageCardDescription)}
-              locales={locales}
-              selectedLocale={descriptionLocale}
-              onChange={setDescriptionLocale}
-              valueMultiloc={description}
-            />
-          </div>
-        )}
-        <TextArea
-          id="homepage-card-description"
-          label={formatMessage(messages.homepageCardDescription)}
-          placeholder={formatMessage(
-            messages.homepageCardDescriptionPlaceholder
-          )}
-          value={description[descriptionLocale] ?? ''}
-          onChange={(value) =>
-            changeProject('description_preview_multiloc', {
-              ...description,
-              [descriptionLocale]: value,
-            })
-          }
-        />
+      <div className={styles.field}>
+        <LanguageGroup
+          group={descriptionGroup}
+          aria-label={formatMessage(messages.homepageCardDescription)}
+        >
+          <TextArea
+            id="homepage-card-description"
+            label={formatMessage(messages.homepageCardDescription)}
+            placeholder={formatMessage(
+              messages.homepageCardDescriptionPlaceholder
+            )}
+            value={description[descriptionLocale] ?? ''}
+            onChange={(value) =>
+              changeProject('description_preview_multiloc', {
+                ...description,
+                [descriptionLocale]: value,
+              })
+            }
+          />
+        </LanguageGroup>
       </div>
     </div>
   );
