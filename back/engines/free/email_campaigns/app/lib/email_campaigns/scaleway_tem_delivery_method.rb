@@ -62,7 +62,11 @@ module EmailCampaigns
       url = settings[:api_url] || API_URL
       headers = { 'X-Auth-Token' => settings[:secret_key] }
 
-      Faraday.new(url:, headers:) do |f|
+      # Some mail is sent with `deliver_now` inside a web request, so a slow API must not
+      # hold the thread for Net::HTTP's default minute.
+      request = { open_timeout: 5, timeout: 10 } # seconds to connect / to get the response
+
+      Faraday.new(url:, headers:, request:) do |f|
         f.request :json
         f.response :json
       end
