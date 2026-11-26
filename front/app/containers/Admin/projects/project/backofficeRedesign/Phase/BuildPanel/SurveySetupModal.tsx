@@ -164,7 +164,6 @@ const SurveySetupModal = ({
           if (!isOpen && !draft?.saving) onClose();
         }}
         showClose={!draft?.saving}
-        size={866}
         title={formatMessage(
           !draft && hasQuestions !== false
             ? methodSectionMessages.editSurvey
