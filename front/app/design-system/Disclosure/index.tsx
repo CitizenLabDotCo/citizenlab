@@ -65,11 +65,13 @@ type Props =
   | MenuHeaderProps
   | StaticHeaderProps;
 
+// The status goes last, so it keeps the same place next to the card's control
+// whether or not a summary is shown.
 const HeaderContent = ({ title, status, summary }: SharedProps) => (
   <>
     <span className={styles.title}>{title}</span>
-    {status && <span className={styles.slot}>{status}</span>}
     {summary && <span className={styles.summary}>{summary}</span>}
+    {status && <span className={styles.slot}>{status}</span>}
   </>
 );
 
@@ -172,7 +174,12 @@ const StaticCard = ({
   <div className={styles.card} data-spaced-body={spacedBody || undefined}>
     <div className={styles.header}>
       <HeaderContent {...content} />
-      {actions && <div className={styles.actions}>{actions}</div>}
+      {actions ? (
+        <div className={styles.actions}>{actions}</div>
+      ) : (
+        // Keeps the status as far from the edge as on cards with a control.
+        content.status && <span className={styles.iconBox} aria-hidden />
+      )}
     </div>
     {children && <div className={styles.body}>{children}</div>}
   </div>

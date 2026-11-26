@@ -44,8 +44,9 @@
   padding-bottom: 0;
 }
 
+/* 24 px from the title to the first option. */
 .card[data-spaced-body] > .body {
-  padding-top: 25px;
+  padding-top: var(--gv-space-18);
   padding-bottom: var(--gv-space-14);
 }
 
