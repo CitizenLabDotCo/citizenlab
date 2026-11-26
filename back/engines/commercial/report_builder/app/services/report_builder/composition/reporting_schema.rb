@@ -7,9 +7,14 @@ module ReportBuilder
     # Same source as the MCP reporting schema tool — the documented views, their
     # column comments and their foreign keys — so the SQL a report block writes and
     # the SQL an MCP client writes are held to one description of the data.
+    #
+    # Only the views a report about a project may read: a query over an admin-only
+    # view is refused for every author, so describing one would cost a failed round.
     module ReportingSchema
+      PROJECT_SCOPE = McpServer::QueryScope.new(project_ids: []).freeze
+
       def self.to_prompt_text
-        tables = McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLES
+        tables = McpServer::Tools::GetReportingSqlSchema.tables_for(PROJECT_SCOPE)
         connection = ActiveRecord::Base.connection
 
         sections = tables.map { |model| table_section(model, connection) }

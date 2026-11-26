@@ -43,8 +43,11 @@ module ContentBuilder
       # @param manifest [Hash] the manifest, without `queries` — the build fills those in.
       # @param messages [Hash] locale => { key => text }.
       # @param locales [Array<String>] the locales that need a catalogue.
+      # @param scope [McpServer::QueryScope] the rows the block's queries will read
+      #   where it is placed. A query that scope would refuse is rejected here, while
+      #   the model can still fix it, rather than at every render.
       # @raise [RendererClient::Unavailable]
-      def call(source:, manifest:, messages: {}, locales: nil)
+      def call(source:, manifest:, messages: {}, locales: nil, scope: McpServer::QueryScope.all)
         response = @client.build(
           source: source,
           manifest: manifest,
@@ -56,7 +59,7 @@ module ContentBuilder
         # Only `queries` is taken back from the service: it is the one thing the build
         # knows and we do not. The rest of the manifest is ours, so a sidecar that
         # echoes it back incompletely cannot quietly drop a field.
-        queries, sql_diagnostics = validate_queries(response.dig('manifest', 'queries'))
+        queries, sql_diagnostics = validate_queries(response.dig('manifest', 'queries'), scope)
         diagnostics += sql_diagnostics
 
         succeeded = response['ok'] && sql_diagnostics.empty?
@@ -91,12 +94,12 @@ module ContentBuilder
       # Stores the SQL sandbox's normalized SQL rather than what the model wrote, so that
       # "which blocks read this view?" compares like with like, and so the snapshot key
       # does not change with whitespace.
-      def validate_queries(queries)
+      def validate_queries(queries, scope)
         normalized = []
         diagnostics = []
 
         Array(queries).each_with_index do |sql, index|
-          normalized << McpServer::ReportingQueryRunner.validate!(sql)
+          normalized << McpServer::ReportingQueryRunner.validate!(sql, scope: scope)
         rescue McpServer::ReportingQueryRunner::Rejected => e
           diagnostics << Diagnostic.new(
             kind: 'sql', line: nil, column: nil, rule: nil,

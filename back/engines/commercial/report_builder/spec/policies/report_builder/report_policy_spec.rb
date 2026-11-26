@@ -401,18 +401,65 @@ RSpec.describe ReportBuilder::ReportPolicy do
         let(:user) { create(:project_moderator, projects: [another_project]) }
 
         it { is_expected.not_to permit(:generate) }
+        it { is_expected.not_to permit(:chat) }
+        it { is_expected.not_to permit(:chat_turn) }
+        it { is_expected.not_to permit(:cancel_generation) }
       end
 
-      # A run reads the reporting views, which cover every project, so moderating
-      # the one being reported on is not enough to start one.
-      context 'when user moderates the project being reported on' do
-        let(:user) { create(:project_moderator, projects: [project]) }
+      shared_examples 'may have the report written' do
+        it { is_expected.to permit(:generate) }
+        it { is_expected.to permit(:chat) }
+        it { is_expected.to permit(:chat_turn) }
+        it { is_expected.to permit(:cancel_generation) }
+      end
 
-        it { is_expected.to permit(:update) }
+      shared_examples 'may not have the report written' do
         it { is_expected.not_to permit(:generate) }
         it { is_expected.not_to permit(:chat) }
         it { is_expected.not_to permit(:chat_turn) }
         it { is_expected.not_to permit(:cancel_generation) }
+      end
+
+      # A run reads the reported project's rows only, so whoever may edit the report
+      # may have it written.
+      context 'when user moderates the project being reported on' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it_behaves_like 'may have the report written'
+
+        context 'when the report is about the whole project' do
+          let(:report) { create(:report, project: project, owner: create(:admin)) }
+
+          it_behaves_like 'may have the report written'
+        end
+
+        context 'when the report holds a widget on a project the user does not moderate' do
+          let(:report) do
+            layout = create(:layout, craftjs_json: {
+              ROOT: { type: 'div', props: {} },
+              visitors_widget: { type: { resolvedName: 'VisitorsWidget' }, props: { projectId: another_project.id } }
+            })
+            create(:report, phase: current_phase, layout: layout)
+          end
+
+          it_behaves_like 'may not have the report written'
+        end
+      end
+
+      context 'when user moderates the space the reported project is in' do
+        let(:user) do
+          space = create(:space)
+          project.update!(space: space)
+          create(:space_moderator, spaces: [space])
+        end
+
+        it_behaves_like 'may have the report written'
+      end
+
+      context 'when user moderates the reported project but is blocked' do
+        let(:user) { create(:project_moderator, projects: [project], block_end_at: 1.day.from_now) }
+
+        it_behaves_like 'may not have the report written'
       end
     end
 

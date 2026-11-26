@@ -102,6 +102,29 @@ describe ContentBuilder::CustomBlocks::BlockBuilder do
     end
   end
 
+  # A report about a project never reads an admin-only view, so a chart over one would
+  # be stored and then refused at every render.
+  describe 'a block whose query reads an admin-only view' do
+    before do
+      stub_build(
+        ok: true,
+        bundle: 'export default () => null;',
+        manifest: { 'queries' => ['SELECT count(*) AS count FROM reporting_staff_activities'] }
+      )
+    end
+
+    it 'builds where every row may be read' do
+      expect(build.succeeded).to be true
+    end
+
+    it 'is refused for a scope of projects' do
+      result = build(scope: McpServer::QueryScope.new(project_ids: [SecureRandom.uuid]))
+
+      expect(result.succeeded).to be false
+      expect(result.diagnostics_text).to match(/\[sql\] Query 1 was rejected\..*reporting_staff_activities/m)
+    end
+  end
+
   describe 'locales' do
     before { stub_build(ok: true, bundle: 'x', manifest: {}) }
 

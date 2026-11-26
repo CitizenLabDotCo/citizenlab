@@ -8,15 +8,19 @@ module ContentBuilder
       #
       # A report is a picture of a moment, so an answer is stored against the layout the
       # first time it is asked, and every later read returns that stored answer. Only an
-      # admin, or the renderer with its scoped token, can fill a snapshot; a reader is
-      # served from one or not at all, which is what keeps arbitrary SQL off the
-      # citizen-facing path.
+      # admin or a moderator, or the renderer with its scoped token, can fill a
+      # snapshot; a reader is served from one or not at all, which is what keeps
+      # arbitrary SQL off the citizen-facing path.
       class ReportingQueriesController < ::ApplicationController
         skip_before_action :authenticate_user, only: %i[create]
 
         def create
           query = params.require(:query).to_s
           layout = find_layout
+          # A layout the asker may not see is refused, rather than answered as a
+          # question that belongs to no layout.
+          raise Pundit::NotAuthorizedError if layout.nil? && params[:layout_id].present?
+
           # Reading a layout's stored answer is reading the layout; find_layout is
           # what decides whether this user may see it at all.
           authorize(layout, :show?) if layout
@@ -28,7 +32,7 @@ module ContentBuilder
 
           # The custom block renderer's browser has no session, only a token good
           # for this one layout's data, which runs as the person it was minted for.
-          # Everyone else has to be an admin.
+          # Everyone else has to be an admin or a moderator.
           if scoped_token_permits?(layout)
             asker = ScopedReportingToken.user(params[:reporting_token])
           else

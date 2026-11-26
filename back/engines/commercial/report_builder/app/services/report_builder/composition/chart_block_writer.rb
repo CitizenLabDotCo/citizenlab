@@ -43,10 +43,12 @@ module ReportBuilder
       #   single-locale by design, and a block's catalogues follow it.
       # @param run_id [String, nil] the Run doing the authoring, recorded on every
       #   version so a chart can be traced back to the conversation that wrote it.
-      def initialize(author, locale: nil, run_id: nil)
+      # @param query_scope [McpServer::QueryScope] the rows the report's charts read.
+      def initialize(author, locale: nil, run_id: nil, query_scope: McpServer::QueryScope.all)
         @author = author
         @locale = locale
         @run_id = run_id
+        @query_scope = query_scope
       end
 
       # @param title [String] the block name admins see in the builder.
@@ -158,7 +160,8 @@ module ReportBuilder
           source: source,
           manifest: manifest(schema),
           messages: catalogues,
-          locales: [locale]
+          locales: [locale],
+          scope: @query_scope
         )
         return result if result.succeeded
 

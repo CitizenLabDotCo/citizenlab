@@ -51,17 +51,27 @@ RSpec.describe ReportBuilder::Composition::BlockChecker do
       checker.check(checker.layout_target({}))
     end
 
-    # The token is good for every reporting view, so minting one for a moderator
-    # would hand them data the reporting query policy keeps to admins.
+    # The token runs the block's SQL as the author, so it is only minted for someone
+    # the reporting query policy lets run queries.
     it 'refuses to mint a data token for an author who may not run queries' do
       expect(client).not_to receive(:render)
+
+      outcome = described_class
+        .new(layout: layout, author: create(:user), locale: 'en', client: client)
+        .check(checker.layout_target({}))
+
+      expect(outcome[:error]).to be true
+      expect(outcome[:text]).to include 'not available to this author'
+    end
+
+    it 'mints one for a moderator' do
+      allow(client).to receive(:render).and_return(passing)
 
       outcome = described_class
         .new(layout: layout, author: create(:project_moderator), locale: 'en', client: client)
         .check(checker.layout_target({}))
 
-      expect(outcome[:error]).to be true
-      expect(outcome[:text]).to include 'not available to this author'
+      expect(outcome[:error]).to be false
     end
 
     it 'says so in one line when everything worked' do

@@ -260,6 +260,54 @@ describe ReportBuilder::Composition::ReportComposer do
         expect(tool_results.first[:content].first[:text]).to include 'contributions'
       end
 
+      describe 'the rows it reads' do
+        let(:other_project) { create(:project) }
+
+        before do
+          create(:idea, project: project)
+          create_list(:idea, 2, project: other_project)
+          stub_converse(
+            tool_call('run_reporting_sql_query', { 'query' => 'SELECT count(*) AS inputs FROM reporting_inputs' }),
+            write_layout(text_layout),
+            done
+          )
+        end
+
+        def inputs_read_for(author)
+          described_class.new(project, locale: 'en', client: client, author: author).compose
+          tool_results.first[:content].first[:text]
+        end
+
+        it 'reads the reported project only for an admin' do
+          expect(inputs_read_for(create(:admin))).to include '"inputs":1'
+        end
+
+        it 'reads the reported project only for a moderator of it and of another project' do
+          moderator = create(:project_moderator, projects: [project, other_project])
+
+          expect(inputs_read_for(moderator)).to include '"inputs":1'
+        end
+
+        it 'reads the reported project for a moderator of the space it is in' do
+          space = create(:space)
+          project.update!(space: space)
+          other_project.update!(space: create(:space))
+          moderator = create(:space_moderator, spaces: [space])
+
+          expect(inputs_read_for(moderator)).to include '"inputs":1'
+        end
+
+        it 'reads nothing for a moderator of another project' do
+          moderator = create(:project_moderator, projects: [other_project])
+
+          expect(inputs_read_for(moderator)).to include '"inputs":0'
+        end
+
+        it 'reads nothing without an author' do
+          expect(inputs_read_for(nil)).to include '"inputs":0'
+        end
+      end
+
       it 'hands back the SQL sandbox rejection rather than running it' do
         stub_converse(
           tool_call('run_reporting_sql_query', { 'query' => 'SELECT * FROM users' }),
@@ -319,6 +367,19 @@ describe ReportBuilder::Composition::ReportComposer do
         expect(tool_results.first[:status]).to eq 'error'
         expect(tool_results.first[:content].first[:text]).to include 'no-network'
         expect(tool_results.first[:content].first[:text]).to include 'line 2'
+      end
+
+      context 'when the chart reads an admin-only view' do
+        let(:sql) { 'SELECT count(*) AS count FROM reporting_staff_activities' }
+
+        it 'refuses it for an admin too, because the report reads its project only' do
+          stub_converse(tool_call('author_chart_block', authored), write_layout(text_layout), done)
+
+          expect { described_class.new(project, locale: 'en', client: client, author: create(:admin)).compose }
+            .not_to change(ContentBuilder::CustomBlock, :count)
+          expect(tool_results.first[:status]).to eq 'error'
+          expect(tool_results.first[:content].first[:text]).to include 'reporting_staff_activities'
+        end
       end
 
       it 'says so plainly when the block cannot be checked at all' do

@@ -99,6 +99,30 @@ over sessions; a traffic source breakdown groups sessions by the host of their
 `referrer` (`substring(referrer from '^https?://([^/]+)')`), a NULL referrer being a
 direct visit.
 
+## Against the rest of the platform
+
+The other views hold this project's rows only. `reporting_platform_baselines` is the one
+place to compare from: one row per metric, with the median, mean and quartiles across the
+platform's projects, and no project id to filter on. Pick the row with `WHERE metric = ...`
+(the metrics are listed in the view's description) and put the project's own figure
+beside it. The baselines cover all time, so compare them with the project's total, not
+with one phase's.
+
+```sql
+SELECT
+  (SELECT COUNT(DISTINCT participant_id)
+   FROM reporting_contributions
+   WHERE project_id = '...') AS project,
+  b.median AS platform_median,
+  b.p25 AS platform_p25,
+  b.p75 AS platform_p75
+FROM reporting_platform_baselines b
+WHERE b.metric = 'participants_per_project'
+```
+
+A metric has no row on a platform with fewer than five projects behind it, so this can
+come back empty; then there is no comparison to show.
+
 ## When a query returns nothing
 
 An empty result is a chart that draws nothing, and the check will say so. Before

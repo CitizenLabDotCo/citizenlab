@@ -13,16 +13,42 @@ RSpec.describe ContentBuilder::ReportingQueryPolicy do
     it { is_expected.not_to permit(:create) }
   end
 
-  # The one that matters: this endpoint runs SQL the model wrote, over the whole
-  # platform's reporting data.
+  # The one that matters: this endpoint runs SQL the model wrote, and a resident
+  # moderates nothing whose rows they could be given.
   context 'for a regular user' do
     let(:user) { create(:user) }
 
     it { is_expected.not_to permit(:create) }
   end
 
+  # Which rows a moderator's query reads is the query scope's business, not this
+  # policy's.
   context 'for a project moderator' do
     let(:user) { create(:project_moderator) }
+
+    it { is_expected.to permit(:create) }
+
+    context 'when the feature is not activated' do
+      before { SettingsService.new.deactivate_feature!('llm_reporting') }
+
+      it { is_expected.not_to permit(:create) }
+    end
+  end
+
+  context 'for a folder moderator' do
+    let(:user) { create(:project_folder_moderator) }
+
+    it { is_expected.to permit(:create) }
+  end
+
+  context 'for a space moderator' do
+    let(:user) { create(:space_moderator) }
+
+    it { is_expected.to permit(:create) }
+  end
+
+  context 'for a blocked moderator' do
+    let(:user) { create(:project_moderator, block_end_at: 1.day.from_now) }
 
     it { is_expected.not_to permit(:create) }
   end
