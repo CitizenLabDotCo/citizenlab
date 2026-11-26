@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.phaseInputTagsTitle',
     defaultMessage: '{term} tags',
   },
+  tagCount: {
+    id: 'app.containers.Admin.projects.project.inputTagCount',
+    defaultMessage: '{count, plural, one {# tag} other {# tags}}',
+  },
   sharedTags: {
     id: 'app.containers.Admin.projects.project.sharedInputTags',
     defaultMessage:

@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 
-import { Box, Button, Text, bo } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { CLErrors } from 'typings';
+
+import Banner from 'design-system/Banner';
 
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
@@ -21,6 +22,7 @@ import GeneralSection from './GeneralSection';
 import messages from './messages';
 import ResourcesSection from './ResourcesSection';
 import useFilesDraft from './ResourcesSection/useFilesDraft';
+import 'design-system/tokens.css';
 
 interface Props {
   project: IProjectData;
@@ -144,7 +146,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       name: 'general',
       group: messages.settingsProjectGroup,
       label: messages.settingsGeneral,
-      icon: 'cog',
+      icon: 'settings-16',
       content: (
         <GeneralSection
           projectId={projectId}
@@ -167,7 +169,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       name: 'resources',
       group: messages.settingsProjectGroup,
       label: messages.settingsResources,
-      icon: 'paperclip',
+      icon: 'paperclip-16',
       content: <ResourcesSection projectId={projectId} draft={filesDraft} />,
     },
   ];
@@ -179,27 +181,19 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
         close={handleClose}
         header={formatMessage(messages.settingsTitle)}
         sections={sections}
-        footer={
-          <Box display="flex" alignItems="center" gap="12px">
-            {saveFailed && (
-              <Text variant="boMicro" color="red600" m="0px">
-                {formatMessage(messages.settingsSaveFailed)}
-              </Text>
-            )}
-            <Button
-              buttonStyle="bo-primary"
-              width="auto"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
-              processing={processing}
-              onClick={handleSave}
-              id="e2e-project-settings-save"
-            >
-              {formatMessage(messages.settingsSave)}
-            </Button>
-          </Box>
+        notice={
+          saveFailed && (
+            <Banner tone="error">
+              {formatMessage(messages.settingsSaveFailed)}
+            </Banner>
+          )
         }
+        primaryAction={{
+          label: formatMessage(messages.settingsSave),
+          onPress: handleSave,
+          isPending: processing,
+          id: 'e2e-project-settings-save',
+        }}
       />
       <DiscardChangesModal
         opened={confirmingDiscard}

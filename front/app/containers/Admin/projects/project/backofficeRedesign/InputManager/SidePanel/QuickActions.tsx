@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 
-import { Box, Tooltip } from '@citizenlab/cl2-component-library';
+import AlertDialog from 'design-system/AlertDialog';
+import IconButton from 'design-system/IconButton';
 
 import { IIdeaData } from 'api/ideas/types';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
-import WarningModal from 'components/WarningModal';
+import warningModalMessages from 'components/WarningModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
-import ToolbarIconButton from '../ToolbarIconButton';
 import useInputTermLabels from '../useInputTermLabels';
+
+import styles from './SidePanel.module.css';
 
 interface Props {
   idea: IIdeaData;
@@ -35,40 +36,39 @@ const QuickActions = ({ idea, onEdit, onDeleted }: Props) => {
     });
 
   return (
-    <Box display="flex" gap="6px">
-      <ToolbarIconButton
-        icon="edit"
-        label={formatMessage(messages.edit)}
-        onClick={onEdit}
+    <div className={styles.quickActions}>
+      <IconButton
+        variant="bordered"
+        icon="square-pen-16"
+        aria-label={formatMessage(messages.edit)}
+        onPress={onEdit}
       />
-      <Tooltip content={formatMessage(messages.viewOnSite)} theme="dark">
-        <Box>
-          <ButtonWithLink
-            to="/ideas/$slug"
-            params={{ slug: idea.attributes.slug }}
-            openLinkInNewTab
-            buttonStyle="bo-secondary"
-            icon="eye"
-            width="36px"
-            padding="0"
-            ariaLabel={formatMessage(messages.viewOnSite)}
-          />
-        </Box>
-      </Tooltip>
-      <ToolbarIconButton
-        icon="delete"
-        label={formatMessage(messages.delete)}
-        onClick={() => setDeleteModalOpen(true)}
+      <IconButton
+        variant="bordered"
+        icon="eye-16"
+        aria-label={formatMessage(messages.viewOnSite)}
+        // A button cannot carry a typed route link, and this one opens a new tab.
+        onPress={() =>
+          window.open(`/ideas/${idea.attributes.slug}`, '_blank', 'noopener')
+        }
       />
-      <WarningModal
-        open={deleteModalOpen}
-        isLoading={isPending}
+      <IconButton
+        variant="bordered"
+        icon="trash-2-16"
+        aria-label={formatMessage(messages.delete)}
+        onPress={() => setDeleteModalOpen(true)}
+      />
+      <AlertDialog
+        isOpen={deleteModalOpen}
+        onOpenChange={setDeleteModalOpen}
+        isPending={isPending}
         title={formatMessage(messages.deleteTermTitle, { term })}
-        explanation={formatMessage(messages.deleteTermExplanation, { term })}
-        onClose={() => setDeleteModalOpen(false)}
+        confirmLabel={formatMessage(warningModalMessages.confirm)}
         onConfirm={handleDelete}
-      />
-    </Box>
+      >
+        {formatMessage(messages.deleteTermExplanation, { term })}
+      </AlertDialog>
+    </div>
   );
 };
 

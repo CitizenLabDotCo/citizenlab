@@ -52,7 +52,7 @@ const IdeationInsights = ({ phaseId }: MethodSpecificInsightProps) => {
         <Box w="100%" flex={redesigned ? '1 1 320px' : undefined} minWidth="0">
           <MostLikedIdeas phaseId={phaseId} />
         </Box>
-        <Box w="100%" flex={redesigned ? '1 1 320px' : undefined} minWidth="0">
+        <Box w="100%" flex={redesigned ? '1 1 100%' : undefined} minWidth="0">
           <StatusBreakdown phaseId={phaseId} participationMethod="ideation" />
         </Box>
       </Box>

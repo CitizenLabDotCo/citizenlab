@@ -1,31 +1,23 @@
-import { colors, stylingConsts } from '@citizenlab/cl2-component-library';
-import styled, { css } from 'styled-components';
+import React, { ReactNode } from 'react';
 
-import Link, { typedStyled } from 'utils/cl-router/Link';
+import Link from 'utils/cl-router/Link';
 
-export const STAT_CARD_PADDING = 12;
+import styles from './StatCardLink.module.css';
 
-const statCardStyle = css`
-  display: block;
-  margin: 10px 0 12px;
-  padding: ${STAT_CARD_PADDING}px;
-  border: 1px solid ${colors.grey200};
-  border-radius: ${stylingConsts.borderRadius};
-  background: ${colors.grey50};
-`;
+interface Props {
+  projectId: string;
+  children: ReactNode;
+}
 
-export const StatCard = styled.div`
-  ${statCardStyle}
-`;
-
-const StatCardLink = typedStyled(Link)`
-  ${statCardStyle}
-  text-decoration: none;
-  transition: background 80ms ease-out;
-
-  &:hover {
-    background: ${colors.grey100};
-  }
-`;
+// Both stat cards open the project's audience page.
+const StatCardLink = ({ projectId, children }: Props) => (
+  <Link
+    to="/admin/projects/$projectId/audience"
+    params={{ projectId }}
+    className={styles.link}
+  >
+    {children}
+  </Link>
+);
 
 export default StatCardLink;

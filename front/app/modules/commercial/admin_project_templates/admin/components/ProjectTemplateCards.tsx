@@ -20,6 +20,7 @@ import messages from './messages';
 import ParticipationLevelFilter from './ParticipationLevelFilter';
 import ProjectTemplateCard from './ProjectTemplateCard';
 import PurposeFilter from './PurposeFilter';
+import TemplateSearchField from './TemplateSearchField';
 
 const Container = styled.div`
   margin-bottom: 15px;
@@ -98,7 +99,8 @@ interface Props {
   onParticipationLevelFilterChange: (participationLevels: string[]) => void;
   templates: Templates;
   onUseTemplate: (projectTemplateId: string, title: string) => void;
-  variant?: 'default' | 'bo';
+  // 'panel' is the redesigned back office, which uses the design-system search field.
+  variant?: 'default' | 'panel';
 }
 
 const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
@@ -114,7 +116,7 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
     onDepartmentFilterChange,
     onParticipationLevelFilterChange,
     onUseTemplate,
-    variant,
+    variant = 'default',
   }) => {
     const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
     const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
@@ -134,15 +136,23 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
           <Spacer />
 
           <Right>
-            <StyledSearchInput
-              placeholder={searchPlaceholder}
-              ariaLabel={searchAriaLabel}
-              onChange={onSearchChange}
-              variant={variant}
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              a11y_numberOfSearchResults={templates?.edges.length || 0}
-            />
+            {variant === 'panel' ? (
+              <TemplateSearchField
+                onChange={onSearchChange}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                resultCount={templates?.edges.length || 0}
+              />
+            ) : (
+              <StyledSearchInput
+                placeholder={searchPlaceholder}
+                ariaLabel={searchAriaLabel}
+                onChange={onSearchChange}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                a11y_numberOfSearchResults={templates?.edges.length || 0}
+              />
+            )}
           </Right>
         </Filters>
         {loading && !templates && (

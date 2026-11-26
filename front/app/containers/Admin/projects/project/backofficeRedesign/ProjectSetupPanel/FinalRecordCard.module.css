@@ -1,0 +1,21 @@
+.head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gv-space-8);
+}
+
+.chevron {
+  color: var(--gv-icon-secondary);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gv-space-8);
+  padding: var(--gv-space-8) 0;
+  border-bottom: var(--gv-border-width-1) dashed var(--gv-border-control);
+}
+
+.row:last-child {
+  border-bottom: none;
+}

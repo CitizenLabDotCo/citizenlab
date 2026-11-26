@@ -9,3 +9,5 @@ el-GR:
     debate_information_updates: Ενημερώσεις
     debate_instructions: Οδηγίες
     documents_to_consult: Έγγραφα διαβούλευσης
+    private_space_members: 'Μέλη: %{space}'
+    untitled_folder: Φάκελος χωρίς τίτλο

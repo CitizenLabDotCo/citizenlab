@@ -9,3 +9,5 @@ it-IT:
     debate_information_updates: Aggiornamenti informativi
     debate_instructions: Istruzioni
     documents_to_consult: Documenti di consultazione
+    private_space_members: 'Membri: %{space}'
+    untitled_folder: Cartella senza titolo

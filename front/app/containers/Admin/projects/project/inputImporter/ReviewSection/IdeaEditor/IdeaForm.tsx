@@ -7,6 +7,7 @@ import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 
 import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
+import { castNumberAnswers } from 'components/CustomFieldsForm/util';
 import Feedback from 'components/HookForm/Feedback';
 
 import { useParams } from 'utils/router';
@@ -74,11 +75,11 @@ const IdeaForm = ({
   // Watch for changes in form values and update formData and form validation state accordingly
   useEffect(() => {
     const subscription = methods.watch((values) => {
-      setFormData(values);
+      setFormData(castNumberAnswers(values, customFields ?? []));
       methods.trigger();
     });
     return () => subscription.unsubscribe();
-  }, [methods, formData, setFormData, setIdeaFormDataValid]);
+  }, [methods, formData, setFormData, setIdeaFormDataValid, customFields]);
 
   // We are setting the setError function to the ref so that it can be used easily in the parent component for error handling
   setError.current = methods.setError;

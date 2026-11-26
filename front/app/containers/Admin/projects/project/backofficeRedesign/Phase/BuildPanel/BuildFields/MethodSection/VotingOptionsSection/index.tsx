@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Spinner } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import IconButton from 'design-system/IconButton';
+import Spinner from 'design-system/Spinner';
 
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
@@ -8,7 +10,6 @@ import usePhases from 'api/phases/usePhases';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
 import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
-import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -21,6 +22,7 @@ import useStagedInputs from '../useStagedInputs';
 import InputImporterModal from './InputImporterModal';
 import LinkPhaseIdeasModal from './LinkPhaseIdeasModal';
 import messages from './messages';
+import styles from './VotingOptionsSection.module.css';
 
 interface Props {
   projectId: string;
@@ -58,67 +60,62 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
       <PanelField
         label={formatMessage(messages.votingOptionsSection)}
         action={
-          <Box display="flex" alignItems="center" gap="4px">
-            <IconAction
-              icon="plus"
-              tooltip={addLabel}
-              ariaLabel={addLabel}
-              onClick={() => setAddOpened(true)}
+          <div className={styles.actions}>
+            <IconButton
+              icon="plus-16"
+              aria-label={addLabel}
+              onPress={() => setAddOpened(true)}
             />
-            <IconAction
-              icon="upload-file"
-              tooltip={importLabel}
-              ariaLabel={importLabel}
-              onClick={() => setImporterOpened(true)}
+            <IconButton
+              icon="upload-16"
+              aria-label={importLabel}
+              onPress={() => setImporterOpened(true)}
             />
             {hasOptions &&
               (hasIdeationBefore ? (
-                <IconAction
-                  icon="clock"
-                  tooltip={previousPhaseLabel}
-                  ariaLabel={previousPhaseLabel}
-                  onClick={() => setPreviousPhaseOpened(true)}
+                <IconButton
+                  icon="calendar-16"
+                  aria-label={previousPhaseLabel}
+                  onPress={() => setPreviousPhaseOpened(true)}
                 />
               ) : (
-                <IconAction
-                  icon="edit"
-                  tooltip={editFormLabel}
-                  ariaLabel={editFormLabel}
-                  disabled={!inputForm.ready}
-                  onClick={inputForm.open}
+                <IconButton
+                  icon="pencil-14"
+                  aria-label={editFormLabel}
+                  isDisabled={!inputForm.ready}
+                  onPress={inputForm.open}
                 />
               ))}
             {hasOptions ? (
-              <Box display="flex" alignItems="center" gap="6px">
-                {saving && <Spinner size="14px" />}
+              <div className={styles.status}>
+                {saving && <Spinner />}
                 <SummaryPill
                   label={formatMessage(messages.nVotingOptions, { count })}
                 />
-              </Box>
+              </div>
             ) : (
-              <Button
-                buttonStyle="bo-primary"
-                boSize="medium"
-                width="auto"
-                ml="4px"
-                disabled={!hasIdeationBefore && !inputForm.ready}
-                onClick={
-                  hasIdeationBefore
-                    ? () => setPreviousPhaseOpened(true)
-                    : inputForm.open
-                }
-              >
-                {hasIdeationBefore
-                  ? previousPhaseLabel
-                  : formatMessage(messages.createForm)}
-              </Button>
+              <div className={styles.primaryAction}>
+                <Button
+                  variant="primary"
+                  isDisabled={!hasIdeationBefore && !inputForm.ready}
+                  onPress={
+                    hasIdeationBefore
+                      ? () => setPreviousPhaseOpened(true)
+                      : inputForm.open
+                  }
+                >
+                  {hasIdeationBefore
+                    ? previousPhaseLabel
+                    : formatMessage(messages.createForm)}
+                </Button>
+              </div>
             )}
-          </Box>
+          </div>
         }
       />
 
       <FormInputEditWarningModal
-        variant="bo"
+        variant="panel"
         showEditWarningModal={inputForm.warningOpened}
         setShowEditWarningModal={inputForm.setWarningOpened}
         editFormLink={inputForm.editFormLink}

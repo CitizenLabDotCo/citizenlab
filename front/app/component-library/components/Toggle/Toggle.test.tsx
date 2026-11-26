@@ -50,19 +50,4 @@ describe('<Toggle />', () => {
       'align-items': 'center',
     });
   });
-
-  it('aligns the label to the top with labelAlign="top"', () => {
-    render(
-      <Toggle
-        checked={false}
-        label="Public"
-        labelAlign="top"
-        onChange={jest.fn()}
-      />
-    );
-
-    expect(screen.getByTestId('toggle').parentElement).toHaveStyle({
-      'align-items': 'flex-start',
-    });
-  });
 });

@@ -9,3 +9,5 @@ de-DE:
     debate_information_updates: Informations-Updates
     debate_instructions: Anleitungen
     documents_to_consult: Beteiligungsdokumente
+    private_space_members: 'Mitglieder: %{space}'
+    untitled_folder: Unbenannter Ordner

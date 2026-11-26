@@ -116,11 +116,23 @@ RSpec.describe McpServer::ReportingQueryRunner do
         expect(count(model.table_name, scope)).to eq model.for_projects([mine.id]).count
       end
 
-      next if model == Analytics::Reporting::ReferenceDistribution
+      # Census figures and platform baselines are the same for every scope.
+      next if [Analytics::Reporting::ReferenceDistribution, Analytics::Reporting::PlatformBaseline].include?(model)
 
       it "reads no rows of #{model.table_name} for an empty scope" do
         expect(count(model.table_name, McpServer::QueryScope.new(project_ids: []))).to eq 0
       end
+    end
+
+    # The rows above stay under the view's floor of 5 projects, so the baselines
+    # are empty there and need rows of their own.
+    it 'reads the same platform baselines in every scope' do
+      create_list(:project_with_active_ideation_phase, 5)
+      every_row = count('reporting_platform_baselines', McpServer::QueryScope.all)
+
+      expect(every_row).to be > 0
+      expect(count('reporting_platform_baselines', scope)).to eq every_row
+      expect(count('reporting_platform_baselines', McpServer::QueryScope.new(project_ids: []))).to eq every_row
     end
 
     it 'refuses an admin-only view' do

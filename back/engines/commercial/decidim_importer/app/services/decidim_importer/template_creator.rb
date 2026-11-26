@@ -50,14 +50,15 @@ module DecidimImporter
 
     attr_reader :ref_map
 
-    # Builds the {TemplateBuilder} without applying anything. Extractors must run folders → projects →
-    # phases so cross-record refs resolve; users are independent.
+    # Builds the {TemplateBuilder} without applying anything. Extractors must run users → folders →
+    # projects → private-space members → phases so cross-record refs resolve.
     def build_template
       user_custom_fields.register!(ref_map)
       run_users_extractor
       run_extractor(Extractors::ScopesExtractor, :scopes)
-      run_extractor(Extractors::FoldersExtractor, :folders)
+      run_folders
       run_extractor(Extractors::ProjectsExtractor, :projects)
+      run_private_space_members
       run_categories
       run_phases
       run_proposal_statuses
@@ -276,7 +277,32 @@ module DecidimImporter
       @process_roles_extractor&.skipped || []
     end
 
+    # Private-space members that couldn't join their space's group (user not imported).
+    def skipped_private_space_members
+      @private_space_members_extractor&.skipped || []
+    end
+
+    # Folders and projects imported with a change the admins should know about (an untitled folder, a
+    # private space's visibility).
+    def adjusted_records
+      (@folders_extractor&.adjusted || []) + (@private_space_members_extractor&.adjusted || [])
+    end
+
     private
+
+    def run_folders
+      return unless @rows_by_model.key?(:folders)
+
+      (@folders_extractor = build_extractor(Extractors::FoldersExtractor, :folders)).run
+    end
+
+    # Needs the users and projects registered first.
+    def run_private_space_members
+      return unless @rows_by_model.key?(:process_roles)
+
+      @private_space_members_extractor = build_extractor(Extractors::PrivateSpaceMembersExtractor, :process_roles)
+      @private_space_members_extractor.run
+    end
 
     def run_phases
       @phase_projector = PhaseProjector.new(ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale)

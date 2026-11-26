@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import Text from 'design-system/Text';
+
+import styles from './InputImporterModal.module.css';
 
 interface Props {
   title: string;
@@ -9,15 +11,13 @@ interface Props {
 }
 
 const ImporterRow = ({ title, description, children }: Props) => (
-  <Box display="flex" flexDirection="column" alignItems="flex-start">
-    <Text as="span" variant="boControl" m="0">
+  <div className={styles.row}>
+    <Text as="span" variant="ui" tone="primary">
       {title}
     </Text>
-    <Text as="span" variant="boHelper" m="0" mt="2px" mb="12px">
-      {description}
-    </Text>
+    <span className={styles.description}>{description}</span>
     {children}
-  </Box>
+  </div>
 );
 
 export default ImporterRow;

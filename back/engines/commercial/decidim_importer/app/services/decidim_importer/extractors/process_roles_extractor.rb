@@ -7,11 +7,12 @@ module DecidimImporter
     #
     # Each row pairs a user uid with a role in the process (`uid,role`). Decidim staff roles (admin,
     # collaborator, moderator) become a Go Vocal `project_moderator`; `private_user` — a private-space
-    # participant, not staff — is ignored. The role can't travel in the template: it lives in the user's
-    # JSONB `roles` array as a `project_id` (no ref reaches into a JSON value), and the project id doesn't
-    # exist until the template is deserialized. So this emits natural-key tuples — the user's `unique_code`
-    # (its Decidim uid, preserved by {UsersExtractor}) and the project's `slug` — that {ModeratorAssigner}
-    # applies *after* deserialization by looking both records up in the target tenant.
+    # participant, not staff — is left to {PrivateSpaceMembersExtractor}. The role can't travel in the
+    # template: it lives in the user's JSONB `roles` array as a `project_id` (no ref reaches into a JSON
+    # value), and the project id doesn't exist until the template is deserialized. So this emits
+    # natural-key tuples — the user's `unique_code` (its Decidim uid, preserved by {UsersExtractor}) and
+    # the project's `slug` — that {ModeratorAssigner} applies *after* deserialization by looking both
+    # records up in the target tenant.
     class ProcessRolesExtractor < BaseExtractor
       COLUMNS = {
         user: 'uid',

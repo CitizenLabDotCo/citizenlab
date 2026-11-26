@@ -1,14 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  Tooltip,
-  colors,
-  stylingConsts,
-  defaultStyles,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+
+import PreviewStateSelector from 'design-system/PreviewStateSelector';
 
 import PhonePreview from 'components/admin/PhonePreview';
 
@@ -43,6 +37,8 @@ const lifecycleOptions = {
     tooltip: typeof messages.beforeTooltip2;
   }
 >;
+
+const LIFECYCLES: PreviewLifecycle[] = ['before', 'open', 'ended'];
 
 interface Props {
   src: string;
@@ -171,57 +167,24 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
               {formatMessage(messages.newPhase)}
             </Text>
           )}
-          <Box
-            role="group"
+          <PreviewStateSelector
             aria-label={formatMessage(messages.lifecycle)}
-            display="flex"
-            alignItems="center"
-            background={colors.grey200}
-            borderRadius={stylingConsts.borderRadius}
-            gap="2px"
-            p="3px"
-          >
-            {(['before', 'open', 'ended'] as const).map((value) => {
-              const selected = state === value;
-              const { label, tooltip } = lifecycleOptions[value];
-
-              return (
-                <Tooltip
-                  key={value}
-                  content={formatMessage(tooltip)}
-                  placement="top"
-                  theme="dark"
-                  useContentWrapper={false}
-                >
-                  <Button
-                    buttonStyle="text"
-                    ariaPressed={selected}
-                    bgColor={selected ? colors.white : colors.grey200}
-                    bgHoverColor={selected ? colors.white : colors.grey300}
-                    textColor={
-                      selected ? colors.textPrimary : colors.textSecondary
-                    }
-                    textHoverColor={colors.textPrimary}
-                    textDecorationHover="none"
-                    borderRadius={stylingConsts.borderRadius}
-                    height="25px"
-                    padding="3px 12px"
-                    fontSize="12px"
-                    fontWeight="500"
-                    boxShadow={selected ? defaultStyles.boxShadow : 'none'}
-                    onClick={() =>
-                      setSelection({
-                        state: value,
-                        configured: configuredLifecycle,
-                      })
-                    }
-                  >
-                    {formatMessage(label)}
-                  </Button>
-                </Tooltip>
-              );
-            })}
-          </Box>
+            options={LIFECYCLES.map((value) => ({
+              id: value,
+              label: formatMessage(lifecycleOptions[value].label),
+              tooltip: formatMessage(lifecycleOptions[value].tooltip),
+            }))}
+            selectedKey={state}
+            onSelectionChange={(key) => {
+              const picked = LIFECYCLES.find((value) => value === key);
+              if (picked) {
+                setSelection({
+                  state: picked,
+                  configured: configuredLifecycle,
+                });
+              }
+            }}
+          />
         </Box>
       )}
     </Box>

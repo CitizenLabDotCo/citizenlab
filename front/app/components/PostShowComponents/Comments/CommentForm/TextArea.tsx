@@ -2,7 +2,7 @@ import React from 'react';
 
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 
-import { useIsBoComments } from '../commentsVariant';
+import { panelTextAreaStyle, useIsPanelComments } from '../commentsVariant';
 
 interface Props {
   id?: string;
@@ -29,7 +29,7 @@ const TextArea = ({
   onFocus,
   getTextAreaRef,
 }: Props) => {
-  const isBo = useIsBoComments();
+  const isPanel = useIsPanelComments();
 
   return (
     <MentionsTextArea
@@ -43,8 +43,10 @@ const TextArea = ({
       error={error}
       onChange={onChange}
       onFocus={onFocus}
-      fontWeight={isBo ? '400' : '300'}
-      fontSize={isBo ? '12px' : undefined}
+      color={isPanel ? panelTextAreaStyle.color : undefined}
+      fontWeight={isPanel ? panelTextAreaStyle.fontWeight : '300'}
+      fontSize={isPanel ? panelTextAreaStyle.fontSize : undefined}
+      lineHeight={isPanel ? panelTextAreaStyle.lineHeight : undefined}
       padding="10px"
       borderRadius="none"
       border="none"

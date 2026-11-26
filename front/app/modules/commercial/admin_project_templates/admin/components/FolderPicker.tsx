@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import pickerMessages from 'containers/Admin/projects/_shared/components/ProjectContextPickers/messages';
+import { ListBoxOption } from 'design-system/ListBox';
+import Select from 'design-system/Select';
+
 import contextMessages from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/messages';
 
-import OptionPicker from 'components/UI/OptionPicker';
-
 import { useIntl } from 'utils/cl-intl';
+import 'design-system/tokens.css';
 
 interface Props {
   options: IOption[];
@@ -18,26 +18,22 @@ interface Props {
 
 const FolderPicker = ({ options, value, onChange }: Props) => {
   const { formatMessage } = useIntl();
-  const title = formatMessage(contextMessages.folderLabel);
 
   return (
-    <Box display="flex" alignItems="center" gap="12px" minWidth="0">
-      <Text as="span" variant="boLabel" m="0px">
-        {title}
-      </Text>
-      <OptionPicker
-        title={title}
-        description={formatMessage(pickerMessages.contextFolderDescription)}
-        searchPlaceholder={formatMessage(pickerMessages.contextSearchFolders)}
-        options={options.map((option) => ({
-          value: String(option.value),
-          label: option.label,
-          icon: 'folder-outline',
-        }))}
-        value={value ?? undefined}
-        onChange={onChange}
-      />
-    </Box>
+    <Select
+      label={formatMessage(contextMessages.folderLabel)}
+      items={options}
+      value={value}
+      onChange={(key) => {
+        if (typeof key === 'string') onChange(key);
+      }}
+    >
+      {(option: IOption) => (
+        <ListBoxOption id={String(option.value)} icon="folder-16">
+          {option.label}
+        </ListBoxOption>
+      )}
+    </Select>
   );
 };
 

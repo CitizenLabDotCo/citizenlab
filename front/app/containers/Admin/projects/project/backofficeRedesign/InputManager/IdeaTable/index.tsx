@@ -1,16 +1,21 @@
 import React from 'react';
 
-import { Box, Table, Tbody } from '@citizenlab/cl2-component-library';
+import Pagination from 'design-system/Pagination';
+import Table, { TableBody } from 'design-system/Table';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData, Sort } from 'api/ideas/types';
 
-import Pagination from 'components/Pagination';
+import { useIntl } from 'utils/cl-intl';
 
 import { ColumnKey } from '../columns';
+import messages from '../messages';
+import useInputTermLabels from '../useInputTermLabels';
 
 import HeaderRow from './HeaderRow';
 import IdeaRow from './IdeaRow';
+import styles from './IdeaTable.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   ideas: IIdeaData[];
@@ -22,8 +27,7 @@ interface Props {
   statuses: IIdeaStatusData[];
   tagLabels: Map<string, string>;
   selectedIds: Set<string>;
-  onToggleSelect: (idea: IIdeaData) => void;
-  onToggleSelectPage: () => void;
+  onSelectOnPage: (ideaIds: Set<string>) => void;
   openIdeaId: string | undefined;
   onOpen: (ideaId: string) => void;
   currentPage: number;
@@ -41,32 +45,40 @@ const IdeaTable = ({
   statuses,
   tagLabels,
   selectedIds,
-  onToggleSelect,
-  onToggleSelectPage,
+  onSelectOnPage,
   openIdeaId,
   onOpen,
   currentPage,
   lastPage,
   onChangePage,
 }: Props) => {
-  const selectedOnPage = ideas.filter((idea) => selectedIds.has(idea.id));
+  const { formatMessage } = useIntl();
+  const { capitalizedTerms, term, terms } = useInputTermLabels();
+  const pageIds = ideas.map((idea) => idea.id);
 
   return (
-    <Box overflowX="auto">
-      <Table>
+    <div>
+      <Table
+        aria-label={capitalizedTerms}
+        keyboardNavigationBehavior="tab"
+        selection={{
+          selectedKeys: pageIds.filter((id) => selectedIds.has(id)),
+          onSelectionChange: (keys) =>
+            onSelectOnPage(
+              new Set(keys === 'all' ? pageIds : [...keys].map(String))
+            ),
+          selectAll: formatMessage(messages.selectAllOnPage, { terms }),
+          selectRow: formatMessage(messages.selectTerm, { term }),
+        }}
+      >
         <HeaderRow
           columns={columns}
           availableColumns={availableColumns}
           onChangeColumns={onChangeColumns}
           sort={sort}
           onSort={onSort}
-          allSelected={
-            ideas.length > 0 && selectedOnPage.length === ideas.length
-          }
-          someSelected={selectedOnPage.length > 0}
-          onToggleSelectAll={onToggleSelectPage}
         />
-        <Tbody>
+        <TableBody>
           {ideas.map((idea) => (
             <IdeaRow
               key={idea.id}
@@ -74,24 +86,22 @@ const IdeaTable = ({
               columns={columns}
               statuses={statuses}
               tagLabels={tagLabels}
-              selected={selectedIds.has(idea.id)}
               active={idea.id === openIdeaId}
-              onToggleSelect={() => onToggleSelect(idea)}
               onOpen={() => onOpen(idea.id)}
             />
           ))}
-        </Tbody>
+        </TableBody>
       </Table>
       {lastPage > 1 && (
-        <Box display="flex" justifyContent="center" py="16px">
+        <div className={styles.pagination}>
           <Pagination
-            currentPage={currentPage}
-            totalPages={lastPage}
-            loadPage={onChangePage}
+            page={currentPage}
+            pageCount={lastPage}
+            onChange={onChangePage}
           />
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

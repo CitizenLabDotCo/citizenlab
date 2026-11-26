@@ -1,0 +1,43 @@
+.picker {
+  composes: field from '../DateField/DateInput.module.css';
+}
+
+.box {
+  composes: frame from '../DateField/DateInput.module.css';
+  gap: var(--gv-space-8);
+}
+
+/* 4 on the right, so the calendar button sits 4 from the edge. */
+.size36 {
+  composes: size36 from '../TextField/input.module.css';
+  padding: 0 var(--gv-space-4) 0 var(--gv-space-8);
+}
+
+.picker[data-open] .box {
+  border-color: var(--gv-border-control-active);
+}
+
+.segments {
+  composes: segments from '../DateField/DateInput.module.css';
+  flex: 1;
+}
+
+.calendarButton {
+  composes: button from '../Calendar/GhostButton.module.css';
+}
+
+.picker[data-open] .calendarButton {
+  background: var(--gv-surface-pressed);
+  color: var(--gv-icon-primary);
+}
+
+.popover {
+  composes: dropdown from '../surfaces.module.css';
+  padding: var(--gv-space-12);
+  /* React Aria caps the height to the viewport. */
+  overflow: auto;
+}
+
+.dialog {
+  outline: none;
+}

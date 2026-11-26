@@ -1,8 +1,14 @@
-import React, { FormEvent, useState, useRef, ChangeEvent } from 'react';
+import React, {
+  FormEvent,
+  useState,
+  useRef,
+  ChangeEvent,
+  lazy,
+  Suspense,
+} from 'react';
 
 import {
   colors,
-  bo,
   fontSizes,
   defaultOutline,
   isRtl,
@@ -15,7 +21,13 @@ import { UploadFile } from 'typings';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getBase64FromFile } from 'utils/fileUtils';
 
+import styles from './FileInput.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
+
+// Back-office only (panel variant), so participants never download them.
+const Banner = lazy(() => import('design-system/Banner'));
+const DropZone = lazy(() => import('design-system/DropZone'));
 
 const Container = styled.div`
   margin-bottom: 10px;
@@ -48,7 +60,7 @@ const Input = styled.input`
   }
 `;
 
-const Label = styled.label<{ variant: 'default' | 'bo' }>`
+const Label = styled.label`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -63,27 +75,6 @@ const Label = styled.label<{ variant: 'default' | 'bo' }>`
   ${isRtl`
     flex-direction: row-reverse;
   `}
-
-  ${({ variant }) =>
-    variant === 'bo' &&
-    `
-      flex-direction: column;
-      justify-content: center;
-      gap: 8px;
-      padding: 22px 16px;
-      border-color: ${colors.grey300};
-      border-radius: ${bo.borderRadius};
-      background: ${colors.grey50};
-      font-size: ${fontSizes.xs}px;
-      line-height: 16px;
-      text-align: center;
-
-      ${StyledIcon} {
-        width: 20px;
-        height: 20px;
-        margin: 0;
-      }
-    `}
 
   &:hover {
     color: #000;
@@ -172,7 +163,7 @@ const fileAccept = [
 ];
 
 interface Props {
-  variant?: 'default' | 'bo';
+  variant?: 'default' | 'panel';
   onAdd: (file: UploadFile) => void;
   className?: string;
   id: string;
@@ -204,17 +195,15 @@ const FileInput = ({
     event.currentTarget.value = null;
   };
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-
-    if (files && files.length > 0) {
+  const addFiles = (files: File[]) => {
+    if (files.length > 0) {
       // Reset any error state
       setUnsupportedFileNames([]);
       setHasTooLargeFile(false);
       latestPickRef.current += 1;
       const pick = latestPickRef.current;
 
-      Array.from(files).forEach(async (file: UploadFile) => {
+      files.forEach(async (file: UploadFile) => {
         const base64 = await getBase64FromFile(file);
         // Files are read asynchronously, so an earlier pick can finish after
         // a newer one has reset the errors: only the latest pick reports them.
@@ -243,6 +232,36 @@ const FileInput = ({
     }
   };
 
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    addFiles(Array.from(event.target.files ?? []));
+  };
+
+  if (variant === 'panel') {
+    return (
+      <div className={`${styles.panel} ${className ?? ''}`}>
+        <Suspense fallback={null}>
+          <DropZone
+            id={id}
+            data-cy={dataCy}
+            aria-label={formatMessage(messages.fileInputDescription)}
+            allowsMultiple={multiple}
+            onSelect={addFiles}
+          />
+          {unsupportedFileNames.map((fileName, index) => (
+            <Banner key={`${index}-${fileName}`} tone="error">
+              {formatMessage(messages.incorrect_extension, { fileName })}
+            </Banner>
+          ))}
+          {hasTooLargeFile && maxSizeMb !== undefined && (
+            <Banner tone="error">
+              {formatMessage(messages.file_too_large, { maxSizeMb })}
+            </Banner>
+          )}
+        </Suspense>
+      </div>
+    );
+  }
+
   return (
     <Container className={className}>
       <Input
@@ -256,7 +275,7 @@ const FileInput = ({
         data-testid="fileInput"
         multiple={multiple}
       />
-      <Label variant={variant} aria-hidden htmlFor={id}>
+      <Label aria-hidden htmlFor={id}>
         <StyledIcon name="upload-file" ariaHidden />
         <FormattedMessage {...messages.fileInputDescription} />
       </Label>

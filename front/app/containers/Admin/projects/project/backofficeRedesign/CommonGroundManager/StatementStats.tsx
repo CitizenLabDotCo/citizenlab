@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { bo, Box, colors } from '@citizenlab/cl2-component-library';
+import StatRow from 'design-system/StatRow';
 
 import { useIntl } from 'utils/cl-intl';
 
-import StatRow from '../InputManager/SideColumn/StatRow';
-
+import styles from './CommonGroundManager.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   statements: number;
@@ -18,19 +18,14 @@ const StatementStats = ({ statements, reactions, participants }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box
-      p="8px"
-      borderRadius={bo.panelBorderRadius}
-      background={colors.white}
-      data-cy="e2e-statement-stats"
-    >
+    <div className={styles.stats} data-cy="e2e-statement-stats">
       <StatRow label={formatMessage(messages.statements)} value={statements} />
       <StatRow label={formatMessage(messages.reactions)} value={reactions} />
       <StatRow
         label={formatMessage(messages.participants)}
         value={participants}
       />
-    </Box>
+    </div>
   );
 };
 

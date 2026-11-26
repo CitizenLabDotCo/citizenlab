@@ -1,0 +1,11 @@
+/*
+ * No token for these. With the popover's 16 px padding on each side the
+ * panels stay 380 px and 420 px wide overall.
+ */
+.publish {
+  width: 348px;
+}
+
+.share {
+  width: 388px;
+}

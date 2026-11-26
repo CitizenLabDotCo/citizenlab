@@ -1,0 +1,31 @@
+.questions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+  padding: var(--gv-space-10) 0;
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-divider);
+}
+
+.number {
+  min-width: var(--gv-space-16);
+}
+
+.questionTitle {
+  composes: ui from '../../../../../../../../../../design-system/typography.module.css';
+  flex-grow: 1;
+  color: var(--gv-text-primary);
+}
+
+.details {
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+}

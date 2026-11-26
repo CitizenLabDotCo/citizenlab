@@ -1,0 +1,17 @@
+.heading {
+  padding: 0 var(--gv-space-10);
+}
+
+/* The rail header is 32 px tall, so the gap under the divider is 8 px instead of 16 px to keep the label where it was. */
+.divider {
+  margin: var(--gv-space-12) 0 var(--gv-space-8);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.notOnProjectPage {
+  text-decoration: underline dotted;
+}

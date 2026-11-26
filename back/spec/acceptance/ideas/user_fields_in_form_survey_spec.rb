@@ -251,6 +251,28 @@ resource 'Ideas' do
           expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [%w[user_select_field option1]]
         end
 
+        it 'accepts a birth year sent as a numeric string and stores it as a number' do
+          birthyear_field = create(:custom_field_birthyear)
+          create(:permissions_custom_field, custom_field: birthyear_field, permission: @permission)
+
+          do_request({ idea: { publication_status: 'published', 'u_birthyear' => '1963', @custom_field.key => 'option2' } })
+
+          assert_status 200
+          expect(idea.reload.custom_field_answers.find_by(key: 'u_birthyear').value).to eq 1963
+          expect(@user.reload.custom_field_answers.find_by(key: 'birthyear').value).to eq 1963
+        end
+
+        it 'rejects a birth year that is not a number' do
+          birthyear_field = create(:custom_field_birthyear)
+          create(:permissions_custom_field, custom_field: birthyear_field, permission: @permission)
+
+          do_request({ idea: { publication_status: 'published', 'u_birthyear' => 'abc', @custom_field.key => 'option2' } })
+
+          assert_status 422
+          expect(json_response_body.dig(:errors, :'custom_field_answers.value')).to eq [{ error: 'invalid' }]
+          expect(@user.reload.custom_field_answers.find_by(key: 'birthyear')).to be_nil
+        end
+
         context do
           before do
             @gender_field = create(:custom_field_gender)

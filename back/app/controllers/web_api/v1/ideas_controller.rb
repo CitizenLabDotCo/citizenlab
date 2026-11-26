@@ -186,8 +186,8 @@ class WebApi::V1::IdeasController < ApplicationController
       )
     end
 
-    validate_custom_field_values!(input, form, custom_field_values) if published
-    CustomFieldValuesTransitionService.new.assign(input, custom_field_values)
+    validate_custom_field_values!(input, form, custom_field_values)
+    CustomFieldValuesTransitionService.new.assign!(input, custom_field_values)
 
     ActiveRecord::Base.transaction do
       save_or_raise!(input, **save_options)
@@ -264,22 +264,23 @@ class WebApi::V1::IdeasController < ApplicationController
       false
     end
 
+    transition_service = CustomFieldValuesTransitionService.new
+    changed_values = transition_service.changed_values(input, custom_field_values)
+
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes(update_params)
-      CustomFieldValuesTransitionService.new.assign(input, custom_field_values)
+      transition_service.assign!(input, custom_field_values)
       sidefx.before_update(input, current_user)
       assign_deferred_relationship_ids(input, phase_ids, cosponsor_ids)
 
       authorize(input)
+      validate_custom_field_values!(input, input.custom_form, changed_values)
       validate_update!(input)
       verify_profanity input
     end
 
     save_options = {}
-    if params.dig(:idea, :publication_status) == 'published'
-      save_options[:context] = :publication
-      validate_custom_field_values!(input, input.custom_form, custom_field_values)
-    end
+    save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
 
     ActiveRecord::Base.transaction do
       save_or_raise!(input, **save_options)

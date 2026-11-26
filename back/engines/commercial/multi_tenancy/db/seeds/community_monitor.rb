@@ -38,7 +38,7 @@ module MultiTenancy
           publication_status: 'published',
           created_at: created_at
         })
-        CustomFieldValuesTransitionService.new.assign(idea, answers.merge(follow_ups))
+        CustomFieldValuesTransitionService.new.assign!(idea, answers.merge(follow_ups))
         idea.save!
       end
 

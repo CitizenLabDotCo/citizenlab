@@ -1,10 +1,13 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Spinner, bo, colors } from '@citizenlab/cl2-component-library';
+import Banner from 'design-system/Banner';
+import Spinner from 'design-system/Spinner';
 
 import { PhaseInsightsParticipationMetrics } from 'api/phase_insights/types';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
+
+import projectMessages from 'containers/Admin/projects/project/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -15,8 +18,8 @@ import EmptyState from './EmptyState';
 import ManageLayout from './ManageLayout';
 import messages from './messages';
 import { PhaseViewKey } from './usePhaseViews';
-
-const SIDE_PANEL_WIDTH = '308px';
+import styles from './ViewContent.module.css';
+import 'design-system/tokens.css';
 
 const EMPTY_COPY = {
   manage: {
@@ -103,14 +106,9 @@ const ViewContent = ({ phase, view, children }: Props) => {
 
   if (isPending) {
     return (
-      <Box
-        flexGrow={1}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <div className={styles.loading}>
         <Spinner />
-      </Box>
+      </div>
     );
   }
 
@@ -143,29 +141,20 @@ const ViewContent = ({ phase, view, children }: Props) => {
 
   return (
     <>
-      <Box
-        flexGrow={1}
-        minWidth="0"
-        minHeight="0"
-        overflowY="auto"
-        borderRadius={bo.panelBorderRadius}
-        background={colors.white}
-      >
-        {emptyState}
-      </Box>
-      <Box
-        flex={`0 0 ${SIDE_PANEL_WIDTH}`}
-        width={SIDE_PANEL_WIDTH}
-        minHeight="0"
-        overflowY="auto"
-        borderRadius={bo.panelBorderRadius}
-        background={colors.white}
-      >
+      <div className={styles.main}>{emptyState}</div>
+      <div className={styles.sidePanel}>
         <EmptyState
           size="small"
           title={formatMessage(messages.noInsightsYet)}
         />
-      </Box>
+        {phase.attributes.participation_method === 'document_annotation' && (
+          <div role="note" className={styles.note}>
+            <Banner tone="neutral">
+              {formatMessage(projectMessages.konveioParticipationDataNotice)}
+            </Banner>
+          </div>
+        )}
+      </div>
     </>
   );
 };

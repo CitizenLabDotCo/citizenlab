@@ -6,6 +6,8 @@ module PosthogIntegration
   module PostHog
     class Client
       DEFAULT_BASE_URI = 'https://eu.posthog.com'
+      # See the persons bulk_delete endpoint of the PostHog API.
+      BULK_DELETE_LIMIT = 1000
 
       def initialize(base_uri: nil, api_key: nil, project_id: nil)
         @base_uri = base_uri || ENV.fetch('POSTHOG_HOST', DEFAULT_BASE_URI)
@@ -17,37 +19,17 @@ module PosthogIntegration
         assert_project_id!
       end
 
-      def persons(retries: 0, **params)
-        retry_request(retries: retries) do
-          http.get("#{@base_uri}/api/projects/#{@project_id}/persons", params: params)
-        end
-      end
-
-      def delete_person(id, retries: 0)
-        retry_request(retries: retries) do
-          http.delete("#{@base_uri}/api/projects/#{@project_id}/persons/#{id}")
-        end
-      end
-
-      def delete_person_by_distinct_id(distinct_id, retries: 0)
-        response = persons(distinct_id: distinct_id, retries: retries)
-        raise_if_error!(response)
-
-        results = response.parse['results']
-        case results.size
-        when 0
-          nil
-        when 1
-          person_id = results.first['id']
-          delete_response = delete_person(person_id, retries: retries)
-          raise_if_error!(delete_response)
-
-          person_id
-        else
-          raise <<~MSG.squish
-            Unexpected number of persons with distinct_id #{distinct_id.inspect}. 
-            Expected 0 or 1, got #{results.size}.
-          MSG
+      # Deletes the persons with the given distinct ids, without looking them up first. Distinct
+      # ids that don't match a person are ignored. Their events are kept. PostHog accepts at most
+      # +BULK_DELETE_LIMIT+ ids per request.
+      #
+      # @param [Array<String>] distinct_ids
+      def delete_persons_by_distinct_ids(distinct_ids, retries: 0)
+        distinct_ids.each_slice(BULK_DELETE_LIMIT) do |slice|
+          response = retry_request(retries: retries) do
+            http.post("#{@base_uri}/api/projects/#{@project_id}/persons/bulk_delete", json: { distinct_ids: slice })
+          end
+          raise_if_error!(response)
         end
       end
 

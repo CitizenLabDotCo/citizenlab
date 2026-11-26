@@ -1,0 +1,24 @@
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gv-space-8);
+}
+
+.iconBox {
+  display: flex;
+  flex: 0 0 var(--gv-size-24);
+  margin-top: var(--gv-space-2);
+}
+
+.icon {
+  color: var(--gv-icon-secondary);
+}
+
+.iconEmpty {
+  color: var(--gv-icon-quiet);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}

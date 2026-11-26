@@ -8,9 +8,14 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 
+import DsBadge from 'design-system/Badge';
+import { PressEvent } from 'design-system/types';
+
 import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { PARTICIPATION_METHOD_LABELS } from 'containers/Admin/inspirationHub/constants';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -26,11 +31,15 @@ import volunteeringImage from './assets/volunteering.png';
 import votingImage from './assets/voting.png';
 import messages2 from './messages';
 import ParticipationMethodChoice from './ParticipationMethodChoice';
+import 'design-system/tokens.css';
 
 interface Props {
   isSelected?: (method: ParticipationMethod) => boolean;
-  onSelect: (event: React.MouseEvent, method: ParticipationMethod) => void;
-  variant?: 'default' | 'bo';
+  onSelect: (
+    event: React.MouseEvent | PressEvent,
+    method: ParticipationMethod
+  ) => void;
+  variant?: 'default' | 'panel';
   /** Only these methods, when given. Cards keep their usual order. */
   methods?: readonly ParticipationMethod[];
 }
@@ -55,6 +64,114 @@ const ParticipationMethodChoices = ({
     name: 'common_ground',
   });
 
+  if (variant === 'panel') {
+    return (
+      <>
+        {shows('ideation') && (
+          <ParticipationMethodChoice
+            variant="panel"
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.ideation)}
+            subtitle={formatMessage(messages2.ideationDescription)}
+            onPress={(event) => onSelect(event, 'ideation')}
+            image={ideationImage}
+            participation_method="ideation"
+          />
+        )}
+        {shows('proposals') && (
+          <ParticipationMethodChoice
+            variant="panel"
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.proposals)}
+            subtitle={formatMessage(messages2.proposalsDescription)}
+            onPress={(event) => onSelect(event, 'proposals')}
+            image={proposalsImage}
+            participation_method="proposals"
+          />
+        )}
+        {commonGroundEnabled && shows('common_ground') && (
+          <ParticipationMethodChoice
+            variant="panel"
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.common_ground)}
+            subtitle={formatMessage(messages2.commonGroundDescription)}
+            onPress={(event) => onSelect(event, 'common_ground')}
+            image={commonGroundImage}
+            participation_method="common_ground"
+            notes={<DsBadge use="note">{formatMessage(messages.beta)}</DsBadge>}
+            tooltip={formatMessage(messages.betaTooltip)}
+          />
+        )}
+        {shows('native_survey') && (
+          <ParticipationMethodChoice
+            variant="panel"
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.native_survey)}
+            subtitle={formatMessage(messages2.surveyDescription)}
+            onPress={(event) => onSelect(event, 'native_survey')}
+            image={surveyImage}
+            participation_method="native_survey"
+          />
+        )}
+        {shows('voting') && (
+          <ParticipationMethodChoice
+            variant="panel"
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.voting)}
+            subtitle={formatMessage(messages2.votingDescription)}
+            onPress={(event) => onSelect(event, 'voting')}
+            image={votingImage}
+            participation_method="voting"
+          />
+        )}
+        {shows('information') && (
+          <ParticipationMethodChoice
+            variant="panel"
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.information)}
+            subtitle={formatMessage(messages2.reportingDescription)}
+            onPress={(event) => onSelect(event, 'information')}
+            image={informationImage}
+            participation_method="information"
+          />
+        )}
+        {shows('volunteering') && (
+          <ParticipationMethodChoice
+            variant="panel"
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.volunteering)}
+            subtitle={formatMessage(messages2.volunteeringDescription)}
+            onPress={(event) => onSelect(event, 'volunteering')}
+            image={volunteeringImage}
+            participation_method="volunteering"
+          />
+        )}
+        {shows('document_annotation') &&
+          (documentAnnotationAllowed ? (
+            documentAnnotationEnabled && (
+              <ParticipationMethodChoice
+                variant="panel"
+                title={formatMessage(
+                  PARTICIPATION_METHOD_LABELS.document_annotation
+                )}
+                subtitle={formatMessage(messages2.documentDescription)}
+                onPress={(event) => onSelect(event, 'document_annotation')}
+                image={documentImage}
+                participation_method="document_annotation"
+              />
+            )
+          ) : (
+            <ParticipationMethodChoice
+              variant="panel"
+              title={formatMessage(
+                PARTICIPATION_METHOD_LABELS.document_annotation
+              )}
+              subtitle={formatMessage(messages2.documentDescription)}
+              image={documentImage}
+              participation_method="document_annotation"
+              notes={
+                <DsBadge use="note">{formatMessage(messages2.addOn)}</DsBadge>
+              }
+              disabledReason={formatMessage(messages.contactGovSuccessToAccess)}
+            />
+          ))}
+      </>
+    );
+  }
+
   return (
     <>
       {shows('ideation') && (
@@ -65,7 +182,6 @@ const ParticipationMethodChoices = ({
           onClick={(event) => onSelect(event, 'ideation')}
           image={ideationImage}
           selected={isSelected('ideation')}
-          variant={variant}
           participation_method="ideation"
         />
       )}
@@ -78,7 +194,6 @@ const ParticipationMethodChoices = ({
           onClick={(event) => onSelect(event, 'proposals')}
           image={proposalsImage}
           selected={isSelected('proposals')}
-          variant={variant}
           participation_method="proposals"
         />
       )}
@@ -92,7 +207,6 @@ const ParticipationMethodChoices = ({
             onClick={(event) => onSelect(event, 'common_ground')}
             image={commonGroundImage}
             selected={isSelected('common_ground')}
-            variant={variant}
             participation_method="common_ground"
           />
           <Box
@@ -130,7 +244,6 @@ const ParticipationMethodChoices = ({
           onClick={(event) => onSelect(event, 'native_survey')}
           image={surveyImage}
           selected={isSelected('native_survey')}
-          variant={variant}
           participation_method="native_survey"
         />
       )}
@@ -143,7 +256,6 @@ const ParticipationMethodChoices = ({
           onClick={(event) => onSelect(event, 'voting')}
           image={votingImage}
           selected={isSelected('voting')}
-          variant={variant}
           participation_method="voting"
         />
       )}
@@ -156,7 +268,6 @@ const ParticipationMethodChoices = ({
           onClick={(event) => onSelect(event, 'information')}
           image={informationImage}
           selected={isSelected('information')}
-          variant={variant}
           participation_method="information"
         />
       )}
@@ -169,7 +280,6 @@ const ParticipationMethodChoices = ({
           onClick={(event) => onSelect(event, 'volunteering')}
           image={volunteeringImage}
           selected={isSelected('volunteering')}
-          variant={variant}
           participation_method="volunteering"
         />
       )}
@@ -187,7 +297,6 @@ const ParticipationMethodChoices = ({
                 }}
                 image={documentImage}
                 selected={isSelected('document_annotation')}
-                variant={variant}
                 participation_method="document_annotation"
               />
             </Box>
@@ -200,15 +309,7 @@ const ParticipationMethodChoices = ({
               subtitle={formatMessage(messages2.documentDescription)}
               image={documentImage}
               selected={isSelected('document_annotation')}
-              variant={variant}
               participation_method="document_annotation"
-              // In the picker the Add-on badge says it all; in a menu of
-              // actions the card must also look like it can't be picked.
-              disabledReason={
-                variant === 'bo'
-                  ? formatMessage(messages.contactGovSuccessToAccess)
-                  : undefined
-              }
             />
             <Box
               style={{ transform: 'translateX(-50%)' }}

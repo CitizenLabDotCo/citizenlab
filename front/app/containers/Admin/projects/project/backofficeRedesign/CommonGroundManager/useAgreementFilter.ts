@@ -63,7 +63,7 @@ const useAgreementFilter = ({
   const category: FilterCategory = {
     key: 'agreement',
     label: formatMessage(messages.agreementFilter),
-    icon: 'check-circle',
+    icon: 'circle-check-filled-16',
     options: AGREEMENTS.map(({ value, label }) => {
       const count =
         (searched && searchedTotals[value]) ??

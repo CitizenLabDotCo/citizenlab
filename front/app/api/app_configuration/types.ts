@@ -211,6 +211,7 @@ export interface IAppConfigurationSettings {
   configurable_dropdown?: AppConfigurationFeature;
   llm_reporting?: AppConfigurationFeature;
   ai_assistant?: AppConfigurationFeature;
+  userjot?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

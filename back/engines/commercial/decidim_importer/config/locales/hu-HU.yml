@@ -9,3 +9,5 @@ hu-HU:
     debate_information_updates: Információs frissítések
     debate_instructions: Instrukciók
     documents_to_consult: Konzultációs dokumentumok
+    private_space_members: 'Tagok: %{space}'
+    untitled_folder: Névtelen mappa

@@ -9,3 +9,5 @@ en-IE:
     debate_information_updates: Information updates
     debate_instructions: Instructions
     documents_to_consult: Consultation Documents
+    private_space_members: 'Members: %{space}'
+    untitled_folder: Untitled folder

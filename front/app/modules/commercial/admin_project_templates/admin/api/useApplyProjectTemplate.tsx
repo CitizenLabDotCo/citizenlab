@@ -16,6 +16,12 @@ interface ApplyProjectTemplateVariables {
   folderId?: string | null;
 }
 
+interface ApplyProjectTemplateResponse {
+  applyProjectTemplate: {
+    errors: string[];
+  };
+}
+
 const useApplyProjectTemplate = () => {
   const APPLY_PROJECT_TEMPLATE_MUTATION = `
     mutation ApplyProjectTemplate(
@@ -36,11 +42,21 @@ const useApplyProjectTemplate = () => {
   `;
 
   return useMutation({
-    mutationFn: (variables: ApplyProjectTemplateVariables) =>
-      graphqlFetcher({
+    mutationFn: async (variables: ApplyProjectTemplateVariables) => {
+      const data = await graphqlFetcher<ApplyProjectTemplateResponse>({
         query: APPLY_PROJECT_TEMPLATE_MUTATION,
         variables,
-      }),
+      });
+
+      // A failed export or import is not a GraphQL error: the response is a
+      // 200 with the reason in the payload's own `errors` field.
+      const [error] = data.applyProjectTemplate.errors;
+      if (error) {
+        throw new Error(error);
+      }
+
+      return data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
       queryClient.invalidateQueries({

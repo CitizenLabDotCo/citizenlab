@@ -23,12 +23,15 @@ import { ViewOptions } from '..';
 import messages from '../messages';
 import tooltipImage from '../TooltipImages/esri_portal_id_example.png';
 
+import EsriImportForm from './EsriImportForm';
+
 type Props = {
   setView: (view: ViewOptions) => void;
   mapConfigId: string;
+  variant?: 'default' | 'panel';
 };
 
-const WebMapUpload = ({ mapConfigId, setView }: Props) => {
+const WebMapUpload = ({ mapConfigId, setView, variant = 'default' }: Props) => {
   const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
@@ -103,6 +106,27 @@ const WebMapUpload = ({ mapConfigId, setView }: Props) => {
         }
       });
   };
+
+  if (variant === 'panel') {
+    return (
+      <EsriImportForm
+        title={formatMessage(messages.addWebMap)}
+        tooltip={formatMessage(messages.webMapTooltip)}
+        instruction={formatMessage(messages.addWebMapInstruction)}
+        inputId="e2e-portal-id-input"
+        value={portalId}
+        onChange={setPortalId}
+        placeholder="e1cc90bf48e74243883516c2f4f6f72d"
+        importDataCy="e2e-web-map-import-btn"
+        isPending={apiCallLoading || loading}
+        onCancel={() => setView('main')}
+        onImport={addEsriWebMap}
+        success={success}
+        errorId="e2e-web-map-error"
+        errorMessage={importError ? errorMessage : undefined}
+      />
+    );
+  }
 
   return (
     <>

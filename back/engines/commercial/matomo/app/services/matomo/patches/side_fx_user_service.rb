@@ -3,9 +3,9 @@
 module Matomo
   module Patches
     module SideFxUserService
-      def after_destroy(frozen_user, current_user, **)
+      def after_destroy_all(user_ids)
         super
-        RemoveUserFromMatomoJob.perform_later(frozen_user.id)
+        RemoveUserFromMatomoJob.perform_later(user_ids)
       end
     end
   end

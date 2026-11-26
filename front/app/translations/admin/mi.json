@@ -21,7 +21,6 @@
   "app.components.ProjectTemplatePreview.projectsOverviewPage": "projects overview page",
   "app.components.ProjectTemplatePreview.responseError": "Oops, something went wrong.",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "See more templates",
-  "app.components.ProjectTemplatePreview.successMessage": "The project was successfully created!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Type the name of the project",
   "app.components.ProjectTemplatePreview.useTemplate": "Use this template",
   "app.components.UserSearch.addModerators": "Add",
