@@ -1,0 +1,23 @@
+/* Keeps the banner off the shrinking workspace columns. */
+.banner {
+  flex-shrink: 0;
+}
+
+.inset {
+  padding: var(--gv-space-8) var(--gv-space-8) 0;
+}
+
+.message a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.title {
+  composes: uiStrong from '../../../../../design-system/typography.module.css';
+}
+
+.error {
+  display: block;
+  margin-top: var(--gv-space-4);
+  color: var(--gv-text-danger);
+}

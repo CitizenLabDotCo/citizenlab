@@ -9,6 +9,8 @@ import LanguageButtonContext from 'components/admin/MultilocFields/LanguageButto
 import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 import NewProjectModal, { NewProjectMode } from './NewProjectModal';
@@ -17,7 +19,10 @@ import 'design-system/tokens.css';
 const NewProjectButton = () => {
   const { formatMessage } = useIntl();
   const redesignEnabled = useProjectBackofficeRedesign();
-  const [mode, setMode] = useState<NewProjectMode | null>(null);
+  const { new_project: requestedMode } = useSearch({ strict: false });
+  const [mode, setMode] = useState<NewProjectMode | null>(
+    requestedMode ?? null
+  );
 
   if (!redesignEnabled) {
     return (
@@ -57,7 +62,13 @@ const NewProjectButton = () => {
       </MenuTrigger>
 
       <LanguageButtonContext.Provider value>
-        <NewProjectModal mode={mode} onClose={() => setMode(null)} />
+        <NewProjectModal
+          mode={mode}
+          onClose={() => {
+            setMode(null);
+            if (requestedMode) removeSearchParams(['new_project']);
+          }}
+        />
       </LanguageButtonContext.Provider>
     </div>
   );

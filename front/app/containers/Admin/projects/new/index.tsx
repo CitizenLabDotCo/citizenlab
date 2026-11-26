@@ -10,6 +10,10 @@ import { InsertConfigurationOptions } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import useLocale from 'hooks/useLocale';
+
+import IntroModal from 'containers/Admin/projects/project/earlyAccess/IntroModal';
+
 import Outlet from 'components/Outlet';
 import GoBackButton from 'components/UI/GoBackButton';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
@@ -34,6 +38,7 @@ export type TTabName = ITabNamesMap[keyof ITabNamesMap];
 
 const CreateProject = () => {
   const { data: authUser } = useAuthUser();
+  const locale = useLocale();
   const { formatMessage } = useIntl();
   const [tabs, setTabs] = useState<ITabItem[]>([
     {
@@ -61,6 +66,10 @@ const CreateProject = () => {
 
   return (
     <Box>
+      {/* Turning the new back office on opens its New project modal instead. */}
+      <IntroModal
+        enablePath={`/${locale}/admin/projects?new_project=scratch`}
+      />
       <GoBackButton to="/admin/projects" />
       <Title color="primary" mb="32px">
         {formatMessage(messages.createAProject)}

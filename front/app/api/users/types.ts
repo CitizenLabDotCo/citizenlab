@@ -64,6 +64,8 @@ export interface IUserAttributes {
   onboarding?: OnboardingType;
   early_access_opt_ins?: TAppConfigurationSetting[];
   offered_early_access_features?: OfferedEarlyAccessFeatures;
+  // Offered features whose invitation to try them is due again.
+  early_access_prompts_due?: TAppConfigurationSetting[];
   avatar?: ImageSizes;
   roles?: TRole[];
   email?: string;

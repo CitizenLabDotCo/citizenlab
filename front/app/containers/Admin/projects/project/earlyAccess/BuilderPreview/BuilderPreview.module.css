@@ -1,0 +1,585 @@
+/* The prototype's animated preview (Figma file jFwfSBN10kKewv8Mw6911a, node 32:2),
+   with its exact sizes: a 504 × 316 canvas, the tabs 53 px from the top, a 12 s
+   loop with 4 s per tab. The decimals in the Insights card are Tali's, kept as is. */
+.preview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 504px;
+  height: 316px;
+}
+
+.tabs {
+  position: absolute;
+  top: 53px;
+  left: 140.5px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-2);
+  height: 34px;
+  padding: 3px;
+  border-radius: 5px;
+  background: var(--gv-surface-muted);
+}
+
+.tab {
+  composes: ui from '../../../../../../design-system/typography.module.css';
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--gv-size-28);
+  color: var(--gv-text-secondary);
+}
+
+.tab1 {
+  width: 60px;
+  animation: tab1 12s linear infinite;
+}
+
+.tab2 {
+  width: 77px;
+  animation: tab2 12s linear infinite;
+}
+
+.tab3 {
+  width: 76px;
+  animation: tab3 12s linear infinite;
+}
+
+.thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 60px;
+  height: var(--gv-size-28);
+  border-radius: 5px;
+  background: var(--gv-surface-panel);
+  animation: thumb 12s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* Each view shows whole, then crosses to the next with a short fade. */
+.scene {
+  position: absolute;
+  top: 103px;
+  left: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 408px;
+  height: 160px;
+  opacity: 0;
+  animation: scene 12s ease-in-out infinite both;
+}
+
+.scene2 {
+  animation-delay: 4s;
+}
+
+.scene3 {
+  top: 118px;
+  left: 88.27px;
+  width: 327.45px;
+  height: 148px;
+  animation-delay: 8s;
+}
+
+/* Build: the input term changes from its menu. */
+.card {
+  composes: ui from '../../../../../../design-system/typography.module.css';
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  height: 55px;
+  padding: 0 var(--gv-space-12);
+  border: 1px solid var(--gv-border-divider);
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-panel);
+  color: var(--gv-text-primary);
+  white-space: nowrap;
+}
+
+.pillWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.pill {
+  composes: smallStrong from '../../../../../../design-system/typography.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+  height: var(--gv-size-20);
+  padding: 0 var(--gv-space-8);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-info);
+  color: var(--gv-text-info);
+}
+
+.pillIcon {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.word {
+  position: relative;
+  display: inline-block;
+  height: var(--gv-size-16);
+  width: var(--first-width, 25px);
+  animation: word-width 12s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+.firstWord,
+.secondWord {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.firstWord {
+  animation: first-word 12s linear infinite;
+}
+
+.secondWord {
+  opacity: 0;
+  animation: second-word 12s linear infinite;
+}
+
+.chevron {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: var(--gv-icon-tertiary);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + var(--gv-space-4));
+  left: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 128px;
+  padding: var(--gv-space-4);
+  border: 1px solid var(--gv-border-control);
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-panel);
+  box-shadow: 0 1px 2px rgba(15, 15, 15, 0.04),
+    0 6px 16px -2px rgba(15, 15, 15, 0.08);
+  opacity: 0;
+  animation: menu 12s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+.menu span {
+  display: flex;
+  font-size: var(--gv-font-size-13);
+  line-height: var(--gv-font-line-height-20);
+  align-items: center;
+  height: var(--gv-size-28);
+  padding: 0 var(--gv-space-8);
+  border-radius: var(--gv-radius-4);
+  color: var(--gv-text-primary);
+}
+
+.pick {
+  animation: pick 12s linear infinite;
+}
+
+/* Manage: a new idea arrives; the count goes up and the red dot appears. */
+.stats {
+  display: flex;
+  gap: var(--gv-space-8);
+}
+
+.stat {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 163px;
+  height: 72px;
+  padding: var(--gv-space-8) var(--gv-space-12);
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-panel);
+}
+
+.statLabel {
+  composes: small from '../../../../../../design-system/typography.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+  color: var(--gv-text-secondary);
+  white-space: nowrap;
+}
+
+/* 20/20 has no type token; it is the prototype's mini stat. */
+.statNumber {
+  font-size: 20px;
+  line-height: var(--gv-font-line-height-20);
+  color: var(--gv-text-primary);
+}
+
+.count {
+  position: relative;
+  display: block;
+  height: var(--gv-size-20);
+}
+
+.countBefore,
+.countAfter {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.countBefore {
+  animation: count-before 12s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+.countAfter {
+  opacity: 0;
+  animation: count-after 12s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gv-surface-danger-strong);
+  opacity: 0;
+  transform: scale(0);
+  animation: dot 12s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+/* Insights: the participants line draws itself. */
+.participants {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 327.45px;
+  padding: 14.8px;
+  border-radius: 7.4px;
+  background: var(--gv-surface-panel);
+}
+
+.participantsLabel {
+  font-size: 11.1px;
+  line-height: 14.8px;
+  color: var(--gv-text-secondary);
+}
+
+.participantsNumber {
+  margin-top: 3.7px;
+  font-size: 22.2px;
+  line-height: 25.9px;
+  color: var(--gv-text-primary);
+}
+
+.spark {
+  display: block;
+  width: 297.85px;
+  height: 51.8px;
+  margin-top: 7.4px;
+}
+
+.sparkArea {
+  fill: var(--gv-surface-control-subtle);
+  stroke: none;
+  opacity: 0;
+  animation: area 12s ease-out 8s infinite both;
+}
+
+.sparkLine {
+  fill: none;
+  stroke: var(--gv-text-info);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 12s cubic-bezier(0.65, 0, 0.35, 1) 8s infinite both;
+}
+
+.participantsCaption {
+  margin-top: 7.4px;
+  font-size: 11.1px;
+  line-height: 14.8px;
+  color: var(--gv-text-tertiary);
+}
+
+@keyframes thumb {
+  0%,
+  30% {
+    transform: translateX(0);
+    width: 60px;
+  }
+  33.33%,
+  63% {
+    transform: translateX(62px);
+    width: 77px;
+  }
+  66.66%,
+  96% {
+    transform: translateX(141px);
+    width: 76px;
+  }
+  100% {
+    transform: translateX(0);
+    width: 60px;
+  }
+}
+
+@keyframes tab1 {
+  0%,
+  30% {
+    color: var(--gv-text-primary);
+    font-weight: var(--gv-font-weight-medium);
+  }
+  33.33%,
+  96% {
+    color: var(--gv-text-secondary);
+    font-weight: var(--gv-font-weight-regular);
+  }
+  100% {
+    color: var(--gv-text-primary);
+    font-weight: var(--gv-font-weight-medium);
+  }
+}
+
+@keyframes tab2 {
+  0%,
+  30% {
+    color: var(--gv-text-secondary);
+    font-weight: var(--gv-font-weight-regular);
+  }
+  33.33%,
+  63% {
+    color: var(--gv-text-primary);
+    font-weight: var(--gv-font-weight-medium);
+  }
+  66.66%,
+  100% {
+    color: var(--gv-text-secondary);
+    font-weight: var(--gv-font-weight-regular);
+  }
+}
+
+@keyframes tab3 {
+  0%,
+  63% {
+    color: var(--gv-text-secondary);
+    font-weight: var(--gv-font-weight-regular);
+  }
+  66.66%,
+  96% {
+    color: var(--gv-text-primary);
+    font-weight: var(--gv-font-weight-medium);
+  }
+  100% {
+    color: var(--gv-text-secondary);
+    font-weight: var(--gv-font-weight-regular);
+  }
+}
+
+@keyframes scene {
+  0% {
+    opacity: 0;
+  }
+  4%,
+  31% {
+    opacity: 1;
+  }
+  35%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes word-width {
+  0%,
+  15.5% {
+    width: var(--first-width, 25px);
+  }
+  18%,
+  40% {
+    width: var(--second-width, 53px);
+  }
+  42%,
+  100% {
+    width: var(--first-width, 25px);
+  }
+}
+
+@keyframes first-word {
+  0%,
+  15.5% {
+    opacity: 1;
+  }
+  16.5%,
+  40% {
+    opacity: 0;
+  }
+  42%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes second-word {
+  0%,
+  16% {
+    opacity: 0;
+  }
+  17.5%,
+  40% {
+    opacity: 1;
+  }
+  42%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes menu {
+  0%,
+  5% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  7%,
+  15.5% {
+    opacity: 1;
+    transform: none;
+  }
+  17.5%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+
+@keyframes pick {
+  0%,
+  10.5% {
+    background: transparent;
+  }
+  11.5%,
+  17.5% {
+    background: var(--gv-surface-control-subtle);
+  }
+  18%,
+  100% {
+    background: transparent;
+  }
+}
+
+@keyframes count-before {
+  0%,
+  45% {
+    opacity: 1;
+    transform: none;
+  }
+  47%,
+  74% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  76%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes count-after {
+  0%,
+  45% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  47%,
+  74% {
+    opacity: 1;
+    transform: none;
+  }
+  76%,
+  100% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes dot {
+  0%,
+  45.5% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  48%,
+  74% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  76%,
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+@keyframes draw {
+  0%,
+  3% {
+    stroke-dashoffset: 1;
+  }
+  14%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes area {
+  0%,
+  10% {
+    opacity: 0;
+  }
+  16%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Without motion: the Build view, still. */
+@media (prefers-reduced-motion: reduce) {
+  .preview * {
+    animation: none !important;
+  }
+
+  .tab1 {
+    color: var(--gv-text-primary);
+    font-weight: var(--gv-font-weight-medium);
+  }
+
+  .scene1 {
+    opacity: 1;
+  }
+}

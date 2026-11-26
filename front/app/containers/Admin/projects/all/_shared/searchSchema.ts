@@ -27,4 +27,6 @@ export const projectsIndexSearchSchema = yup.object({
   visibility: yup.array().of(yup.string().required()).optional(),
   discoverability: yup.array().of(yup.string().required()).optional(),
   space_ids: yup.array().of(yup.string().required()).optional(),
+  // Opens the New project modal, e.g. right after turning on the new back office.
+  new_project: yup.string().oneOf(['scratch']).optional(),
 });

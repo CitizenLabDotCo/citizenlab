@@ -23,7 +23,8 @@ import { ParticipationPanelProvider } from './backofficeRedesign/ParticipationPa
 import PhaseSetup from './backofficeRedesign/Phase/PhaseSetup';
 import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
 import WorkspaceLoading from './backofficeRedesign/WorkspaceSkeleton/WorkspaceLoading';
-import TurnOnNotice from './earlyAccess/TurnOnNotice';
+import EarlyAccessBanner from './earlyAccess/EarlyAccessBanner';
+import IntroModal from './earlyAccess/IntroModal';
 import ProjectHeader from './projectHeader';
 import ProjectSidebar from './projectPage/ProjectSidebar';
 
@@ -101,7 +102,8 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
       height="100vh"
       overflow="hidden"
     >
-      <TurnOnNotice />
+      <EarlyAccessBanner inset />
+      <IntroModal />
       <ProjectHeader projectId={projectId} />
       <Box display="flex" flexGrow={1} minHeight="0" overflow="hidden">
         <ProjectSidebar projectId={projectId} />

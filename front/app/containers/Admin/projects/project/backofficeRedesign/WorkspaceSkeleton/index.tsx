@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FeedbackNotice from '../../earlyAccess/FeedbackNotice';
+import EarlyAccessBanner from '../../earlyAccess/EarlyAccessBanner';
 import workspaceStyles from '../ProjectWorkspace.module.css';
 
 import HeaderSkeleton from './HeaderSkeleton';
@@ -17,7 +17,7 @@ interface Props {
 // while the whole screen loads. Smaller loads keep their spinner.
 const WorkspaceSkeleton = ({ inPhase }: Props) => (
   <div className={workspaceStyles.workspace} aria-busy="true">
-    <FeedbackNotice />
+    <EarlyAccessBanner />
     <HeaderSkeleton inPhase={inPhase} />
     <div className={workspaceStyles.columns}>
       {!inPhase && (

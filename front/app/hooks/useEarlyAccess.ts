@@ -12,6 +12,9 @@ const useEarlyAccess = (feature: TAppConfigurationSetting) => {
     tier,
     // A stored opt-in only counts while the feature is still offered, same as the backend.
     optedIn: offered && !!attributes.early_access_opt_ins?.includes(feature),
+    // The back end spaces out the invitations after each "Not now".
+    promptDue:
+      offered && !!attributes.early_access_prompts_due?.includes(feature),
   };
 };
 

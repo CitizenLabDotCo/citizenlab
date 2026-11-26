@@ -18,7 +18,7 @@ import PageLoadingFallbackContext from 'components/UI/PageLoading/FallbackContex
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { useLocation, useSearch } from 'utils/router';
 
-import FeedbackNotice from '../earlyAccess/FeedbackNotice';
+import EarlyAccessBanner from '../earlyAccess/EarlyAccessBanner';
 
 import { sectionFromPathname } from './_shared/sections';
 import WorkspaceHeader from './Header';
@@ -232,7 +232,7 @@ const ProjectWorkspace = ({
 
   return (
     <div ref={workspaceRef} className={styles.workspace}>
-      <FeedbackNotice />
+      <EarlyAccessBanner />
       <WorkspaceHeader
         project={project}
         phase={phase}
