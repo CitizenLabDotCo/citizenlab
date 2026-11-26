@@ -93,9 +93,9 @@ resource 'Phases' do
       expect(seen_counts).to eq [1, 1, 1]
     end
 
-    example 'Lets the last matching question on a page win (currently existing bug, N2)', document: false do
-      select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: page3.id }] })
-      scale_field.update!(logic: { rules: [{ if: 1, goto_page_id: form_end.id }] })
+    example 'Lets the last matching question on a page win, even when its target is nearer (currently existing bug, N2)', document: false do
+      select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: form_end.id }] })
+      scale_field.update!(logic: { rules: [{ if: 1, goto_page_id: page3.id }] })
       respond(select_field: 'cat', scale_field: 2)
       respond(select_field: 'cat', scale_field: 1)
       respond(select_field: 'dog', scale_field: 1)
@@ -103,7 +103,7 @@ resource 'Phases' do
       do_request
 
       assert_status 200
-      expect(seen_counts).to eq [3, 0, 1]
+      expect(seen_counts).to eq [3, 0, 2]
     end
 
     example 'Applies the any_other_answer and no_answer rules of a select', document: false do
