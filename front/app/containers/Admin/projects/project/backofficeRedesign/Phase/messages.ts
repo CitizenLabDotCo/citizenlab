@@ -5,6 +5,22 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.participantCommunications',
     defaultMessage: 'Emails and notifications',
   },
+  goesLiveWithProject: {
+    id: 'app.containers.Admin.projects.project.goesLiveWithProject',
+    defaultMessage: 'Goes live when you publish the project.',
+  },
+  goToProject: {
+    id: 'app.containers.Admin.projects.project.goToProject',
+    defaultMessage: 'Go to project',
+  },
+  addReport: {
+    id: 'app.containers.Admin.projects.project.phaseAddReport',
+    defaultMessage: 'Add a report',
+  },
+  notificationsOnSummary: {
+    id: 'app.containers.Admin.projects.project.notificationsOnSummary',
+    defaultMessage: '{count} on',
+  },
   participantCommunicationsDescription: {
     id: 'app.containers.Admin.projects.project.participantCommunicationsDescription',
     defaultMessage:
@@ -34,10 +50,6 @@ export default defineMessages({
   phasePreviewTitle: {
     id: 'app.containers.Admin.projects.project.phasePreviewTitle',
     defaultMessage: 'Preview of this phase',
-  },
-  notifications: {
-    id: 'app.containers.Admin.projects.project.notifications',
-    defaultMessage: 'Notifications',
   },
   editAccess: {
     id: 'app.containers.Admin.projects.project.editAccess',

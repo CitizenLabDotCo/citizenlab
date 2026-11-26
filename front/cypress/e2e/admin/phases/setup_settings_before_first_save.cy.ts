@@ -1,4 +1,7 @@
-import { randomString } from '../../../support/commands';
+import {
+  pickTodayInPhaseDatePicker,
+  randomString,
+} from '../../../support/commands';
 
 describe('Opening setup settings before saving a phase', () => {
   let projectId: string;
@@ -41,9 +44,7 @@ describe('Opening setup settings before saving a phase', () => {
     cy.location('pathname').should('include', draftPath);
     cy.get('@createPhase.all').should('have.length', 0);
 
-    cy.get('.e2e-date-phase-picker-input').click();
-    cy.get('.rdp-today .rdp-day_button').first().click();
-    cy.get('.e2e-date-phase-picker-input').click();
+    pickTodayInPhaseDatePicker();
     cy.get('[data-cy="draft-access-settings"]').scrollIntoView().click();
     cy.wait('@createPhase').its('response.statusCode').should('eq', 422);
     cy.contains('This cannot be empty.').should('exist');
@@ -63,7 +64,7 @@ describe('Opening setup settings before saving a phase', () => {
     cy.get('[role="dialog"]')
       .contains('You can specify who can take each action')
       .should('be.visible');
-    cy.get('[role="dialog"] .e2e-modal-close-button').click();
+    cy.get('[role="dialog"] [data-cy="e2e-modal-close-button"]').click();
     cy.location('search').should('not.include', 'setup_action');
     cy.get('@createPhase.all').should('have.length', 2);
   });
@@ -83,9 +84,7 @@ describe('Opening setup settings before saving a phase', () => {
       cy.visit(
         `/admin/projects/${projectId}/phases/new?project_backoffice_redesign&participation_method=${method}`
       );
-      cy.get('.e2e-date-phase-picker-input').click();
-      cy.get('.rdp-today .rdp-day_button').first().click();
-      cy.get('.e2e-date-phase-picker-input').click();
+      pickTodayInPhaseDatePicker();
       cy.get('#phase-build-panel-title').type('Phase with setup settings');
       cy.get(`[data-cy="draft-${action}-settings"]`).scrollIntoView().click();
       cy.wait('@createPhase').then(({ response }) => {
@@ -107,12 +106,12 @@ describe('Opening setup settings before saving a phase', () => {
         cy.get('#phase-moderation-settings')
           .contains('Assignee')
           .should('be.visible');
+        // The assignee menu opens straight away.
         cy.get('#phase-moderation-settings')
           .find('button[aria-haspopup="true"]')
-          .should('be.visible');
-        cy.get('[role="radiogroup"][aria-label="Assignee"]').should(
-          'be.visible'
-        );
+          .should('be.visible')
+          .and('have.attr', 'aria-expanded', 'true');
+        cy.get('[role="menu"]').should('be.visible');
       }
       cy.get('@createPhase.all').should('have.length', 1);
     });

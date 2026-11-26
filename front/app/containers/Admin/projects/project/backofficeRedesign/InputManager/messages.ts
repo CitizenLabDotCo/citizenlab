@@ -151,21 +151,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.replyReplied',
     defaultMessage: 'Replied',
   },
-  searchOptions: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchOptions',
-    defaultMessage: 'Filter…',
-  },
-  noMatchingOptions: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noMatchingOptions',
-    defaultMessage: 'Nothing matches your search',
-  },
   clearAllFilters: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.clearAllFilters',
     defaultMessage: 'Clear all filters',
-  },
-  clearFilters: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.clearFilters',
-    defaultMessage: 'Clear',
   },
   isAnyOf: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf',
@@ -175,15 +163,7 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.is',
     defaultMessage: 'is',
   },
-  removeFilter: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeFilter',
-    defaultMessage: 'Remove this filter',
-  },
 
-  selectedCount: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectedCount',
-    defaultMessage: '{count} selected',
-  },
   selectAllTerms: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllTerms',
     defaultMessage: 'Select all {termCount}',
@@ -238,10 +218,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.copyToPhase',
     defaultMessage: 'Copy to phase',
   },
-  clearSelection: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.clearSelection',
-    defaultMessage: 'Clear selection',
-  },
   statusChangeNotifies: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusChangeNotifies',
     defaultMessage:
@@ -292,27 +268,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.phases',
     defaultMessage: 'Phases',
   },
-  removeFromPhase: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeFromPhase',
-    defaultMessage: 'Remove from {phase}',
-  },
   addTag: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addTag',
     defaultMessage: 'Add tag',
   },
-  removeTag: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeTag',
-    defaultMessage: 'Remove {tag}',
-  },
 
-  respondedTile: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.respondedTile',
-    defaultMessage: 'Responded',
-  },
-  acceptedTile: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.acceptedTile',
-    defaultMessage: 'Accepted',
-  },
   waitingForReply: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply',
     defaultMessage: 'Waiting for a reply',
@@ -324,10 +284,6 @@ export default defineMessages({
   stillGatheringSupport: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.stillGatheringSupport',
     defaultMessage: 'Still gathering support',
-  },
-  onlineVotes: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.onlineVotes',
-    defaultMessage: 'Online votes',
   },
   offlineVotes: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineVotes',
@@ -355,10 +311,6 @@ export default defineMessages({
   offlineCollection: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineCollection',
     defaultMessage: 'Offline collection',
-  },
-  importInputs: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.importInputs',
-    defaultMessage: 'Import',
   },
   export: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.export',

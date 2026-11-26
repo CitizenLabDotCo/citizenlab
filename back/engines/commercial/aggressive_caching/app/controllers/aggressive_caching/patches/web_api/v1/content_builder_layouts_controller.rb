@@ -13,11 +13,12 @@ module AggressiveCaching
 
               private
 
-              # A cached response is served without the policy check. A static page's layout is
-              # only as visible as the page, which for a project's page depends on the user, so
-              # only visitors, who all see the same, share a cached copy.
+              # A cached response is served without the policy check. A layout is only as
+              # visible as its project, folder or page, which can depend on the user, so only
+              # visitors, who all see the same, share a cached copy. The homepage layout is the
+              # same for everyone.
               def caching_layout?
-                params[:content_buildable] == 'StaticPage' ? caching_and_visitor? : caching_and_non_admin?
+                params[:content_buildable] == 'HomePage' ? caching_and_non_admin? : caching_and_visitor?
               end
             end
           end

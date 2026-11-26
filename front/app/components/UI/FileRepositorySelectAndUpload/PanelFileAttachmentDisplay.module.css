@@ -1,0 +1,47 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  min-height: var(--gv-size-28);
+  margin-right: calc(-1 * var(--gv-space-4));
+  cursor: grab;
+}
+
+.row[data-disabled='true'] {
+  cursor: default;
+}
+
+.row[data-dragging='true'] {
+  opacity: 0;
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.name {
+  composes: small from '../../../design-system/typography.module.css';
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--gv-text-primary);
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

@@ -68,7 +68,7 @@ describe('Redesigned method-specific Manage views', () => {
           .and('not.contain.text', 'Status');
         cy.contains('button', 'Import options').click();
         cy.get('[role="dialog"]').should('contain.text', 'Spreadsheet');
-        cy.get('[role="dialog"] .e2e-modal-close-button').click();
+        cy.get('[role="dialog"] [data-cy="e2e-modal-close-button"]').click();
         cy.contains('button', 'Add offline votes').click();
         cy.get('[role="dialog"]').within(() => {
           cy.get('[aria-label="Remove one"]').should(
@@ -77,7 +77,7 @@ describe('Redesigned method-specific Manage views', () => {
             'true'
           );
           cy.get('[aria-label="Add one"]').click();
-          cy.get('input[type="number"]')
+          cy.get('input[inputmode="numeric"]')
             .should('have.value', '1')
             .clear()
             .type('7');
@@ -115,7 +115,7 @@ describe('Redesigned method-specific Manage views', () => {
           .and('contain.text', 'Time left');
         cy.contains('button', 'Import paper').click();
         cy.get('[role="dialog"]').should('contain.text', 'Spreadsheet');
-        cy.get('[role="dialog"] .e2e-modal-close-button').click();
+        cy.get('[role="dialog"] [data-cy="e2e-modal-close-button"]').click();
         cy.contains('button', `New ${inputTerm}`).click();
         cy.get('[role="dialog"]').should('contain.text', 'Title');
       });
@@ -216,8 +216,10 @@ describe('Redesigned method-specific Manage views', () => {
       cy.get('[aria-label="Filter"]')
         .click()
         .should('have.attr', 'aria-expanded', 'true');
-      cy.contains('button', 'Signed up').click();
-      cy.contains('button', 'Earlier').click();
+      cy.get('[data-cy="e2e-manage-filter-signedUp"]').click();
+      cy.get('[role="menuitemradio"]')
+        .contains(/^Earlier$/)
+        .click();
       cy.wait('@volunteers')
         .its('request.query.signed_up')
         .should('eq', 'earlier');

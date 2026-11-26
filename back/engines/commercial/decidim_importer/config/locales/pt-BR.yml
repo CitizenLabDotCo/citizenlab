@@ -9,3 +9,5 @@ pt-BR:
     debate_information_updates: Atualizações de informações
     debate_instructions: Instruções
     documents_to_consult: Documentos de consulta
+    private_space_members: 'Membros: %{space}'
+    untitled_folder: Pasta sem título

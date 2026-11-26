@@ -87,7 +87,9 @@ module Jobs
             total: job.send(:estimate_tracker_total, ...),
             owner_id: @owner&.id,
             context: context,
-            project_id: context.try(:project_id)
+            # A project is its own project: without this the tracker of a
+            # project-scoped job has no project, and its policy denies everyone.
+            project_id: context.is_a?(::Project) ? context.id : context.try(:project_id)
           )
 
           job

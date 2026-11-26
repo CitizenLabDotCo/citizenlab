@@ -1,11 +1,13 @@
-import { randomString } from '../../support/commands';
+import {
+  pickTodayInPhaseDatePicker,
+  randomString,
+} from '../../support/commands';
 
 describe('Survey reuse feedback', () => {
   const projects: string[] = [];
   let targetId: string;
   let targetPhaseId: string;
   let sourcePhaseId: string;
-  let otherPhaseId: string;
   let surveyTitle: string;
   let otherTitle: string;
   let ideaTitle: string;
@@ -52,6 +54,13 @@ describe('Survey reuse feedback', () => {
     );
     cy.get('[role="option"]').contains(title).click();
   };
+  // The redesign picks the survey in a design-system Select; its options open
+  // in a popover.
+  const chooseSurvey = (title: string) => {
+    cy.get('#e2e-phase-filter').click();
+    cy.contains('[role="option"]', title).click();
+  };
+  const duplicateButton = () => cy.dataCy('e2e-copy-survey-modal-duplicate');
 
   beforeEach(() => {
     surveyTitle = `Source survey ${randomString()}`;
@@ -67,9 +76,7 @@ describe('Survey reuse feedback', () => {
     create(surveyTitle, 'native_survey').then(({ phaseId }) => {
       sourcePhaseId = phaseId;
     });
-    create(otherTitle, 'native_survey').then(({ phaseId }) => {
-      otherPhaseId = phaseId;
-    });
+    create(otherTitle, 'native_survey');
     create(ideaTitle, 'ideation');
   });
 
@@ -87,23 +94,15 @@ describe('Survey reuse feedback', () => {
     cy.wait('@sourceProjects')
       .its('request.url')
       .should('include', 'native_survey');
-    cy.get('#e2e-phase-filter').select(sourcePhaseId);
-    cy.dataCy('e2e-copy-survey-modal-duplicate')
-      .find('button')
-      .should('have.attr', 'aria-disabled', 'false');
+    chooseSurvey(surveyTitle);
+    duplicateButton().should('not.be.disabled');
     chooseProject(otherTitle);
-    cy.dataCy('e2e-copy-survey-modal-duplicate')
-      .find('button')
-      .should('have.attr', 'aria-disabled', 'true');
-    cy.get('#e2e-phase-filter').select(otherPhaseId);
-    cy.dataCy('e2e-copy-survey-modal-duplicate')
-      .find('button')
-      .should('have.attr', 'aria-disabled', 'false');
+    duplicateButton().should('be.disabled');
+    chooseSurvey(otherTitle);
+    duplicateButton().should('not.be.disabled');
     cy.get('[role="dialog"]').contains('button', 'Cancel').click();
     openReuse();
-    cy.dataCy('e2e-copy-survey-modal-duplicate')
-      .find('button')
-      .should('have.attr', 'aria-disabled', 'true');
+    duplicateButton().should('be.disabled');
     cy.get('[data-cy="e2e-copy-survey-modal"] input[role="combobox"]').type(
       ideaTitle
     );
@@ -163,7 +162,7 @@ describe('Survey reuse feedback', () => {
     cy.contains('button', 'Undo').click();
     cy.wait('@clearQuestions').its('response.statusCode').should('eq', 200);
     cy.contains('button', 'Use a previous survey').should('be.disabled');
-    cy.get('[role="dialog"]').contains('button', 'Close window').click();
+    cy.get('[role="dialog"] [data-cy="e2e-modal-close-button"]').click();
     cy.contains('button', 'Edit survey').click();
     cy.contains('Edit form').click();
     cy.get('[data-cy="e2e-field-row"]').should(
@@ -176,8 +175,8 @@ describe('Survey reuse feedback', () => {
     cy.wait('@clearQuestions').its('response.statusCode').should('eq', 200);
     cy.contains('button', 'Use a previous survey').click();
     chooseProject(surveyTitle);
-    cy.get('#e2e-phase-filter').select(sourcePhaseId);
-    cy.dataCy('e2e-copy-survey-modal-duplicate').find('button').click();
+    chooseSurvey(surveyTitle);
+    duplicateButton().click();
     cy.get('[data-cy="e2e-field-row"]')
       .should('contain', 'Your question')
       .and('not.contain', 'Saved manual question');
@@ -196,23 +195,20 @@ describe('Survey reuse feedback', () => {
     });
     cy.contains('button', 'Add questions').click();
     cy.contains('Use a previous survey').click();
-    cy.contains('.e2e-error-message', 'Missing start date').should(
-      'be.visible'
-    );
+    cy.contains(
+      '[slot="errorMessage"], .e2e-error-message',
+      'Missing start date'
+    ).should('be.visible');
     cy.contains('The phase could not be saved').should('not.exist');
     cy.get('#phase-build-panel-title').type('Draft survey');
-    cy.get('.e2e-date-phase-picker-input').click();
-    cy.get('.rdp-today .rdp-day_button').first().click();
-    cy.get('.e2e-date-phase-picker-input').click();
+    pickTodayInPhaseDatePicker();
     cy.contains('button', 'Add questions').click();
     cy.contains('Use a previous survey').click();
     cy.dataCy('e2e-copy-survey-modal').should('be.visible');
     cy.location('pathname').should('not.include', '/phases/new');
     chooseProject(surveyTitle);
-    cy.get('#e2e-phase-filter').select(sourcePhaseId);
-    cy.dataCy('e2e-copy-survey-modal-duplicate')
-      .find('button')
-      .should('have.attr', 'aria-disabled', 'false');
+    chooseSurvey(surveyTitle);
+    duplicateButton().should('not.be.disabled');
   });
 
   it('keeps the legacy picker usable without survey-only project filtering', () => {

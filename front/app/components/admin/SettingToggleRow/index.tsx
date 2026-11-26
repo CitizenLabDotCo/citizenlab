@@ -1,10 +1,14 @@
 import React from 'react';
 
-import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
+import Switch from 'design-system/Switch';
+
+import styles from './SettingToggleRow.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   id?: string;
   title: string;
+  'aria-describedby'?: string;
   description?: string;
   checked: boolean;
   disabled?: boolean;
@@ -14,31 +18,30 @@ interface Props {
 const SettingToggleRow = ({
   id,
   title,
+  'aria-describedby': ariaDescribedBy,
   description,
   checked,
   disabled,
   onChange,
 }: Props) => (
-  <Toggle
-    id={id}
-    variant="bo"
-    labelAlign="top"
-    checked={checked}
-    disabled={disabled}
-    onChange={onChange}
-    label={
-      <Box display="flex" flexDirection="column" gap="3px">
-        <Text as="span" variant="boControl" m="0">
-          {title}
-        </Text>
+  <div>
+    <Switch
+      id={id}
+      aria-describedby={ariaDescribedBy}
+      size={26}
+      isSelected={checked}
+      isDisabled={disabled}
+      labelAlign={description ? 'top' : 'center'}
+      onChange={() => onChange()}
+    >
+      <span className={styles.text}>
+        <span className={styles.title}>{title}</span>
         {description && (
-          <Text as="span" variant="boMicro" m="0">
-            {description}
-          </Text>
+          <span className={styles.description}>{description}</span>
         )}
-      </Box>
-    }
-  />
+      </span>
+    </Switch>
+  </div>
 );
 
 export default SettingToggleRow;

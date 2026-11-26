@@ -1,27 +1,38 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import IconButton from 'design-system/IconButton';
+import PanelGroupHeader from 'design-system/PanelGroupHeader';
+
+import { useIntl } from 'utils/cl-intl';
+
+import ExpandAllContext from './ExpandAllContext';
+import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   label: string;
+  expandable?: boolean;
 }
 
-// The space above is padding so it doesn't merge with the previous card's
-// margin.
-const PanelHeading = ({ label }: Props) => (
-  <Box display="flex" alignItems="center" minHeight="42px" pt="14px">
-    <Box as="h3" m="0">
-      <Text
-        as="span"
-        variant="boControl"
-        color="coolGrey600"
-        lineHeight="20px"
-        m="0"
-      >
-        {label}
-      </Text>
-    </Box>
-  </Box>
-);
+const PanelHeading = ({ label, expandable = false }: Props) => {
+  const { formatMessage } = useIntl();
+  const { expand } = useContext(ExpandAllContext);
+
+  return (
+    <PanelGroupHeader
+      label={label}
+      action={
+        expandable &&
+        expand && (
+          <IconButton
+            icon="chevrons-up-down-16"
+            aria-label={formatMessage(messages.expandAll)}
+            onPress={expand}
+          />
+        )
+      }
+    />
+  );
+};
 
 export default PanelHeading;

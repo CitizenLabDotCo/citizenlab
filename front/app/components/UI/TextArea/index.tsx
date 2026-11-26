@@ -3,28 +3,20 @@ import React from 'react';
 import {
   IconTooltip,
   Label,
-  boInputStyle,
   colors,
   defaultInputStyle,
   isRtl,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import TextareaAutosize from 'react-textarea-autosize';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import Error from 'components/UI/Error';
 
 const Container = styled.div``;
 
-const boTextAreaStyle = css`
-  ${boInputStyle}
-  height: auto;
-  padding: 8px 11px;
-  resize: vertical;
-`;
-
-const TextAreaContainer = styled.div<{ variant: Variant }>`
+const TextAreaContainer = styled.div`
   width: 100%;
   position: relative;
   padding: 2px;
@@ -33,7 +25,7 @@ const TextAreaContainer = styled.div<{ variant: Variant }>`
 
   textarea {
     width: 100%;
-    ${({ variant }) => (variant === 'bo' ? boTextAreaStyle : defaultInputStyle)}
+    ${defaultInputStyle}
     ${isRtl`
         direction: rtl
     `}
@@ -52,8 +44,6 @@ const CharacterCount = styled.p`
     color: ${colors.red600};
   }
 `;
-
-type Variant = 'default' | 'bo';
 
 export type Props = {
   id?: string | undefined;
@@ -80,7 +70,6 @@ export type Props = {
   setRef?: (arg: HTMLTextAreaElement | null) => void;
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
-  variant?: Variant;
 };
 
 interface State {}
@@ -154,7 +143,6 @@ export default class TextArea extends React.PureComponent<Props, State> {
       setRef,
       ariaInvalid,
       ariaDescribedBy,
-      variant = 'default',
     } = this.props;
 
     return (
@@ -166,7 +154,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
           </Label>
         )}
 
-        <TextAreaContainer className="TextArea" variant={variant}>
+        <TextAreaContainer className="TextArea">
           <TextareaAutosize
             id={id}
             className={`textarea ${!isEmpty(error) ? 'error' : ''}`}

@@ -1,4 +1,7 @@
-import { randomString } from '../../../support/commands';
+import {
+  pickTodayInPhaseDatePicker,
+  randomString,
+} from '../../../support/commands';
 
 describe('Adding input questions before saving a phase', () => {
   let projectId: string;
@@ -34,9 +37,7 @@ describe('Adding input questions before saving a phase', () => {
       cy.location('pathname').should('include', draftPath);
       cy.get('@createPhase.all').should('have.length', 0);
 
-      cy.get('.e2e-date-phase-picker-input').click();
-      cy.get('.rdp-today .rdp-day_button').first().click();
-      cy.get('.e2e-date-phase-picker-input').click();
+      pickTodayInPhaseDatePicker();
       cy.get('[data-cy="add-draft-input-questions"]').scrollIntoView().click();
       cy.wait('@createPhase').its('response.statusCode').should('eq', 422);
       cy.contains('This cannot be empty.').should('exist');
@@ -75,9 +76,7 @@ describe('Adding input questions before saving a phase', () => {
     cy.visit(
       `/admin/projects/${projectId}/phases/new?project_backoffice_redesign&participation_method=ideation`
     );
-    cy.get('.e2e-date-phase-picker-input').click();
-    cy.get('.rdp-today .rdp-day_button').first().click();
-    cy.get('.e2e-date-phase-picker-input').click();
+    pickTodayInPhaseDatePicker();
     cy.get('#phase-build-panel-title').type('Another ideation phase');
     cy.get('[data-cy="add-draft-input-questions"]').scrollIntoView().click();
     cy.wait('@createPhase').then(({ response }) => {
@@ -85,7 +84,7 @@ describe('Adding input questions before saving a phase', () => {
       cy.get('[data-cy="e2e-form-input-edit-warning-modal"]').should(
         'be.visible'
       );
-      cy.get('[role="dialog"] .e2e-modal-close-button').click();
+      cy.get('[role="dialog"] [data-cy="e2e-modal-close-button"]').click();
       cy.location('pathname').should(
         'include',
         `/phases/${response?.body.data.id}/setup`

@@ -1,7 +1,11 @@
 import React, { ReactNode, RefObject, useRef } from 'react';
 
-import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import { useDrag, useDrop } from 'react-dnd';
+
+import Icon from 'design-system/Icon';
+
+import styles from './SortableTag.module.css';
+import 'design-system/tokens.css';
 
 export const ROOT_TAG_TYPE = 'tag-root';
 
@@ -80,20 +84,15 @@ const SortableTag = ({
   drop(preview(ref));
 
   const handle = (
-    <Box
-      display="flex"
-      alignItems="center"
-      flexShrink={0}
-      aria-label={dragLabel}
-    >
-      <Icon name="sort" width="10px" height="16px" fill={colors.coolGrey500} />
-    </Box>
+    <span className={styles.handle} aria-label={dragLabel}>
+      <Icon name="grip-vertical-16" />
+    </span>
   );
 
   return (
-    <Box ref={ref} opacity={isDragging ? 0.4 : 1}>
+    <div ref={ref} className={isDragging ? styles.dragging : undefined}>
       {children({ rowRef, handle })}
-    </Box>
+    </div>
   );
 };
 

@@ -9,3 +9,5 @@ lb-LU:
     debate_information_updates: Informatiouns-Updates
     debate_instructions: Instruktiounen
     documents_to_consult: Konsultatiounsdokumenter
+    private_space_members: 'Memberen: %{space}'
+    untitled_folder: Dossier ouni Titel

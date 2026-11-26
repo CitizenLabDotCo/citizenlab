@@ -1,0 +1,37 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+}
+
+/* Lines the locale switcher up on the right, above the input. */
+.localeRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* The rich text label sits on the left of the locale switcher. */
+.labelRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-16);
+}
+
+.label {
+  composes: body from '../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.error {
+  composes: error from '../../../design-system/Field/Field.module.css';
+}
+
+.block {
+  display: block;
+}
+
+.localeCode {
+  text-transform: uppercase;
+}

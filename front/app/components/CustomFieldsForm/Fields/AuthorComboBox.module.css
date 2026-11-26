@@ -1,0 +1,6 @@
+.labelAccessory {
+  composes: label from '../../../design-system/Field/Field.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+}

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { CLErrors } from 'typings';
 
+import { RequiredMarker } from 'design-system/Field';
+
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
 import { CardButton } from 'containers/Admin/projects/_shared/components/SetupCardButton';
@@ -15,10 +17,10 @@ import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/t
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
 import PanelField from '../../PanelField';
 
 import DatesSummary from './DatesSummary';
+import messages from './messages';
 
 interface Props {
   participationMethod: ParticipationMethod;
@@ -39,6 +41,10 @@ const PhaseDates = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const [expanded, setExpanded] = useState(false);
+  // Adding the toggle swaps the card's header, which remounts the picker and
+  // closes its calendar. A card that opened without dates keeps its form, so
+  // picking the first day leaves the calendar open for the end date.
+  const [openedWithoutDates] = useState(!formData.start_at);
   const ranges = usePhaseDateRanges({ formData, standalone });
 
   if (!ranges) return null;
@@ -51,7 +57,7 @@ const PhaseDates = ({
   const hasError =
     !!errors?.start_at || !!errors?.end_at || !!validationErrors.phaseDateError;
   // Without a start date, or with an error, the picker must stay in sight.
-  const forcedOpen = !formData.start_at || hasError;
+  const forcedOpen = openedWithoutDates || !formData.start_at || hasError;
   const open = expanded || forcedOpen;
 
   const handleChange = (dates: Dates) => {
@@ -71,9 +77,12 @@ const PhaseDates = ({
     <PanelField
       label={label}
       action={
-        formData.start_at &&
-        !open && (
-          <DatesSummary startAt={formData.start_at} endAt={formData.end_at} />
+        formData.start_at ? (
+          !open && (
+            <DatesSummary startAt={formData.start_at} endAt={formData.end_at} />
+          )
+        ) : (
+          <RequiredMarker />
         )
       }
       button={toggle}
@@ -84,7 +93,8 @@ const PhaseDates = ({
           errors={errors}
           validationErrors={validationErrors}
           onChange={handleChange}
-          variant="bo"
+          variant="panel"
+          label={label}
         />
       )}
     </PanelField>

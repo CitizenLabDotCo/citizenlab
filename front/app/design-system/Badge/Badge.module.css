@@ -1,0 +1,45 @@
+.badge {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-4);
+  height: 22px;
+  border: var(--gv-border-width-1) solid;
+  border-radius: var(--gv-radius-full);
+  white-space: nowrap;
+}
+
+.summary {
+  composes: smallStrong from '../typography.module.css';
+  padding: 0 var(--gv-space-10);
+}
+
+.note {
+  composes: small from '../typography.module.css';
+  padding: 0 var(--gv-space-8);
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.neutral {
+  background: var(--gv-surface-chip);
+  border-color: var(--gv-border-chip);
+  color: var(--gv-text-on-muted);
+}
+
+.neutral .icon {
+  color: var(--gv-icon-on-muted);
+}
+
+.selected {
+  background: var(--gv-surface-selected-chip);
+  border-color: var(--gv-border-selected-chip);
+  color: var(--gv-text-selected-chip);
+}
+
+.selected .icon {
+  color: var(--gv-icon-selected-chip);
+}

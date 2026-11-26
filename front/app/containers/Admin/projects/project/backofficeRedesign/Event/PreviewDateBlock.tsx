@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import styles from './PreviewDateBlock.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   day: string;
@@ -9,17 +10,11 @@ interface Props {
 }
 
 const PreviewDateBlock = ({ day, month, time }: Props) => (
-  <Box display="flex" flexDirection="column" alignItems="center">
-    <Text m="0" fontWeight="bold" style={{ fontSize: '34px', lineHeight: '1' }}>
-      {day}
-    </Text>
-    <Text m="0" fontSize="m" color="grey700">
-      {month}
-    </Text>
-    <Text m="0" fontSize="l" fontWeight="semi-bold" textAlign="center">
-      {time}
-    </Text>
-  </Box>
+  <div className={styles.block}>
+    <p className={styles.day}>{day}</p>
+    <p className={styles.month}>{month}</p>
+    <p className={styles.time}>{time}</p>
+  </div>
 );
 
 export default PreviewDateBlock;

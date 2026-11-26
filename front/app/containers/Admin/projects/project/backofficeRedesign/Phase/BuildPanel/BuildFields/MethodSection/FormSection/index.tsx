@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import Text from 'design-system/Text';
 
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
@@ -68,7 +68,7 @@ const FormSection = ({
       ) : (
         <PanelField label={title}>
           {draftQuestionsAction || (
-            <Text variant="boHelper" m="0">
+            <Text variant="ui" tone="secondary">
               {formatMessage(messages.saveToEditForm)}
             </Text>
           )}

@@ -1,0 +1,78 @@
+.tabs {
+  display: flex;
+}
+
+.tabList {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 210px;
+  padding: var(--gv-space-16) var(--gv-space-12);
+  gap: var(--gv-space-4);
+  border-right: var(--gv-border-width-1) solid var(--gv-border-default);
+  background: var(--gv-surface-sunken);
+}
+
+.tab {
+  composes: ui from '../typography.module.css';
+  composes: ringInside from '../focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--gv-space-8) var(--gv-space-12);
+  gap: var(--gv-space-10);
+  border-radius: var(--gv-radius-8);
+  color: var(--gv-text-body-subtle);
+  text-decoration: none;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tab[data-hovered]:not([data-selected]) {
+  background: var(--gv-surface-hovered);
+  color: var(--gv-text-primary);
+}
+
+.tab[data-pressed]:not([data-selected]) {
+  background: var(--gv-surface-pressed);
+  color: var(--gv-text-primary);
+}
+
+.tab[data-hovered] .icon,
+.tab[data-pressed] .icon,
+.tab[data-selected] .icon {
+  color: var(--gv-icon-primary);
+}
+
+.tab[data-selected] {
+  background: var(--gv-surface-selected-tab);
+  color: var(--gv-text-primary);
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.rail {
+  width: 203px;
+  padding: var(--gv-space-8) var(--gv-space-20) var(--gv-space-18)
+    var(--gv-space-8);
+  background: var(--gv-surface-panel-subtle);
+}
+
+.rail .tab[data-selected] {
+  background: var(--gv-surface-control-subtle);
+}

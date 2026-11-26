@@ -1,0 +1,16 @@
+.titleRow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+  max-width: 100%;
+}
+
+.infoMark {
+  --gv-tooltip-mark-radius: var(--gv-radius-4);
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}

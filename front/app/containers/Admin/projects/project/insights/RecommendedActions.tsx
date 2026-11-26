@@ -1,29 +1,28 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { useRouter } from '@tanstack/react-router';
+
+import Banner from 'design-system/Banner';
+import Disclosure from 'design-system/Disclosure';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import { IPhaseData } from 'api/phases/types';
 import { PHASE_REPORT_TEMPLATE_METHODS } from 'api/reports/constants';
 import useAddReport from 'api/reports/useAddReport';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import projectMessages from 'containers/Admin/projects/project/messages';
 import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
-
-import MenuButton from 'components/admin/MenuButton';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 
 import messages from './messages';
+import styles from './RecommendedActions.module.css';
+import 'design-system/tokens.css';
 
 const MAX_REPORT_NAME_ATTEMPTS = 10;
 
@@ -35,6 +34,8 @@ interface Props {
 const RecommendedActions = ({ phase, children }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const locale = useLocale();
+  const router = useRouter();
   const reportBuilderEnabled = useReportBuilderEnabled();
   const {
     mutateAsync: addReport,
@@ -64,6 +65,20 @@ const RecommendedActions = ({ phase, children }: Props) => {
     }
   };
 
+  const messagingHref = router.buildLocation({
+    to: '/$locale/admin/projects/$projectId/messaging',
+    params: { locale, projectId },
+  }).href;
+  const projectHref = router.buildLocation({
+    to: '/$locale/admin/projects/$projectId',
+    params: { locale, projectId },
+  }).href;
+  const informationPhaseHref = router.buildLocation({
+    to: '/$locale/admin/projects/$projectId/phases/new',
+    params: { locale, projectId },
+    search: { participation_method: 'information' },
+  }).href;
+
   if (report) {
     return (
       <Navigate
@@ -77,100 +92,54 @@ const RecommendedActions = ({ phase, children }: Props) => {
   }
 
   return (
-    <Box
-      as="aside"
+    <aside
       aria-label={formatMessage(messages.recommendedActions)}
-      display="flex"
-      flexDirection="column"
-      gap="12px"
-      p="18px"
-      height="100%"
-      background={colors.white}
-      borderRadius={bo.panelBorderRadius}
+      className={styles.panel}
     >
-      <Text variant="boLabel" m="0">
+      <p className={styles.title}>
         {formatMessage(messages.recommendedActions)}
-      </Text>
+      </p>
       {reportBuilderEnabled && (
-        <Button
-          buttonStyle="bo-secondary"
-          width="100%"
-          justify="space-between"
-          icon="reports"
-          iconPos="right"
-          processing={isPending}
-          onClick={addPhaseReport}
-        >
-          {formatMessage(messages.addReport)}
-        </Button>
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.addReport)}
+          actionIcon="file-chart-column-16"
+          isPending={isPending}
+          onPress={addPhaseReport}
+        />
       )}
       {isError && (
-        <Text variant="boHelper" color="red600" m="0" role="alert">
+        <Banner tone="error">
           {formatMessage(messages.reportCreationFailed)}
-        </Text>
+        </Banner>
       )}
-      <MenuButton
-        portal
-        width="280px"
-        triggerWidth="100%"
-        trigger={({ opened, toggle }) => (
-          <Button
-            buttonStyle="bo-secondary"
-            width="100%"
-            justify="space-between"
-            icon="share"
-            iconPos="right"
-            ariaExpanded={opened}
-            onClick={toggle}
-          >
-            {formatMessage(messages.shareResults)}
-          </Button>
-        )}
-      >
-        {(close) => (
-          <Box display="flex" flexDirection="column" role="menu">
-            <ButtonWithLink
-              buttonStyle="bo-text"
-              to="/admin/projects/$projectId/messaging"
-              params={{ projectId }}
-              onClick={close}
-            >
-              {formatMessage(messages.goToMessaging)}
-            </ButtonWithLink>
-            <ButtonWithLink
-              buttonStyle="bo-text"
-              to="/admin/projects/$projectId"
-              params={{ projectId }}
-              onClick={close}
-            >
-              {formatMessage(messages.editProjectHomepage)}
-            </ButtonWithLink>
-            <ButtonWithLink
-              buttonStyle="bo-text"
-              to="/admin/projects/$projectId/phases/new"
-              params={{ projectId }}
-              search={{ participation_method: 'information' }}
-              onClick={close}
-            >
-              {formatMessage(messages.createInformationPhase)}
-            </ButtonWithLink>
-          </Box>
-        )}
-      </MenuButton>
+      <MenuTrigger>
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.shareResults)}
+          actionIcon="chevron-down-16"
+        />
+        <Menu aria-label={formatMessage(messages.shareResults)}>
+          <MenuItem href={messagingHref}>
+            {formatMessage(messages.goToMessaging)}
+          </MenuItem>
+          <MenuItem href={projectHref}>
+            {formatMessage(messages.editProjectHomepage)}
+          </MenuItem>
+          <MenuItem href={informationPhaseHref}>
+            {formatMessage(messages.createInformationPhase)}
+          </MenuItem>
+        </Menu>
+      </MenuTrigger>
       {children}
       {phase.attributes.participation_method === 'document_annotation' && (
-        <Box
-          p="12px"
-          background={colors.grey100}
-          borderRadius={bo.borderRadius}
-          role="note"
-        >
-          <Text variant="boHelper" m="0">
-            {formatMessage(messages.konveioParticipationDataNotice)}
-          </Text>
-        </Box>
+        <div role="note">
+          <Banner tone="neutral">
+            {formatMessage(projectMessages.konveioParticipationDataNotice)}
+          </Banner>
+        </div>
       )}
-    </Box>
+    </aside>
   );
 };
 

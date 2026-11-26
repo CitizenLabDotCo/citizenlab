@@ -15,6 +15,12 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { SupportedLocale, Multiloc, IOption } from 'typings';
 
+import Banner from 'design-system/Banner';
+import DatePicker from 'design-system/DatePicker';
+import { parseDate } from 'design-system/dates';
+import DSIcon from 'design-system/Icon';
+import DSModal from 'design-system/Modal';
+
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
 
@@ -23,11 +29,12 @@ import useLocalize from 'hooks/useLocalize';
 
 import newProjectFormMessages from 'containers/Admin/projects/_shared/components/NewProjectForm/messages';
 
+import MultilocTitleField from 'components/admin/MultilocFields/MultilocTitleField';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
+import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -48,12 +55,13 @@ import useTemplateTitle from '../api/useTemplateTitle';
 
 import FolderPicker from './FolderPicker';
 import messages from './messages';
+import styles from './UseTemplateModal.module.css';
+import 'design-system/tokens.css';
 
-type Variant = 'default' | 'bo';
+type Variant = 'default' | 'panel';
 
-const Content = styled.div<{ variant: Variant }>`
-  padding: ${({ variant }) =>
-    variant === 'bo' ? '24px' : '35px 30px 50px 30px'};
+const Content = styled.div`
+  padding: 35px 30px 50px 30px;
 `;
 
 const Success = styled.div`
@@ -94,12 +102,11 @@ const SuccessText = styled.div`
   }
 `;
 
-const Footer = styled.div<{ variant: Variant }>`
+const Footer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: ${({ variant }) =>
-    variant === 'bo' ? 'flex-end' : 'flex-start'};
+  justify-content: flex-start;
 `;
 
 const CreateProjectButton = styled(ButtonWithLink)`
@@ -244,7 +251,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
       setTitleMultiloc(titleMultiloc);
     }, []);
 
-    const onStartDateChange = useCallback((startDate: string) => {
+    const onStartDateChange = useCallback((startDate: string | null) => {
       setResponseError(null);
       setStartDateError(null);
       setStartDate(startDate);
@@ -313,28 +320,115 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
       folderOptions.length === 1
     );
 
-    const isBo = variant === 'bo';
-    const buttonStyle = isBo ? 'bo-primary' : 'secondary-outlined';
+    const modalTitle = (
+      <FormattedMessage
+        {...messages.createProjectBasedOn}
+        values={{ templateTitle }}
+      />
+    );
+    const successMessage = (
+      <>
+        <FormattedMessage {...messages.successMessage} />
+        {showGoBackLink && (
+          <FormattedMessage
+            {...messages.goBackTo}
+            values={{
+              goBackLink: (
+                <Link to="/admin/projects/">
+                  <FormattedMessage {...messages.projectsOverviewPage} />
+                </Link>
+              ),
+            }}
+          />
+        )}
+      </>
+    );
+
+    if (variant === 'panel') {
+      return (
+        <DSModal
+          size={560}
+          isOpen={opened}
+          onOpenChange={(isOpen) => {
+            if (!isOpen) onClose();
+          }}
+          title={modalTitle}
+          primaryAction={
+            success
+              ? {
+                  label: <FormattedMessage {...messages.close} />,
+                  onPress: onClose,
+                }
+              : {
+                  label: <FormattedMessage {...messages.createProject} />,
+                  onPress: onCreateProject,
+                  isPending: processing,
+                }
+          }
+        >
+          {!success ? (
+            <>
+              <MultilocTitleField
+                id="project-title"
+                valueMultiloc={titleMultiloc}
+                onChange={onTitleChange}
+                errorMultiloc={titleError}
+                placeholder={intl.formatMessage(
+                  newProjectFormMessages.titlePlaceholder
+                )}
+                aria-label={intl.formatMessage(messages.projectTitle)}
+              />
+              <div className={styles.startDate}>
+                <DatePicker
+                  id="project-start-date"
+                  label={intl.formatMessage(messages.projectStartDate)}
+                  value={startDate ? parseDate(startDate) : null}
+                  onChange={(date) =>
+                    onStartDateChange(date ? date.toString() : null)
+                  }
+                  isInvalid={!!startDateError}
+                  errorMessage={startDateError}
+                />
+              </div>
+              {folderOptions && (
+                <FolderPicker
+                  options={folderOptions}
+                  value={folderId}
+                  onChange={setFolderId}
+                />
+              )}
+              {responseError !== null && (
+                <Banner tone="error">
+                  <FormattedMessage {...messages.responseError} />
+                </Banner>
+              )}
+            </>
+          ) : (
+            <div className={styles.success}>
+              <DSIcon
+                name="circle-check-filled-16"
+                className={styles.successIcon}
+              />
+              <div className={styles.successText}>{successMessage}</div>
+            </div>
+          )}
+        </DSModal>
+      );
+    }
 
     return (
       <Modal
-        width={isBo ? MEDIUM_MODAL_WIDTH : 500}
-        variant={variant}
+        width={500}
         opened={opened}
         close={onClose}
         closeOnClickOutside={false}
-        header={
-          <FormattedMessage
-            {...messages.createProjectBasedOn}
-            values={{ templateTitle }}
-          />
-        }
+        header={modalTitle}
         footer={
-          <Footer variant={variant}>
+          <Footer>
             {!success ? (
               <>
                 <CreateProjectButton
-                  buttonStyle={buttonStyle}
+                  buttonStyle="secondary-outlined"
                   onClick={onCreateProject}
                   processing={processing}
                 >
@@ -350,35 +444,28 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
                 )}
               </>
             ) : (
-              <CloseButton buttonStyle={buttonStyle} onClick={onClose}>
+              <CloseButton buttonStyle="secondary-outlined" onClick={onClose}>
                 <FormattedMessage {...messages.close} />
               </CloseButton>
             )}
           </Footer>
         }
       >
-        <Content variant={variant}>
+        <Content>
           {!success ? (
             <>
               <InputMultilocWithLocaleSwitcher
                 id="project-title"
-                label={
-                  isBo ? undefined : intl.formatMessage(messages.projectTitle)
-                }
+                label={intl.formatMessage(messages.projectTitle)}
                 ariaLabel={intl.formatMessage(messages.projectTitle)}
-                placeholder={intl.formatMessage(
-                  isBo
-                    ? newProjectFormMessages.titlePlaceholder
-                    : messages.typeProjectName
-                )}
+                placeholder={intl.formatMessage(messages.typeProjectName)}
                 type="text"
                 valueMultiloc={titleMultiloc}
                 onChange={onTitleChange}
                 errorMultiloc={titleError}
                 autoFocus={true}
-                variant={variant}
               />
-              <Box my={isBo ? '24px' : '36px'}>
+              <Box my="36px">
                 <Input
                   id="project-start-date"
                   label={intl.formatMessage(messages.projectStartDate)}
@@ -386,48 +473,20 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
                   onChange={onStartDateChange}
                   value={startDate}
                   error={startDateError}
-                  variant={variant}
                 />
               </Box>
-              {isBo ? (
-                folderOptions && (
-                  <FolderPicker
-                    options={folderOptions}
-                    value={folderId}
-                    onChange={setFolderId}
-                  />
-                )
-              ) : (
-                <Select
-                  value={folderId}
-                  label={intl.formatMessage(messages.projectFolder)}
-                  options={folderOptions}
-                  disabled={isSelectDisabled}
-                  onChange={handleSelectFolderChange}
-                />
-              )}
+              <Select
+                value={folderId}
+                label={intl.formatMessage(messages.projectFolder)}
+                options={folderOptions}
+                disabled={isSelectDisabled}
+                onChange={handleSelectFolderChange}
+              />
             </>
           ) : (
             <Success>
               <SuccessIcon name="check-circle" />
-              <SuccessText>
-                <FormattedMessage {...messages.successMessage} />
-                <FormattedMessage {...messages.findItInProjectsList} />
-                {showGoBackLink && (
-                  <FormattedMessage
-                    {...messages.goBackTo}
-                    values={{
-                      goBackLink: (
-                        <Link to="/admin/projects/">
-                          <FormattedMessage
-                            {...messages.projectsOverviewPage}
-                          />
-                        </Link>
-                      ),
-                    }}
-                  />
-                )}
-              </SuccessText>
+              <SuccessText>{successMessage}</SuccessText>
             </Success>
           )}
         </Content>

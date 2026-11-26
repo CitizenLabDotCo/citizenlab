@@ -9,3 +9,5 @@ lt-LT:
     debate_information_updates: Informacijos atnaujinimai
     debate_instructions: Instrukcijos
     documents_to_consult: Konsultacijų dokumentai
+    private_space_members: 'Nariai: %{space}'
+    untitled_folder: Aplankas be pavadinimo

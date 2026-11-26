@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { colors, Td, Text, Tr } from '@citizenlab/cl2-component-library';
+import { Cell, Row } from 'design-system/Table';
 
 import { IUserData } from 'api/users/types';
 import { IVolunteerData } from 'api/volunteers/types';
@@ -8,10 +8,7 @@ import { IVolunteerData } from 'api/volunteers/types';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-const cellProps = {
-  py: '8px',
-  borderBottom: `1px solid ${colors.divider}`,
-};
+import styles from './VolunteerManager.module.css';
 
 interface Props {
   volunteer: IVolunteerData;
@@ -21,34 +18,23 @@ interface Props {
 
 const VolunteerRow = ({ volunteer, user, causeTitle }: Props) => {
   const { formatDate } = useIntl();
+  const name = user ? getFullName(user) : undefined;
 
   return (
-    <Tr>
-      <Td {...cellProps}>
-        <Text variant="boControl" as="span" m="0">
-          {user && getFullName(user)}
-        </Text>
-      </Td>
-      <Td {...cellProps}>
-        <Text variant="boControl" color="coolGrey600" as="span" m="0">
-          {user?.attributes.email}
-        </Text>
-      </Td>
-      <Td {...cellProps}>
-        <Text variant="boControl" as="span" m="0">
-          {causeTitle}
-        </Text>
-      </Td>
-      <Td {...cellProps} style={{ whiteSpace: 'nowrap' }}>
-        <Text variant="boControl" color="coolGrey600" as="span" m="0">
+    <Row id={volunteer.id} textValue={name}>
+      <Cell>{name}</Cell>
+      <Cell tone="secondary">{user?.attributes.email}</Cell>
+      <Cell>{causeTitle}</Cell>
+      <Cell tone="secondary">
+        <span className={styles.date}>
           {formatDate(volunteer.attributes.created_at, {
             day: 'numeric',
             month: 'short',
             year: 'numeric',
           })}
-        </Text>
-      </Td>
-    </Tr>
+        </span>
+      </Cell>
+    </Row>
   );
 };
 

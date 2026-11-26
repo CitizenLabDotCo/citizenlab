@@ -22,9 +22,18 @@ module DecidimImporter
         @skipped ||= []
       end
 
+      # Rows imported with a change worth telling the admins (`{ uid:, note: }`), for the template log.
+      def adjusted
+        @adjusted ||= []
+      end
+
       private
 
       attr_reader :rows, :ref_map, :locale_mapper, :primary_locale
+
+      def adjust(uid, note)
+        adjusted << { uid: uid, note: note }
+      end
 
       # Records a row as skipped (with its reason) and returns nil, so callers can `return skip(...)`.
       def skip(uid, reason)
@@ -83,8 +92,10 @@ module DecidimImporter
 
       # A multiloc translation of a `decidim_importer.<key>` back-end string, with English fallback
       # for locales with no translation yet.
-      def i18n_multiloc(key, locales:)
-        MultilocService.new.i18n_to_multiloc("decidim_importer.#{key}", locales: locales, raise_on_missing: false)
+      def i18n_multiloc(key, locales:, **multiloc_substitutions)
+        MultilocService.new.i18n_to_multiloc(
+          "decidim_importer.#{key}", locales: locales, raise_on_missing: false, **multiloc_substitutions
+        )
       end
 
       # Builds a multiloc from a cell. Decidim stores multilocs as a JSON object (`{"fr":"…"}`) or as

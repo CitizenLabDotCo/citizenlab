@@ -1,7 +1,9 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
 import { differenceInCalendarDays } from 'date-fns';
+
+import { Cell } from 'design-system/Table';
+import Text from 'design-system/Text';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
@@ -13,7 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import { timeAgo } from 'utils/dateUtils';
 
-import { ColumnKey } from '../columns';
+import { ColumnKey, COLUMNS } from '../columns';
 import messages from '../messages';
 import { topicIds } from '../utils';
 
@@ -28,38 +30,35 @@ interface Props {
 }
 
 const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const locale = useLocale();
   const { attributes, relationships } = idea;
 
   if (column === 'status') {
-    if (!status) return null;
     return (
-      <Box display="flex" alignItems="center" gap="6px">
-        <Box
-          flex="0 0 8px"
-          width="8px"
-          height="8px"
-          borderRadius="50%"
-          background={status.attributes.color}
-        />
-        <Text variant="boLabel" as="span" m="0" whiteSpace="nowrap">
-          {localize(status.attributes.title_multiloc)}
-        </Text>
-      </Box>
+      <Cell tone="secondary">
+        {status && localize(status.attributes.title_multiloc)}
+      </Cell>
     );
   }
 
   if (column === 'assignee') {
-    return <AssigneeMark assigneeId={relationships.assignee?.data?.id} />;
+    return (
+      <Cell>
+        <AssigneeMark assigneeId={relationships.assignee?.data?.id} />
+      </Cell>
+    );
   }
 
   if (column === 'tags') {
     return (
-      <TagChips
-        labels={topicIds(idea).flatMap((id) => tagLabels.get(id) ?? [])}
-      />
+      <Cell>
+        <TagChips
+          label={formatMessage(COLUMNS.tags.label)}
+          labels={topicIds(idea).flatMap((id) => tagLabels.get(id) ?? [])}
+        />
+      </Cell>
     );
   }
 
@@ -81,7 +80,7 @@ const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
       <>
         {attributes.likes_count}
         {attributes.reacting_threshold !== undefined && (
-          <Text as="span" variant="boHelper" m="0">
+          <Text as="span" variant="ui" tone="secondary">
             {' '}
             / {attributes.reacting_threshold}
           </Text>
@@ -111,11 +110,7 @@ const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
     budget: <FormattedBudget value={attributes.budget ?? 0} />,
   };
 
-  return (
-    <Text variant="boLabel" as="span" m="0" whiteSpace="nowrap">
-      {values[column]}
-    </Text>
-  );
+  return <Cell>{values[column]}</Cell>;
 };
 
 export default IdeaCell;

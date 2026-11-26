@@ -1,0 +1,142 @@
+/* Overlay: the backdrop separates the dialog from the page, so the dialog has no border or shadow. */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gv-surface-backdrop);
+  /* Above full-page views like the form builder (10000), below React Aria
+     popovers (100000). */
+  z-index: 50000;
+}
+
+.overlay[data-entering] {
+  animation: fade-in var(--gv-motion-duration-medium)
+    var(--gv-motion-easing-standard);
+}
+
+/* Dialog and scrim leave together: the dialog is inside the scrim. */
+.overlay[data-exiting] {
+  animation: fade-out var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-exit);
+}
+
+.modal {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-panel);
+  overflow: hidden;
+  outline: none;
+}
+
+.modal[data-entering] {
+  animation: fade-in var(--gv-motion-duration-fast)
+      var(--gv-motion-easing-standard),
+    dialog-settle var(--gv-motion-duration-slow) var(--gv-motion-easing-silk);
+}
+
+.size440 {
+  width: 440px;
+}
+
+.size560 {
+  width: 560px;
+}
+
+.size866 {
+  width: 866px;
+  height: 640px;
+}
+
+.size920 {
+  width: 920px;
+  height: 640px;
+}
+
+/* Shared by Modal, Alert dialog and Side panel. */
+.dialog {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  outline: none;
+}
+
+.head {
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-12);
+  padding: var(--gv-space-16) var(--gv-space-16) var(--gv-space-16)
+    var(--gv-space-24);
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-row);
+}
+
+.heading {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+  min-width: 0;
+}
+
+.title {
+  composes: title from '../typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.description {
+  composes: body from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.body {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--gv-space-24);
+  min-height: 0;
+  padding: var(--gv-space-24);
+  overflow: auto;
+}
+
+.footer {
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--gv-space-8);
+  padding: var(--gv-space-16) var(--gv-space-24);
+  border-top: var(--gv-border-width-1) solid var(--gv-border-row);
+}
+
+.leadingAction {
+  margin-inline-end: auto;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes dialog-settle {
+  from {
+    transform: translateY(var(--gv-motion-offset-mid))
+      scale(var(--gv-motion-scale-in));
+  }
+}

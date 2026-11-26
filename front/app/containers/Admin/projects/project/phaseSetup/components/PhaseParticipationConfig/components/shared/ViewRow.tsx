@@ -1,28 +1,17 @@
-import React, { FormEvent, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Button,
-  Icon,
-  IconTooltip,
-  Text,
-  Toggle,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import Button from 'design-system/Button';
+import Icon from 'design-system/Icon';
+import Switch from 'design-system/Switch';
+import Tooltip from 'design-system/Tooltip';
+import UnstyledButton from 'design-system/UnstyledButton';
 
 import messages from 'containers/Admin/projects/project/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-// Links inside the description read as part of the text, as in the design.
-const Description = styled.span`
-  a {
-    color: inherit;
-    text-decoration: underline;
-  }
-`;
+import styles from './ViewRow.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   title: string;
@@ -30,7 +19,7 @@ interface Props {
   enabled: boolean;
   alwaysEnabled?: boolean;
   isDefault: boolean;
-  onToggle: (event: FormEvent) => void;
+  onToggle: () => void;
   onMakeDefault: () => void;
   /** Extra settings for the view, shown while it is on. */
   children?: ReactNode;
@@ -47,75 +36,49 @@ const ViewRow = ({
   children,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const titleText = (
-    <Text as="span" variant="boControl" fontWeight="semi-bold" m="0">
-      {title}
-    </Text>
-  );
+  const cannotBeDisabled = formatMessage(messages.listViewCannotBeDisabled);
+  const titleText = <span className={styles.title}>{title}</span>;
 
   return (
-    <Box display="flex" flexDirection="column" gap="4px" py="12px">
+    <div className={styles.row}>
       {alwaysEnabled ? (
-        <Box display="flex" alignItems="center" gap="4px">
-          <Box width={bo.toggleLabelIndent} display="flex">
-            <Icon
-              name="check"
-              width="16px"
-              height="16px"
-              fill={colors.teal500}
-            />
-          </Box>
+        <div className={styles.alwaysEnabled}>
+          <span className={styles.checkSlot}>
+            <Icon name="check-14" className={styles.alwaysEnabledCheck} />
+          </span>
           {titleText}
-          <IconTooltip
-            content={formatMessage(messages.listViewCannotBeDisabled)}
-          />
-        </Box>
+          <Tooltip content={cannotBeDisabled}>
+            <UnstyledButton
+              className={styles.infoButton}
+              aria-label={cannotBeDisabled}
+            >
+              <Icon name="info-16" />
+            </UnstyledButton>
+          </Tooltip>
+        </div>
       ) : (
-        <Toggle
-          variant="bo"
-          checked={enabled}
-          onChange={onToggle}
-          label={titleText}
-        />
+        <Switch size={26} isSelected={enabled} onChange={() => onToggle()}>
+          {titleText}
+        </Switch>
       )}
-      <Box
-        pl={bo.toggleLabelIndent}
-        display="flex"
-        flexDirection="column"
-        gap="8px"
-      >
-        <Text as="span" variant="boHelper" m="0">
-          <Description>{description}</Description>
-        </Text>
+      <div className={styles.body}>
+        <span className={styles.description}>{description}</span>
         {enabled && isDefault && (
-          <Box display="flex" alignItems="center" gap="6px">
-            <Icon
-              name="check"
-              width="14px"
-              height="14px"
-              fill={colors.teal700}
-            />
-            <Text as="span" variant="boControl" color="teal700" m="0">
-              {formatMessage(messages.defaultLabel)}
-            </Text>
-          </Box>
+          <span className={styles.defaultMark}>
+            <Icon name="check-14" />
+            {formatMessage(messages.defaultLabel)}
+          </span>
         )}
         {enabled && !isDefault && (
-          <Box display="flex">
-            <Button
-              buttonStyle="bo-text"
-              padding="0"
-              height="auto"
-              textColor={colors.teal700}
-              onClick={onMakeDefault}
-            >
+          <div>
+            <Button variant="quiet" size={28} onPress={onMakeDefault}>
               {formatMessage(messages.makeDefault)}
             </Button>
-          </Box>
+          </div>
         )}
         {enabled && children}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 
