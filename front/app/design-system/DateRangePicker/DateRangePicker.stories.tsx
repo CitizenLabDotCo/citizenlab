@@ -6,6 +6,7 @@ import {
   parseDate,
   Time,
   toCalendarDate,
+  toCalendarDateTime,
   toTime,
 } from '@internationalized/date';
 import { I18nProvider } from 'react-aria-components';
@@ -73,8 +74,20 @@ const DayPressDemo = ({
       aria-label="Phase dates"
       value={value}
       onDayPress={(day) => setValue(pressDay(value, day))}
-      startPlaceholder="Select date"
-      endPlaceholder={value ? 'Open ended' : 'Select date'}
+      onStartChange={(day) =>
+        setValue({
+          start: value ? value.start.set(day) : toCalendarDateTime(day),
+          end: value?.end ?? null,
+        })
+      }
+      onEndChange={(day) =>
+        value &&
+        setValue({
+          ...value,
+          end: value.end ? value.end.set(day) : toCalendarDateTime(day),
+        })
+      }
+      onRemoveEnd={() => value && setValue({ ...value, end: null })}
       isDateUnavailable={(date) =>
         date.month === 11 && date.day >= 3 && date.day <= 6
       }

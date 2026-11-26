@@ -1,27 +1,34 @@
-import React, { ReactNode, useId, useMemo } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import {
   CalendarDate,
   CalendarDateTime,
-  DateFormatter,
-  getLocalTimeZone,
   toCalendarDate,
 } from '@internationalized/date';
 import {
-  Button,
+  Button as AriaButton,
+  DatePicker as AriaDatePicker,
   DateValue,
   Dialog,
-  DialogTrigger,
+  Group,
+  I18nProvider,
   Popover,
   useLocale,
 } from 'react-aria-components';
 
+import { useIntl } from 'utils/cl-intl';
+
+import Button from '../Button';
 import { DayPressCalendar, OpenRangeValue } from '../Calendar';
+import DateSegments from '../DateField/DateSegments';
+import dayFirstLocale from '../DateField/dayFirstLocale';
 import pickerStyles from '../DatePicker/DatePicker.module.css';
 import Divider from '../Divider';
 import Icon from '../Icon';
+import IconButton from '../IconButton';
 
 import styles from './DateRangePicker.module.css';
+import messages from './messages';
 import TimeOfDayField, { TimeOfDay } from './TimeOfDayField';
 import '../tokens.css';
 
@@ -30,11 +37,14 @@ type Props = {
   'aria-label': string;
   'aria-describedby'?: string;
   isInvalid?: boolean;
-  // An end of null shows endPlaceholder.
+  // An end of null is an open end.
   value: OpenRangeValue<CalendarDateTime> | null;
   onDayPress: (date: CalendarDate) => void;
-  startPlaceholder: string;
-  endPlaceholder: string;
+  // A typed start or end day. The caller applies its own rules, so a typed
+  // day it refuses stays in the box, marked invalid.
+  onStartChange: (date: CalendarDate) => void;
+  onEndChange: (date: CalendarDate) => void;
+  onRemoveEnd: () => void;
   minValue?: DateValue;
   maxValue?: DateValue;
   isDateUnavailable?: (date: DateValue) => boolean;
@@ -67,17 +77,117 @@ const toCalendarRange = (
   return { start, end: isWholeDay ? start : end };
 };
 
-// A Date range picker whose calendar hands each day press to the caller, with
-// optional times of day. The box is a button: typed dates would skip the
-// caller's rules.
+const isSameDay = (a: CalendarDate | null, b: CalendarDate | null) =>
+  a === b || (!!a && !!b && a.compare(b) === 0);
+
+type DayFieldProps = {
+  'aria-label': string;
+  'aria-describedby'?: string;
+  day: CalendarDate | null;
+  onChange: (day: CalendarDate) => void;
+  isInvalid?: boolean;
+  isRefused: (day: CalendarDate) => boolean;
+  minValue?: DateValue;
+  maxValue?: DateValue;
+  isDateUnavailable?: (date: DateValue) => boolean;
+  autoFocus?: boolean;
+  calendarLabel: string;
+  dialogLabel: string;
+  calendar: ReactNode;
+  onOpenChange?: (isOpen: boolean) => void;
+};
+
+// One typeable day (dd / mm / yyyy) with the button that opens the calendar.
+const DayField = ({
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
+  day,
+  onChange,
+  isInvalid,
+  isRefused,
+  minValue,
+  maxValue,
+  isDateUnavailable,
+  autoFocus,
+  calendarLabel,
+  dialogLabel,
+  calendar,
+  onOpenChange,
+}: DayFieldProps) => {
+  const { locale } = useLocale();
+  // React Aria resets a controlled field whose value doesn't follow the
+  // typing, so the box keeps what was typed until the caller sends a new day.
+  const [typed, setTyped] = useState(day);
+  const [savedDay, setSavedDay] = useState(day);
+
+  if (!isSameDay(day, savedDay)) {
+    setSavedDay(day);
+    setTyped(day);
+  }
+
+  const refused = !!typed && !isSameDay(typed, day) && isRefused(typed);
+
+  return (
+    <I18nProvider locale={dayFirstLocale(locale)}>
+      <AriaDatePicker<CalendarDate>
+        className={styles.dayField}
+        aria-label={ariaLabel}
+        aria-describedby={ariaDescribedBy}
+        value={typed}
+        onChange={(value) => {
+          setTyped(value);
+          if (value && !isRefused(value)) onChange(value);
+        }}
+        isInvalid={isInvalid || refused}
+        minValue={minValue}
+        maxValue={maxValue}
+        isDateUnavailable={isDateUnavailable}
+        autoFocus={autoFocus}
+        firstDayOfWeek="mon"
+        shouldForceLeadingZeros
+        onOpenChange={onOpenChange}
+      >
+        <Group className={`${pickerStyles.box} ${pickerStyles.size36}`}>
+          <DateSegments className={pickerStyles.segments} />
+          <AriaButton
+            className={pickerStyles.calendarButton}
+            aria-label={calendarLabel}
+          >
+            <Icon name="calendar-16" />
+          </AriaButton>
+        </Group>
+        <Popover
+          className={pickerStyles.popover}
+          placement="bottom start"
+          offset={4}
+        >
+          {/* The times under the calendar keep the platform's own clock. */}
+          <I18nProvider locale={locale}>
+            <Dialog
+              className={`${pickerStyles.dialog} ${styles.dialog}`}
+              aria-label={dialogLabel}
+            >
+              {calendar}
+            </Dialog>
+          </I18nProvider>
+        </Popover>
+      </AriaDatePicker>
+    </I18nProvider>
+  );
+};
+
+// A phase-style date range: a typeable start day, then either "Add end date"
+// or a typeable end day that can be removed again. Both days open one
+// calendar, whose day presses go to the caller, with optional times of day.
 const DayPressRangePicker = ({
   'aria-label': ariaLabel,
   'aria-describedby': ariaDescribedBy,
   isInvalid,
   value,
   onDayPress,
-  startPlaceholder,
-  endPlaceholder,
+  onStartChange,
+  onEndChange,
+  onRemoveEnd,
   minValue,
   maxValue,
   isDateUnavailable,
@@ -87,86 +197,117 @@ const DayPressRangePicker = ({
   calendarNote,
   onOpenChange,
 }: Props) => {
-  const valueId = useId();
-  const { locale } = useLocale();
-  const [dateFormatter, timeFormatter] = useMemo(
-    () => [
-      new DateFormatter(locale, {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      }),
-      new DateFormatter(locale, { hour: 'numeric', minute: '2-digit' }),
-    ],
-    [locale]
-  );
-  const format = (date: CalendarDateTime) => {
-    const value = date.toDate(getLocalTimeZone());
-    return `${dateFormatter.format(value)} ${timeFormatter.format(value)}`;
-  };
+  const { formatMessage } = useIntl();
+  const [addingEnd, setAddingEnd] = useState(false);
 
+  const range = toCalendarRange(value);
+  const start = range?.start ?? null;
+  const end = value?.end ? range?.end ?? null : null;
+  const showEnd = !!end || addingEnd;
   const hasFooter = !!startTime || !!endTime || !!calendarNote;
 
+  const unavailable = (day: CalendarDate) =>
+    !!isDateUnavailable?.(day) ||
+    (!!minValue && day.compare(minValue) < 0) ||
+    (!!maxValue && day.compare(maxValue) > 0);
+
+  // A typed range may not run across an unavailable day, as the calendar's
+  // day presses can't either.
+  const crossesUnavailable = (from: CalendarDate, to: CalendarDate) => {
+    if (!isDateUnavailable) return false;
+    for (let day = from; day.compare(to) <= 0; day = day.add({ days: 1 })) {
+      if (isDateUnavailable(day)) return true;
+    }
+    return false;
+  };
+
+  const calendar = (
+    <>
+      <DayPressCalendar
+        value={range}
+        onDayPress={onDayPress}
+        minValue={minValue}
+        maxValue={maxValue}
+        isDateUnavailable={isDateUnavailable}
+        defaultFocusedValue={defaultFocusedValue}
+        autoFocus
+      />
+      {hasFooter && (
+        <>
+          <Divider />
+          {(startTime || endTime) && (
+            <div className={styles.times}>
+              {startTime && <TimeOfDayField time={startTime} />}
+              {endTime && <TimeOfDayField time={endTime} />}
+            </div>
+          )}
+          {calendarNote}
+        </>
+      )}
+    </>
+  );
+
+  const shared = {
+    'aria-describedby': ariaDescribedBy,
+    isInvalid,
+    minValue,
+    maxValue,
+    isDateUnavailable,
+    calendarLabel: formatMessage(messages.openCalendar),
+    dialogLabel: ariaLabel,
+    calendar,
+    onOpenChange,
+  };
+
   return (
-    <div className={styles.picker}>
-      <DialogTrigger onOpenChange={onOpenChange}>
-        <Button
-          className={`${pickerStyles.box} ${pickerStyles.size36} ${styles.trigger}`}
-          aria-label={ariaLabel}
-          aria-describedby={[valueId, ariaDescribedBy]
-            .filter(Boolean)
-            .join(' ')}
-          // A button can't take aria-invalid; aria-describedby links the error.
-          data-invalid={isInvalid || undefined}
-        >
-          <span className={styles.values} id={valueId}>
-            <span className={value ? styles.value : styles.placeholder}>
-              {value ? format(value.start) : startPlaceholder}
-            </span>
-            <span className={styles.arrow} aria-hidden>
-              {' → '}
-            </span>
-            <span className={value?.end ? styles.value : styles.placeholder}>
-              {value?.end ? format(value.end) : endPlaceholder}
-            </span>
+    <div className={styles.range}>
+      <DayField
+        {...shared}
+        aria-label={formatMessage(messages.startDate)}
+        day={start}
+        onChange={onStartChange}
+        isRefused={(day) =>
+          unavailable(day) ||
+          (!!end && (day.compare(end) > 0 || crossesUnavailable(day, end)))
+        }
+      />
+      {showEnd ? (
+        <>
+          <span className={styles.arrow} aria-hidden>
+            →
           </span>
-          <span className={styles.calendarIcon} aria-hidden>
-            <Icon name="calendar-16" />
-          </span>
-        </Button>
-        <Popover
-          className={pickerStyles.popover}
-          placement="bottom start"
-          offset={4}
-        >
-          <Dialog
-            className={`${pickerStyles.dialog} ${styles.dialog}`}
-            aria-label={ariaLabel}
-          >
-            <DayPressCalendar
-              value={toCalendarRange(value)}
-              onDayPress={onDayPress}
-              minValue={minValue}
-              maxValue={maxValue}
-              isDateUnavailable={isDateUnavailable}
-              defaultFocusedValue={defaultFocusedValue}
-              autoFocus
-            />
-            {hasFooter && (
-              <>
-                <Divider />
-                {(startTime || endTime) && (
-                  <div className={styles.times}>
-                    {startTime && <TimeOfDayField time={startTime} />}
-                    {endTime && <TimeOfDayField time={endTime} />}
-                  </div>
-                )}
-                {calendarNote}
-              </>
-            )}
-          </Dialog>
-        </Popover>
-      </DialogTrigger>
+          <DayField
+            {...shared}
+            aria-label={formatMessage(messages.endDate)}
+            day={end}
+            onChange={(day) => {
+              setAddingEnd(false);
+              onEndChange(day);
+            }}
+            isRefused={(day) =>
+              unavailable(day) ||
+              (!!start &&
+                (day.compare(start) < 0 || crossesUnavailable(start, day)))
+            }
+            autoFocus={addingEnd && !end}
+          />
+          <IconButton
+            icon="x-16"
+            size={28}
+            aria-label={formatMessage(messages.removeEndDate)}
+            onPress={() => {
+              setAddingEnd(false);
+              if (end) onRemoveEnd();
+            }}
+          />
+        </>
+      ) : (
+        start && (
+          <Button variant="quiet" onPress={() => setAddingEnd(true)}>
+            {formatMessage(messages.addEndDate)}
+          </Button>
+        )
+      )}
     </div>
   );
 };

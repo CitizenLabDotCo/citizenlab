@@ -6,11 +6,14 @@ import {
   DatePicker as AriaDatePicker,
   Dialog,
   Group,
+  I18nProvider,
   Popover,
+  useLocale,
 } from 'react-aria-components';
 
 import Calendar from '../Calendar';
 import DateSegments from '../DateField/DateSegments';
+import dayFirstLocale from '../DateField/dayFirstLocale';
 import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
 import Icon from '../Icon';
 
@@ -33,7 +36,11 @@ const DatePicker = ({
   onChange,
   isInvalid,
   id,
-}: Props) => (
+}: Props) => {
+  const { locale } = useLocale();
+
+  return (
+    <I18nProvider locale={dayFirstLocale(locale)}>
   <AriaDatePicker<CalendarDate>
     className={styles.picker}
     value={value}
@@ -58,6 +65,8 @@ const DatePicker = ({
       </Dialog>
     </Popover>
   </AriaDatePicker>
-);
+    </I18nProvider>
+  );
+};
 
 export default DatePicker;

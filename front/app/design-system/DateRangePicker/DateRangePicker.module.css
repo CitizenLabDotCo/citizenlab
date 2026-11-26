@@ -1,48 +1,22 @@
-.picker {
+/* Start day, then "Add end date" or the arrow, the end day and its remove
+   button, on one line. */
+.range {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+}
+
+.dayField {
+  /* The Date picker's open styles come with its picker class. */
   composes: picker from '../DatePicker/DatePicker.module.css';
-  width: 296px;
+  flex: 1;
+  min-width: 0;
 }
 
 .arrow {
   composes: ui from '../typography.module.css';
+  flex-shrink: 0;
   color: var(--gv-text-tertiary);
-  white-space: pre;
-}
-
-/* The whole box is the button that opens the calendar. */
-.trigger {
-  text-align: start;
-  cursor: pointer;
-}
-
-.trigger[data-pressed] {
-  border-color: var(--gv-border-control-active);
-}
-
-.values {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.value {
-  color: var(--gv-text-primary);
-}
-
-.placeholder {
-  color: var(--gv-text-placeholder);
-}
-
-.calendarIcon {
-  composes: button from '../Calendar/GhostButton.module.css';
-}
-
-.trigger[data-pressed] .calendarIcon {
-  background: var(--gv-surface-pressed);
-  color: var(--gv-icon-primary);
 }
 
 /* As wide as the calendar or the times; a note wraps inside that. */
