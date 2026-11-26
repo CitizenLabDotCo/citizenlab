@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'email_campaigns/metadata_interceptor'
+require 'email_campaigns/scaleway_tem_delivery_method'
+
 module EmailCampaigns
   class Engine < ::Rails::Engine
     isolate_namespace EmailCampaigns
@@ -14,7 +17,7 @@ module EmailCampaigns
 
     initializer 'email_campaigns.metadata_interceptor' do
       ActiveSupport.on_load(:action_mailer) do
-        register_interceptor 'EmailCampaigns::MetadataInterceptor'
+        register_interceptor EmailCampaigns::MetadataInterceptor
       end
     end
   end
