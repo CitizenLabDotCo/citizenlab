@@ -15,9 +15,10 @@ describe('Admin product feedback page', () => {
     });
   });
 
-  it('opens from the sidebar and loads the page', () => {
+  it('opens from the support menu and loads the page', () => {
     cy.visit('/en/admin/dashboard/overview');
-    cy.get('nav#sidebar a[href="/en/admin/product-feedback"]').click();
+    cy.get('#e2e-support-menu-button').click();
+    cy.get('a[href="/en/admin/product-feedback"]').click();
     cy.location('pathname').should('eq', '/en/admin/product-feedback');
     cy.wait('@userjotIdentity');
     cy.get('#e2e-product-feedback-page');
