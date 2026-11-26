@@ -38,6 +38,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  new_phone                 :string
 #  phone_confirmed_at        :datetime
 #  early_access_opt_ins      :jsonb            not null
+#  early_access_prompts      :jsonb            not null
 #  merge_target_email        :string
 #  email_bounced_at          :datetime
 #  email_bounce_reason       :string
@@ -133,6 +134,22 @@ class User < ApplicationRecord
         'type' => 'array',
         'uniqueItems' => true,
         'items' => { 'type' => 'string' }
+      }
+    end
+
+    def early_access_prompts_json_schema
+      {
+        'type' => 'object',
+        'additionalProperties' => {
+          'type' => 'object',
+          'additionalProperties' => false,
+          'properties' => {
+            'declines' => { 'type' => 'integer', 'minimum' => 0 },
+            'last_declined_at' => { 'type' => 'string', 'format' => 'date-time' },
+            'enabled_at' => { 'type' => 'string', 'format' => 'date-time' },
+            'turned_off_at' => { 'type' => 'string', 'format' => 'date-time' }
+          }
+        }
       }
     end
 
@@ -233,6 +250,7 @@ class User < ApplicationRecord
   before_validation :complete_registration
 
   # A bounce belongs to the address, so a different address starts clean.
+  before_save :track_early_access_switches, if: -> { persisted? && early_access_opt_ins_changed? }
   before_save :clear_email_bounce, if: -> { persisted? && email_changed? && !email_changed_only_in_case? }
 
   has_many :identities, dependent: :destroy
@@ -276,6 +294,8 @@ class User < ApplicationRecord
   validates :early_access_opt_ins, json: { schema: -> { User.early_access_opt_ins_json_schema } },
     if: :early_access_opt_ins_changed?
   validate :validate_early_access_opt_ins_offered, if: :early_access_opt_ins_changed?
+  validates :early_access_prompts, json: { schema: -> { User.early_access_prompts_json_schema } },
+    if: :early_access_prompts_changed?
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
@@ -371,6 +391,35 @@ class User < ApplicationRecord
   # The opt-ins that still apply: a feature can stop being offered after the user opted in.
   def early_access_overrides
     Set.new(early_access_opt_ins) & offered_early_access_features.keys
+  end
+
+  # Days to wait before inviting the user again after their first, second and third "Not now".
+  # After the fourth, the invitation stops: the profile settings stay the way in.
+  EARLY_ACCESS_PROMPT_DELAYS = [7, 14, 30].freeze
+
+  # The offered features the user has not turned on whose invitation is due again.
+  def early_access_prompts_due
+    offered_early_access_features.keys.select do |feature|
+      next false if early_access_opt_ins.include?(feature)
+
+      prompt = early_access_prompts.fetch(feature, {})
+      declines = prompt.fetch('declines', 0)
+      next true if declines.zero? || prompt['last_declined_at'].blank?
+      next false if declines > EARLY_ACCESS_PROMPT_DELAYS.size
+
+      Time.zone.parse(prompt['last_declined_at']) + EARLY_ACCESS_PROMPT_DELAYS[declines - 1].days <= Time.zone.now
+    end
+  end
+
+  # Records a "Not now" to the invitation to try an early access feature.
+  def decline_early_access(feature)
+    unless offered_early_access_features.key?(feature)
+      errors.add(:early_access_prompts, 'not_offered', value: feature)
+      return false
+    end
+
+    record_early_access_decline(feature)
+    save
   end
 
   # Authenticating ALWAYS requires a non-blank password that matches the stored digest.
@@ -627,6 +676,30 @@ class User < ApplicationRecord
 
     errors.add(field, 'something_went_wrong', code: EMAIL_BANNED_ERROR_CODE)
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
+  end
+
+  # Turning a feature on or off is kept for tracking. Turning it off also counts as declining
+  # the invitation, so the user is not invited again right after choosing the previous version.
+  def track_early_access_switches
+    now = Time.zone.now.iso8601
+    before = Array(early_access_opt_ins_was)
+
+    (early_access_opt_ins - before).each do |feature|
+      update_early_access_prompt(feature, 'enabled_at' => now)
+    end
+    (before - early_access_opt_ins).each do |feature|
+      update_early_access_prompt(feature, 'turned_off_at' => now)
+      record_early_access_decline(feature)
+    end
+  end
+
+  def record_early_access_decline(feature)
+    declines = early_access_prompts.dig(feature, 'declines') || 0
+    update_early_access_prompt(feature, 'declines' => declines + 1, 'last_declined_at' => Time.zone.now.iso8601)
+  end
+
+  def update_early_access_prompt(feature, values)
+    self.early_access_prompts = early_access_prompts.merge(feature => early_access_prompts.fetch(feature, {}).merge(values))
   end
 
   def validate_early_access_opt_ins_offered

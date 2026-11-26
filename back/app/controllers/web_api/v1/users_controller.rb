@@ -125,6 +125,18 @@ class WebApi::V1::UsersController < ApplicationController
     render json: raw_json({ token: })
   end
 
+  # "Not now" to the invitation to try an early access feature.
+  def decline_early_access
+    @user = current_user
+    authorize @user, :decline_early_access?
+
+    if @user.decline_early_access(params.require(:feature))
+      render json: WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
+    else
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def me
     @user = current_user
     skip_authorization

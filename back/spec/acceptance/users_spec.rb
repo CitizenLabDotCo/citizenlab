@@ -738,10 +738,44 @@ resource 'Users' do
       header_token_for @user
     end
 
+    post 'web_api/v1/users/me/early_access_declines' do
+      example '[error] A resident cannot answer an early access invitation', document: false do
+        do_request(feature: 'spaces')
+
+        assert_status 401
+      end
+    end
+
     context 'when admin' do
       before do
         @user.update!(roles: [{ type: 'admin' }])
         header_token_for @user # role change invalidates the earlier token; re-authenticate
+      end
+
+      post 'web_api/v1/users/me/early_access_declines' do
+        parameter :feature, 'The early access feature the user said "Not now" to'
+
+        context 'with features in early access' do
+          before do
+            allow(AppConfiguration::Settings).to receive(:early_access_tiers)
+              .and_return({ 'spaces' => 'general', 'project_planning_calendar' => 'internal' })
+          end
+
+          example 'Say "Not now" to trying an early access feature' do
+            do_request(feature: 'spaces')
+
+            assert_status 200
+            expect(response_data.dig(:attributes, :early_access_prompts_due)).not_to include('spaces')
+            expect(@user.reload.early_access_prompts.dig('spaces', 'declines')).to eq 1
+          end
+
+          example '[error] Say "Not now" to a feature that is not offered', document: false do
+            do_request(feature: 'project_planning_calendar')
+
+            assert_status 422
+            expect(@user.reload.early_access_prompts).to eq({})
+          end
+        end
       end
 
       get 'web_api/v1/users' do

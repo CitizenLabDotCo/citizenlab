@@ -137,6 +137,10 @@ class UserPolicy < ApplicationPolicy
     !!user && admin? && record.id == user.id
   end
 
+  def decline_early_access?
+    own_early_access?
+  end
+
   def permitted_attributes_for_create
     %i[email locale]
   end

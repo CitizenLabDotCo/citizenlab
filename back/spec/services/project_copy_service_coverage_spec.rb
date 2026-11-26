@@ -74,6 +74,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       'User' => %w[
         confirmation_required
         early_access_opt_ins
+        early_access_prompts
         email_bounce_reason
         email_bounced_at
         email_confirmed_at

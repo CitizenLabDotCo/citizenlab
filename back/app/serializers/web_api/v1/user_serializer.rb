@@ -49,6 +49,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :onboarding, if: PRIVATE
   attribute :early_access_opt_ins, if: OWN_EARLY_ACCESS
   attribute :offered_early_access_features, if: OWN_EARLY_ACCESS
+  attribute :early_access_prompts_due, if: OWN_EARLY_ACCESS
 
   attribute :no_password, if: PRIVATE do |object|
     object.no_password?

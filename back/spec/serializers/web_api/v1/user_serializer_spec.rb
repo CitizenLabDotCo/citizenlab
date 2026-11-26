@@ -22,6 +22,10 @@ describe WebApi::V1::UserSerializer do
       expect(attributes_for(admin)).to include(offered_early_access_features: { 'spaces' => 'general' })
     end
 
+    it 'reports which invitations to try a feature are due' do
+      expect(attributes_for(admin)).to include(early_access_prompts_due: [])
+    end
+
     it 'is not serialized for a resident' do
       expect(attributes_for(create(:user))).not_to have_key(:early_access_opt_ins)
     end
@@ -31,6 +35,7 @@ describe WebApi::V1::UserSerializer do
 
       expect(attributes).not_to have_key(:early_access_opt_ins)
       expect(attributes).not_to have_key(:offered_early_access_features)
+      expect(attributes).not_to have_key(:early_access_prompts_due)
     end
   end
 

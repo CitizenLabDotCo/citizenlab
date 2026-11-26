@@ -137,6 +137,7 @@ Rails.application.routes.draw do
           get :me
           get 'me/ping', action: 'ping'
           get 'me/intercom_token', action: 'intercom_token'
+          post 'me/early_access_declines', action: 'decline_early_access'
           get :seats
           get :billed_admins
           get :billed_moderators

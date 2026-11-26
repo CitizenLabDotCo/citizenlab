@@ -1179,6 +1179,93 @@ RSpec.describe User do
     end
   end
 
+  describe 'early_access_prompts' do
+    let(:admin) { create(:admin) }
+
+    before do
+      allow(AppConfiguration::Settings).to receive(:early_access_tiers)
+        .and_return({ 'general_feature' => 'general', 'internal_feature' => 'internal' })
+    end
+
+    it 'is empty by default' do
+      expect(admin.early_access_prompts).to eq({})
+    end
+
+    it 'invites the user to try an offered feature' do
+      expect(admin.early_access_prompts_due).to eq ['general_feature']
+    end
+
+    it 'does not invite a user who turned the feature on' do
+      admin.update!(early_access_opt_ins: ['general_feature'])
+
+      expect(admin.early_access_prompts_due).to be_empty
+    end
+
+    describe 'after "Not now"' do
+      using RSpec::Parameterized::TableSyntax
+
+      where(:declines, :days_ago, :due) do
+        1 | 6  | false
+        1 | 7  | true
+        2 | 13 | false
+        2 | 14 | true
+        3 | 29 | false
+        3 | 30 | true
+        4 | 365 | false
+      end
+
+      with_them do
+        it 'waits 7, then 14, then 30 days, then stops inviting' do
+          admin.update!(early_access_prompts: {
+            'general_feature' => { 'declines' => declines, 'last_declined_at' => days_ago.days.ago.iso8601 }
+          })
+
+          expect(admin.early_access_prompts_due.include?('general_feature')).to eq due
+        end
+      end
+    end
+
+    describe '#decline_early_access' do
+      it 'counts the "Not now" and when it happened' do
+        freeze_time do
+          expect(admin.decline_early_access('general_feature')).to be true
+          expect(admin.reload.early_access_prompts['general_feature'])
+            .to eq('declines' => 1, 'last_declined_at' => Time.zone.now.iso8601)
+        end
+      end
+
+      it 'refuses a feature the user is not offered' do
+        expect(admin.decline_early_access('internal_feature')).to be false
+        expect(admin.errors.details[:early_access_prompts]).to include(error: 'not_offered', value: 'internal_feature')
+      end
+    end
+
+    describe 'when the user turns a feature on or off' do
+      it 'records when it was turned on' do
+        freeze_time do
+          admin.update!(early_access_opt_ins: ['general_feature'])
+
+          expect(admin.early_access_prompts['general_feature']).to eq('enabled_at' => Time.zone.now.iso8601)
+        end
+      end
+
+      it 'records when it was turned off and counts it as a "Not now"' do
+        admin.update!(early_access_opt_ins: ['general_feature'])
+
+        freeze_time do
+          admin.update!(early_access_opt_ins: [])
+
+          expect(admin.early_access_prompts['general_feature']).to include(
+            'turned_off_at' => Time.zone.now.iso8601,
+            'declines' => 1,
+            'last_declined_at' => Time.zone.now.iso8601
+          )
+          expect(admin.early_access_prompts_due).to be_empty
+        end
+      end
+    end
+  end
+
   describe 'registered?' do
     it 'returns false when the user has not completed registration' do
       u = build(:user, registration_completed_at: nil)
