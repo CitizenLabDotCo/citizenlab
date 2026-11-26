@@ -250,6 +250,15 @@ resource 'Phases' do
       expect([page2_question, page3_question].map { |field| result_for(field)[:hidden] }).to eq [true, true]
     end
 
+    example '[error] Fails when a ranking with logic has ranked options without a rule (current behaviour)', document: false do
+      ranking_field = create(:custom_field_ranking, :with_options, resource: custom_form, key: 'ranking_field')
+      by_train = ranking_field.options.find_by(key: 'by_train')
+      ranking_field.update!(logic: { rules: [{ if: by_train.id, goto_page_id: form_end.id }] })
+      respond(ranking_field: %w[by_bike by_train])
+
+      expect { do_request }.to raise_error(ArgumentError, /comparison of/)
+    end
+
     context 'when user fields are asked in the form' do
       let!(:user_field) { create(:custom_field_select, :for_registration, :with_options, key: 'user_select_field', enabled: true) }
 
