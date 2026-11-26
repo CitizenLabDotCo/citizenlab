@@ -3,7 +3,6 @@ import React, { useId } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import Banner from 'design-system/Banner';
 import { FieldError } from 'design-system/Field';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';
@@ -22,7 +21,6 @@ import { convertToTimeZoneISO } from 'utils/dateUtils';
 import messages from '../../messages';
 import { ValidationErrors } from '../../typings';
 
-import styles from './PhaseDatePicker.module.css';
 import { PhaseDateRanges } from './usePhaseDateRanges';
 
 const START_MONTH = new Date(1900, 1, 1);
@@ -122,16 +120,12 @@ const PhaseDatePicker = ({
         </>
       )}
 
-      {isSelectedRangeOpenEnded(selectedRange, disabledRanges) &&
-        (isPanel ? (
-          <div className={styles.openEndedWarning}>
-            <Banner tone="warning">{openEndedWarning}</Banner>
-          </div>
-        ) : (
-          <Box mt="24px">
-            <Warning>{openEndedWarning}</Warning>
-          </Box>
-        ))}
+      {/* The redesign says it in the status line under the dates instead. */}
+      {!isPanel && isSelectedRangeOpenEnded(selectedRange, disabledRanges) && (
+        <Box mt="24px">
+          <Warning>{openEndedWarning}</Warning>
+        </Box>
+      )}
     </>
   );
 };

@@ -16,7 +16,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import { useIntl } from 'utils/cl-intl';
 
-import sharedMessages from '../_shared/messages';
 import { DateRange } from '../_shared/typings';
 
 import { getEndMonth, getStartMonth } from './Calendar/utils/getStartEndMonth';
@@ -29,7 +28,6 @@ import {
 } from './Calendar/utils/timeSelection';
 import { getEndTimeMaxTime, getStartTimeMinTime } from './Calendar/utils/utils';
 import styles from './DesignSystemPicker.module.css';
-import { isSelectedRangeOpenEnded } from './isSelectedRangeOpenEnded';
 import messages from './messages';
 import 'design-system/tokens.css';
 
@@ -99,7 +97,6 @@ const DesignSystemPicker = ({
   });
   const startMinTime = getStartTimeMinTime(from, disabledRanges);
   const endMaxTime = getEndTimeMaxTime(to, disabledRanges);
-  const selectDate = formatMessage(sharedMessages.selectDate);
   const openEnded = formatMessage(messages.openEnded);
 
   const firstMonth = getStartMonth({
@@ -148,6 +145,16 @@ const DesignSystemPicker = ({
     onUpdateRange({ from: withTime(from, newTime), to });
   };
 
+  // A typed day keeps the time the calendar would give it.
+  const handleStartTyped = (date: CalendarDate) => {
+    onUpdateRange({ from: withTime(fromDay(date), startTime), to });
+  };
+
+  const handleEndTyped = (date: CalendarDate) => {
+    if (!from) return;
+    onUpdateRange({ from, to: withTime(fromDay(date), endTime) });
+  };
+
   const handleEndTimeChange = (time: Time) => {
     const newTime = fromTime(time, endTime);
     setSelectedEndTime(newTime);
@@ -169,13 +176,10 @@ const DesignSystemPicker = ({
             : null
         }
         onDayPress={handleDayPress}
+        onStartChange={handleStartTyped}
+        onEndChange={handleEndTyped}
+        onRemoveEnd={() => onUpdateRange({ from, to: undefined })}
         onOpenChange={handleOpenChange}
-        startPlaceholder={selectDate}
-        endPlaceholder={
-          isSelectedRangeOpenEnded(selectedRange, disabledRanges)
-            ? openEnded
-            : selectDate
-        }
         minValue={toDay(startOfMonth(firstMonth))}
         maxValue={toDay(endOfMonth(lastMonth))}
         isDateUnavailable={(date) =>
@@ -186,7 +190,7 @@ const DesignSystemPicker = ({
           isSingleDay
             ? undefined
             : {
-                label: formatMessage(messages.startTime),
+                label: formatMessage(messages.startTimeLabel),
                 value: toTime(startTime),
                 minValue: startMinTime ? toTime(startMinTime) : undefined,
                 onChange: handleStartTimeChange,
@@ -196,7 +200,7 @@ const DesignSystemPicker = ({
           isSingleDay
             ? undefined
             : {
-                label: formatMessage(messages.endTime),
+                label: formatMessage(messages.endTimeLabel),
                 value: to ? toTime(endTime) : null,
                 maxValue: endMaxTime ? toTime(endMaxTime) : undefined,
                 isDisabled: !to,

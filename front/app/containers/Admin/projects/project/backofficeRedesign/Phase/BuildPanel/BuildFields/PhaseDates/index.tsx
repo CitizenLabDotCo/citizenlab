@@ -16,10 +16,12 @@ import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/mes
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
 import { useIntl } from 'utils/cl-intl';
+import { getDateInTimezone } from 'utils/dateUtils';
 
 import PanelField from '../../PanelField';
 
 import DatesSummary from './DatesSummary';
+import DateStatus from './DateStatus';
 import messages from './messages';
 
 interface Props {
@@ -44,6 +46,8 @@ const PhaseDates = ({
   const ranges = usePhaseDateRanges({ formData, standalone });
 
   if (!ranges) return null;
+
+  const now = getDateInTimezone(new Date().toISOString(), ranges.timeZone);
 
   const label = formatMessage(
     isSurveyMethod(participationMethod)
@@ -88,6 +92,13 @@ const PhaseDates = ({
           onChange={handleChange}
           variant="panel"
           label={label}
+        />
+      )}
+      {open && ranges.selectedRange.from && now && (
+        <DateStatus
+          from={ranges.selectedRange.from}
+          to={ranges.selectedRange.to}
+          now={now}
         />
       )}
     </PanelField>

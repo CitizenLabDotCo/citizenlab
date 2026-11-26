@@ -1,0 +1,49 @@
+/* The library's date status line under the Dates fields: 40 high, a mark,
+   the state and how far from the next change. */
+.status {
+  composes: ui from '../../../../../../../../../design-system/typography.module.css';
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  min-height: var(--gv-size-40);
+  margin-top: var(--gv-space-12);
+  padding: var(--gv-space-10) var(--gv-space-12);
+  border-radius: var(--gv-radius-8);
+}
+
+.notStarted {
+  /* The library binds this fill to blue 10. */
+  background: var(--gv-blue-10);
+  color: var(--gv-text-body-subtle);
+}
+
+.live {
+  background: var(--gv-surface-success);
+  color: var(--gv-text-success);
+}
+
+.finished {
+  background: var(--gv-surface-control-subtle);
+  color: var(--gv-text-secondary);
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.dot {
+  flex-shrink: 0;
+  width: var(--gv-space-8);
+  height: var(--gv-space-8);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-success-strong);
+}
+
+.label {
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.notStarted .detail {
+  color: var(--gv-text-secondary);
+}

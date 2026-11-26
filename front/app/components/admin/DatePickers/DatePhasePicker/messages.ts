@@ -22,4 +22,12 @@ export default defineMessages({
     defaultMessage:
       'Minimum phase duration is 24 hours (Automatically start at 12:00 AM and end at midnight GMT {timezone}).',
   },
+  startTimeLabel: {
+    id: 'app.components.admin.DatePhasePicker.startTimeLabel',
+    defaultMessage: 'Start time',
+  },
+  endTimeLabel: {
+    id: 'app.components.admin.DatePhasePicker.endTimeLabel',
+    defaultMessage: 'End time',
+  },
 });
