@@ -739,7 +739,7 @@ describe('determineNextPageNumber edge cases', () => {
       expect(nextPage(pages, { q: 'deleted_option' })).toBe(1);
     });
 
-    it('returns -1 when the rule target is not one of the pages (current behaviour, N4)', () => {
+    it('returns -1 when the rule target is not one of the pages (current behaviour, N9)', () => {
       const pages = buildPages(abcOptions, [
         { if: 'id-a', goto_page_id: 'disabled-page' },
       ]);
@@ -747,7 +747,7 @@ describe('determineNextPageNumber edge cases', () => {
       expect(nextPage(pages, { q: 'a' })).toBe(-1);
     });
 
-    it('returns -1 when a matching rule has no target page (current behaviour, N4)', () => {
+    it('returns -1 when a matching rule has no target page (current behaviour, N9)', () => {
       const pages = buildPages(abcOptions, [{ if: 'id-a', goto_page_id: '' }]);
 
       expect(nextPage(pages, { q: 'a' })).toBe(-1);
@@ -1073,7 +1073,7 @@ describe('getValidPagePath and getSkippedPageIndices edge cases', () => {
       logic: { rules },
     });
 
-  it('stops the path at a page whose rule targets a page that is not in the form (current behaviour, N4)', () => {
+  it('stops the path at a page whose rule targets a page that is not in the form (current behaviour, N9)', () => {
     const pages = convertCustomFieldsToNestedPages([
       pageField('p1'),
       selectOn('q', [{ if: 'id-a', goto_page_id: 'disabled-page' }]),

@@ -403,7 +403,7 @@ describe IdeaCustomFieldsService do
       expect(scale_field.reload.logic['rules'].first['if']).to eq 2
     end
 
-    it 'clears the target of a rule to a page that is not in the form (current behaviour)' do
+    it 'clears the target of a rule to a page that is not in the form (current behaviour, N9)' do
       create(:custom_field_page, resource: custom_form)
       select_field = create(:custom_field_select, :with_options, resource: custom_form)
       page2 = create(:custom_field_page, resource: custom_form)

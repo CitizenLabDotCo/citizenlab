@@ -133,7 +133,7 @@ describe('getTitleFromPageId', () => {
     expect(title(undefined)).toBeUndefined();
   });
 
-  it('shows an undefined number for a page that is not in the form (current behaviour, N4)', () => {
+  it('shows an undefined number for a page that is not in the form (current behaviour, N9)', () => {
     expect(title('deleted-page')).toBe('Page undefined');
   });
 });

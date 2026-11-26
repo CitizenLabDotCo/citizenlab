@@ -380,7 +380,7 @@ describe('SurveyForm with logic', () => {
     expect(await screen.findByLabelText(/Question Two/)).toHaveValue('');
   });
 
-  it('renders no page and no buttons after a jump to a page that is not in the form (current behaviour, N4)', async () => {
+  it('renders no page and no buttons after a jump to a page that is not in the form (current behaviour, N9)', async () => {
     mockCustomFields = buildForm({
       rules: [{ if: 'id-no', goto_page_id: 'page-missing' }],
     });
