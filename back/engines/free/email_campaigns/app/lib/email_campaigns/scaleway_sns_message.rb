@@ -23,6 +23,8 @@ module EmailCampaigns
       'SubscriptionConfirmation' => %w[Message MessageId SubscribeURL Timestamp Token TopicArn Type]
     }.freeze
 
+    SIGNATURE_KEYS = %w[Signature SignatureVersion SigningCertURL].freeze
+
     # Hash algorithm for each SNS SignatureVersion.
     DIGESTS = { '1' => 'SHA1', '2' => 'SHA256' }.freeze
 
@@ -31,11 +33,24 @@ module EmailCampaigns
     MAX_CERTIFICATE_BYTES = 64 * 1024 # = 64 KiB
     CERTIFICATE_CACHE_TTL = 1.day
 
-    class << self
-      attr_writer :region, :trust_chain_path, :expected_topic_arn
+    # TEM is currently only available in one region.
+    REGION = 'fr-par'
 
-      # @param raw_body [String] the request body as received; the signature covers the exact
-      #   `Message` string, so it must not be re-serialised.
+    # Scaleway doesn't really document where signing certificates are served from, or
+    # guarantee it. This host is what its docs suggest and what we observed in our tests.
+    # A certificate is trusted because of the CA chain, not because of this host. We still
+    # pin it, because we don't want the application fetching arbitrary URLs.
+    CERTIFICATE_HOST = "messaging.s3.#{REGION}.scw.cloud"
+
+    class << self
+      attr_writer :trust_chain_path, :expected_topic_arn
+
+      # Parses the request body and verifies the envelope, so an instance is always
+      # authenticated and only holds signed or checked fields.
+      #
+      # @param raw_body [String] the request body as received; the signature covers the
+      #   exact `Message` string, so it must not be re-serialised.
+      # @return [ScalewaySnsMessage]
       # @raise [InvalidMessage] when the body isn't an SNS envelope, doesn't come from the
       #   expected topic, or can't be authenticated.
       def parse!(raw_body)
@@ -47,23 +62,8 @@ module EmailCampaigns
         raise InvalidMessage, 'body is not JSON'
       end
 
-      def certificate_url_pattern
-        esc_region = Regexp.escape(region)
-        %r{\Ahttps://messaging\.s3\.#{esc_region}\.scw\.cloud/#{esc_region}/sns/[A-Za-z0-9_.-]+\.pem\z}
-      end
-
-      def subscribe_host
-        "sns.mnq.#{region}.scaleway.com"
-      end
-
-      # Topics and Events hosts and CA chain depend on the region. TEM's region is the one
-      # the topic is expected to live in.
-      def region
-        @region || ENV.fetch('SCW_TEM_REGION', 'fr-par')
-      end
-
       def trust_chain_path
-        @trust_chain_path || Engine.root.join('config', 'scaleway_sns_trust_chain', "#{region}.pem")
+        @trust_chain_path || Engine.root.join('config', 'scaleway_sns_trust_chain', "#{REGION}.pem")
       end
 
       # The only topic envelopes are accepted from. If it's not set, every envelope is refused.
@@ -72,6 +72,10 @@ module EmailCampaigns
       end
     end
 
+    # Use `parse!` instead, which parses and verifies in one go.
+    private_class_method :new
+
+    # Once verified, only the signed fields and the signature material are left in it.
     attr_reader :envelope
 
     def initialize(envelope)
@@ -98,22 +102,16 @@ module EmailCampaigns
       raise InvalidMessage, 'Message is not JSON'
     end
 
-    # @raise [InvalidMessage] unless the url points at Scaleway's SNS endpoint
-    def subscribe_url
-      url = envelope['SubscribeURL'].to_s
+    # @return [String, nil] the confirmation URL of a `SubscriptionConfirmation` message,
+    #   or nil for other message types
+    def subscribe_url = envelope['SubscribeURL']
 
-      uri = begin
-        URI.parse(url)
-      rescue URI::InvalidURIError
-        nil
-      end
-
-      valid = uri&.scheme == 'https' && uri.host == self.class.subscribe_host && uri.query.present?
-      raise InvalidMessage, 'SubscribeURL is not a Scaleway SNS confirmation URL' unless valid
-
-      url
-    end
-
+    # Authenticates the envelope, then drops every field that is neither covered by the
+    # signature nor part of it (`UnsubscribeURL`, unknown fields), so that only
+    # authenticated data can be read afterwards.
+    #
+    # @raise [InvalidMessage] when the envelope doesn't come from the expected topic or
+    #  can't be authenticated.
     def verify!
       raise InvalidMessage, "unsupported Type #{type.inspect}" unless SIGNED_KEYS.key?(type)
 
@@ -124,17 +122,10 @@ module EmailCampaigns
       digest = DIGESTS[envelope['SignatureVersion'].to_s]
       raise InvalidMessage, 'unsupported SignatureVersion' unless digest
 
-      certificate_url = envelope['SigningCertURL'].to_s
-      unless certificate_url.match?(self.class.certificate_url_pattern)
-        raise InvalidMessage, 'SigningCertURL is not a Scaleway certificate URL'
-      end
-
-      signature = decode_signature
-      certificate = OpenSSL::X509::Certificate.new(certificate_pem(certificate_url))
-      valid = certificate.public_key.verify(digest, signature, string_to_sign)
+      valid = signing_certificate.public_key.verify(digest, decoded_signature, string_to_sign)
       raise InvalidMessage, 'signature does not verify' unless valid
 
-      self
+      @envelope = envelope.slice(*SIGNED_KEYS[type], *SIGNATURE_KEYS).freeze
     end
 
     private
@@ -158,16 +149,21 @@ module EmailCampaigns
       end.join
     end
 
-    def decode_signature
+    def decoded_signature
       Base64.strict_decode64(envelope['Signature'].to_s)
     rescue ArgumentError
       raise InvalidMessage, 'Signature is not base64'
     end
 
-    def certificate_pem(url)
-      Rails.cache.fetch("scaleway_sns_certificate/#{url}", expires_in: CERTIFICATE_CACHE_TTL) do
+    def signing_certificate
+      url = envelope['SigningCertURL'].to_s
+
+      # Only certificates that passed the CA chain check are cached, so a cache hit is trusted.
+      pem = Rails.cache.fetch("scaleway_sns_certificate/#{url}", expires_in: CERTIFICATE_CACHE_TTL) do
         fetch_and_validate_certificate(url)
       end
+
+      OpenSSL::X509::Certificate.new(pem)
     end
 
     def fetch_and_validate_certificate(url)
@@ -182,6 +178,10 @@ module EmailCampaigns
     # Streamed so an oversized response is cut off instead of buffered whole: raising from
     # `on_data` unwinds through `Net::HTTP#start`, which closes the connection.
     def fetch_certificate(url)
+      unless https_url_on?(url, CERTIFICATE_HOST)
+        raise InvalidMessage, 'SigningCertURL is not a Scaleway certificate URL'
+      end
+
       body = +''
       response = Faraday.get(url) do |request|
         request.options.timeout = 5
@@ -201,6 +201,14 @@ module EmailCampaigns
 
     def trust_store
       OpenSSL::X509::Store.new.tap { |store| store.add_file(self.class.trust_chain_path.to_s) }
+    end
+
+    # Whether `url` is an https url on that host, on the default port.
+    def https_url_on?(url, host)
+      uri = URI.parse(url)
+      uri.is_a?(URI::HTTPS) && uri.host == host && uri.port == 443
+    rescue URI::InvalidURIError
+      false
     end
   end
 end

@@ -82,7 +82,6 @@ RSpec.describe EmailCampaigns::ScalewaySnsMessage do
   end
 
   before do
-    described_class.region = 'fr-par'
     described_class.trust_chain_path = pki[:trust_chain].path
     described_class.expected_topic_arn = topic_arn
     Rails.cache.clear
@@ -90,7 +89,6 @@ RSpec.describe EmailCampaigns::ScalewaySnsMessage do
   end
 
   after do
-    described_class.region = nil
     described_class.trust_chain_path = nil
     described_class.expected_topic_arn = nil
   end
@@ -116,11 +114,17 @@ RSpec.describe EmailCampaigns::ScalewaySnsMessage do
     expect(message.subscribe_url).to eq(subscribe_url)
   end
 
-  it 'refuses a subscription URL that does not point at Scaleway' do
-    subscribe_url = 'https://attacker.example/?Action=ConfirmSubscription&Token=y'
-    message = described_class.parse!(signed_envelope(type: 'SubscriptionConfirmation', 'SubscribeURL' => subscribe_url, 'Token' => 'y').to_json)
+  it 'does not expose fields that are neither signed nor checked' do
+    # `SubscribeURL` is not covered by the signature of a notification.
+    envelope = signed_envelope(type: 'Notification', 'SubscribeURL' => 'https://attacker.example/')
+    message = described_class.parse!(envelope.to_json)
 
-    expect { message.subscribe_url }.to raise_error(described_class::InvalidMessage, /SubscribeURL/)
+    expect(message.subscribe_url).to be_nil
+    expect(message.envelope).not_to include('SubscribeURL', 'UnsubscribeURL')
+  end
+
+  it 'cannot be instantiated without going through verification' do
+    expect { described_class.new({}) }.to raise_error(NoMethodError)
   end
 
   it 'refuses a message whose signature does not match its content' do

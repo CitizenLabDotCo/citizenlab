@@ -30,10 +30,10 @@ resource 'Scaleway TEM events' do
     let(:envelope) { { 'Type' => 'Notification', 'Message' => event.to_json } }
 
     # The envelope's validity (signature, topic) has its own spec; here `parse!`
-    # hands back the envelope unverified.
+    # hands back the message with an unverified envelope.
     before do
       allow(EmailCampaigns::ScalewaySnsMessage).to receive(:parse!) do |raw_body|
-        EmailCampaigns::ScalewaySnsMessage.new(JSON.parse(raw_body))
+        EmailCampaigns::ScalewaySnsMessage.send(:new, JSON.parse(raw_body))
       end
     end
 
