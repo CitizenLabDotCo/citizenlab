@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.shared.SettingsPanel.expandAll',
     defaultMessage: 'Expand all',
   },
+  collapseAll: {
+    id: 'app.containers.Admin.projects.shared.SettingsPanel.collapseAll',
+    defaultMessage: 'Collapse all',
+  },
 });

@@ -38,13 +38,13 @@ const PanelGroup = ({
   children,
 }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
-  const expandAll = useContext(ExpandAllContext).count;
-  const [seenExpandAll, setSeenExpandAll] = useState(expandAll);
+  const expandAll = useContext(ExpandAllContext);
+  const [seenExpandAll, setSeenExpandAll] = useState(expandAll.count);
 
-  // Opens on each Expand all press; adjusted during render, as React recommends for derived state.
-  if (expandAll !== seenExpandAll) {
-    setSeenExpandAll(expandAll);
-    setOpen(true);
+  // Follows each Expand all or Collapse all press; adjusted during render, as React recommends for derived state.
+  if (expandAll.count !== seenExpandAll) {
+    setSeenExpandAll(expandAll.count);
+    setOpen(expandAll.opened);
   }
   const isOpen = open || hasError;
   const reveal = useCallback(() => setOpen(true), []);

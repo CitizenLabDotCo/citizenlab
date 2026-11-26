@@ -40,7 +40,7 @@ import DislikingToggle from './DislikingToggle';
 import styles from './IdeationInputs.module.css';
 import 'design-system/tokens.css';
 
-const NO_EXPAND_ALL = { count: 0 };
+const NO_EXPAND_ALL = { count: 0, opened: false };
 
 interface Props {
   moderationAction?: ReactNode;

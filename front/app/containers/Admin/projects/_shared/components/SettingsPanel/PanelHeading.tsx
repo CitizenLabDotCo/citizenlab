@@ -16,18 +16,20 @@ interface Props {
 
 const PanelHeading = ({ label, expandable = false }: Props) => {
   const { formatMessage } = useIntl();
-  const { expand } = useContext(ExpandAllContext);
+  const { opened, toggle } = useContext(ExpandAllContext);
 
   return (
     <PanelGroupHeader
       label={label}
       action={
         expandable &&
-        expand && (
+        toggle && (
           <IconButton
             icon="chevrons-up-down-16"
-            aria-label={formatMessage(messages.expandAll)}
-            onPress={expand}
+            aria-label={formatMessage(
+              opened ? messages.collapseAll : messages.expandAll
+            )}
+            onPress={toggle}
           />
         )
       }

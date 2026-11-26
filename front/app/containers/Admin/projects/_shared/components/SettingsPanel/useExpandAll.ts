@@ -1,11 +1,18 @@
 import { useMemo, useState } from 'react';
 
 const useExpandAll = () => {
-  const [count, setCount] = useState(0);
+  const [state, setState] = useState({ count: 0, opened: false });
 
   return useMemo(
-    () => ({ count, expand: () => setCount((value) => value + 1) }),
-    [count]
+    () => ({
+      ...state,
+      toggle: () =>
+        setState((previous) => ({
+          count: previous.count + 1,
+          opened: !previous.opened,
+        })),
+    }),
+    [state]
   );
 };
 
