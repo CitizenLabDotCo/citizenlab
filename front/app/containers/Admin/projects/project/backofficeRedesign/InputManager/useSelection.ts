@@ -36,17 +36,11 @@ const useSelection = (
     setSelection(next);
   };
 
-  const toggle = (idea: IIdeaData) => {
+  // The table reports which of this page's inputs are ticked; other pages keep theirs.
+  const selectOnPage = (ideaIds: Set<string>) => {
     const next = new Map(selection);
-    if (!next.delete(idea.id)) next.set(idea.id, idea);
-    change(next);
-  };
-
-  const togglePage = () => {
-    const next = new Map(selection);
-    const allSelected = pageIdeas.every((idea) => next.has(idea.id));
     pageIdeas.forEach((idea) =>
-      allSelected ? next.delete(idea.id) : next.set(idea.id, idea)
+      ideaIds.has(idea.id) ? next.set(idea.id, idea) : next.delete(idea.id)
     );
     change(next);
   };
@@ -99,8 +93,7 @@ const useSelection = (
   return {
     selectedIds: [...selection.keys()],
     selectedIdeas,
-    toggle,
-    togglePage,
+    selectOnPage,
     clear,
     refresh,
     deselect,

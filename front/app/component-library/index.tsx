@@ -38,16 +38,10 @@ import IconTooltip, {
   ContentWrapper as TooltipContentWrapper,
 } from './components/IconTooltip';
 import Image, { ImageProps } from './components/Image';
-import Input, {
-  InputProps,
-  boInputLabelStyle,
-  boInputStyle,
-  boLabelStyle,
-} from './components/Input';
+import Input, { InputProps } from './components/Input';
 import InputMultiloc from './components/Input/InputMultiloc';
 import InputMultilocWithLocaleSwitcher, {
   Props as InputMultilocWithLocaleSwitcherProps,
-  stackedLabelStyle,
 } from './components/Input/InputMultilocWithLocaleSwitcher';
 import Label from './components/Label';
 import ListItem from './components/ListItem';
@@ -98,7 +92,6 @@ import {
   defaultCardHoverStyle,
   defaultOutline,
   defaultInputStyle,
-  bo,
   stylingConsts,
   quillEditedContent,
   getTheme,
@@ -151,10 +144,6 @@ export type {
 };
 
 export {
-  boInputLabelStyle,
-  boInputStyle,
-  boLabelStyle,
-  stackedLabelStyle,
   Spinner,
   Radio,
   Label,
@@ -192,7 +181,6 @@ export {
   defaultCardHoverStyle,
   defaultOutline,
   defaultInputStyle,
-  bo,
   stylingConsts,
   quillEditedContent,
   getTheme,

@@ -9,3 +9,5 @@ fr-BE:
     debate_information_updates: Mises à jour d'informations
     debate_instructions: Instructions
     documents_to_consult: Documents de consultation
+    private_space_members: 'Membres : %{space}'
+    untitled_folder: Dossier sans titre

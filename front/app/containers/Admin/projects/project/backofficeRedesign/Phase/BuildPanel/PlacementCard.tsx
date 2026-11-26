@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import RadioGroup from 'design-system/RadioGroup';
 
 import { PhasePlacementType } from 'api/phases/types';
 
@@ -9,6 +9,7 @@ import messages from 'containers/Admin/projects/_shared/components/PhasePlacemen
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './BuildPanel.module.css';
 import PanelField from './PanelField';
 
 const OPTIONS = [
@@ -40,34 +41,31 @@ const PlacementCard = ({
   children,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const label = formatMessage(messages.surveyPlacement);
 
   return (
-    <PanelField
-      reviewKey="survey_placement"
-      label={formatMessage(messages.surveyPlacement)}
-    >
-      <Box
-        display="flex"
-        flexWrap="wrap"
-        alignItems="flex-start"
-        gap="20px 24px"
-        pt="8px"
+    <PanelField reviewKey="survey_placement" label={label}>
+      <RadioGroup
+        aria-label={label}
+        name={name}
+        value={value}
+        onChange={(newValue) => {
+          const option = OPTIONS.find((option) => option.value === newValue);
+          if (option && option.value !== value) onChange(option.value);
+        }}
       >
-        {OPTIONS.map((option) => (
-          <ChoiceRadio
-            key={option.value}
-            name={name}
-            value={option.value}
-            currentValue={value}
-            title={formatMessage(option.label)}
-            description={formatMessage(option.description)}
-            disabled={disabled}
-            onChange={() => {
-              if (option.value !== value) onChange(option.value);
-            }}
-          />
-        ))}
-      </Box>
+        <div className={styles.placementChoices}>
+          {OPTIONS.map((option) => (
+            <ChoiceRadio
+              key={option.value}
+              value={option.value}
+              title={formatMessage(option.label)}
+              description={formatMessage(option.description)}
+              disabled={disabled}
+            />
+          ))}
+        </div>
+      </RadioGroup>
       {children}
     </PanelField>
   );

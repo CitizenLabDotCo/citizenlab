@@ -31,7 +31,7 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.projects.all.createProject': {
     selectedTabValue: TTabName;
     onDone?: () => void;
-    variant?: 'default' | 'bo';
+    variant?: 'default' | 'panel';
   };
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;

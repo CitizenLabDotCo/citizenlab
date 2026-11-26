@@ -1,12 +1,9 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Text,
-  colors,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import styles from './LayerConfiguration.module.css';
 
 const LayerName = styled.div`
   color: ${colors.primary};
@@ -19,17 +16,15 @@ const LayerName = styled.div`
 `;
 
 interface Props {
-  variant: 'default' | 'bo';
+  variant: 'default' | 'panel';
   children: ReactNode;
 }
 
 const LayerTitle = ({ variant, children }: Props) =>
-  variant === 'bo' ? (
-    <Box flex="1" display="flex" alignItems="center">
-      <Text as="span" variant="boControl" m="0">
-        {children}
-      </Text>
-    </Box>
+  variant === 'panel' ? (
+    <div className={styles.layerTitle}>
+      <span className={styles.layerTitleText}>{children}</span>
+    </div>
   ) : (
     <LayerName>{children}</LayerName>
   );

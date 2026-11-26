@@ -4,6 +4,9 @@ import { Box, Button } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
 
+import Banner from 'design-system/Banner';
+import DesignSystemButton from 'design-system/Button';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -20,13 +23,15 @@ import usePublishedProjectTemplates from '../api/usePublishedProjectTemplates';
 import ProjectTemplateCards from '../components/ProjectTemplateCards';
 import UseTemplateModal from '../components/UseTemplateModal';
 
+import styles from './CreateProjectFromTemplate.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   className?: string;
   graphqlTenantLocales: string[];
   onDone?: () => void;
-  variant?: 'default' | 'bo';
+  variant?: 'default' | 'panel';
 }
 
 const CreateProjectFromTemplate = memo(
@@ -164,12 +169,30 @@ const CreateProjectFromTemplate = memo(
       }
     }, [created, namedTemplate, onDone]);
 
+    if (isError && variant === 'panel') {
+      return (
+        <div className={styles.loadError}>
+          <Banner tone="error">
+            {formatMessage(messages.templatesLoadFailed)}
+          </Banner>
+          <DesignSystemButton
+            variant="secondary"
+            size={32}
+            isPending={isFetching}
+            onPress={() => refetch()}
+          >
+            {formatMessage(messages.retryTemplates)}
+          </DesignSystemButton>
+        </div>
+      );
+    }
+
     if (isError) {
       return (
         <Box role="alert" p="24px">
           <Error text={formatMessage(messages.templatesLoadFailed)} />
           <Button
-            buttonStyle={variant === 'bo' ? 'bo-secondary' : 'admin-dark'}
+            buttonStyle="admin-dark"
             onClick={() => refetch()}
             processing={isFetching}
           >

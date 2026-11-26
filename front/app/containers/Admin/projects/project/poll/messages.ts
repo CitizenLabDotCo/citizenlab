@@ -64,10 +64,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.optionsFormHeader1',
     defaultMessage: 'Manage answer options for: {questionTitle}',
   },
-  editOptionSave: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOptionSave1',
-    defaultMessage: 'Save answer options',
-  },
   cancelEditAnswerOptions: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions',
     defaultMessage: 'Cancel',
@@ -111,5 +107,21 @@ export default defineMessages({
   saveQuestionSettings: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveQuestionSettings',
     defaultMessage: 'Save',
+  },
+  questionTitleLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.questionTitleLabel',
+    defaultMessage: 'Question',
+  },
+  optionTitleLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.optionTitleLabel',
+    defaultMessage: 'Answer option',
+  },
+  questionTypeLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.questionTypeLabel',
+    defaultMessage: 'Question type',
+  },
+  maxAnswersLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.maxAnswersLabel',
+    defaultMessage: 'Maximum number of answers',
   },
 });

@@ -168,10 +168,14 @@ describe('Redesigned Common Ground manager', () => {
     cy.contains('No inputs yet').should('be.visible');
     cy.contains('0 statements').should('be.visible');
     cy.contains('button', 'Import inputs').click();
+    // The project and phase options open in popovers outside the dialog.
+    cy.get('[role="dialog"] [role="combobox"]').first().type(projectTitle);
+    cy.contains('[role="option"]', projectTitle).click();
+    cy.get('[data-cy="e2e-import-phase-select"] button').click();
+    cy.contains('[role="option"]', sourcePhaseTitle).click();
+    // The option list is a dialog too until it has closed.
+    cy.get('[role="listbox"]').should('not.exist');
     cy.get('[role="dialog"]').within(() => {
-      cy.get('[role="combobox"]').first().type(projectTitle);
-      cy.contains('[role="option"]', projectTitle).click();
-      cy.get('#e2e-phase-filter').select(sourcePhaseId);
       cy.contains('2 inputs will be imported').should('be.visible');
       cy.contains('button', 'Import inputs').click();
     });

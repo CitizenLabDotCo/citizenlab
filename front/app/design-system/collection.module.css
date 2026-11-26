@@ -1,0 +1,67 @@
+.popover {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+}
+
+.collection {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  outline: none;
+}
+
+.item {
+  composes: ringInside from './focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-10);
+  padding: var(--gv-space-6) var(--gv-space-8);
+  border-radius: var(--gv-radius-8);
+  cursor: default;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.label {
+  composes: ui from './typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.check {
+  flex-shrink: 0;
+  color: var(--gv-icon-primary);
+}
+
+.checkboxIcon {
+  width: 11px;
+  height: 11px;
+  color: var(--gv-icon-inverse);
+}
+
+.checkbox {
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-4);
+  background: var(--gv-surface-panel);
+  opacity: 0;
+}

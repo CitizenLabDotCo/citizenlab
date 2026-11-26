@@ -2,31 +2,37 @@
 
 module ProjectFolders
   class FolderPolicy < ApplicationPolicy
+    # The one rule for who may see a folder. Listing folders uses it, and so does opening one:
+    # show? is inherited from ApplicationPolicy, which checks the folder is in this scope.
     class Scope < ApplicationPolicy::Scope
       def resolve
-        if user&.admin? || user&.moderator?
-          scope.all
-        else
-          published_folders
-        end
+        return scope.all if user&.admin?
+
+        moderated_folders.or(scope.where(id: visible_publications.select(:publication_id)))
       end
 
-      def published_folders
-        scope.where(admin_publication: AdminPublication.not_draft)
+      private
+
+      # Folders the user moderates, directly or through their space, whatever their status.
+      def moderated_folders
+        user ? UserRoleService.new.moderatable_folders(user, scope) : scope.none
+      end
+
+      # Anyone sees a folder that is not a draft and is either empty or holds at least one
+      # project they can see. A folder of only hidden projects is hidden too.
+      def visible_publications
+        folders = AdminPublication.where(publication_type: ProjectFolders::Folder.name).not_draft
+        projects = AdminPublication.where(publication_type: Project.name)
+
+        with_visible_project = projects.where(publication: scope_for(Project)).select(:parent_id)
+        with_any_project = projects.where.not(parent_id: nil).select(:parent_id)
+
+        folders.where(id: with_visible_project).or(folders.where.not(id: with_any_project))
       end
     end
 
     def index_for_admin?
       user&.admin? || user&.space_moderator? || user&.project_folder_moderator?
-    end
-
-    def show?
-      return true if user && UserRoleService.new.can_moderate?(record, user)
-      return false if record.admin_publication.draft?
-      return true if record.projects.empty?
-
-      # We check if the user has access to at least one of the projects in the folder
-      scope_for(record.projects).exists?
     end
 
     def by_slug?

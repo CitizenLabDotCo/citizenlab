@@ -301,12 +301,22 @@ describe SideFxUserService do
 
     it 'successfully enqueues PII data deletion job for Intercom' do
       expect { service.after_destroy(user, current_user) }
-        .to have_enqueued_job(RemoveUserFromIntercomJob).with(user.id)
+        .to have_enqueued_job(RemoveUserFromIntercomJob).with([user.id])
     end
 
     it 'successfully enqueues PII data deletion job for Segment' do
       expect { service.after_destroy(user, current_user) }
         .to have_enqueued_job(RemoveUsersFromSegmentJob).with([user.id])
+    end
+  end
+
+  describe 'after_destroy_all' do
+    let(:user_ids) { create_list(:user, 2).map(&:id) }
+
+    it 'enqueues one job per third-party service for all the users' do
+      expect { service.after_destroy_all(user_ids) }
+        .to  have_enqueued_job(RemoveUserFromIntercomJob).with(user_ids).exactly(:once)
+        .and have_enqueued_job(RemoveUsersFromSegmentJob).with(user_ids).exactly(:once)
     end
   end
 

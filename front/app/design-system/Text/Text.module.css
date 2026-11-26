@@ -1,0 +1,35 @@
+.primary {
+  color: var(--gv-text-primary);
+}
+
+.secondary {
+  color: var(--gv-text-secondary);
+}
+
+.tertiary {
+  color: var(--gv-text-tertiary);
+}
+
+.body {
+  color: var(--gv-text-body);
+}
+
+.danger {
+  color: var(--gv-text-danger);
+}
+
+.disabled {
+  color: var(--gv-text-disabled);
+}
+
+.inverse {
+  color: var(--gv-text-inverse);
+}
+
+.placeholder {
+  color: var(--gv-text-placeholder);
+}
+
+.success {
+  color: var(--gv-text-success);
+}

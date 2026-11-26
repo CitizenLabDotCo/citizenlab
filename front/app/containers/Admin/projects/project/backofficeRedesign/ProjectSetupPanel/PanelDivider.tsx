@@ -1,9 +1,13 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import Divider from 'design-system/Divider';
+
+import styles from './PanelDivider.module.css';
 
 const PanelDivider = () => (
-  <Box my="20px" borderTop={`1px solid ${colors.grey200}`} />
+  <div className={styles.divider}>
+    <Divider />
+  </div>
 );
 
 export default PanelDivider;

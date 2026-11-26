@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Box, IOption, bo } from '@citizenlab/cl2-component-library';
+import { IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -12,14 +12,16 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import ExpandAllContext from 'containers/Admin/projects/_shared/components/SettingsPanel/ExpandAllContext';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import projectMessages from 'containers/Admin/projects/project/messages';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
-import Error from 'components/UI/Error';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
@@ -29,10 +31,16 @@ import ModerationAssignee from '../_shared/ModerationAssignee';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 import SortingPicker from '../_shared/SortingPicker';
+import useAssigneeSummary from '../_shared/useAssigneeSummary';
+import useParticipantActionsSummary from '../_shared/useParticipantActionsSummary';
 import UserActions from '../_shared/UserActions';
 
 import DislikingSettings from './DislikingSettings';
 import DislikingToggle from './DislikingToggle';
+import styles from './IdeationInputs.module.css';
+import 'design-system/tokens.css';
+
+const NO_EXPAND_ALL = { count: 0 };
 
 interface Props {
   moderationAction?: ReactNode;
@@ -134,6 +142,14 @@ const IdeationInputs = ({
   phaseId,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { setup_action } = useSearch({ strict: false });
+  const assigneeSummary = useAssigneeSummary(phaseId);
+  const actionsSummary = useParticipantActionsSummary({
+    submission_enabled,
+    commenting_enabled,
+    reacting_enabled,
+  });
+  const getApiErrorMessage = useApiErrorText();
   const prescreeningIdeationEnabled = useFeatureFlag({
     name: 'prescreening_ideation',
   });
@@ -173,20 +189,11 @@ const IdeationInputs = ({
       maxLabel={formatMessage(projectMessages.maxLikes)}
       onMethodChange={handleReactingLikeMethodOnChange}
       onMaxChange={handleLikingLimitOnChange}
-      error={
-        <>
-          <Error
-            showBackground={layout !== 'panel'}
-            showIcon={layout !== 'panel'}
-            apiErrors={apiErrors && apiErrors.reacting_method}
-          />
-          <Error
-            showBackground={layout !== 'panel'}
-            showIcon={layout !== 'panel'}
-            text={noLikingLimitError}
-            apiErrors={apiErrors && apiErrors.reacting_limit}
-          />
-        </>
+      methodError={getApiErrorMessage(apiErrors?.reacting_method)}
+      maxError={
+        [noLikingLimitError, getApiErrorMessage(apiErrors?.reacting_limit)]
+          .filter(Boolean)
+          .join(' ') || undefined
       }
     />
   );
@@ -226,7 +233,7 @@ const IdeationInputs = ({
       reactingSettings={
         layout === 'panel' && (
           <>
-            <Box pl={bo.toggleLabelIndent}>{likes}</Box>
+            <div className={styles.reactingSettings}>{likes}</div>
             {dislikingToggle}
           </>
         )
@@ -293,36 +300,52 @@ const IdeationInputs = ({
   if (layout === 'panel') {
     return (
       <>
-        <Box mb="10px">
+        <div className={styles.heading}>
           <PanelHeading
             label={formatMessage(configMessages.howIdeasAreShown)}
           />
-        </Box>
-        {views}
-        {sorting}
-        <Box mb="10px">
-          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
-        </Box>
+        </div>
+        <ExpandAllContext.Provider value={NO_EXPAND_ALL}>
+          {views}
+          {sorting}
+        </ExpandAllContext.Provider>
+        <div className={styles.heading}>
+          <PanelHeading
+            label={formatMessage(configMessages.settingsGroup)}
+            expandable
+          />
+        </div>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
-          defaultOpen
+          summary={actionsSummary}
+          hasError={
+            !!noLikingLimitError ||
+            !!noDislikingLimitError ||
+            !!apiErrors?.reacting_limit ||
+            !!apiErrors?.reacting_method ||
+            !!apiErrors?.submission_enabled ||
+            !!apiErrors?.commenting_enabled ||
+            !!apiErrors?.reacting_enabled
+          }
         >
           {userActions}
         </PanelGroup>
-        <Box id="phase-moderation-settings">
+        <div id="phase-moderation-settings">
           <PanelGroup
             label={formatMessage(configMessages.moderationGroup)}
-            defaultOpen
+            // An unsaved phase keeps it open for its save-first action.
+            defaultOpen={!phaseId || setup_action === 'moderation'}
+            summary={assigneeSummary}
           >
-            <Box display="flex" flexDirection="column" gap="16px">
+            <div className={styles.moderation}>
               {!phaseId && moderationAction}
               <ModerationAssignee phaseId={phaseId} />
               {screening}
               {anonymity}
               {similarity}
-            </Box>
+            </div>
           </PanelGroup>
-        </Box>
+        </div>
       </>
     );
   }

@@ -1,0 +1,23 @@
+.row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gv-space-12);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-2);
+  min-width: 0;
+}
+
+.label {
+  composes: ui from '../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.description {
+  composes: small from '../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}

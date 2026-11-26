@@ -1,0 +1,45 @@
+.spinner {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--gv-size-icon-14);
+  height: var(--gv-size-icon-14);
+}
+
+.spinner::before,
+.spinner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border-radius: var(--gv-radius-full);
+  border: var(--gv-border-width-2) solid transparent;
+}
+
+/* The quarter arc turns; 0.8 s linear is the rate the design specifies. */
+.spinner::after {
+  animation: spin 0.8s linear infinite;
+}
+
+.accent::before {
+  border-color: var(--gv-border-subtle);
+}
+
+.accent::after {
+  border-top-color: var(--gv-icon-accent);
+}
+
+.inverse::before {
+  border-color: var(--gv-border-inverse);
+  opacity: 0.25;
+}
+
+.inverse::after {
+  border-top-color: var(--gv-icon-inverse);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

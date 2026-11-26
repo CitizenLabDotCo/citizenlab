@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class TrackIntercomService
+  # Intercom accepts at most 15 filters in an OR group of a search query.
+  SEARCH_BATCH_SIZE = 15
+
   def initialize(intercom_client = INTERCOM_CLIENT)
     @intercom = intercom_client
   end
@@ -20,11 +23,20 @@ class TrackIntercomService
     end
   end
 
-  # @param [User] user
-  # @return [Intercom::Contact,NilClass]
-  def forget_user(user_id)
-    contact = search_contact(user_id)
-    @intercom.contacts.delete(contact) if contact
+  # Deletes the contacts of these users. Intercom has no bulk delete, but the contacts are
+  # looked up +SEARCH_BATCH_SIZE+ users at a time. Most users are never sent to Intercom
+  # (see +#track_user?+), so most searches find nothing to delete.
+  #
+  # @param [Array<String>] user_ids
+  def forget_users(user_ids)
+    user_ids.each_slice(SEARCH_BATCH_SIZE) do |batch|
+      query = {
+        operator: 'OR',
+        value: batch.map { |user_id| { field: 'external_id', operator: '=', value: user_id } }
+      }.deep_stringify_keys
+
+      @intercom.contacts.search(query: query).to_a.each { |contact| @intercom.contacts.delete(contact) }
+    end
   end
 
   # @param [User] user

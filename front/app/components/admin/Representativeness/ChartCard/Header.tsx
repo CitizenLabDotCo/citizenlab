@@ -3,7 +3,8 @@ import React from 'react';
 import {
   Box,
   Title,
-  Text,
+  // TAN-9042: R-score hidden, lines commented 7, 15, 17, 22, 32, 48-82
+  // Text,
   // IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
@@ -11,14 +12,14 @@ import {
 import ViewToggle, { View } from 'components/admin/GraphCard/ViewToggle';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
-import { FormattedMessage } from 'utils/cl-intl';
+// import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from './messages';
+// import messages from './messages';
 
 interface Props {
   title: string;
   svgNode: React.RefObject<SVGElement | undefined>;
-  rScore: number;
+  // rScore: number;
   projectFilter?: string;
   xlsxEndpoint: string;
   view: View;
@@ -28,7 +29,7 @@ interface Props {
 const Header = ({
   title,
   svgNode,
-  rScore,
+  // rScore,
   projectFilter,
   xlsxEndpoint,
   view,
@@ -44,6 +45,7 @@ const Header = ({
       {title}
     </Title>
     <Box display="flex" alignItems="center" mt="4px">
+      {/*
       <Text
         fontSize="s"
         color="textSecondary"
@@ -77,6 +79,7 @@ const Header = ({
       >
         /100
       </Text>
+      */}
       {/* <IconTooltip
         content={
           <FormattedMessage

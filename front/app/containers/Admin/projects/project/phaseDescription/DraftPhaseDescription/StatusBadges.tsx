@@ -1,45 +1,53 @@
 import React from 'react';
 
-import { Badge, Box, bo, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Badge, Box, colors } from '@citizenlab/cl2-component-library';
 
-import { QuillVariant } from 'components/UI/QuillEditor/StyleContainer';
+import DSBadge from 'design-system/Badge';
+import StatusBadge from 'design-system/StatusBadge';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-const BoBadge = styled(Badge)`
-  && {
-    border-radius: ${bo.borderRadius};
-  }
-`;
+import styles from './DraftPhaseDescription.module.css';
 
 interface Props {
   isEditing: boolean;
-  variant: QuillVariant;
+  isPanel: boolean;
 }
 
-const StatusBadges = ({ isEditing, variant }: Props) => {
+const StatusBadges = ({ isEditing, isPanel }: Props) => {
   const { formatMessage } = useIntl();
-  const StatusBadge = variant === 'bo' ? BoBadge : Badge;
+
+  const statusLabel = formatMessage(
+    isEditing
+      ? messages.draftDescriptionDraftBadge
+      : messages.draftDescriptionPublishedBadge
+  );
+
+  if (isPanel) {
+    return (
+      <span className={styles.badges}>
+        <StatusBadge status={isEditing ? 'draft' : 'published'}>
+          {statusLabel}
+        </StatusBadge>
+        <DSBadge use="note">{formatMessage(messages.beta)}</DSBadge>
+      </span>
+    );
+  }
 
   return (
     <Box as="span" display="inline-flex" alignItems="center" gap="8px">
-      <StatusBadge
+      <Badge
         as="span"
         color={isEditing ? colors.orange500 : colors.green500}
         className="inverse"
       >
-        {formatMessage(
-          isEditing
-            ? messages.draftDescriptionDraftBadge
-            : messages.draftDescriptionPublishedBadge
-        )}
-      </StatusBadge>
-      <StatusBadge as="span" color={colors.coolGrey600} className="inverse">
+        {statusLabel}
+      </Badge>
+      <Badge as="span" color={colors.coolGrey600} className="inverse">
         {formatMessage(messages.beta)}
-      </StatusBadge>
+      </Badge>
     </Box>
   );
 };

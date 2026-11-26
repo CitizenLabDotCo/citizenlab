@@ -376,6 +376,52 @@ describe UserPolicy do
     end
   end
 
+  describe 'userjot_identity?' do
+    subject { described_class.new(current_user, :user).userjot_identity? }
+
+    let(:current_user) { create(:admin) }
+    let(:secret) { 'userjot-project-secret' }
+
+    before do
+      SettingsService.new.activate_feature!('userjot')
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('USERJOT_PROJECT_ID', nil).and_return('userjot-project-id')
+      allow(ENV).to receive(:fetch).with('USERJOT_PROJECT_SECRET', nil).and_return(secret)
+    end
+
+    it { is_expected.to be true }
+
+    context 'for a project moderator' do
+      let(:current_user) { create(:project_moderator) }
+
+      it { is_expected.to be false }
+    end
+
+    context 'for a resident' do
+      let(:current_user) { create(:user) }
+
+      it { is_expected.to be false }
+    end
+
+    context 'for a visitor' do
+      let(:current_user) { nil }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context 'when the userjot feature is not active' do
+      before { SettingsService.new.deactivate_feature!('userjot') }
+
+      it { is_expected.to be false }
+    end
+
+    context 'when the secret is missing' do
+      let(:secret) { nil }
+
+      it { is_expected.to be false }
+    end
+  end
+
   describe 'permitted_attributes_for_update' do
     subject(:permitted) { described_class.new(current_user, subject_user).permitted_attributes_for_update }
 

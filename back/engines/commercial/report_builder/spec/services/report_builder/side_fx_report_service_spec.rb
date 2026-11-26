@@ -52,4 +52,12 @@ RSpec.describe ReportBuilder::SideFxReportService do
   describe 'after_destroy' do
     include_examples('runs_layout_side_effects', :after_destroy)
   end
+
+  describe '#after_generate' do
+    it "logs a 'generated' activity, which is what the ready notification hangs off" do
+      expect { service.after_generate(report, user) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(report, 'generated', user, anything)
+    end
+  end
 end

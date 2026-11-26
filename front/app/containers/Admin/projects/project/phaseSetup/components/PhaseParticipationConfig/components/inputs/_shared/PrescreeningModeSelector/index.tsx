@@ -1,15 +1,10 @@
 import React from 'react';
 
-import {
-  Box,
-  Radio,
-  Select,
-  Text,
-  Toggle,
-  bo,
-} from '@citizenlab/cl2-component-library';
+import { Box, Select, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 import { IOption } from 'typings';
+
+import RadioGroup, { Radio } from 'design-system/RadioGroup';
 
 import { PrescreeningMode } from 'api/phases/types';
 
@@ -21,6 +16,11 @@ import SettingToggleRow from 'components/admin/SettingToggleRow';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import styles from './PrescreeningModeSelector.module.css';
+import 'design-system/tokens.css';
+
+const isPrescreeningMode = (value: string): value is PrescreeningMode =>
+  value === 'flagged_only' || value === 'all';
 
 interface Props {
   prescreening_mode: PrescreeningMode | null | undefined;
@@ -114,7 +114,7 @@ const PrescreeningModeSelector = ({
       (showFlaggedOnlyOption && prescreening_mode === 'flagged_only');
 
     return (
-      <Box display="flex" flexDirection="column" gap="10px">
+      <div className={styles.panel}>
         <SettingToggleRow
           title={formatMessage(messages.contentScreeningTitle)}
           description={formatMessage(messages.contentScreeningDescription)}
@@ -122,46 +122,28 @@ const PrescreeningModeSelector = ({
           onChange={() => onPrescreeningModeChange(screening ? null : 'all')}
         />
         {screening && showFlaggedOnlyOption && (
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap="8px"
-            pl={bo.toggleLabelIndent}
-          >
-            <Box display="flex" gap="24px">
-              <Radio
-                variant="bo"
-                name="prescreening_mode"
-                id="prescreening_mode-flagged_only"
-                value="flagged_only"
-                currentValue={prescreening_mode}
-                onChange={onPrescreeningModeChange}
-                label={
-                  <Text as="span" variant="boControl" m="0">
-                    {formatMessage(messages.prescreeningModeFlaggedOnly)}
-                  </Text>
-                }
-              />
-              <Radio
-                variant="bo"
-                name="prescreening_mode"
-                id="prescreening_mode-all"
-                value="all"
-                currentValue={prescreening_mode}
-                onChange={onPrescreeningModeChange}
-                label={
-                  <Text as="span" variant="boControl" m="0">
-                    {formatMessage(messages.prescreeningModeAll)}
-                  </Text>
-                }
-              />
-            </Box>
-            <Text variant="boHelper" fontSize="xs" m="0">
+          <div className={styles.modes}>
+            <RadioGroup
+              aria-label={formatMessage(messages.contentScreeningTitle)}
+              name="prescreening_mode"
+              value={prescreening_mode}
+              onChange={(value) => {
+                if (isPrescreeningMode(value)) onPrescreeningModeChange(value);
+              }}
+            >
+              <Radio value="flagged_only">
+                {formatMessage(messages.prescreeningModeFlaggedOnly)}
+              </Radio>
+              <Radio value="all">
+                {formatMessage(messages.prescreeningModeAll)}
+              </Radio>
+            </RadioGroup>
+            <p className={styles.helper}>
               {formatMessage(descriptionMessages[prescreening_mode])}
-            </Text>
-          </Box>
+            </p>
+          </div>
         )}
-      </Box>
+      </div>
     );
   }
 

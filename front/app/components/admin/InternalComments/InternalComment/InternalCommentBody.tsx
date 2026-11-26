@@ -1,6 +1,6 @@
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
 
-import { bo, Button, colors } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 import { CLErrors } from 'typings';
 
@@ -10,7 +10,12 @@ import useUpdateInternalComment from 'api/internal_comments/useUpdateInternalCom
 
 import useLocale from 'hooks/useLocale';
 
-import { useIsBoComments } from 'components/PostShowComponents/Comments/commentsVariant';
+import LazyPanelFormButtons from 'components/PostShowComponents/Comments/CommentForm/LazyPanelFormButtons';
+import panelStyles from 'components/PostShowComponents/Comments/commentsPanel.module.css';
+import {
+  panelTextAreaStyle,
+  useIsPanelComments,
+} from 'components/PostShowComponents/Comments/commentsVariant';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import {
   formatCommentContent,
@@ -20,8 +25,9 @@ import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import 'design-system/tokens.css';
 
 const Container = styled.div``;
 
@@ -71,7 +77,8 @@ const InternalCommentBody = ({
   ideaId,
 }: Props) => {
   const theme = useTheme();
-  const isBo = useIsBoComments();
+  const { formatMessage } = useIntl();
+  const isPanel = useIsPanelComments();
   const { data: comment } = useInternalComment(commentId);
   const { mutate: updateComment, isPending: processing } =
     useUpdateInternalComment({
@@ -159,12 +166,24 @@ const InternalCommentBody = ({
     );
   };
 
-  const cancelEditing = (event: React.MouseEvent) => {
-    event.preventDefault();
+  const resetEditing = () => {
     setEditableCommentContent(
       formatEditableCommentContent(comment.data.attributes.body)
     );
     onCancelEditing();
+  };
+
+  const editError = apiErrors &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    apiErrors.body_multiloc &&
+    apiErrors.body_multiloc[locale] && (
+      <Error apiErrors={apiErrors.body_multiloc[locale]} />
+    );
+
+  const cancelEditing = (event: React.MouseEvent) => {
+    event.preventDefault();
+    resetEditing();
   };
 
   return (
@@ -181,38 +200,50 @@ const InternalCommentBody = ({
               value={editableCommentContent}
               rows={1}
               onChange={onEditableCommentContentChange}
-              padding={isBo ? '10px' : '15px'}
-              fontWeight={isBo ? '400' : '300'}
-              fontSize={isBo ? '12px' : undefined}
-              border={isBo ? `1px solid ${colors.grey300}` : undefined}
-              borderRadius={isBo ? bo.borderRadius : undefined}
+              padding={
+                isPanel ? 'var(--gv-space-8) var(--gv-space-10)' : '15px'
+              }
+              color={isPanel ? panelTextAreaStyle.color : undefined}
+              fontWeight={isPanel ? panelTextAreaStyle.fontWeight : '300'}
+              fontSize={isPanel ? panelTextAreaStyle.fontSize : undefined}
+              lineHeight={isPanel ? panelTextAreaStyle.lineHeight : undefined}
+              border={
+                isPanel
+                  ? 'var(--gv-border-width-1) solid var(--gv-border-control)'
+                  : undefined
+              }
+              borderRadius={isPanel ? 'var(--gv-radius-8)' : undefined}
               getTextareaRef={setNewTextAreaRef}
               adminsAndModerators
             />
           </QuillEditedContent>
-          <ButtonsWrapper>
-            {apiErrors &&
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              apiErrors.body_multiloc &&
-              apiErrors.body_multiloc[locale] && (
-                <Error apiErrors={apiErrors.body_multiloc[locale]} />
-              )}
-            <Button
-              buttonStyle={isBo ? 'bo-secondary' : 'secondary-outlined'}
-              onClick={cancelEditing}
-            >
-              <FormattedMessage {...commentsMessages.cancelCommentEdit} />
-            </Button>
-            <Button
-              buttonStyle={isBo ? 'bo-primary' : 'primary'}
-              processing={processing}
-              onClick={onSubmit}
-              id="e2e-save-internal-comment-edit-button"
-            >
-              <FormattedMessage {...commentsMessages.saveCommentEdit} />
-            </Button>
-          </ButtonsWrapper>
+          {isPanel ? (
+            <div className={panelStyles.editFooter}>
+              {editError}
+              <LazyPanelFormButtons
+                cancelLabel={formatMessage(commentsMessages.cancelCommentEdit)}
+                submitLabel={formatMessage(commentsMessages.saveCommentEdit)}
+                onCancel={resetEditing}
+                processing={processing}
+                submitId="e2e-save-internal-comment-edit-button"
+              />
+            </div>
+          ) : (
+            <ButtonsWrapper>
+              {editError}
+              <Button buttonStyle="secondary-outlined" onClick={cancelEditing}>
+                <FormattedMessage {...commentsMessages.cancelCommentEdit} />
+              </Button>
+              <Button
+                buttonStyle="primary"
+                processing={processing}
+                onClick={onSubmit}
+                id="e2e-save-internal-comment-edit-button"
+              >
+                <FormattedMessage {...commentsMessages.saveCommentEdit} />
+              </Button>
+            </ButtonsWrapper>
+          )}
         </StyledForm>
       ) : (
         <CommentWrapper className={`e2e-comment-body ${commentType}`}>

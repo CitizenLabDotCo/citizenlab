@@ -1,17 +1,22 @@
 import React from 'react';
 
-import { Box, Text, Toggle, bo } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import Banner from 'design-system/Banner';
+import Switch from 'design-system/Switch';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/Admin/projects/project/messages';
 
-import Error from 'components/UI/Error';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
 
 import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
+
+import styles from './DislikingToggle.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   reacting_enabled?: boolean | null;
@@ -41,29 +46,37 @@ const DislikingToggle = ({
   handleDislikingLimitOnChange,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const getApiErrorMessage = useApiErrorText();
   const dislikingConfigurable = useFeatureFlag({ name: 'disable_disliking' });
 
   if (!reacting_enabled || !dislikingConfigurable) return null;
 
+  const enabledError = getApiErrorMessage(apiErrors?.reacting_dislike_enabled);
+  const limitError = [
+    noDislikingLimitError,
+    getApiErrorMessage(apiErrors?.reacting_limit),
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <>
-      <Box display="flex" alignItems="center" minHeight="42px">
-        <Toggle
-          variant="bo"
-          checked={!!reacting_dislike_enabled}
+      <div className={styles.toggleRow}>
+        <Switch
+          size={26}
+          isSelected={!!reacting_dislike_enabled}
           onChange={() =>
             handleReactingDislikeEnabledOnChange(!reacting_dislike_enabled)
           }
-          label={
-            <Text as="span" variant="boControl" m="0">
-              {formatMessage(messages.dislikingPosts2)}
-            </Text>
-          }
-        />
-      </Box>
-      <Error apiErrors={apiErrors && apiErrors.reacting_dislike_enabled} />
+        >
+          <span className={styles.label}>
+            {formatMessage(messages.dislikingPosts2)}
+          </span>
+        </Switch>
+      </div>
+      {enabledError && <Banner tone="error">{enabledError}</Banner>}
       {reacting_dislike_enabled && (
-        <Box pl={bo.toggleLabelIndent}>
+        <div className={styles.settings}>
           <ReactionLimitSettings
             name="dislikingmethod"
             title={formatMessage(messages.dislikingMethodTitle)}
@@ -72,14 +85,9 @@ const DislikingToggle = ({
             maxLabel={formatMessage(messages.maxDislikes)}
             onMethodChange={handleReactingDislikeMethodOnChange}
             onMaxChange={handleDislikingLimitOnChange}
-            error={
-              <Error
-                text={noDislikingLimitError}
-                apiErrors={apiErrors && apiErrors.reacting_limit}
-              />
-            }
+            maxError={limitError || undefined}
           />
-        </Box>
+        </div>
       )}
     </>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import Text from 'design-system/Text';
 
 import useCauses from 'api/causes/useCauses';
 import { exportVolunteers } from 'api/causes/util';
@@ -24,6 +24,8 @@ import SetupCard from '../ProjectSetupPanel/SetupCard';
 import CauseStats from './CauseStats';
 import messages from './messages';
 import VolunteerList from './VolunteerList';
+import styles from './VolunteerManager.module.css';
+import 'design-system/tokens.css';
 
 const PAGE_SIZE = 20;
 
@@ -85,11 +87,11 @@ const VolunteerManager = ({ phase }: Props) => {
   const causeFilter: FilterCategory = {
     key: 'cause',
     label: formatMessage(messages.cause),
-    icon: 'label',
+    icon: 'tag-16',
     options: causeData.map((cause) => ({
       value: cause.id,
       label: causeTitles.get(cause.id) ?? '',
-      icon: 'label',
+      icon: 'tag-16',
       count: cause.attributes.volunteers_count,
     })),
     selected: causeIds,
@@ -106,7 +108,7 @@ const VolunteerManager = ({ phase }: Props) => {
   const dateFilter: FilterCategory = {
     key: 'signedUp',
     label: formatMessage(messages.signedUpColumn),
-    icon: 'calendar',
+    icon: 'calendar-16',
     options: [
       { value: 'this_week', label: formatMessage(messages.thisWeek) },
       { value: 'earlier', label: formatMessage(messages.earlier) },
@@ -142,7 +144,7 @@ const VolunteerManager = ({ phase }: Props) => {
               title={formatMessage(messages.exportVolunteers)}
               behaviour={{
                 kind: 'action',
-                icon: 'download',
+                icon: 'download-16',
                 onClick: () => exportVolunteers(phase.id),
               }}
             />
@@ -150,19 +152,12 @@ const VolunteerManager = ({ phase }: Props) => {
         </>
       }
     >
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        gap="12px"
-        minHeight="40px"
-        mb="12px"
-      >
-        <Text variant="boSection" fontSize="l" m="0">
+      <div className={styles.toolbar}>
+        <Text variant="title" tone="primary">
           {total !== undefined &&
             formatMessage(messages.volunteerCount, { count: total })}
         </Text>
-        <Box display="flex" alignItems="center" gap="8px">
+        <div className={styles.display}>
           <SearchToggle
             label={formatMessage(messages.searchVolunteers)}
             searchTerm={search}
@@ -170,8 +165,8 @@ const VolunteerManager = ({ phase }: Props) => {
             resultCount={total ?? 0}
           />
           <FilterMenu categories={categories} onClearAll={clearFilters} />
-        </Box>
-      </Box>
+        </div>
+      </div>
       <FilterChips categories={categories} onClearAll={clearFilters} />
       <VolunteerList
         volunteers={volunteers}

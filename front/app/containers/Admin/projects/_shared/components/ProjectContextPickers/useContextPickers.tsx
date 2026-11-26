@@ -1,10 +1,10 @@
-import React, { ComponentProps } from 'react';
+import React from 'react';
 
-import { IconNames } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import OptionPicker, { PickerOption } from 'components/UI/OptionPicker';
-import Warning from 'components/UI/Warning';
+import Banner from 'design-system/Banner';
+import { ListBoxOption } from 'design-system/ListBox';
+import Select from 'design-system/Select';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -15,19 +15,19 @@ import useProjectContext, {
 } from '../ProjectSetupForm/ProjectContextSection/useProjectContext';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
-const withIcon = (
-  options: IOption[],
-  icon: IconNames
-): PickerOption<string>[] =>
-  options.map(({ value, label }) => ({ value, label, icon }));
+const SELECT_SIZES: Record<'medium' | 'compact', 36 | 32> = {
+  medium: 36,
+  compact: 32,
+};
 
 interface Params {
   spaceId?: string | null;
   folderId?: string | null;
   projectInRoot: boolean;
   onChange: (spaceAndFolderId: SpaceAndFolderId) => void;
-  size?: ComponentProps<typeof OptionPicker>['size'];
+  size?: keyof typeof SELECT_SIZES;
 }
 
 const useContextPickers = ({
@@ -35,7 +35,7 @@ const useContextPickers = ({
   folderId,
   projectInRoot,
   onChange,
-  size,
+  size = 'medium',
 }: Params) => {
   const { formatMessage } = useIntl();
   const projectContext = useProjectContext({
@@ -57,49 +57,55 @@ const useContextPickers = ({
   } = projectContext;
 
   const spacePicker = showSpaceSelect ? (
-    <OptionPicker
-      title={formatMessage(contextMessages.spaceLabel)}
-      description={formatMessage(messages.contextSpaceDescription)}
-      searchPlaceholder={formatMessage(messages.contextSearchSpaces)}
-      options={withIcon(
-        [
-          { value: NONE, label: formatMessage(messages.contextNoSpace) },
-          ...spaceOptions,
-        ],
-        'spaces'
-      )}
+    <Select
+      label={formatMessage(contextMessages.spaceLabel)}
+      size={SELECT_SIZES[size]}
+      items={[
+        { value: NONE, label: formatMessage(messages.contextNoSpace) },
+        ...spaceOptions,
+      ]}
       value={spaceId ?? NONE}
-      onChange={handleSpaceChange}
-      size={size}
-    />
+      onChange={(key) => {
+        if (typeof key === 'string') handleSpaceChange(key);
+      }}
+    >
+      {(option: IOption) => (
+        <ListBoxOption id={String(option.value)} icon="space-16">
+          {option.label}
+        </ListBoxOption>
+      )}
+    </Select>
   ) : null;
 
   const folderPicker = (
-    <OptionPicker
-      title={formatMessage(contextMessages.folderLabel)}
-      description={formatMessage(messages.contextFolderDescription)}
-      searchPlaceholder={formatMessage(messages.contextSearchFolders)}
-      options={withIcon(
-        [
-          { value: NONE, label: formatMessage(messages.contextNoFolder) },
-          ...folderOptions,
-        ],
-        'folder-outline'
-      )}
+    <Select
+      label={formatMessage(contextMessages.folderLabel)}
+      size={SELECT_SIZES[size]}
+      items={[
+        { value: NONE, label: formatMessage(messages.contextNoFolder) },
+        ...folderOptions,
+      ]}
       value={folderId ?? NONE}
-      onChange={handleFolderChange}
-      size={size}
-    />
+      onChange={(key) => {
+        if (typeof key === 'string') handleFolderChange(key);
+      }}
+    >
+      {(option: IOption) => (
+        <ListBoxOption id={String(option.value)} icon="folder-16">
+          {option.label}
+        </ListBoxOption>
+      )}
+    </Select>
   );
 
   const approvalWarning = showApprovalWarning ? (
-    <Warning>
+    <Banner tone="warning">
       <FormattedMessage
         {...(showSpaceSelect
           ? contextMessages.approvalNeededWithSpaces
           : contextMessages.approvalNeededWithoutSpaces)}
       />
-    </Warning>
+    </Banner>
   ) : null;
 
   return { spacePicker, folderPicker, approvalWarning };

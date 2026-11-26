@@ -291,6 +291,155 @@ describe SanitizationService do
         expect(output).not_to include('top:')
       end
     end
+
+    describe 'embed feature' do
+      using RSpec::Parameterized::TableSyntax
+
+      it 'keeps an https iframe with its layout attributes' do
+        input = '<iframe src="https://maps.example.org/m" width="600" height="400" style="border:0;" title="Map" loading="lazy"></iframe>'
+        expect(service.sanitize(input, [:embed], host: 'example.org')).to eq input
+      end
+
+      it 'keeps an iframe with spaces after the host, percent-encoded as a browser would' do
+        input = '<iframe src="https://maps.example.org/m?layers=a b&amp;title=c d"></iframe>'
+        expect(service.sanitize(input, [:embed], host: 'example.org'))
+          .to eq '<iframe src="https://maps.example.org/m?layers=a%20b&amp;title=c%20d"></iframe>'
+      end
+
+      it 'keeps an iframe on a domain that only looks like a Go Vocal one' do
+        input = '<iframe src="https://maps.notgovocal.com/m"></iframe>'
+        expect(service.sanitize(input, [:embed], host: 'example.org')).to eq input
+      end
+
+      it 'drops an iframe on a sibling platform of a Go Vocal hosted platform' do
+        input = '<iframe src="https://autre-ville.govocal.com/m"></iframe>'
+        expect(service.sanitize(input, [:embed], host: 'ville.govocal.com')).not_to include('<iframe')
+      end
+
+      it 'checks the host it is given, not the current platform' do
+        input = '<iframe src="https://ville.example.com/m"></iframe>'
+        expect(service.sanitize(input, [:embed], host: 'ville.example.com')).not_to include('<iframe')
+        expect(service.sanitize(input, [:embed], host: 'example.org')).to eq input
+      end
+
+      it 'needs the platform host' do
+        expect { service.sanitize('<p>x</p>', [:embed]) }.to raise_error(ArgumentError)
+      end
+
+      where(:case_name, :src) do
+        'http'              | 'http://maps.example.org/m'
+        'javascript'        | 'javascript:alert(1)'
+        'data'              | 'data:text/html,<script>alert(1)</script>'
+        'protocol-relative' | '//maps.example.org/m'
+        'relative'          | '/m'
+        'backslash'         | 'https://maps.example.org\\@evil.example/m'
+        'tab'               | "https://maps.exam\tple.org/m"
+        'newline in query'  | "https://maps.example.org/m?q=a\nb"
+        'space in host'     | 'https://maps.example.org @evil.example/m'
+        'trailing space'    | 'https://maps.example.org/m '
+        # The platform's host is example.org.
+        'platform host'     | 'https://example.org/m'
+        'upper case'        | 'https://EXAMPLE.org/m'
+        'trailing dot'      | 'https://example.org./m'
+        'percent-encoded'   | 'https://ex%61mple.org/m'
+        'with userinfo'     | 'https://user@example.org/m'
+        'with port'         | 'https://example.org:443/m'
+        'go vocal platform' | 'https://other-tenant.govocal.com/m'
+        'go vocal apex'     | 'https://GOVOCAL.com./m'
+        'citizenlab'        | 'https://x.citizenlab.co/m'
+      end
+
+      with_them do
+        it 'drops the iframe' do
+          expect(service.sanitize(%(<iframe src="#{src}"></iframe>), [:embed], host: 'example.org')).not_to include('<iframe')
+        end
+      end
+
+      it 'drops an iframe without src' do
+        expect(service.sanitize('<iframe srcdoc="<script>alert(1)</script>"></iframe>', [:embed], host: 'example.org')).not_to include('<iframe')
+      end
+
+      it 'removes srcdoc, event handlers and allow from a kept iframe' do
+        input = '<iframe src="https://maps.example.org/m" srcdoc="<b>x</b>" onload="alert(1)" allow="geolocation"></iframe>'
+        expect(service.sanitize(input, [:embed], host: 'example.org')).to eq '<iframe src="https://maps.example.org/m"></iframe>'
+      end
+
+      it 'still drops a non-video https iframe when only the video feature is enabled' do
+        input = '<iframe src="https://maps.example.org/m"></iframe>'
+        expect(service.sanitize(input, [:video])).not_to include('<iframe')
+      end
+    end
+
+    describe 'blocks feature' do
+      it 'keeps h1 and div with their class' do
+        input = '<h1 class="title">Title</h1><div class="note">Text</div>'
+        expect(service.sanitize(input, [:blocks])).to eq input
+      end
+
+      it 'removes other attributes from h1 and div' do
+        input = '<h1 onclick="alert(1)">Title</h1><div id="x">Text</div>'
+        expect(service.sanitize(input, [:blocks])).to eq '<h1>Title</h1><div>Text</div>'
+      end
+    end
+
+    describe 'attributes kept on their own tag only' do
+      using RSpec::Parameterized::TableSyntax
+
+      let(:features) { %i[decoration link embed blocks] }
+
+      where(:case_name, :input, :output) do
+        'styled link'    | '<a href="https://x.org" style="display:block;height:600px" class="x">Go</a>'    | '<a href="https://x.org" rel="nofollow">Go</a>'
+        'styled bold'    | '<b style="display:none" class="x" title="t">b</b>'                              | '<b>b</b>'
+        'styled heading' | '<h1 class="t" style="color:red">T</h1>'                                         | '<h1 class="t">T</h1>'
+        'iframe class'   | '<iframe src="https://maps.example.org/m" style="border:0;" class="x"></iframe>' | '<iframe src="https://maps.example.org/m" style="border:0;"></iframe>'
+      end
+
+      with_them do
+        it 'keeps each attribute on its own tag' do
+          expect(service.sanitize(input, features, host: 'example.org')).to eq output
+        end
+      end
+
+      it 'still keeps the attributes of other features on every tag' do
+        input = '<p class="ql-align-center">Text</p>'
+        expect(service.sanitize(input, %i[alignment blocks])).to eq input
+      end
+    end
+  end
+
+  describe 'remove_hidden_elements' do
+    using RSpec::Parameterized::TableSyntax
+
+    where(:case_name, :input, :output) do
+      'style'           | 'before<style>.a{color:red}</style>after'                      | 'beforeafter'
+      'script'          | 'before<script>alert(1)</script>after'                         | 'beforeafter'
+      'upper case'      | 'before<SCRIPT>alert(1)</SCRIPT><STYLE>b{}</STYLE>'            | 'before'
+      'script with src' | '<p>text<script src="https://evil.example/x.js"></script></p>' | '<p>text</p>'
+      'nested'          | '<div><b>bold<style>b{}</style></b></div>'                     | '<div><b>bold</b></div>'
+      'noscript'        | 'Hello<noscript>Enable JS</noscript>'                          | 'Hello'
+      'template'        | 'a<template><b>t</b></template>b'                              | 'ab'
+      'title'           | 'a<title>T</title>b'                                           | 'ab'
+      'noembed'         | 'a<noembed>N</noembed>b'                                       | 'ab'
+      'noframes'        | 'a<noframes>F</noframes>b'                                     | 'ab'
+      'nothing to do'   | '<p><b>bold</b></p>'                                           | '<p><b>bold</b></p>'
+      'blank'           | ''                                                             | ''
+      'nil'             | nil                                                            | nil
+    end
+
+    with_them do
+      it 'removes the elements the browser does not show, with their content' do
+        expect(service.remove_hidden_elements(input)).to eq output
+      end
+    end
+
+    it 'leaves the text of a textarea, which the browser shows' do
+      expect(service.remove_hidden_elements('a<textarea>shown</textarea>b')).to include('shown')
+    end
+
+    it 'handles every locale of a multiloc' do
+      multiloc = { 'en' => 'a<style>x</style>b', 'fr-FR' => 'c<noscript>y</noscript>d' }
+      expect(service.remove_multiloc_hidden_elements(multiloc)).to eq({ 'en' => 'ab', 'fr-FR' => 'cd' })
+    end
   end
 
   describe 'remove_empty_trailing_tags' do

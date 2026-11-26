@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-
 import { IProjectData } from 'api/projects/types';
 
 import { useIntl } from 'utils/cl-intl';
@@ -9,6 +7,7 @@ import clHistory from 'utils/cl-router/history';
 
 import backofficeRedesignMessages from '../messages';
 
+import styles from './LivePanel.module.css';
 import messages from './messages';
 import PanelDivider from './PanelDivider';
 import PanelHeading from './PanelHeading';
@@ -26,7 +25,7 @@ const LivePanel = ({ project }: Props) => {
   const collecting = project.attributes.participation_status === 'active';
 
   return (
-    <Box>
+    <div>
       <PanelHeading
         title={formatMessage(
           collecting
@@ -38,19 +37,19 @@ const LivePanel = ({ project }: Props) => {
       <PanelDivider />
       <PanelHeading title={formatMessage(messages.nextActions)} />
 
-      <Box display="flex" flexDirection="column" gap="8px">
+      <div className={styles.actions}>
         <SetupCard
           id="e2e-next-action-message-participants"
           title={formatMessage(messages.actionMessageParticipants)}
           behaviour={{
             kind: 'action',
-            icon: 'chevron-right',
+            icon: 'chevron-right-16',
             onClick: () =>
               clHistory.push(`/admin/projects/${projectId}/messaging`),
           }}
         />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

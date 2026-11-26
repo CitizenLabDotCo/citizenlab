@@ -20,7 +20,9 @@ module DecidimImporter
         created_at: 'created_at',
         updated_at: 'updated_at',
         url: 'url',
-        slug: 'slug'
+        slug: 'slug',
+        private_space: 'private_space',
+        transparent: 'is_transparent'
       }.freeze
 
       def initialize(*args, **kwargs)
@@ -49,6 +51,9 @@ module DecidimImporter
         }
         hero = present_value(row[COLUMNS[:hero_image]])
         attributes['remote_header_bg_url'] = hero if hero
+        # Only admins see a private space until {PrivateSpaceMembersExtractor} opens it to its members.
+        # A transparent private assembly is readable by everyone on Decidim, so it stays public.
+        attributes['visible_to'] = 'admins' if private_space?(row)
         # Keep the Decidim slug as the project's slug so original URLs stay stable and imported links
         # resolve (see {Links::Resolver}). Decidim slugs are unique only *within* a space type, but
         # `Project#slug` is global, so only the first claim keeps it; the rest fall back to a title-derived slug.
@@ -60,6 +65,10 @@ module DecidimImporter
         project = ref_map.register(uid, Record.new('project', attributes))
         register_card_image(uid, project, hero) if hero
         project
+      end
+
+      def private_space?(row)
+        truthy?(row[COLUMNS[:private_space]]) && !truthy?(row[COLUMNS[:transparent]])
       end
 
       # Decidim ships one process image (the hero). Reuse it as the project's card image (the first

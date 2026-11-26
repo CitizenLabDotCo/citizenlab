@@ -9,3 +9,5 @@ kl-GL:
     debate_information_updates: Paasissutissanik nutarterinerit
     debate_instructions: Ilitsersuutit
     documents_to_consult: Tusarniaanermut atortussat
+    private_space_members: 'Ilaasortat: %{space}'
+    untitled_folder: Toqqorsivik ateqanngitsoq

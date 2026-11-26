@@ -23,7 +23,7 @@ RSpec.describe EmailCampaigns::Campaigns::ReportGenerated do
     end
 
     it 'says so when the run stopped before the report was finished' do
-      create(:generation_transcript, report: notification.report, stopped_because: 'round_cap')
+      create(:generation_transcript, report: notification.report, stopped_because: 'round_cap', report_saved_at: Time.current)
 
       command = campaign.generate_commands(recipient: notification.recipient, activity: activity).first
 

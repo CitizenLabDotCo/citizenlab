@@ -1,76 +1,46 @@
-import React, { RefObject } from 'react';
+import React from 'react';
 
-import { Box, Checkbox, Text } from '@citizenlab/cl2-component-library';
+import Menu, { MenuItem } from 'design-system/Menu';
+import { Selection } from 'design-system/types';
 
 import useAreas from 'api/areas/useAreas';
 
 import useLocalize from 'hooks/useLocalize';
 
-import MenuPopover from './MenuPopover';
-import MenuRow from './MenuRow';
-
-const FLYOUT_MAX_HEIGHT = '240px';
-
 interface Props {
-  anchorRef: RefObject<HTMLElement>;
+  'aria-label': string;
   areaIds: string[];
-  autoFocus: boolean;
-  onToggle: (areaId: string) => void;
-  onBack: () => void;
+  onChange: (areaIds: string[]) => void;
 }
 
-const AreaFlyout = ({
-  anchorRef,
-  areaIds,
-  autoFocus,
-  onToggle,
-  onBack,
-}: Props) => {
+const AreaFlyout = ({ 'aria-label': ariaLabel, areaIds, onChange }: Props) => {
   const localize = useLocalize();
   const { data: areas } = useAreas({});
+  const areaList = areas?.data ?? [];
+
+  const handleSelectionChange = (keys: Selection) => {
+    onChange(
+      keys === 'all'
+        ? areaList.map((area) => area.id)
+        : Array.from(keys, String)
+    );
+  };
 
   return (
-    <MenuPopover
-      anchorRef={anchorRef}
-      placement="right"
-      width="200px"
-      maxHeight={FLYOUT_MAX_HEIGHT}
-      onBack={onBack}
-      autoFocus={autoFocus}
+    <Menu
+      aria-label={ariaLabel}
+      selectionMode="multiple"
+      selectedKeys={new Set(areaIds)}
+      onSelectionChange={handleSelectionChange}
     >
-      {(areas?.data ?? []).map((area) => {
-        const checked = areaIds.includes(area.id);
-
+      {areaList.map((area) => {
         return (
-          <MenuRow
-            key={area.id}
-            type="button"
-            role="menuitemcheckbox"
-            aria-checked={checked}
-            data-compact
-            data-hide-unchecked
-            onClick={() => onToggle(area.id)}
-          >
-            <Box
-              display="flex"
-              data-unchecked={!checked}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <Checkbox
-                size="16px"
-                checked={checked}
-                checkedColor="tenantPrimary"
-                onChange={() => onToggle(area.id)}
-                tabIndex={-1}
-              />
-            </Box>
-            <Text as="span" m="0" fontSize="s">
-              {localize(area.attributes.title_multiloc)}
-            </Text>
-          </MenuRow>
+          <MenuItem key={area.id} id={area.id}>
+            {localize(area.attributes.title_multiloc)}
+          </MenuItem>
         );
       })}
-    </MenuPopover>
+    </Menu>
   );
 };
 

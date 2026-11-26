@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { Box, Button, bo, colors } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import Modal from 'design-system/Modal';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
@@ -10,11 +11,11 @@ import { getPermissionActionSectionSubtitle } from 'containers/Admin/projects/pr
 
 import { requiresAccount } from 'components/admin/ActionForm/logic';
 import actionFormMessages from 'components/admin/ActionForm/messages';
-import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
 import PhaseActionForm from './PhaseActionForm';
+import 'design-system/tokens.css';
 
 interface Props {
   phaseId: string;
@@ -53,31 +54,16 @@ const PhaseActionAccess = ({ phaseId, action }: Props) => {
   return (
     <>
       <Button
-        buttonStyle="bo-text"
-        padding="0"
-        height="auto"
-        width="auto"
-        fontSize={`${bo.controlFontSize}px`}
-        fontWeight="400"
-        textColor={colors.coolGrey500}
-        textHoverColor={bo.colors.textHeadingStrong}
-        icon="chevron-right"
-        iconPos="right"
-        iconSize="16px"
-        onClick={() => setOpened(true)}
+        variant="quiet"
+        size={28}
+        trailingIcon="chevron-right-16"
+        onPress={() => setOpened(true)}
       >
         {formatMessage(summary())}
       </Button>
 
-      <Modal
-        opened={opened}
-        close={() => setOpened(false)}
-        header={title}
-        width="700px"
-      >
-        <Box p="24px">
-          <PhaseActionForm phaseId={phaseId} action={action} variant="plain" />
-        </Box>
+      <Modal isOpen={opened} onOpenChange={setOpened} title={title} size={560}>
+        <PhaseActionForm phaseId={phaseId} action={action} variant="plain" />
       </Modal>
     </>
   );

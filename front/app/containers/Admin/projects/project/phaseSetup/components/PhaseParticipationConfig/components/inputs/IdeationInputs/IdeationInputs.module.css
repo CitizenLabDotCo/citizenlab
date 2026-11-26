@@ -1,0 +1,15 @@
+.heading {
+  padding-top: var(--gv-space-14);
+  margin-bottom: var(--gv-space-10);
+}
+
+/* Lines the settings up with the switch labels: the switch width plus its gap. */
+.reactingSettings {
+  padding-left: calc(var(--gv-size-26) + var(--gv-space-10));
+}
+
+.moderation {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}

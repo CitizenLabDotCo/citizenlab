@@ -1,29 +1,32 @@
 import React, { useState } from 'react';
 
-import { Box, Button, ButtonProps } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import Disclosure from 'design-system/Disclosure';
+import { IconName } from 'design-system/Icon';
+import Modal from 'design-system/Modal';
 
 import { ParticipationMethod } from 'api/phases/types';
 
 import { isPDFUploadSupported } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 
 import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
-import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../messages';
+import 'design-system/tokens.css';
 
 interface Props {
   participationMethod: ParticipationMethod;
   label?: string;
-  buttonProps?: Partial<ButtonProps>;
+  cardIcon?: IconName;
 }
 
 const OfflineFormsButton = ({
   participationMethod,
   label,
-  buttonProps,
+  cardIcon,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [opened, setOpened] = useState(false);
@@ -33,22 +36,23 @@ const OfflineFormsButton = ({
 
   return (
     <>
-      <Button
-        icon="download"
-        buttonStyle="bo-secondary"
-        width="100%"
-        onClick={() => setOpened(true)}
-        {...buttonProps}
-      >
-        {title}
-      </Button>
-      <Modal opened={opened} close={() => setOpened(false)} header={title}>
-        <Box p="24px">
-          <ImportInputsSection
-            formType={survey ? 'survey' : 'input_form'}
-            pdfImportSupported={isPDFUploadSupported(participationMethod)}
-          />
-        </Box>
+      {cardIcon ? (
+        <Disclosure
+          header="button"
+          title={title}
+          actionIcon={cardIcon}
+          onPress={() => setOpened(true)}
+        />
+      ) : (
+        <Button size={28} icon="download-16" onPress={() => setOpened(true)}>
+          {title}
+        </Button>
+      )}
+      <Modal isOpen={opened} onOpenChange={setOpened} title={title}>
+        <ImportInputsSection
+          formType={survey ? 'survey' : 'input_form'}
+          pdfImportSupported={isPDFUploadSupported(participationMethod)}
+        />
       </Modal>
     </>
   );

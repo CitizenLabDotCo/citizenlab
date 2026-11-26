@@ -1,15 +1,43 @@
-import React from 'react';
+import React, { KeyboardEvent, useEffect } from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import DesignSystemSidePanel from 'design-system/SidePanel';
+import Spinner from 'design-system/Spinner';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
 import { ManagerType } from 'components/admin/PostManager';
-import SideModal from 'components/UI/SideModal';
+import { preloadOfficialFeedbackModeratorParts } from 'components/PostShowComponents/OfficialFeedback/moderatorParts';
 
 import IdeaOverview from './IdeaOverview';
 import PanelHeader, { PanelNavigation } from './PanelHeader';
+import styles from './SidePanel.module.css';
+import 'design-system/tokens.css';
+
+const isEditable = (target: EventTarget): target is HTMLElement =>
+  target instanceof HTMLElement &&
+  (target.isContentEditable ||
+    ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+
+// Escape first leaves the field being typed in, so its text isn't lost; a
+// second Escape closes the panel. Runs while bubbling, so widgets that handle
+// Escape themselves (open menus, search fields) still go first.
+const blurFieldOnEscape = (event: KeyboardEvent<HTMLDivElement>) => {
+  const { target, currentTarget } = event;
+  if (
+    event.key !== 'Escape' ||
+    event.isDefaultPrevented() ||
+    // Modals and popovers opened from the panel are portalled elsewhere.
+    !(target instanceof Node) ||
+    !currentTarget.contains(target) ||
+    !isEditable(target)
+  ) {
+    return;
+  }
+
+  target.blur();
+  event.stopPropagation();
+};
 
 interface Props {
   ideaId: string | undefined;
@@ -36,25 +64,36 @@ const SidePanel = ({
   isEditing,
 }: Props) => {
   const { data: idea, isPlaceholderData } = useIdeaById(ideaId);
+  const isLoaded = !!idea && !isPlaceholderData;
+
+  // The panel stays mounted while closed, so this runs before the first idea opens.
+  useEffect(() => {
+    preloadOfficialFeedbackModeratorParts();
+  }, []);
 
   return (
-    <SideModal
-      opened={!!ideaId}
-      close={onClose}
-      width="640px"
-      variant="bo"
-      // Clicks in the edit modal land outside the panel and would close it.
-      closeOnClickOutside={!isEditing}
+    <DesignSystemSidePanel
+      isOpen={!!ideaId}
+      onOpenChange={(isOpen) => {
+        // The edit modal sits on top of the panel; closing it keeps the panel.
+        if (!isOpen && !isEditing) onClose();
+      }}
+      title={context}
     >
-      {(!idea || isPlaceholderData) && !!ideaId && (
-        <Box display="flex" justifyContent="center" py="80px">
-          <Spinner />
-        </Box>
-      )}
-      {idea && !isPlaceholderData && (
-        <Box display="flex" flexDirection="column" height="100%">
-          <PanelHeader context={context} navigation={navigation} />
-          <Box flex="1" minHeight="0" overflowY="auto">
+      <div
+        id="e2e-side-modal-content"
+        className={styles.content}
+        role="presentation"
+        onKeyDown={blurFieldOnEscape}
+      >
+        {!isLoaded && !!ideaId && (
+          <div className={styles.loading}>
+            <Spinner />
+          </div>
+        )}
+        {idea && isLoaded && (
+          <>
+            {navigation && <PanelHeader navigation={navigation} />}
             <IdeaOverview
               idea={idea.data}
               type={type}
@@ -62,10 +101,10 @@ const SidePanel = ({
               onEdit={() => onEdit(idea.data.id)}
               onDeleted={onDeleted}
             />
-          </Box>
-        </Box>
-      )}
-    </SideModal>
+          </>
+        )}
+      </div>
+    </DesignSystemSidePanel>
   );
 };
 

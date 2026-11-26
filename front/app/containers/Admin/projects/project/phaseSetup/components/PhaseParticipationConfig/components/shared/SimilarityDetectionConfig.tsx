@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import {
   IconTooltip,
@@ -8,11 +8,15 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
+import { FieldError } from 'design-system/Field';
+import NumberField from 'design-system/NumberField';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Error from 'components/UI/Error';
@@ -22,6 +26,9 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isSuperAdmin } from 'utils/permissions/roles';
 
 import messages from '../messages';
+
+import styles from './SimilarityDetectionConfig.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   similarity_enabled?: boolean | null;
@@ -46,6 +53,8 @@ const SimilarityDetectionConfig = ({
   variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
+  const errorId = useId();
+  const getApiErrorMessage = useApiErrorText();
   const isInputIQActivated = useFeatureFlag({ name: 'input_iq' });
   const isInputIQAllowed = useFeatureFlag({
     name: 'input_iq',
@@ -64,7 +73,6 @@ const SimilarityDetectionConfig = ({
   const thresholds = allowConfiguringThreshold && similarity_enabled && (
     <>
       <Input
-        variant={variant === 'panel' ? 'bo' : undefined}
         type="number"
         min="0"
         max="1"
@@ -91,14 +99,9 @@ const SimilarityDetectionConfig = ({
           </Box>
         }
       />
-      <Error
-        showBackground={variant !== 'panel'}
-        showIcon={variant !== 'panel'}
-        apiErrors={apiErrors?.similarity_threshold_title}
-      />
+      <Error apiErrors={apiErrors?.similarity_threshold_title} />
 
       <Input
-        variant={variant === 'panel' ? 'bo' : undefined}
         type="number"
         min="0"
         max="1"
@@ -125,20 +128,19 @@ const SimilarityDetectionConfig = ({
           </Box>
         }
       />
-      <Error
-        showBackground={variant !== 'panel'}
-        showIcon={variant !== 'panel'}
-        apiErrors={apiErrors?.similarity_threshold_body}
-      />
+      <Error apiErrors={apiErrors?.similarity_threshold_body} />
     </>
   );
 
   if (variant === 'panel') {
+    const enabledError = getApiErrorMessage(apiErrors?.similarity_enabled);
+
     return (
-      <Box display="flex" flexDirection="column" gap="12px">
+      <div className={styles.panel}>
         <UpsellTooltip disabled={!showUpsellTooltip}>
           <SettingToggleRow
             id="similarity_enabled"
+            aria-describedby={enabledError ? errorId : undefined}
             title={formatMessage(messages.similarIdeaDetection)}
             description={formatMessage(
               messages.similarIdeaDetectionDescription
@@ -148,13 +150,58 @@ const SimilarityDetectionConfig = ({
             onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}
           />
         </UpsellTooltip>
-        <Error
-          showBackground={false}
-          showIcon={false}
-          apiErrors={apiErrors?.similarity_enabled}
-        />
-        {thresholds}
-      </Box>
+        {enabledError && <FieldError id={errorId}>{enabledError}</FieldError>}
+        {allowConfiguringThreshold && similarity_enabled && (
+          <>
+            <NumberField
+              name="similarity_threshold_title"
+              label={formatMessage(messages.similarityThresholdTitle)}
+              labelTooltip={formatMessage(
+                messages.similarityThresholdTitleTooltipMessage
+              )}
+              size={32}
+              hideStepButtons
+              minValue={0}
+              maxValue={1}
+              step={0.01}
+              value={
+                typeof similarity_threshold_title === 'number'
+                  ? similarity_threshold_title
+                  : undefined
+              }
+              onChange={(value) =>
+                handleThresholdChange('similarity_threshold_title', value)
+              }
+              errorMessage={getApiErrorMessage(
+                apiErrors?.similarity_threshold_title
+              )}
+            />
+            <NumberField
+              name="similarity_threshold_body"
+              label={formatMessage(messages.similarityThresholdBody)}
+              labelTooltip={formatMessage(
+                messages.similarityThresholdBodyTooltipMessage
+              )}
+              size={32}
+              hideStepButtons
+              minValue={0}
+              maxValue={1}
+              step={0.01}
+              value={
+                typeof similarity_threshold_body === 'number'
+                  ? similarity_threshold_body
+                  : undefined
+              }
+              onChange={(value) =>
+                handleThresholdChange('similarity_threshold_body', value)
+              }
+              errorMessage={getApiErrorMessage(
+                apiErrors?.similarity_threshold_body
+              )}
+            />
+          </>
+        )}
+      </div>
     );
   }
 

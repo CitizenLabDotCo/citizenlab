@@ -9,3 +9,5 @@ ca-ES:
     debate_information_updates: Actualitzacions d'informació
     debate_instructions: Instruccions
     documents_to_consult: Documents de consulta
+    private_space_members: 'Membres: %{space}'
+    untitled_folder: Carpeta sense títol
