@@ -16,6 +16,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import ListLoadError from '../Phase/ListLoadError';
 import ManageLayout from '../Phase/ManageLayout';
+import ListRowsSkeleton from '../WorkspaceSkeleton/ListRowsSkeleton';
 
 import { BatchAttribute } from './BatchBar/useBatchActions';
 import { ColumnKey, getColumns } from './columns';
@@ -253,9 +254,7 @@ const InputManager = ({ project, phase }: Props) => {
         ) : isError ? (
           <ListLoadError onRetry={() => refetch()} />
         ) : !ideas ? (
-          <div className={styles.loading}>
-            <Spinner />
-          </div>
+          <ListRowsSkeleton />
         ) : (
           <div className={isChangingList ? styles.changing : undefined}>
             {listBody === 'empty' && <EmptyState />}

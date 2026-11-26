@@ -2,10 +2,6 @@
   position: relative;
 }
 
-.loading {
-  composes: loading from '../_shared/listManager.module.css';
-}
-
 .changing {
   composes: dimmed from '../_shared/listManager.module.css';
 }

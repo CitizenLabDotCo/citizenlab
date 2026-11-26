@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Banner from 'design-system/Banner';
-import Spinner from 'design-system/Spinner';
 
 import commonGroundResultsKeys from 'api/common_ground/keys/commonGroundResultsKeys';
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
@@ -31,9 +30,9 @@ import useSelection from '../InputManager/useSelection';
 import ImportInputsModal from '../Phase/BuildPanel/BuildFields/MethodSection/CommonGroundSection/ImportInputsModal';
 import ListLoadError from '../Phase/ListLoadError';
 import ManageLayout from '../Phase/ManageLayout';
+import ListRowsSkeleton from '../WorkspaceSkeleton/ListRowsSkeleton';
 
 import AddStatementModal from './AddStatementModal';
-import styles from './CommonGroundManager.module.css';
 import EditStatementModal from './EditStatementModal';
 import EmptyList from './EmptyList';
 import messages from './messages';
@@ -247,11 +246,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
       <FilterChips categories={[agreementCategory]} onClearAll={clearFilters} />
 
       {isError && <ListLoadError onRetry={() => refetch()} />}
-      {!ideas && !isError && (
-        <div className={styles.loading}>
-          <Spinner />
-        </div>
-      )}
+      {!ideas && !isError && <ListRowsSkeleton />}
       {ideas && phaseTotal === 0 && !isError && <EmptyList />}
       {ideas && pageIdeas.length === 0 && !!phaseTotal && (
         <NoMatches onClearFilters={clearFilters} />

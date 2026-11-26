@@ -34,6 +34,7 @@ import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
 import { useParams } from 'utils/router';
 
 import { getAnalysisScope } from '../../_shared/components/AnalysisBanner/utils';
+import InsightsSkeleton from '../backofficeRedesign/WorkspaceSkeleton/InsightsSkeleton';
 
 import DemographicsSection from './demographics/DemographicsSection';
 import getExportFilename from './getExportFilename';
@@ -201,7 +202,7 @@ const InsightsContent = () => {
   };
 
   if (!phase) {
-    return null;
+    return redesigned ? <InsightsSkeleton /> : null;
   }
 
   const isNativeSurvey = participationMethod === 'native_survey';

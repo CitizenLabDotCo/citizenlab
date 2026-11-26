@@ -1,7 +1,3 @@
-.loading {
-  composes: loading from '../_shared/listManager.module.css';
-}
-
 .dimmed {
   composes: dimmed from '../_shared/listManager.module.css';
 }

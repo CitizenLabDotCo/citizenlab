@@ -24,6 +24,7 @@ import AnalysisBanner from '../../_shared/components/AnalysisBanner';
 import NewIdeaButton from '../../_shared/components/NewIdeaButton';
 import CommonGroundManager from '../backofficeRedesign/CommonGroundManager';
 import InputManagerRedesign from '../backofficeRedesign/InputManager';
+import ManageSkeleton from '../backofficeRedesign/WorkspaceSkeleton/ManageSkeleton';
 import messages from '../messages';
 
 import ownMessages from './messages';
@@ -47,6 +48,10 @@ const AdminProjectIdeas = () => {
   const isBackofficeRedesignEnabled = useProjectBackofficeRedesign();
   const isCommonGround =
     phase?.data.attributes.participation_method === 'common_ground';
+
+  if (isBackofficeRedesignEnabled && (!project || !phase)) {
+    return <ManageSkeleton />;
+  }
 
   if (project === undefined) {
     return null;

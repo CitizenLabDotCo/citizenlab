@@ -32,6 +32,8 @@ import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
 import ProjectTimeline from './ProjectTimeline';
 import styles from './ProjectWorkspace.module.css';
+import InsightsSkeleton from './WorkspaceSkeleton/InsightsSkeleton';
+import ManageSkeleton from './WorkspaceSkeleton/ManageSkeleton';
 import PhasePanelSkeleton from './WorkspaceSkeleton/PhasePanelSkeleton';
 import StageSkeleton from './WorkspaceSkeleton/StageSkeleton';
 import TimelineSkeleton from './WorkspaceSkeleton/TimelineSkeleton';
@@ -193,8 +195,14 @@ const ProjectWorkspace = ({
     </div>
   );
 
-  // A page loading on the build stage shows an empty phone, not a spinner.
-  const viewSkeleton = showPanels ? <StageSkeleton /> : undefined;
+  // A page loading inside the workspace shows the shapes of that view.
+  const viewSkeleton = showPanels ? (
+    <StageSkeleton />
+  ) : activeView === 'manage' ? (
+    <ManageSkeleton />
+  ) : activeView === 'insights' ? (
+    <InsightsSkeleton />
+  ) : undefined;
 
   const mainSlot = (
     <div

@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
 import Banner from 'design-system/Banner';
-import Skeleton from 'design-system/Skeleton';
 
 import { PhaseInsightsParticipationMetrics } from 'api/phase_insights/types';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
@@ -13,6 +12,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import OfflineCollection from '../InputManager/SideColumn/OfflineCollection';
 import useInputTermLabels from '../InputManager/useInputTermLabels';
+import InsightsSkeleton from '../WorkspaceSkeleton/InsightsSkeleton';
 
 import EmptyState from './EmptyState';
 import LateParticipationDescription from './LateParticipationDescription';
@@ -127,13 +127,7 @@ const ViewContent = ({ phase, view, children }: Props) => {
     supportsMetrics &&
     (insightsQuery.isLoading || insightsQuery.isPlaceholderData);
 
-  if (isPending) {
-    return (
-      <div className={styles.loading} aria-busy="true">
-        <Skeleton shape="block" width="100%" height={266} />
-      </div>
-    );
-  }
+  if (isPending) return <InsightsSkeleton />;
 
   const responses = {
     metrics: supportsMetrics

@@ -10,6 +10,7 @@ import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 
 import { useIntl } from 'utils/cl-intl';
 
+import StatsSkeleton from '../../WorkspaceSkeleton/StatsSkeleton';
 import messages from '../messages';
 import useInputTermLabels from '../useInputTermLabels';
 import { ManagerFilters, SetFilters } from '../useManagerParams';
@@ -72,7 +73,7 @@ const InputStats = ({
   // A budgeting phase has no vote total: it counts the money allocated.
   const showVotes = isVoting && phase.attributes.voting_method !== 'budgeting';
 
-  if (!counts && !showVotes) return null;
+  if (!counts && !showVotes) return <StatsSkeleton />;
 
   // The online and offline counts add up to the phase's vote total.
   const { votes_count: onlineVotes, manual_votes_count: offlineVotes } =
