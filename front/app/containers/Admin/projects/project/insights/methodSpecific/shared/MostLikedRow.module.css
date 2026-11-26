@@ -1,0 +1,50 @@
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gv-space-12);
+  padding: var(--gv-space-10) 0;
+}
+
+.row + .row {
+  border-top: var(--gv-border-width-1) solid var(--gv-border-subtle);
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  composes: uiStrong from '../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.byline {
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  margin-top: var(--gv-space-2);
+  color: var(--gv-text-secondary);
+}
+
+.counts {
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  display: flex;
+  gap: var(--gv-space-14);
+  margin-top: var(--gv-space-6);
+  color: var(--gv-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+}
+
+/* Status names come lower case from the settings. */
+.status {
+  display: inline-block;
+}
+
+.status::first-letter {
+  text-transform: uppercase;
+}

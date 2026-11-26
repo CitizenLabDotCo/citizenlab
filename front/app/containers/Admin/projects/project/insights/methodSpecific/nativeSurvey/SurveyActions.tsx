@@ -289,7 +289,7 @@ const SurveyActions = ({ phase }: Props) => {
               }).href
             }
           >
-            {formatMessage(messages.import)}
+            {formatMessage(messages.importPaperForm)}
           </DsButton>
           <MenuTrigger>
             <DsButton

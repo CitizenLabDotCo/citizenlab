@@ -1,4 +1,5 @@
 .buttonRow {
   display: flex;
-  padding: var(--gv-space-16) 0;
+  /* Same 10 px as between the cards around it. */
+  margin-bottom: var(--gv-space-10);
 }

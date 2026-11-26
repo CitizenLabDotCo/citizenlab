@@ -17,6 +17,9 @@ import usePhaseFileAttachments, {
 import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
 import { validateDates } from 'containers/Admin/projects/project/phaseSetup/validate';
 
+import LanguageChecksContext, {
+  useLanguageChecks,
+} from 'components/admin/MultilocFields/LanguageChecksContext';
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 
@@ -73,6 +76,8 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
 
   const preview = usePhasePreviewPublisher('build', phase.id);
 
+  const { checks, checkLanguages } = useLanguageChecks();
+
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
     preview.publish(newData);
     setErrors((errors) =>
@@ -91,6 +96,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
 
   const save = async () => {
     const values = getValues('phase');
+    const languagesDone = checkLanguages();
     const { isValidated, errors: dateErrors } = validateDates(
       values,
       phases,
@@ -103,6 +109,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
       setError('root.dates', { message: dateErrors.phaseDateError });
       throw new Error('Invalid phase dates');
     }
+    if (!languagesDone) throw new Error('Languages left to translate');
 
     try {
       const response = await updatePhase({
@@ -143,35 +150,39 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   useRegisterPageSaver('build', { dirty: isDirty || filesChanged, save });
 
   return (
-    <div className={styles.panel}>
-      <div className={styles.fields}>
-        <BuildFields
-          projectId={projectId}
-          phaseId={phase.id}
-          participationMethod={phase.attributes.participation_method}
-          formData={formData}
-          errors={errors}
-          validationErrors={{ phaseDateError: formErrors.root?.dates.message }}
-          standalone={standalone}
-          files={files}
-          surveyMethodSwitch={{
-            disabledReasons: surveyMethodLocks,
-            onSelect: setPendingSurveyMethod,
-          }}
-          onChange={updateFormData}
-          onDatesChange={(dates) => {
-            clearErrors('root.dates');
-            updateFormData(dates);
-          }}
+    <LanguageChecksContext.Provider value={checks}>
+      <div className={styles.panel}>
+        <div className={styles.fields}>
+          <BuildFields
+            projectId={projectId}
+            phaseId={phase.id}
+            participationMethod={phase.attributes.participation_method}
+            formData={formData}
+            errors={errors}
+            validationErrors={{
+              phaseDateError: formErrors.root?.dates.message,
+            }}
+            standalone={standalone}
+            files={files}
+            surveyMethodSwitch={{
+              disabledReasons: surveyMethodLocks,
+              onSelect: setPendingSurveyMethod,
+            }}
+            onChange={updateFormData}
+            onDatesChange={(dates) => {
+              clearErrors('root.dates');
+              updateFormData(dates);
+            }}
+          />
+        </div>
+
+        <SwitchSurveyMethodModal
+          phase={phase}
+          method={pendingSurveyMethod}
+          onClose={() => setPendingSurveyMethod(null)}
         />
       </div>
-
-      <SwitchSurveyMethodModal
-        phase={phase}
-        method={pendingSurveyMethod}
-        onClose={() => setPendingSurveyMethod(null)}
-      />
-    </div>
+    </LanguageChecksContext.Provider>
   );
 };
 

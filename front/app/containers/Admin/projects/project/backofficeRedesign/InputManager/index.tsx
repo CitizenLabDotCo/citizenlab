@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 
 import Spinner from 'design-system/Spinner';
 
@@ -16,6 +16,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import ListLoadError from '../Phase/ListLoadError';
 import ManageLayout from '../Phase/ManageLayout';
+import ListRowsSkeleton from '../WorkspaceSkeleton/ListRowsSkeleton';
 
 import { BatchAttribute } from './BatchBar/useBatchActions';
 import { ColumnKey, getColumns } from './columns';
@@ -24,18 +25,21 @@ import EmptyState from './EmptyState';
 import FilterChips from './FilterMenu/FilterChips';
 import useFilterCategories from './FilterMenu/useFilterCategories';
 import IdeaTable from './IdeaTable';
+import InputDisplayToggle, { InputDisplay } from './InputDisplayToggle';
 import styles from './InputManager.module.css';
 import ListToolbar from './ListToolbar';
 import NoMatches from './NoMatches';
 import SideColumn from './SideColumn';
 import SidePanel from './SidePanel';
 import useInputTermLabels from './useInputTermLabels';
-import useManagerParams from './useManagerParams';
+import useManagerParams, { DEFAULT_SORT } from './useManagerParams';
 import usePanelNavigation from './usePanelNavigation';
 import usePhaseCounts from './usePhaseCounts';
 import usePickerOptions from './usePickerOptions';
 import useSelection from './useSelection';
 import 'design-system/tokens.css';
+
+const ManagedInputsMap = lazy(() => import('./ManagedInputsMap'));
 
 const PAGE_SIZE = 20;
 
@@ -62,6 +66,18 @@ const InputManager = ({ project, phase }: Props) => {
       ? 'ProjectProposals'
       : 'ProjectIdeas';
   const isProposals = type === 'ProjectProposals';
+  const { available_views, presentation_mode } = phase.attributes;
+  const mapAvailable = (available_views ?? [presentation_mode]).includes('map');
+  const [displayOverride, setDisplayOverride] = useState<InputDisplay>();
+  const display =
+    displayOverride ?? (presentation_mode === 'map' ? 'map' : 'list');
+  const showMap = mapAvailable && display === 'map';
+  const votingMethod = phase.attributes.voting_method;
+  const defaultSort = !votingMethod
+    ? DEFAULT_SORT
+    : votingMethod === 'budgeting'
+    ? 'total_baskets'
+    : 'total_votes';
   const {
     filters,
     queryParameters,
@@ -75,7 +91,7 @@ const InputManager = ({ project, phase }: Props) => {
     setPage,
     setSearchTerm,
     setSelectedIdeaId,
-  } = useManagerParams(phase.id);
+  } = useManagerParams(phase.id, defaultSort);
 
   const listedPhaseId = isProposals ? phase.id : filters.phase;
   const scope = isProposals
@@ -111,6 +127,19 @@ const InputManager = ({ project, phase }: Props) => {
       ? phase
       : phases?.data.find((item) => item.id === listedPhaseId);
   const { available, initial } = getColumns(listedPhase, isProposals);
+  const listedVotingMethod = listedPhase?.attributes.voting_method;
+  const { data: leaders, isPlaceholderData: isChangingLeader } = useIdeas(
+    {
+      ...scope,
+      sort:
+        listedVotingMethod === 'budgeting' ? 'total_baskets' : 'total_votes',
+      'page[size]': 1,
+    },
+    { enabled: !!listedVotingMethod }
+  );
+  const leadingVoteCount = isChangingLeader
+    ? undefined
+    : leaders?.data[0]?.attributes.total_votes;
   const [chosenColumns, setChosenColumns] = useState<ColumnKey[] | null>(null);
   const columns = (chosenColumns ?? initial).filter((column) =>
     available.includes(column)
@@ -172,21 +201,26 @@ const InputManager = ({ project, phase }: Props) => {
         type={type}
         projectId={project.id}
         count={filteredTotal}
+        displayToggle={
+          mapAvailable && (
+            <InputDisplayToggle
+              display={display}
+              onChange={setDisplayOverride}
+            />
+          )
+        }
         selectedIdeas={selection.selectedIdeas}
         onUpdated={(updatedIdeas, attribute) =>
           filteredOn[attribute]
             ? selection.deselect(updatedIdeas.map((idea) => idea.id))
             : selection.refresh(updatedIdeas)
         }
-        onEdit={setEditingIdeaId}
         onClearSelection={selection.clear}
         onDeleted={(ideaIds) => {
           selection.deselect(ideaIds);
           // The current page may be gone after the delete.
           setPage(1);
         }}
-        onSelectAll={selection.selectAll}
-        isSelectingAll={selection.isSelectingAll}
         selectAllFailed={selection.selectAllFailed}
         searchTerm={searchTerm}
         onSearch={setSearchTerm}
@@ -201,12 +235,26 @@ const InputManager = ({ project, phase }: Props) => {
         onClearAll={clearFilters}
       />
       <div className={styles.list}>
-        {isError ? (
+        {showMap ? (
+          <Suspense fallback={<Spinner />}>
+            <ManagedInputsMap
+              projectId={project.id}
+              filters={{
+                ...filterParameters,
+                projectIds: [project.id],
+                phaseId: listedPhaseId,
+              }}
+              selectedIdeaId={selectedIdeaId}
+              onSelectIdea={(ideaId) => {
+                if (ideaId) openPanel(ideaId);
+                else setSelectedIdeaId(undefined);
+              }}
+            />
+          </Suspense>
+        ) : isError ? (
           <ListLoadError onRetry={() => refetch()} />
         ) : !ideas ? (
-          <div className={styles.loading}>
-            <Spinner />
-          </div>
+          <ListRowsSkeleton />
         ) : (
           <div className={isChangingList ? styles.changing : undefined}>
             {listBody === 'empty' && <EmptyState />}
@@ -220,6 +268,8 @@ const InputManager = ({ project, phase }: Props) => {
                 availableColumns={available}
                 onChangeColumns={setChosenColumns}
                 sort={sort}
+                showVoteThumbnails={!!listedVotingMethod}
+                leadingVoteCount={leadingVoteCount}
                 onSort={setSort}
                 statuses={statuses}
                 tagLabels={
@@ -229,6 +279,9 @@ const InputManager = ({ project, phase }: Props) => {
                 }
                 selectedIds={new Set(selection.selectedIds)}
                 onSelectOnPage={selection.selectOnPage}
+                total={filteredTotal}
+                onSelectAll={selection.selectAll}
+                onClearSelection={selection.clear}
                 openIdeaId={selectedIdeaId}
                 onOpen={openPanel}
                 currentPage={page}

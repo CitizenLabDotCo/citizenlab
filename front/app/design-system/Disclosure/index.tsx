@@ -5,9 +5,11 @@ import {
   Disclosure as AriaDisclosure,
   DisclosurePanel,
   Heading,
+  MenuTrigger,
   PressEvent,
 } from 'react-aria-components';
 
+import { InCardContext } from '../Field';
 import Icon, { IconName } from '../Icon';
 import { SpinnerGraphic } from '../Spinner';
 import Tooltip from '../Tooltip';
@@ -41,20 +43,36 @@ type ButtonHeaderProps = SharedProps & {
   isPending?: boolean;
 };
 
+type MenuHeaderProps = SharedProps & {
+  header: 'menu';
+  tooltip?: ReactNode;
+  // A Menu. It opens under the card; the summary Badge shows the picked value.
+  menu: ReactNode;
+  isDisabled?: boolean;
+  'aria-describedby'?: string;
+};
+
 type StaticHeaderProps = SharedProps & {
   header: 'static';
+  spacedBody?: boolean;
   actions?: ReactNode;
   // An always-visible body.
   children?: ReactNode;
 };
 
-type Props = DisclosureHeaderProps | ButtonHeaderProps | StaticHeaderProps;
+type Props =
+  | DisclosureHeaderProps
+  | ButtonHeaderProps
+  | MenuHeaderProps
+  | StaticHeaderProps;
 
+// The status goes last, so it keeps the same place next to the card's control
+// whether or not a summary is shown.
 const HeaderContent = ({ title, status, summary }: SharedProps) => (
   <>
     <span className={styles.title}>{title}</span>
-    {status && <span className={styles.slot}>{status}</span>}
     {summary && <span className={styles.summary}>{summary}</span>}
+    {status && <span className={styles.slot}>{status}</span>}
   </>
 );
 
@@ -85,7 +103,9 @@ const DisclosureCard = ({
         {tooltip ? <Tooltip content={tooltip}>{trigger}</Tooltip> : trigger}
       </Heading>
       <DisclosurePanel className={styles.panel}>
-        <div className={styles.panelContent}>{children}</div>
+        <div className={styles.panelContent}>
+          <InCardContext.Provider value>{children}</InCardContext.Provider>
+        </div>
       </DisclosurePanel>
     </AriaDisclosure>
   );
@@ -119,18 +139,62 @@ const ButtonCard = ({
   );
 };
 
-const StaticCard = ({ actions, children, ...content }: StaticHeaderProps) => (
-  <div className={styles.card}>
+const MenuCard = ({
+  menu,
+  tooltip,
+  isDisabled = false,
+  'aria-describedby': ariaDescribedBy,
+  ...content
+}: MenuHeaderProps) => {
+  const trigger = (
+    <AriaButton
+      className={styles.trigger}
+      isDisabled={isDisabled}
+      aria-describedby={ariaDescribedBy}
+    >
+      <HeaderContent {...content} />
+      <span className={styles.iconBox}>
+        <Icon name="chevron-down-16" />
+      </span>
+    </AriaButton>
+  );
+  return (
+    <div className={styles.card} data-disabled={isDisabled || undefined}>
+      <MenuTrigger>
+        {tooltip ? <Tooltip content={tooltip}>{trigger}</Tooltip> : trigger}
+        {menu}
+      </MenuTrigger>
+    </div>
+  );
+};
+
+const StaticCard = ({
+  actions,
+  children,
+  spacedBody,
+  ...content
+}: StaticHeaderProps) => (
+  <div className={styles.card} data-spaced-body={spacedBody || undefined}>
     <div className={styles.header}>
       <HeaderContent {...content} />
-      {actions && <div className={styles.actions}>{actions}</div>}
+      {actions ? (
+        <div className={styles.actions}>{actions}</div>
+      ) : (
+        // Keeps the status as far from the edge as on cards with a control.
+        content.status && <span className={styles.iconBox} aria-hidden />
+      )}
     </div>
-    {children && <div className={styles.body}>{children}</div>}
+    {children && (
+      <div className={styles.body}>
+        <InCardContext.Provider value>{children}</InCardContext.Provider>
+      </div>
+    )}
   </div>
 );
 
 const Disclosure = (props: Props) => {
   if (props.header === 'button') return <ButtonCard {...props} />;
+  if (props.header === 'menu') return <MenuCard {...props} />;
   if (props.header === 'static') return <StaticCard {...props} />;
   return <DisclosureCard {...props} />;
 };

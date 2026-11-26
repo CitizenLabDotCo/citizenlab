@@ -38,6 +38,15 @@ resource 'Phase setup reviews' do
         expect(response_data[:attributes][:reviewed_setup_cards]).to match_array(%w[sorting input_term views])
       end
 
+      example 'Track participant actions and proposal requirements on the reviewed phase' do
+        do_request(card: 'participant_actions')
+        assert_status 200
+
+        do_request(card: 'proposal_requirements')
+        assert_status 200
+        expect(response_data[:attributes][:reviewed_setup_cards]).to match_array(%w[participant_actions proposal_requirements])
+      end
+
       example 'Repeated reviews are idempotent and leave phase settings unchanged' do
         phase.update!(reviewed_setup_cards: ['input_term'])
         title = phase.title_multiloc

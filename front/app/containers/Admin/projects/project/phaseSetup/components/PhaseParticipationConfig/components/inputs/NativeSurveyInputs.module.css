@@ -3,8 +3,17 @@
   margin-bottom: var(--gv-space-10);
 }
 
+/* The same gap as under each settings group. */
+.placement {
+  margin-bottom: var(--gv-space-10);
+}
+
+.placement:empty {
+  display: none;
+}
+
 .fields {
   display: flex;
   flex-direction: column;
-  gap: var(--gv-space-16);
+  gap: var(--gv-space-12);
 }

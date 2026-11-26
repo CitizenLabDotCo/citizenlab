@@ -9,7 +9,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import ideaOfficialFeedbackKeys from './keys';
 import { INewFeedback, IOfficialFeedback } from './types';
 
-const addIdeaOfficialFeedback = async ({
+export const addIdeaOfficialFeedback = async ({
   ideaId,
   ...requestBody
 }: INewFeedback) =>

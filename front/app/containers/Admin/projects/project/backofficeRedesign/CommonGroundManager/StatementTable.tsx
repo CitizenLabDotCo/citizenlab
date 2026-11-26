@@ -14,6 +14,9 @@ import postManagerMessages from 'components/admin/PostManager/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
+import headerSelectionHandler from '../InputManager/headerSelection';
+import managerMessages from '../InputManager/messages';
+
 import styles from './CommonGroundManager.module.css';
 import messages from './messages';
 import StatementRow from './StatementRow';
@@ -23,6 +26,8 @@ const COLUMN_WIDTHS = { assignee: 88, likes: 56, agree: 72, reactions: 88 };
 
 interface Props {
   ideas: IIdeaData[];
+  agreeSortDirection?: 'ascending' | 'descending';
+  onSortByAgree: () => void;
   showModeration: boolean;
   resultsById: Map<string, CommonGroundResultItem>;
   selectedIds: Set<string>;
@@ -31,12 +36,18 @@ interface Props {
   currentPage: number;
   lastPage: number;
   onSelectOnPage: (ideaIds: Set<string>) => void;
+  /** How many statements match the current filters, on every page. */
+  total: number | undefined;
+  onSelectAll: () => void;
+  onClearSelection: () => void;
   onOpen: (ideaId: string) => void;
   onChangePage: (page: number) => void;
 }
 
 const StatementTable = ({
   ideas,
+  agreeSortDirection,
+  onSortByAgree,
   showModeration,
   resultsById,
   selectedIds,
@@ -45,6 +56,9 @@ const StatementTable = ({
   currentPage,
   lastPage,
   onSelectOnPage,
+  total,
+  onSelectAll,
+  onClearSelection,
   onOpen,
   onChangePage,
 }: Props) => {
@@ -57,6 +71,15 @@ const StatementTable = ({
       defaultWidth={COLUMN_WIDTHS[id]}
       minWidth={COLUMN_WIDTHS[id]}
       showChevron={false}
+      sortDirection={id === 'agree' ? agreeSortDirection : undefined}
+      sortAction={
+        id === 'agree'
+          ? {
+              label: formatMessage(messages.orderByAgreement),
+              onPress: onSortByAgree,
+            }
+          : undefined
+      }
       align={id === 'assignee' ? 'start' : 'end'}
     >
       {label}
@@ -70,11 +93,18 @@ const StatementTable = ({
         keyboardNavigationBehavior="tab"
         selection={{
           selectedKeys: pageIds.filter((id) => selectedIds.has(id)),
-          onSelectionChange: (keys) =>
-            onSelectOnPage(
-              new Set(keys === 'all' ? pageIds : [...keys].map(String))
-            ),
-          selectAll: formatMessage(messages.selectAllOnPage),
+          onSelectionChange: headerSelectionHandler({
+            pageIds,
+            selectedIds,
+            onSelectOnPage,
+            onSelectAll,
+            onClearSelection,
+          }),
+          selectAll: formatMessage(managerMessages.selectAllTerms, {
+            termCount: formatMessage(messages.statementCount, {
+              count: total ?? ideas.length,
+            }),
+          }),
           selectRow: formatMessage(messages.selectStatement),
         }}
       >

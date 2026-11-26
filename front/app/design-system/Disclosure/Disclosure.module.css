@@ -39,6 +39,17 @@
     var(--gv-space-12);
 }
 
+.card[data-spaced-body] > .header {
+  padding-top: var(--gv-space-14);
+  padding-bottom: 0;
+}
+
+/* 24 px from the title to the first option. */
+.card[data-spaced-body] > .body {
+  padding-top: var(--gv-space-18);
+  padding-bottom: var(--gv-space-14);
+}
+
 .trigger {
   composes: button from '../reset.module.css';
   composes: header;
@@ -123,6 +134,8 @@
   display: flex;
   flex-shrink: 0;
   align-items: center;
+  /* A card whose action is a switch is as tall as one with an icon box. */
+  min-height: var(--gv-size-28);
 }
 
 /* Closing: the height on easing-move. Opening (below): easing-silk. */

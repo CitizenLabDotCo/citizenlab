@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
 import Banner from 'design-system/Banner';
-import Spinner from 'design-system/Spinner';
 
 import { PhaseInsightsParticipationMetrics } from 'api/phase_insights/types';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
@@ -13,8 +12,10 @@ import { useIntl } from 'utils/cl-intl';
 
 import OfflineCollection from '../InputManager/SideColumn/OfflineCollection';
 import useInputTermLabels from '../InputManager/useInputTermLabels';
+import InsightsSkeleton from '../WorkspaceSkeleton/InsightsSkeleton';
 
 import EmptyState from './EmptyState';
+import LateParticipationDescription from './LateParticipationDescription';
 import ManageLayout from './ManageLayout';
 import messages from './messages';
 import { PhaseViewKey } from './usePhaseViews';
@@ -83,6 +84,28 @@ const isPhaseEmpty = (
   return attributes.ideas_count === 0;
 };
 
+// Admins can add participation after a phase ends (paper forms, offline
+// votes). Insights only counts what falls inside the phase dates, so such a
+// phase looks empty there although it has participation.
+const LATE_PARTICIPATION_METHODS = [
+  'ideation',
+  'proposals',
+  'voting',
+  'native_survey',
+];
+
+const hasParticipationOutsideDates = ({ attributes }: IPhaseData) => {
+  if (!LATE_PARTICIPATION_METHODS.includes(attributes.participation_method)) {
+    return false;
+  }
+
+  if (attributes.participation_method === 'voting') {
+    return attributes.votes_count + attributes.manual_votes_count > 0;
+  }
+
+  return attributes.ideas_count > 0;
+};
+
 interface Props {
   phase: IPhaseData;
   view: Exclude<PhaseViewKey, 'build'>;
@@ -104,13 +127,7 @@ const ViewContent = ({ phase, view, children }: Props) => {
     supportsMetrics &&
     (insightsQuery.isLoading || insightsQuery.isPlaceholderData);
 
-  if (isPending) {
-    return (
-      <div className={styles.loading}>
-        <Spinner />
-      </div>
-    );
-  }
+  if (isPending) return <InsightsSkeleton />;
 
   const responses = {
     metrics: supportsMetrics
@@ -131,6 +148,12 @@ const ViewContent = ({ phase, view, children }: Props) => {
     />
   );
 
+  // Only a phase with an end date can have participation after it.
+  const lateEndAt =
+    onInsights && hasParticipationOutsideDates(phase)
+      ? phase.attributes.end_at
+      : null;
+
   if (view === 'manage') {
     return (
       <ManageLayout side={<OfflineCollection phase={phase} />}>
@@ -141,11 +164,23 @@ const ViewContent = ({ phase, view, children }: Props) => {
 
   return (
     <>
-      <div className={styles.main}>{emptyState}</div>
+      <div className={styles.main}>
+        {lateEndAt ? (
+          <EmptyState
+            size="large"
+            title={formatMessage(messages.noParticipationInPhaseDates)}
+            description={
+              <LateParticipationDescription phase={phase} endAt={lateEndAt} />
+            }
+          />
+        ) : (
+          emptyState
+        )}
+      </div>
       <div className={styles.sidePanel}>
         <EmptyState
           size="small"
-          title={formatMessage(messages.noInsightsYet)}
+          title={lateEndAt ? undefined : formatMessage(messages.noInsightsYet)}
         />
         {phase.attributes.participation_method === 'document_annotation' && (
           <div role="note" className={styles.note}>

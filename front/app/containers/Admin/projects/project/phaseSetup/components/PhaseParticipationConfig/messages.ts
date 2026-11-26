@@ -55,10 +55,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsGroup',
     defaultMessage: 'Proposal requirements',
   },
-  participantActionsSummary: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.participantActionsSummary',
+  participantActionsSummary2: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.participantActionsSummary2',
     defaultMessage:
-      '{action, select, submit {Submit} comment {Comment} other {React}}{others, plural, =0 {} other { +#}}',
+      '{action, select, submit {Submit} comment {Comment} vote {Vote} add_statements {Add statements} other {React}}{others, plural, =0 {} other { +#}}',
   },
   proposalRequirementsSummary: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsSummary',
@@ -78,9 +78,26 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.howProposalsAreShown',
     defaultMessage: 'How proposals are shown',
   },
+  responsesOpen: {
+    id: 'app.containers.Admin.projects.phaseSetup.responsesOpen',
+    defaultMessage: 'Open',
+  },
+  responsesPaused: {
+    id: 'app.containers.Admin.projects.phaseSetup.responsesPaused',
+    defaultMessage: 'Paused',
+  },
   acceptNewResponses: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.acceptNewResponses',
     defaultMessage: 'Accept new responses',
+  },
+  pauseExternalResponses: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.pauseExternalResponses',
+    defaultMessage:
+      'When off, participants cannot open the survey from this platform. The survey provider controls responses through direct links.',
+  },
+  pausePollResponses: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.pausePollResponses',
+    defaultMessage: 'When off, participants can no longer submit the poll.',
   },
   acceptNewResponsesDescription: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.acceptNewResponsesDescription',

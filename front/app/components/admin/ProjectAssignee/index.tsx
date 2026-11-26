@@ -2,6 +2,9 @@ import React, { useId } from 'react';
 
 import Button from 'design-system/Button';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+import Tooltip, { TooltipTarget } from 'design-system/Tooltip';
+
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 import 'design-system/tokens.css';
@@ -28,6 +31,7 @@ const ProjectAssignee = ({
   onClose,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const redesign = useProjectBackofficeRedesign();
   const { loaded, options, savedAssignee } = useProjectAssignee(projectId);
   const labelId = useId();
   const descriptionId = useId();
@@ -35,20 +39,30 @@ const ProjectAssignee = ({
   if (!loaded) return null;
 
   const title = formatMessage(messages.assignee);
+  const description = formatMessage(messages.assigneeDescription);
   const selected =
     (assignee === undefined ? savedAssignee : assignee) ?? UNASSIGNED;
   const selectedLabel = options.find(({ value }) => value === selected)?.label;
 
   return (
     <div className={styles.row}>
-      <div className={styles.text}>
-        <span id={labelId} className={styles.label}>
-          {title}
-        </span>
-        <span id={descriptionId} className={styles.description}>
-          {formatMessage(messages.assigneeDescription)}
-        </span>
-      </div>
+      {redesign ? (
+        // The label itself explains the setting; there is no separate info mark.
+        <Tooltip content={description}>
+          <TooltipTarget className={styles.tooltipLabel}>
+            <span id={labelId}>{title}</span>
+          </TooltipTarget>
+        </Tooltip>
+      ) : (
+        <div className={styles.text}>
+          <span id={labelId} className={styles.label}>
+            {title}
+          </span>
+          <span id={descriptionId} className={styles.description}>
+            {description}
+          </span>
+        </div>
+      )}
       <MenuTrigger
         defaultOpen={defaultOpen}
         onOpenChange={(isOpen) => {
@@ -60,7 +74,7 @@ const ProjectAssignee = ({
           size={28}
           icon="user-16"
           hasMenu
-          aria-describedby={`${labelId} ${descriptionId}`}
+          aria-describedby={redesign ? labelId : `${labelId} ${descriptionId}`}
         >
           {selectedLabel}
         </Button>

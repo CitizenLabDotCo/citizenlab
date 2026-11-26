@@ -5,6 +5,8 @@ import { IPhaseData } from 'api/phases/types';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
 
+import PhaseFieldsSkeleton from '../WorkspaceSkeleton/PhaseFieldsSkeleton';
+
 import BuildPanel from './BuildPanel';
 
 interface Props {
@@ -19,7 +21,7 @@ const PhaseSetup = ({ projectId, phase }: Props) => {
     attachable_type: 'Phase',
   });
 
-  if (!fileAttachments) return null;
+  if (!fileAttachments) return <PhaseFieldsSkeleton />;
 
   return (
     <BuildPanel

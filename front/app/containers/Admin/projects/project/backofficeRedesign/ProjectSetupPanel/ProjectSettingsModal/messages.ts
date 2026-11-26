@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.settingsProjectGroup',
     defaultMessage: 'Project',
   },
+  projectNameField: {
+    id: 'app.containers.Admin.projects.project.settingsProjectNameField',
+    defaultMessage: 'project name',
+  },
 });

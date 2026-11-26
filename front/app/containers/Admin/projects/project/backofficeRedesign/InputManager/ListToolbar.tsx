@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
+import ActionStatus from 'design-system/ActionStatus';
 import Text from 'design-system/Text';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -10,6 +11,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import BatchBar from './BatchBar';
 import { BatchAttribute } from './BatchBar/useBatchActions';
+import useBatchFeedback from './BatchBar/useBatchFeedback';
 import FilterMenu from './FilterMenu';
 import { FilterCategory } from './FilterMenu/useFilterCategories';
 import styles from './ListToolbar.module.css';
@@ -21,13 +23,11 @@ interface Props {
   type: ManagerType;
   projectId: string;
   count: number | undefined;
+  displayToggle?: ReactNode;
   selectedIdeas: IIdeaData[];
   onUpdated: (ideas: IIdeaData[], attribute: BatchAttribute) => void;
-  onEdit: (ideaId: string) => void;
   onClearSelection: () => void;
   onDeleted: (ideaIds: string[]) => void;
-  onSelectAll: () => void;
-  isSelectingAll: boolean;
   selectAllFailed: boolean;
   searchTerm: string | undefined;
   onSearch: (term: string | null) => void;
@@ -39,13 +39,11 @@ const ListToolbar = ({
   type,
   projectId,
   count,
+  displayToggle,
   selectedIdeas,
   onUpdated,
-  onEdit,
   onClearSelection,
   onDeleted,
-  onSelectAll,
-  isSelectingAll,
   selectAllFailed,
   searchTerm,
   onSearch,
@@ -54,21 +52,25 @@ const ListToolbar = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { terms, termCount } = useInputTermLabels();
+  const { feedback, setFeedback, dismiss } = useBatchFeedback();
 
   return (
     <div className={styles.toolbar}>
-      {selectedIdeas.length > 0 ? (
+      {feedback ? (
+        <ActionStatus
+          state={feedback.state}
+          message={feedback.message}
+          onDismiss={dismiss}
+        />
+      ) : selectedIdeas.length > 0 ? (
         <BatchBar
           type={type}
           projectId={projectId}
           ideas={selectedIdeas}
-          total={count}
           onUpdated={onUpdated}
-          onEdit={onEdit}
+          onFeedback={setFeedback}
           onClear={onClearSelection}
           onDeleted={onDeleted}
-          onSelectAll={onSelectAll}
-          isSelectingAll={isSelectingAll}
           selectAllFailed={selectAllFailed}
         />
       ) : (
@@ -77,6 +79,7 @@ const ListToolbar = ({
         </Text>
       )}
       <div className={styles.display}>
+        {displayToggle}
         <SearchToggle
           label={formatMessage(messages.searchTerms, { terms })}
           searchTerm={searchTerm}

@@ -6,6 +6,7 @@ import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import AiSummary from '../ideation/AiSummary';
+import InputInsightsLayout from '../shared/InputInsightsLayout';
 import StatusBreakdown from '../shared/StatusBreakdown';
 import TopicBreakdown from '../shared/TopicBreakdown';
 import { MethodSpecificInsightProps } from '../types';
@@ -27,31 +28,36 @@ const ProposalsInsights = ({ phaseId }: MethodSpecificInsightProps) => {
     );
   }
 
+  if (redesigned) {
+    return (
+      <InputInsightsLayout
+        summary={<AiSummary phaseId={phaseId} participationMethod="proposals" />}
+        topics={
+          <TopicBreakdown phaseId={phaseId} participationMethod="proposals" />
+        }
+        statuses={
+          <StatusBreakdown phaseId={phaseId} participationMethod="proposals" />
+        }
+        mostLiked={<MostLikedProposals phaseId={phaseId} />}
+      />
+    );
+  }
+
   return (
     <Box mt="16px" gap="24px">
-      <Box
-        display="flex"
-        flexWrap={redesigned ? 'wrap' : undefined}
-        gap="16px"
-        w="100%"
-      >
-        <Box w="100%" flex={redesigned ? '1 1 320px' : undefined} minWidth="0">
+      <Box display="flex" gap="16px" w="100%">
+        <Box w="100%" minWidth="0">
           <AiSummary phaseId={phaseId} participationMethod="proposals" />
         </Box>
-        <Box w="100%" flex={redesigned ? '1 1 320px' : undefined} minWidth="0">
+        <Box w="100%" minWidth="0">
           <TopicBreakdown phaseId={phaseId} participationMethod="proposals" />
         </Box>
       </Box>
-      <Box
-        display="flex"
-        flexWrap={redesigned ? 'wrap' : undefined}
-        gap="16px"
-        w="100%"
-      >
-        <Box w="100%" flex={redesigned ? '1 1 320px' : undefined} minWidth="0">
+      <Box display="flex" gap="16px" w="100%">
+        <Box w="100%" minWidth="0">
           <MostLikedProposals phaseId={phaseId} />
         </Box>
-        <Box w="100%" flex={redesigned ? '1 1 320px' : undefined} minWidth="0">
+        <Box w="100%" minWidth="0">
           <StatusBreakdown phaseId={phaseId} participationMethod="proposals" />
         </Box>
       </Box>

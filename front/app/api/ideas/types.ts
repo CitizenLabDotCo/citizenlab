@@ -34,6 +34,8 @@ export const ideaSortValues = [
   '-title',
   'assignee',
   '-assignee',
+  'agree_percent',
+  '-agree_percent',
   'likes_count',
   '-likes_count',
   'dislikes_count',
@@ -250,6 +252,8 @@ export interface IIdeaQueryParameters<FilterValue = string> {
   phase?: string;
   /** Common ground statements in these buckets. Needs `phase`. */
   agreements?: Agreement[];
+  added_by_participants?: boolean;
+  content_warnings?: boolean;
   author?: string;
   search?: string;
   input_topics?: string[];

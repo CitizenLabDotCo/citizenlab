@@ -1,8 +1,10 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback, useState } from 'react';
 
 import Badge from 'design-system/Badge';
 import Disclosure from 'design-system/Disclosure';
 import { IconName } from 'design-system/Icon';
+
+import RevealGroupContext from 'components/admin/MultilocFields/RevealGroupContext';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 
@@ -37,6 +39,8 @@ const SetupCard = ({
   summary,
   behaviour,
 }: Props) => {
+  const [expanded, setExpanded] = useState(false);
+  const reveal = useCallback(() => setExpanded(true), []);
   const cardTitle = (
     <>
       {ready !== undefined && (
@@ -56,8 +60,16 @@ const SetupCard = ({
   return (
     <div id={id}>
       {behaviour.kind === 'expand' ? (
-        <Disclosure title={cardTitle} summary={badge} tooltip={tooltip}>
-          {behaviour.children}
+        <Disclosure
+          title={cardTitle}
+          summary={badge}
+          tooltip={tooltip}
+          isExpanded={expanded}
+          onExpandedChange={setExpanded}
+        >
+          <RevealGroupContext.Provider value={reveal}>
+            {behaviour.children}
+          </RevealGroupContext.Provider>
         </Disclosure>
       ) : (
         <Disclosure

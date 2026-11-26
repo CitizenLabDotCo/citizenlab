@@ -54,7 +54,9 @@ class IdeasFinder < ApplicationFinder
   end
 
   def phase_condition(phase)
-    scope(:in_phase, phase) if phase.present?
+    return if phase.blank?
+
+    where(id: Idea.in_phase(phase).select(:id))
   end
 
   # Common ground statements in the given agreement buckets, read from the results of the
@@ -114,6 +116,13 @@ class IdeasFinder < ApplicationFinder
     where(author_id: author)
   end
 
+  def added_by_participants_condition(value)
+    return unless value.in?([true, 'true', '1', 1])
+    return records.none unless current_user&.active?
+
+    moderatable_records.where(author_id: User.normal_user.select(:id))
+  end
+
   def publication_status_condition(publication_status)
     publication_status ? where(publication_status: publication_status) : where(publication_status: 'published')
   end
@@ -152,3 +161,4 @@ end
 
 IdeasFinder.include(IdeaAssignment::Extensions::IdeasFinder)
 IdeasFinder.include(BulkImportIdeas::Extensions::IdeasFinder)
+IdeasFinder.include(FlagInappropriateContent::Extensions::IdeasFinder)

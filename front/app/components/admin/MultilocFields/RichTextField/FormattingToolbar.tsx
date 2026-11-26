@@ -24,6 +24,7 @@ interface Props {
   noLinks: boolean;
   noAlign: boolean;
   limitedTextFormatting: boolean;
+  compactToolbar: boolean;
   withCTAButton: boolean;
 }
 
@@ -88,6 +89,7 @@ const FormattingToolbar = ({
   noLinks,
   noAlign,
   limitedTextFormatting,
+  compactToolbar,
   withCTAButton,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -193,7 +195,7 @@ const FormattingToolbar = ({
 
   return (
     <RichTextToolbar aria-label={formatMessage(messages.formatting)}>
-      {!limitedTextFormatting && (
+      {!compactToolbar && !limitedTextFormatting && (
         <MenuTrigger>
           <RichTextToolbarButton text={headingLabels[active.heading]} hasMenu />
           <Menu
@@ -231,13 +233,13 @@ const FormattingToolbar = ({
           }}
         />
       )}
-      {!noLinks && withCTAButton && (
+      {!compactToolbar && !noLinks && withCTAButton && (
         <RichTextToolbarButton
           text={formatMessage(quillMessages.customLink)}
           onPress={addCTAButton}
         />
       )}
-      {!limitedTextFormatting && !noAlign && (
+      {!compactToolbar && !limitedTextFormatting && !noAlign && (
         <MenuTrigger>
           <RichTextToolbarButton text={alignLabels[active.align]} hasMenu />
           <Menu
@@ -255,13 +257,15 @@ const FormattingToolbar = ({
       )}
       {!limitedTextFormatting && (
         <>
-          <RichTextToolbarButton
-            // No ordered-list icon is drawn yet.
-            text="1."
-            aria-label={formatMessage(quillMessages.orderedList)}
-            isSelected={active.list === 'ordered'}
-            onPress={() => toggleList('ordered')}
-          />
+          {!compactToolbar && (
+            <RichTextToolbarButton
+              // No ordered-list icon is drawn yet.
+              text="1."
+              aria-label={formatMessage(quillMessages.orderedList)}
+              isSelected={active.list === 'ordered'}
+              onPress={() => toggleList('ordered')}
+            />
+          )}
           <RichTextToolbarButton
             icon="list-14"
             aria-label={formatMessage(quillMessages.unorderedList)}
@@ -290,12 +294,14 @@ const FormattingToolbar = ({
           }}
         />
       )}
-      <RichTextToolbarButton
-        // No remove-formatting icon is drawn yet; Tx is the usual mark for it.
-        text="Tx"
-        aria-label={formatMessage(quillMessages.clean)}
-        onPress={() => callQuillHandler('clean')}
-      />
+      {!compactToolbar && (
+        <RichTextToolbarButton
+          // No remove-formatting icon is drawn yet; Tx is the usual mark for it.
+          text="Tx"
+          aria-label={formatMessage(quillMessages.clean)}
+          onPress={() => callQuillHandler('clean')}
+        />
+      )}
     </RichTextToolbar>
   );
 };

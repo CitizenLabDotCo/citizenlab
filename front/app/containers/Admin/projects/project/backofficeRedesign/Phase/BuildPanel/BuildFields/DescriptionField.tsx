@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CLErrors, Multiloc } from 'typings';
+import { CLErrors, Multiloc, SupportedLocale } from 'typings';
 
 import Banner from 'design-system/Banner';
 
@@ -24,6 +24,8 @@ import messages from './messages';
 interface Props {
   projectId: string;
   phaseId?: string;
+  locale?: SupportedLocale;
+  placeholder: string;
   value: Multiloc | undefined;
   errors: CLErrors | null;
   onChange: (description_multiloc: Multiloc) => void;
@@ -32,6 +34,8 @@ interface Props {
 const DescriptionField = ({
   projectId,
   phaseId,
+  locale,
+  placeholder,
   value,
   errors,
   onChange,
@@ -77,11 +81,13 @@ const DescriptionField = ({
         )}
       <MultilocRichTextField
         id="phase-description"
+        locale={locale}
         aria-label={formatMessage(descriptionMessages.descriptionLabel)}
-        placeholder={formatMessage(messages.addDescription)}
+        placeholder={placeholder}
         valueMultiloc={value}
         onChange={onChange}
         errorMessage={errorText}
+        compactToolbar
         withCTAButton
       />
     </div>

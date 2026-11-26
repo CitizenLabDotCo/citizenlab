@@ -7,6 +7,14 @@ describe Permissions::PhasePermissionsService do
   let(:current_phase_attrs) { {} }
   let(:user) { create(:user) }
 
+  it 'denies poll and external survey responses while submissions are paused' do
+    poll = create(:poll_phase, :ongoing, submission_enabled: false)
+    survey = create(:google_survey_phase, :ongoing, submission_enabled: false)
+
+    expect(described_class.new(poll, user).denied_reason_for_action('taking_poll')).to eq 'posting_disabled'
+    expect(described_class.new(survey, user).denied_reason_for_action('taking_survey')).to eq 'posting_disabled'
+  end
+
   # Reasons that apply to every action, so they are only asserted once here.
   describe 'context denied reasons' do
     context 'when the project is archived' do

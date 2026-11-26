@@ -13,3 +13,10 @@
   color: var(--gv-text-primary);
   white-space: nowrap;
 }
+
+/* The bar's labelled buttons are tighter than Button size 28, so all the
+   actions fit on one row of the list toolbar. */
+.selectionBar > button:not([aria-label]) {
+  padding: 0 var(--gv-space-10);
+  font-size: var(--gv-font-size-12);
+}

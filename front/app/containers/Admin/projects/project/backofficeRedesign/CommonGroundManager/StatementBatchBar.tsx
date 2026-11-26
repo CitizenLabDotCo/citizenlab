@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
 import AlertDialog from 'design-system/AlertDialog';
-import Button from 'design-system/Button';
+import IconButton from 'design-system/IconButton';
 import SelectionBar from 'design-system/SelectionBar';
+import Text from 'design-system/Text';
 
 import { IIdeaData } from 'api/ideas/types';
 
@@ -10,9 +11,8 @@ import warningModalMessages from 'components/WarningModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import BatchFailureAlert from '../InputManager/BatchBar/BatchFailureAlert';
-import SelectAllButton from '../InputManager/BatchBar/SelectAllButton';
 import useBatchActions from '../InputManager/BatchBar/useBatchActions';
+import { BatchFeedback } from '../InputManager/BatchBar/useBatchFeedback';
 import managerMessages from '../InputManager/messages';
 
 import messages from './messages';
@@ -20,29 +20,25 @@ import 'design-system/tokens.css';
 
 interface Props {
   ideas: IIdeaData[];
-  total: number | undefined;
-  onEdit: (ideaId: string) => void;
   onClear: () => void;
+  onFeedback: (feedback: BatchFeedback) => void;
   onDeleted: (ideaIds: string[]) => void;
-  onSelectAll: () => void;
-  isSelectingAll: boolean;
   selectAllFailed: boolean;
 }
 
 const StatementBatchBar = ({
   ideas,
-  total,
-  onEdit,
   onClear,
+  onFeedback,
   onDeleted,
-  onSelectAll,
-  isSelectingAll,
   selectAllFailed,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const { deleteAll, isDeleting, failure } = useBatchActions({
+  const { deleteAll, isDeleting } = useBatchActions({
     ideas,
+    inputTerm: 'statement',
+    onFeedback,
     onDeleted: (ideaIds) => {
       setDeleteModalOpen(false);
       onDeleted(ideaIds);
@@ -58,41 +54,24 @@ const StatementBatchBar = ({
   return (
     <>
       <SelectionBar count={ideas.length} onClearSelection={onClear}>
-        {total !== undefined && ideas.length < total && (
-          <SelectAllButton
-            label={formatMessage(managerMessages.selectAllTerms, {
-              termCount: statementCount(total),
-            })}
-            processing={isSelectingAll}
-            failed={selectAllFailed}
-            onClick={onSelectAll}
-          />
+        {selectAllFailed && (
+          <Text as="span" variant="small" tone="danger" role="alert">
+            {formatMessage(managerMessages.selectAllFailed)}
+          </Text>
         )}
 
-        {isSingle && (
-          <Button
-            size={28}
-            icon="square-pen-16"
-            onPress={() => onEdit(ideas[0].id)}
-          >
-            {formatMessage(managerMessages.edit)}
-          </Button>
-        )}
-
-        <Button
-          variant="danger"
-          size={28}
+        <IconButton
+          variant="bordered"
           icon="trash-2-16"
+          aria-label={
+            isSingle
+              ? formatMessage(managerMessages.delete)
+              : formatMessage(managerMessages.deleteTerms, {
+                  termCount: statementCount(ideas.length),
+                })
+          }
           onPress={() => setDeleteModalOpen(true)}
-        >
-          {isSingle
-            ? formatMessage(managerMessages.delete)
-            : formatMessage(managerMessages.deleteTerms, {
-                termCount: statementCount(ideas.length),
-              })}
-        </Button>
-
-        <BatchFailureAlert failure={failure} />
+        />
       </SelectionBar>
 
       <AlertDialog

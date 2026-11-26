@@ -85,9 +85,6 @@ const MapConfigOverview = memo<Props>(
       return (
         <div className={className}>
           <div className={styles.intro}>
-            <p className={styles.description}>
-              <FormattedMessage {...messages.mapConfigurationDescription} />
-            </p>
             <Banner tone="warning">
               <FormattedMessage {...messages.mapLocationWarning} />
             </Banner>

@@ -6,6 +6,9 @@ import { saveAs } from 'file-saver';
 import styled from 'styled-components';
 import * as XLSX from 'xlsx';
 
+import IconButton from 'design-system/IconButton';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+
 import { IResolution } from 'components/admin/ResolutionControl';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -35,6 +38,7 @@ const StyledButton = styled(ButtonWithLink)`
 export interface ReportExportMenuProps {
   className?: string;
   name: string;
+  variant?: 'default' | 'dashboard';
   svgNode?: React.RefObject<any> | React.RefObject<any>[];
   startAt?: string | null | undefined;
   endAt?: string | null;
@@ -68,6 +72,7 @@ const ReportExportMenu = ({
   svgNode,
   className,
   name,
+  variant = 'default',
   startAt,
   endAt,
   resolution,
@@ -259,6 +264,37 @@ const ReportExportMenu = ({
     // track this click for user analytics
     trackEventByName(tracks.clickXlsx, { graph: name });
   };
+
+  if (variant === 'dashboard') {
+    const label = formatMessage(messages.downloadChart);
+
+    return (
+      <MenuTrigger>
+        <IconButton
+          icon="download-16"
+          aria-label={label}
+          isDisabled={exportingXls}
+        />
+        <Menu aria-label={label} placement="bottom end">
+          {svgNode && (
+            <MenuItem onAction={handleDownloadSvg}>
+              {formatMessage(messages.downloadSvg)}
+            </MenuItem>
+          )}
+          {svgNode && (
+            <MenuItem onAction={handleDownloadPng}>
+              {formatMessage(messages.downloadPng)}
+            </MenuItem>
+          )}
+          {xlsx && (
+            <MenuItem onAction={downloadXlsx}>
+              {formatMessage(messages.downloadXlsx)}
+            </MenuItem>
+          )}
+        </Menu>
+      </MenuTrigger>
+    );
+  }
 
   return (
     <Container className={`${className} intercom-admin-export-button`}>

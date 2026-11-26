@@ -2,17 +2,22 @@ import React from 'react';
 
 import { Box, Title, Text, Spinner } from '@citizenlab/cl2-component-library';
 
+import Skeleton from 'design-system/Skeleton';
+
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 
 import useLocalize from 'hooks/useLocalize';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import IdeaCard from 'components/IdeaCard';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import wordMessages from '../../word/messages';
 import { useWordSection } from '../../word/useWordSection';
 import WordExportableInsight from '../../word/WordExportableInsight';
+import MostLikedCard from '../shared/MostLikedCard';
 import { MethodSpecificInsightProps } from '../types';
 
 import messages from './messages';
@@ -22,6 +27,8 @@ const NUMBER_OF_PROPOSALS = 5;
 const MostLikedProposals = ({ phaseId }: MethodSpecificInsightProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const { isPdfRenderMode } = usePdfExportContext();
+  const redesigned = useProjectBackofficeRedesign() && !isPdfRenderMode;
 
   const { data: proposalsData, isLoading } = useInfiniteIdeas({
     phase: phaseId,
@@ -52,6 +59,27 @@ const MostLikedProposals = ({ phaseId }: MethodSpecificInsightProps) => {
     },
     { skip: isLoading || proposals.length === 0 }
   );
+
+  if (redesigned && isLoading) {
+    return (
+      <WordExportableInsight exportId="most-liked-proposals" skipExport>
+        <Skeleton shape="block" height={212} />
+      </WordExportableInsight>
+    );
+  }
+
+  if (redesigned && proposals.length > 0) {
+    return (
+      <WordExportableInsight exportId="most-liked-proposals" skipExport>
+        <MostLikedCard
+          title={formatMessage(messages.mostLiked)}
+          description={formatMessage(messages.mostLikedDescription)}
+          ideas={proposals}
+          showDislikes={false}
+        />
+      </WordExportableInsight>
+    );
+  }
 
   if (isLoading) {
     return (

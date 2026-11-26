@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 
 import Badge from '../Badge';
 import IconButton from '../IconButton';
+import Menu, { MenuItem } from '../Menu';
 import ReviewStatus from '../ReviewStatus';
 
 import Disclosure from '.';
@@ -128,5 +129,28 @@ export const Slots: Story = {
         <Body />
       </Disclosure>
     </Column>
+  ),
+};
+
+export const HeaderMenu: Story = {
+  render: () => (
+    <Disclosure
+      header="menu"
+      title="Sorting"
+      tooltip="The order ideas are shown in by default."
+      status={<ReviewStatus status="toReview" />}
+      summary={<Badge>Trending</Badge>}
+      menu={
+        <Menu
+          aria-label="Sorting"
+          selectionMode="single"
+          selectedKeys={new Set(['trending'])}
+        >
+          <MenuItem id="trending">Trending</MenuItem>
+          <MenuItem id="new">Most recent</MenuItem>
+          <MenuItem id="popular">Most reactions</MenuItem>
+        </Menu>
+      }
+    />
   ),
 };

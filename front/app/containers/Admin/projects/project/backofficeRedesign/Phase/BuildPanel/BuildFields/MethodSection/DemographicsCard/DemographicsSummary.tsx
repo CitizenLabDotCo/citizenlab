@@ -1,37 +1,48 @@
 import React from 'react';
 
+import ReviewStatus from 'design-system/ReviewStatus';
 import Text from 'design-system/Text';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
-import demographicMessages from 'components/admin/ActionForm/DataSection/DemographicSection/messages';
 import actionFormMessages from 'components/admin/ActionForm/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
+import PanelField from '../../../PanelField';
+
 interface Props {
   phaseId: string;
   action: IPhasePermissionAction;
+  label: string;
+  onOpen: () => void;
 }
 
-const DemographicsSummary = ({ phaseId, action }: Props) => {
+const DemographicsSummary = ({ phaseId, action, label, onOpen }: Props) => {
   const { formatMessage } = useIntl();
   const { data: customFields } = usePermissionsPhaseCustomFields({
     phaseId,
     action,
   });
 
-  if (!customFields) return null;
-
-  const nQuestions = customFields.data.length;
+  const nQuestions = customFields?.data.length;
 
   return (
-    <Text as="span" variant="small" tone="secondary">
-      {nQuestions > 0
-        ? formatMessage(actionFormMessages.nQuestions, { nQuestions })
-        : formatMessage(demographicMessages.noDemographicQuestionsAsked)}
-    </Text>
+    <PanelField
+      reviewKey={nQuestions ? 'demographics' : undefined}
+      label={label}
+      action={
+        nQuestions === 0 ? (
+          <ReviewStatus status="toSet" />
+        ) : nQuestions ? (
+          <Text as="span" variant="small" tone="secondary">
+            {formatMessage(actionFormMessages.nQuestions, { nQuestions })}
+          </Text>
+        ) : undefined
+      }
+      button={{ icon: 'chevron-right', onClick: onOpen }}
+    />
   );
 };
 

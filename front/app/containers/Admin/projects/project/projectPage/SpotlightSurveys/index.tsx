@@ -5,9 +5,11 @@ import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import Divider from 'design-system/Divider';
 import PanelGroupHeader from 'design-system/PanelGroupHeader';
 
+import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
 import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -51,6 +53,7 @@ const SpotlightSurveys = ({
   const dateLocale = getLocale(useLocale());
   const { phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId, 'standalone');
+  const { data: project } = useProjectById(projectId);
   const { data: layout } = useProjectPageLayout(projectId);
 
   const linkedPhaseIds = linkedSurveyPhaseIds(
@@ -62,6 +65,11 @@ const SpotlightSurveys = ({
   );
 
   const redesign = variant === 'panel';
+  // Nothing to manage or read before the project is published.
+  const opensOnBuild =
+    redesign && project?.data.attributes.publication_status === 'draft';
+  const landingTab = (phase: IPhaseData) =>
+    opensOnBuild ? 'setup' : getPhaseLandingTab(phase);
   const formatSidebarDates = (startAt: string, endAt: string | null) =>
     endAt
       ? formatDateRange(startAt, endAt, dateLocale)
@@ -99,7 +107,7 @@ const SpotlightSurveys = ({
 
     const row = (
       <Link
-        to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
+        to={PHASE_TAB_ROUTES[landingTab(phase)]}
         params={{ projectId, phaseId: phase.id }}
       >
         {redesign ? (

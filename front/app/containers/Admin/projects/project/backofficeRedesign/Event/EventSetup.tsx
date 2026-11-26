@@ -7,9 +7,12 @@ import Banner from 'design-system/Banner';
 import AttachmentsCard from 'containers/Admin/projects/_shared/components/AttachmentsCard';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
+import LanguageGroup from 'components/admin/MultilocFields/LanguageGroup';
+import fieldMessages from 'components/admin/MultilocFields/messages';
 import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichTextField';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+import useLanguageGroup from 'components/admin/MultilocFields/useLanguageGroup';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -38,16 +41,34 @@ const EventSetup = ({ projectId, form }: Props) => {
     'description_multiloc'
   );
   const baseError = apiErrorText(errors?.base, 'base');
+  const group = useLanguageGroup([
+    {
+      value: attributes.title_multiloc,
+      name: formatMessage(messages.nameField),
+      required: true,
+    },
+    {
+      value: attributes.description_multiloc,
+      name: formatMessage(fieldMessages.description),
+    },
+  ]);
 
   return (
     <div className={styles.setup}>
       <h2 className={styles.title}>{formatMessage(messages.eventSetup)}</h2>
 
-      <div className={styles.texts}>
+      <LanguageGroup
+        group={group}
+        aria-label={formatMessage(messages.eventContentLanguage)}
+      >
         <MultilocTextField
           id="event-title"
+          locale={group.selectedLocale}
           aria-label={formatMessage(eventMessages.titleLabel)}
-          placeholder={formatMessage(messages.addEventName)}
+          placeholder={group.placeholder(
+            messages.addEventNameInLanguage,
+            messages.addEventName
+          )}
           valueMultiloc={attributes.title_multiloc}
           onChange={(title_multiloc: Multiloc) =>
             form.updateAttributes({ title_multiloc })
@@ -57,8 +78,12 @@ const EventSetup = ({ projectId, form }: Props) => {
 
         <MultilocRichTextField
           id="event-description"
+          locale={group.selectedLocale}
           aria-label={formatMessage(eventMessages.descriptionLabel)}
-          placeholder={formatMessage(messages.addDescription)}
+          placeholder={group.placeholder(
+            messages.addDescriptionInLanguage,
+            messages.addDescription
+          )}
           valueMultiloc={attributes.description_multiloc}
           onChange={(description_multiloc: Multiloc) =>
             form.updateAttributes({ description_multiloc })
@@ -66,7 +91,7 @@ const EventSetup = ({ projectId, form }: Props) => {
           errorMessage={descriptionError}
           withCTAButton
         />
-      </div>
+      </LanguageGroup>
 
       <div className={styles.cards}>
         <AttachmentsCard

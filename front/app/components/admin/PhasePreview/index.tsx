@@ -16,6 +16,7 @@ import {
 } from 'utils/phasePreview/types';
 
 import messages from './messages';
+import SimulateBar from './SimulateBar';
 
 const lifecycleOptions = {
   before: {
@@ -46,9 +47,10 @@ interface Props {
   snapshot: Omit<PreviewSnapshot, 'phase'> & {
     phase?: PreviewSnapshot['phase'];
   };
+  skeleton?: boolean;
 }
 
-const PhasePreview = ({ src, title, snapshot }: Props) => {
+const PhasePreview = ({ src, title, snapshot, skeleton = false }: Props) => {
   const { formatMessage } = useIntl();
   const frameRef = useRef<HTMLIFrameElement>(null);
   const [blocked, setBlocked] = useState(false);
@@ -134,10 +136,8 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
           frameName={PREVIEW_FRAME_NAME}
           frameRef={frameRef}
           dataCy="e2e-phase-preview"
-          bottomSpace={
-            (isInformation ? 0 : snapshot.unsaved ? 88 : 56) +
-            (blocked ? 32 : 0)
-          }
+          bottomSpace={(isInformation ? 0 : 56) + (blocked ? 32 : 0)}
+          skeleton={skeleton}
         />
       </Box>
       <Box role="status" px="16px">
@@ -153,20 +153,18 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
           </Text>
         )}
       </Box>
-      {!isInformation && (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="flex-end"
-          gap="8px"
-          px="16px"
-          pb="16px"
+      {snapshot.unsaved && !isInformation && (
+        <Text
+          fontSize="s"
+          color="textSecondary"
+          textAlign="center"
+          m="0 16px 8px"
         >
-          {snapshot.unsaved && (
-            <Text fontSize="s" color="textSecondary" textAlign="right" m="0">
-              {formatMessage(messages.newPhase)}
-            </Text>
-          )}
+          {formatMessage(messages.newPhase)}
+        </Text>
+      )}
+      {!isInformation && (
+        <SimulateBar>
           <PreviewStateSelector
             aria-label={formatMessage(messages.lifecycle)}
             options={LIFECYCLES.map((value) => ({
@@ -185,7 +183,7 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
               }
             }}
           />
-        </Box>
+        </SimulateBar>
       )}
     </Box>
   );

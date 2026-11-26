@@ -2,6 +2,7 @@ import formatcoords from 'formatcoords';
 import { isNil } from 'lodash-es';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IMapConfigData } from 'api/map_config/types';
 
 import { DEFAULT_TILE_PROVIDER } from 'components/EsriMap/constants';
 
@@ -43,6 +44,28 @@ export const getZoomLevel = (
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (appConfig?.attributes?.settings?.maps?.zoom_level as any);
   return parseInt(zoom || tenantZoomLevel || 13, 10);
+};
+
+export const hasCustomMapSettings = (
+  mapConfig?: IMapConfigData,
+  appConfig?: IAppConfigurationData
+) => {
+  if (!mapConfig) return false;
+
+  const { center_geojson, zoom_level, esri_web_map_id, layers } =
+    mapConfig.attributes;
+  if (esri_web_map_id || layers.length > 0) return true;
+  if (!appConfig) return false;
+
+  const [latitude, longitude] = getCenter(undefined, appConfig);
+  const coordinates = center_geojson?.coordinates;
+  const changedCenter =
+    coordinates &&
+    (coordinates[0] !== longitude || coordinates[1] !== latitude);
+  const changedZoom =
+    zoom_level && Number(zoom_level) !== getZoomLevel(undefined, appConfig);
+
+  return !!(changedCenter || changedZoom);
 };
 
 export const getTileProvider = (

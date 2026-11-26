@@ -10,12 +10,6 @@
   color: var(--gv-text-secondary);
 }
 
-.popoverText {
-  composes: ui from '../../../../design-system/typography.module.css';
-  margin: 0;
-  color: var(--gv-text-primary);
-}
-
 .layersList {
   /* 5px and 25px have no space token; kept as they are today. */
   margin-top: 5px;

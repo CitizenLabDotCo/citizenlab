@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import IconButton from '../IconButton';
 
@@ -45,4 +45,26 @@ export const AllVariants: Story = {
       <PanelGroupHeader label="Timeline" context="rail" />
     </div>
   ),
+};
+
+export const Collapsible: Story = {
+  render: function CollapsibleHeader() {
+    const [expanded, setExpanded] = useState(false);
+
+    return (
+      <>
+        <PanelGroupHeader
+          label="Project details"
+          toggle={{
+            controls: 'details-content',
+            expanded,
+            onPress: () => setExpanded(!expanded),
+          }}
+        />
+        <div id="details-content" hidden={!expanded}>
+          Settings
+        </div>
+      </>
+    );
+  },
 };

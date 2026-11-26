@@ -4,10 +4,10 @@
 
 .item {
   composes: button from '../reset.module.css';
-  composes: small from '../typography.module.css';
+  composes: ui from '../typography.module.css';
   composes: ringInside from '../focus.module.css';
-  padding: var(--gv-space-4) var(--gv-space-12);
-  border-radius: 3px;
+  padding: var(--gv-space-4) var(--gv-space-14);
+  border-radius: 5px;
   color: var(--gv-text-on-muted);
   white-space: nowrap;
   cursor: pointer;

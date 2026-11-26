@@ -58,6 +58,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.optionsAndParticipantData',
     defaultMessage: 'Options and participant data',
   },
+  phaseContentLanguage: {
+    id: 'app.containers.Admin.projects.project.phaseContentLanguage',
+    defaultMessage: 'Phase content language',
+  },
   phaseTitle: {
     id: 'app.containers.Admin.projects.project.phaseTitle2',
     defaultMessage: 'Add a title',
@@ -65,5 +69,13 @@ export default defineMessages({
   nativeSurveyOptionDescription: {
     id: 'app.containers.Admin.projects.project.nativeSurveyOptionDescription',
     defaultMessage: 'AI-powered insights and a wide range of question types',
+  },
+  phaseTitleInLanguage: {
+    id: 'app.containers.Admin.projects.project.phaseTitleInLanguage',
+    defaultMessage: 'Add a title in {language}',
+  },
+  addDescriptionInLanguage: {
+    id: 'app.containers.Admin.projects.project.addDescriptionInLanguage',
+    defaultMessage: 'Add a short description in {language}',
   },
 });

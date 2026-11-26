@@ -19,6 +19,7 @@ import usePhase from 'api/phases/usePhase';
 import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import {
@@ -42,12 +43,12 @@ import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
 import ViewSelector from '../../shared/ViewSelector';
 import ActionToggleRow from '../_shared/ActionToggleRow';
+import useParticipantActionsSummary from '../_shared/useParticipantActionsSummary';
 
 import votingMessages from './messages';
 import styles from './VotingInputs.module.css';
 import VotingMethodChangeModal from './VotingMethodChangeModal';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
-import shareMessages from './votingMethodInputs/messages';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
 import ShareResultsToggle from './votingMethodInputs/ShareResultsToggle/ShareResultsToggle';
 import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
@@ -139,6 +140,10 @@ const VotingInputs = ({
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
   const getApiErrorMessage = useApiErrorText();
+  const actionsSummary = useParticipantActionsSummary({
+    voting: true,
+    commenting_enabled,
+  });
   const { projectId, phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
   const [pendingVotingMethod, setPendingVotingMethod] =
@@ -208,6 +213,7 @@ const VotingInputs = ({
 
   const views = (
     <ViewSelector
+      inputTerm="option"
       presentation_mode={presentation_mode}
       available_views={available_views}
       apiErrors={apiErrors}
@@ -230,11 +236,10 @@ const VotingInputs = ({
             expandable
           />
         </div>
-        <PanelGroup
+        <SetupCard
           reviewKey="voting_method"
           reviewNeedsChoice={!voting_method}
-          label={formatMessage(votingMessages.votingMethodSelectorTitle)}
-          defaultOpen
+          title={formatMessage(votingMessages.votingMethodSelectorTitle)}
         >
           {methodSelector}
           {voting_method && (
@@ -260,9 +265,11 @@ const VotingInputs = ({
               />
             </div>
           )}
-        </PanelGroup>
+        </SetupCard>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
+          reviewKey="participant_actions"
+          summary={actionsSummary}
           hasError={!!commentingError}
         >
           {phaseId && (
@@ -307,14 +314,6 @@ const VotingInputs = ({
               description={formatMessage(messages.votingFilteringEnabled)}
               checked={!!voting_filtering_enabled}
               onChange={toggleVotingFilteringEnabled}
-            />
-            <SettingToggleRow
-              title={formatMessage(shareMessages.autoshareResults)}
-              description={formatMessage(
-                shareMessages.autoshareResultsToggleDescription
-              )}
-              checked={!!autoshare_results_enabled}
-              onChange={toggleAutoshareResultsEnabled}
             />
             {similarity}
           </div>

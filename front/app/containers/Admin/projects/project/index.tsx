@@ -9,6 +9,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
+import LanguageButtonContext from 'components/admin/MultilocFields/LanguageButtonContext';
 import { PageSaveProvider } from 'components/admin/PageSaveContext';
 import { PhasePreviewDraftProvider } from 'components/admin/PhasePreview/DraftContext';
 
@@ -21,6 +22,7 @@ import NewPhase from './backofficeRedesign/NewPhase';
 import { ParticipationPanelProvider } from './backofficeRedesign/ParticipationPanelContext';
 import PhaseSetup from './backofficeRedesign/Phase/PhaseSetup';
 import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
+import WorkspaceLoading from './backofficeRedesign/WorkspaceSkeleton/WorkspaceLoading';
 import TurnOnNotice from './earlyAccess/TurnOnNotice';
 import ProjectHeader from './projectHeader';
 import ProjectSidebar from './projectPage/ProjectSidebar';
@@ -39,7 +41,7 @@ const workspacePage = (
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: authUser } = useAuthUser();
   const { phaseId } = useParams({ strict: false });
-  const { data: phase } = usePhase(phaseId);
+  const { data: phase, isLoading: phaseLoading } = usePhase(phaseId);
   const workspaceEnabled = useProjectBackofficeRedesign();
   const matchRoute = useMatchRoute();
   const onNewPhaseRoute = !!matchRoute({
@@ -59,32 +61,35 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
 
   if (workspaceEnabled) {
     return (
-      <ParticipationPanelProvider projectId={projectId}>
-        <PhasePreviewDraftProvider>
-          <PageSaveProvider>
-            <UnsavedChangesGuard />
-            {page === 'newPhase' && <NewPhase project={project} />}
-            {page === 'event' && <Event project={project} />}
-            {page === 'project' && (
-              <ProjectWorkspace
-                project={project}
-                phase={selectedPhase}
-                sidePanel={
-                  selectedPhase && (
-                    <PhaseSetup
-                      key={selectedPhase.id}
-                      projectId={projectId}
-                      phase={selectedPhase}
-                    />
-                  )
-                }
-              >
-                <RouterOutlet />
-              </ProjectWorkspace>
-            )}
-          </PageSaveProvider>
-        </PhasePreviewDraftProvider>
-      </ParticipationPanelProvider>
+      <LanguageButtonContext.Provider value>
+        <ParticipationPanelProvider projectId={projectId}>
+          <PhasePreviewDraftProvider>
+            <PageSaveProvider>
+              <UnsavedChangesGuard />
+              {page === 'newPhase' && <NewPhase project={project} />}
+              {page === 'event' && <Event project={project} />}
+              {page === 'project' && (
+                <ProjectWorkspace
+                  project={project}
+                  phase={selectedPhase}
+                  phasePending={!!phaseId && phaseLoading}
+                  sidePanel={
+                    selectedPhase && (
+                      <PhaseSetup
+                        key={selectedPhase.id}
+                        projectId={projectId}
+                        phase={selectedPhase}
+                      />
+                    )
+                  }
+                >
+                  <RouterOutlet />
+                </ProjectWorkspace>
+              )}
+            </PageSaveProvider>
+          </PhasePreviewDraftProvider>
+        </ParticipationPanelProvider>
+      </LanguageButtonContext.Provider>
     );
   }
 
@@ -112,7 +117,7 @@ const AdminProjectsProjectIndexWrapper = () => {
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: project } = useProjectById(projectId);
 
-  if (!project) return null;
+  if (!project) return <WorkspaceLoading fallback={null} />;
 
   return <AdminProjectsProjectIndex project={project.data} />;
 };

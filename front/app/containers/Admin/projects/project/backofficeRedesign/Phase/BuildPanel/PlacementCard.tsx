@@ -44,7 +44,7 @@ const PlacementCard = ({
   const label = formatMessage(messages.surveyPlacement);
 
   return (
-    <PanelField reviewKey="survey_placement" label={label}>
+    <PanelField reviewKey="survey_placement" label={label} spacedBody>
       <RadioGroup
         aria-label={label}
         name={name}

@@ -1,0 +1,30 @@
+.card {
+  min-height: 212px;
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+/* The summary text comes from the analysis screen, which sets its own type. */
+.body p {
+  color: var(--gv-text-body-subtle);
+  font-family: var(--gv-font-family);
+  font-size: var(--gv-font-size-13);
+  line-height: var(--gv-font-line-height-20);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-12);
+}
+
+.pending {
+  display: grid;
+  gap: var(--gv-space-12);
+}

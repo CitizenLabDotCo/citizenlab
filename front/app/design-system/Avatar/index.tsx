@@ -5,7 +5,7 @@ import Icon from '../Icon';
 import styles from './Avatar.module.css';
 import '../tokens.css';
 
-type AvatarSize = 24 | 28;
+type AvatarSize = 16 | 24 | 28;
 
 // Initials sit next to the person's name, so they are hidden from assistive tech.
 type AvatarContent =

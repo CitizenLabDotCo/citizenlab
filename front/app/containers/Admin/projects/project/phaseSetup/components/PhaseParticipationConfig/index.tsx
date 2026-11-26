@@ -39,6 +39,7 @@ import { anyIsDefined } from 'utils/helperUtils';
 
 import { ValidationErrors } from '../../typings';
 
+import useParticipantActionsSummary from './components/inputs/_shared/useParticipantActionsSummary';
 import UserActions from './components/inputs/_shared/UserActions';
 import IdeationInputs from './components/inputs/IdeationInputs';
 import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
@@ -131,6 +132,12 @@ const PhaseParticipationConfig = ({
   ) => {
     updateFormData({
       document_annotation_embed_url,
+    });
+  };
+
+  const toggleResponseCollection = () => {
+    updateFormData({
+      submission_enabled: formData.submission_enabled === false,
     });
   };
 
@@ -418,6 +425,11 @@ const PhaseParticipationConfig = ({
   const showSurveys =
     surveys_enabled && anyIsDefined(...Object.values(surveyProviders));
 
+  const commonGroundSummary = useParticipantActionsSummary({
+    adding_statements: submission_enabled,
+    voting: true,
+  });
+
   if (!participation_method) {
     // Type check, should in practice always be defined
     return null;
@@ -494,6 +506,8 @@ const PhaseParticipationConfig = ({
               </Box>
               <PanelGroup
                 label={formatMessage(messages.participantActionsGroup)}
+                reviewKey="participant_actions"
+                summary={commonGroundSummary}
               >
                 {commonGroundActions}
               </PanelGroup>
@@ -644,6 +658,8 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'poll' && (
           <PollInputs
+            responsesEnabled={submission_enabled !== false}
+            onToggleResponses={toggleResponseCollection}
             poll_anonymous={poll_anonymous}
             apiErrors={apiErrors}
             togglePollAnonymous={togglePollAnonymous}
@@ -707,6 +723,8 @@ const PhaseParticipationConfig = ({
         )}
         {participation_method === 'survey' && (
           <SurveyInputs
+            responsesEnabled={submission_enabled !== false}
+            onToggleResponses={toggleResponseCollection}
             survey_service={survey_service}
             survey_embed_url={survey_embed_url}
             apiErrors={apiErrors}

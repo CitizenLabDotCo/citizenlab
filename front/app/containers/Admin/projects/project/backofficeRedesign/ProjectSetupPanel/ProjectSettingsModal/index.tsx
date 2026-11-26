@@ -14,6 +14,8 @@ import SettingsModal, {
   SettingsModalSection,
 } from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal';
 
+import useLanguageGroup from 'components/admin/MultilocFields/useLanguageGroup';
+
 import { useIntl } from 'utils/cl-intl';
 import { validateSlug } from 'utils/textUtils';
 
@@ -47,6 +49,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
     useState<IUpdatedProjectProperties>({});
   const [projectContextError, setProjectContextError] = useState(false);
   const [saveFailed, setSaveFailed] = useState(false);
+  const [section, setSection] = useState<string>();
   const [confirmingDiscard, setConfirmingDiscard] = useState(false);
 
   const [slug, setSlug] = useState(project.attributes.slug);
@@ -72,6 +75,17 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   };
 
   const projectAttrs = { ...project.attributes, ...projectAttributesDiff };
+  // Owned here, as the General section unmounts while another one shows.
+  const titleGroup = useLanguageGroup(
+    [
+      {
+        value: projectAttrs.title_multiloc,
+        name: formatMessage(messages.projectNameField),
+        required: true,
+      },
+    ],
+    { ownCheck: true }
+  );
 
   const handleSave = async () => {
     if (savingRef.current) return;
@@ -88,6 +102,11 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
     }
 
     if (showSlugErrorMessage) return;
+
+    if (!titleGroup.check()) {
+      setSection('general');
+      return;
+    }
 
     savingRef.current = true;
     setProcessing(true);
@@ -151,6 +170,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
         <GeneralSection
           projectId={projectId}
           titleMultiloc={projectAttrs.title_multiloc}
+          titleGroup={titleGroup}
           spaceId={projectAttrs.space_id ?? null}
           folderId={projectAttrs.folder_id ?? null}
           projectInRoot={projectInRoot}
@@ -181,6 +201,8 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
         close={handleClose}
         header={formatMessage(messages.settingsTitle)}
         sections={sections}
+        section={section}
+        onSectionChange={setSection}
         notice={
           saveFailed && (
             <Banner tone="error">

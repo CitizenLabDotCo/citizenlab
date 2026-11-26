@@ -10,14 +10,14 @@ import Card from '../InputManager/SideColumn/Card';
 import ExportRow from '../InputManager/SideColumn/ExportRow';
 
 import messages from './messages';
-import StatementStats from './StatementStats';
+import StatementStats, { StatementStatFilter } from './StatementStats';
 import { totalReactions } from './utils';
 import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;
   stats: CommonGroundResultsData['attributes']['stats'] | undefined;
-  phaseTotal: number | undefined;
+  filters: StatementStatFilter[];
   selectedIds: string[];
   onAdd: () => void;
   onImport: () => void;
@@ -26,7 +26,7 @@ interface Props {
 const StatementSideColumn = ({
   projectId,
   stats,
-  phaseTotal,
+  filters,
   selectedIds,
   onAdd,
   onImport,
@@ -37,9 +37,8 @@ const StatementSideColumn = ({
     <>
       {stats && (
         <StatementStats
-          statements={phaseTotal ?? stats.num_ideas}
           reactions={totalReactions(stats.votes)}
-          participants={stats.num_participants}
+          filters={filters}
         />
       )}
       <Card fillHeight>

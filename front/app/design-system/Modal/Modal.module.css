@@ -39,6 +39,17 @@
     dialog-settle var(--gv-motion-duration-slow) var(--gv-motion-easing-silk);
 }
 
+/* Alert dialog and Side panel keep the taller head. */
+.lowHead .head {
+  min-height: calc(var(--gv-space-56) + var(--gv-space-2));
+  padding: var(--gv-space-16) var(--gv-space-24) var(--gv-space-12);
+}
+
+.lowHead .title {
+  font-size: var(--gv-font-size-14);
+  line-height: var(--gv-font-line-height-20);
+}
+
 .size440 {
   width: 440px;
 }

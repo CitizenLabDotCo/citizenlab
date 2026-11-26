@@ -12,6 +12,7 @@ const useInputTermLabels = () => {
   const term = phase?.data.attributes.input_term ?? 'other';
 
   return {
+    inputTerm: term,
     term: formatMessage(inputTermMessages.singular, { term }),
     terms: formatMessage(inputTermMessages.plural, { term }),
     capitalizedTerm: formatMessage(inputTermMessages.capitalizedSingular, {

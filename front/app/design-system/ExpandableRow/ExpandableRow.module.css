@@ -1,0 +1,67 @@
+.row + .row {
+  border-top: var(--gv-border-width-1) solid var(--gv-border-subtle);
+}
+
+.heading {
+  margin: 0;
+}
+
+.trigger {
+  composes: button from '../reset.module.css';
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+  width: 100%;
+  padding: var(--gv-space-10) var(--gv-space-4);
+  border-radius: var(--gv-radius-6);
+  text-align: start;
+  cursor: pointer;
+  outline: none;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.trigger[data-hovered] {
+  background: var(--gv-surface-hovered);
+}
+
+.trigger[data-pressed] {
+  background: var(--gv-surface-pressed);
+}
+
+.trigger[data-focus-visible] {
+  outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
+  outline-offset: var(--gv-focus-ring-offset);
+}
+
+.title {
+  composes: ui from '../typography.module.css';
+  flex: 1;
+  min-width: 0;
+  color: var(--gv-text-primary);
+}
+
+.summary {
+  composes: small from '../typography.module.css';
+  flex-shrink: 0;
+  color: var(--gv-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--gv-icon-quiet);
+  transition-property: transform;
+  transition-duration: var(--gv-motion-duration-medium);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.row[data-expanded] .chevron {
+  transform: rotate(90deg);
+}
+
+.panel {
+  padding: 0 var(--gv-space-4);
+}

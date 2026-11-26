@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  orderByAgreement: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.orderByAgreement',
+    defaultMessage: 'Order by agreement',
+  },
+  addedByParticipants: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.addedByParticipants',
+    defaultMessage: 'Added by participants',
+  },
   agree: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.agree',
     defaultMessage: 'Agree',
@@ -26,10 +34,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.reactions',
     defaultMessage: 'Reactions',
   },
-  participants: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.participants',
-    defaultMessage: 'Participants',
-  },
   addStatement: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.addStatement',
     defaultMessage: 'Add new statement',
@@ -53,10 +57,6 @@ export default defineMessages({
   agreeColumn: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.agreeColumn',
     defaultMessage: 'Agree',
-  },
-  selectAllOnPage: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.selectAllOnPage',
-    defaultMessage: 'Select all statements on this page',
   },
   selectStatement: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.selectStatement',
@@ -93,5 +93,14 @@ export default defineMessages({
   mostlyDisagree: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.mostlyDisagree',
     defaultMessage: 'Mostly disagree',
+  },
+  noReactionsTitle: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.noReactionsTitle',
+    defaultMessage: 'Reactions will appear here',
+  },
+  noReactionsDescription: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.noReactionsDescription',
+    defaultMessage:
+      'Once people take part, you can review and manage their reactions here.',
   },
 });

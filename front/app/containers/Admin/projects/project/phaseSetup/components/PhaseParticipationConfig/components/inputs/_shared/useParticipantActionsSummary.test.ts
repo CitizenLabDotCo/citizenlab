@@ -27,6 +27,18 @@ describe('useParticipantActionsSummary', () => {
     expect(result.current).toBe('Comment');
   });
 
+  it('shows the configured Common Ground and voting actions', () => {
+    const commonGround = renderHook(() =>
+      useParticipantActionsSummary({ adding_statements: true, voting: true })
+    );
+    const voting = renderHook(() =>
+      useParticipantActionsSummary({ voting: true, commenting_enabled: false })
+    );
+
+    expect(commonGround.result.current).toBe('Add statements +1');
+    expect(voting.result.current).toBe('Vote');
+  });
+
   it('has no summary when every action is off', () => {
     const { result } = renderHook(() => useParticipantActionsSummary({}));
 

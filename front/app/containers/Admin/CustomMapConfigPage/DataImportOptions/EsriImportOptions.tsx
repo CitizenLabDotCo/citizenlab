@@ -53,7 +53,8 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig, variant }) => {
       <div className={styles.esriOptions}>
         <DSButton
           data-cy="e2e-feature-layer-upload-btn"
-          icon="map-pin-14"
+          trailingIcon="upload-16"
+          fullWidth
           onPress={() => {
             setView('featureLayerUpload');
           }}
@@ -68,6 +69,8 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig, variant }) => {
         </DSButton>
         <DSButton
           data-cy="e2e-web-map-upload-btn"
+          trailingIcon="upload-16"
+          fullWidth
           onPress={() => {
             setView('webMapUpload');
           }}

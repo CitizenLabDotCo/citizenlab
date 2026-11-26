@@ -137,4 +137,28 @@ export default defineMessages({
     defaultMessage:
       'This is a spotlight survey. It runs alongside the timeline and can overlap other phases.',
   },
+  surveyTitleField: {
+    id: 'app.containers.AdminPage.ProjectTimeline.surveyTitleField',
+    defaultMessage: 'survey title',
+  },
+  surveyButtonField: {
+    id: 'app.containers.AdminPage.ProjectTimeline.surveyButtonField',
+    defaultMessage: 'button text',
+  },
+  addSurveyTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.addSurveyTitle',
+    defaultMessage: 'Add a survey title',
+  },
+  addSurveyTitleInLanguage: {
+    id: 'app.containers.AdminPage.ProjectTimeline.addSurveyTitleInLanguage',
+    defaultMessage: 'Add a survey title in {language}',
+  },
+  addButtonText: {
+    id: 'app.containers.AdminPage.ProjectTimeline.addButtonText',
+    defaultMessage: 'Add button text',
+  },
+  addButtonTextInLanguage: {
+    id: 'app.containers.AdminPage.ProjectTimeline.addButtonTextInLanguage',
+    defaultMessage: 'Add button text in {language}',
+  },
 });

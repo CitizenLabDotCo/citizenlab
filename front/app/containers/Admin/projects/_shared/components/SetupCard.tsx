@@ -3,8 +3,7 @@ import React, { ReactNode } from 'react';
 import Banner from 'design-system/Banner';
 import Disclosure from 'design-system/Disclosure';
 import ReviewStatus from 'design-system/ReviewStatus';
-import tooltipMessages from 'design-system/Tooltip/messages';
-import TooltipMark from 'design-system/Tooltip/TooltipMark';
+import Tooltip, { TooltipTarget } from 'design-system/Tooltip';
 
 import { SetupReviewCard } from 'api/phases/types';
 
@@ -19,21 +18,28 @@ import 'design-system/tokens.css';
 
 interface Props {
   title: string;
+  spacedBody?: boolean;
   reviewKey?: SetupReviewCard;
   reviewNeedsChoice?: boolean;
   titleTooltip?: JSX.Element;
   action?: ReactNode;
   button?: CardButton;
+  /** A Menu the card header opens. The action then shows the picked value. */
+  menu?: ReactNode;
+  menuDescribedBy?: string;
   children?: ReactNode;
 }
 
 const SetupCard = ({
   title,
+  spacedBody,
   reviewKey,
   reviewNeedsChoice = false,
   titleTooltip,
   action,
   button,
+  menu,
+  menuDescribedBy,
   children,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -55,22 +61,29 @@ const SetupCard = ({
     </SummaryReviewedContext.Provider>
   );
 
+  // The title itself opens the explanation; cards carry no info mark.
   const staticTitle = titleTooltip ? (
-    <span className={styles.titleRow}>
-      {title}
-      <TooltipMark
-        label={formatMessage(tooltipMessages.moreInformationAbout, {
-          subject: title,
-        })}
-        content={titleTooltip}
-        className={styles.infoMark}
-      />
-    </span>
+    <Tooltip content={titleTooltip}>
+      <TooltipTarget className={styles.titleTarget}>{title}</TooltipTarget>
+    </Tooltip>
   ) : (
     title
   );
 
-  const card = button ? (
+  const card = menu ? (
+    <>
+      <Disclosure
+        header="menu"
+        title={title}
+        tooltip={titleTooltip}
+        status={status}
+        summary={summary}
+        menu={menu}
+        aria-describedby={menuDescribedBy}
+      />
+      {children}
+    </>
+  ) : button ? (
     <SetupCardButton
       title={title}
       titleTooltip={titleTooltip}
@@ -84,6 +97,7 @@ const SetupCard = ({
   ) : (
     <Disclosure
       header="static"
+      spacedBody={spacedBody}
       title={staticTitle}
       status={status}
       actions={summary}

@@ -137,7 +137,9 @@ const rootRoute = createRootRoute({
       <Outlet />
       {!isPhasePreviewFrame() && (
         <React.Suspense fallback={null}>
-          <TanStackRouterDevtools />
+          <TanStackRouterDevtools
+            toggleButtonProps={{ style: { bottom: 64 } }}
+          />
         </React.Suspense>
       )}
     </App>

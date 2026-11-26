@@ -13,6 +13,7 @@ import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
 import PreviewProjectButton from 'containers/Admin/projects/_shared/components/PreviewProjectButton';
+import StageSkeleton from 'containers/Admin/projects/project/backofficeRedesign/WorkspaceSkeleton/StageSkeleton';
 
 import PagePreview from 'components/admin/PagePreview';
 
@@ -47,11 +48,13 @@ const ProjectPage = () => {
     if (groupsFailedParam) removeSearchParams(['groups_failed']);
   }, [groupsFailedParam]);
 
+  if (!project && redesign) return <StageSkeleton />;
+
   if (!project) {
     return (
       <Box
         minHeight="100%"
-        background={redesign ? colors.grey100 : colors.background}
+        background={colors.background}
         display="flex"
         alignItems="center"
         justifyContent="center"

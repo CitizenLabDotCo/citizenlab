@@ -8,6 +8,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import OptionList from '../OptionList';
 
+import styles from './FilterChips.module.css';
 import { FilterCategory } from './useFilterCategories';
 import 'design-system/tokens.css';
 
@@ -59,9 +60,17 @@ const FilterChips = ({ categories, count, onClearAll }: Props) => {
         return (
           <FilterChip
             key={category.key}
-            label={`${category.label} ${formatMessage(
-              category.multiple ? messages.isAnyOf : messages.is
-            )} ${values}`}
+            label={
+              <span className={styles.label}>
+                {category.label}{' '}
+                <span className={styles.connector}>
+                  {formatMessage(
+                    category.multiple ? messages.isAnyOf : messages.is
+                  )}
+                </span>{' '}
+                {values}
+              </span>
+            }
             menu={
               <OptionList
                 aria-label={category.label}

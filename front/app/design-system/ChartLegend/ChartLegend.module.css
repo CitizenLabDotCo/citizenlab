@@ -1,0 +1,23 @@
+.legend {
+  composes: small from '../typography.module.css';
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gv-space-6) var(--gv-space-18);
+  padding: 0;
+  color: var(--gv-text-secondary);
+  list-style: none;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+}
+
+.dot {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: var(--gv-radius-full);
+}

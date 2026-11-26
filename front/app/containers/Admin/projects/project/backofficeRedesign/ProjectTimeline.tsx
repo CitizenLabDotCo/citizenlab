@@ -29,6 +29,9 @@ const ProjectTimeline = ({ projectId, withNewMethod }: Props) => {
   const [methodModalOpened, setMethodModalOpened] = useState(false);
   const { data: phases } = usePhases(projectId);
   const hasPhases = !!phases && phases.data.length > 0;
+  const addMethodLabel = formatMessage(
+    projectPageMessages.newParticipationMethod
+  );
 
   return (
     <div className={styles.timeline}>
@@ -44,9 +47,7 @@ const ProjectTimeline = ({ projectId, withNewMethod }: Props) => {
               <IconButton
                 icon="plus-16"
                 tone="strong"
-                aria-label={formatMessage(
-                  projectPageMessages.newParticipationMethod
-                )}
+                aria-label={addMethodLabel}
                 onPress={() => setMethodModalOpened(true)}
               />
             </span>

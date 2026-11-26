@@ -13,7 +13,6 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import sharedMessages from 'containers/Admin/projects/_shared/components/messages';
-import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 import { useWorkspaceHeader } from 'containers/Admin/sideBar/WorkspaceHeaderContext';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
@@ -79,11 +78,7 @@ const WorkspaceHeader = ({
   const workspaceHeader = useWorkspaceHeader();
   const views = usePhaseViews(phase);
   const inPhase = !!(phase || draftLabel);
-  const saveButtonLabel =
-    saveLabel ??
-    formatMessage(
-      inPhase ? phaseSetupMessages.saveChangesLabel : messages.save
-    );
+  const saveButtonLabel = saveLabel ?? formatMessage(messages.save);
 
   const projectPath = router.buildLocation({
     to: '/$locale/admin/projects/$projectId',
@@ -189,35 +184,36 @@ const WorkspaceHeader = ({
       </div>
 
       <div className={styles.actions}>
-        {inPhase || pageSave?.dirty ? (
-          <SaveChangesButton key={phase?.id} label={saveButtonLabel} />
-        ) : (
-          <>
-            <div className={styles.dropdowns}>
-              <ShareDropdown
-                project={project}
-                opened={openDropdown === 'share'}
-                onOpenChange={(opened) =>
-                  onOpenDropdown(opened ? 'share' : null)
-                }
-              />
-              <ReviewFlow
-                project={project}
-                opened={openDropdown === 'review'}
-                onOpenChange={(opened) =>
-                  onOpenDropdown(opened ? 'review' : null)
-                }
-              />
-              <PublishDropdown
-                project={project}
-                opened={openDropdown === 'publish'}
-                onOpenChange={(opened) =>
-                  onOpenDropdown(opened ? 'publish' : null)
-                }
-              />
-            </div>
-          </>
-        )}
+        {!editingMap &&
+          (inPhase || pageSave?.dirty ? (
+            <SaveChangesButton key={phase?.id} label={saveButtonLabel} />
+          ) : (
+            <>
+              <div className={styles.dropdowns}>
+                <ShareDropdown
+                  project={project}
+                  opened={openDropdown === 'share'}
+                  onOpenChange={(opened) =>
+                    onOpenDropdown(opened ? 'share' : null)
+                  }
+                />
+                <ReviewFlow
+                  project={project}
+                  opened={openDropdown === 'review'}
+                  onOpenChange={(opened) =>
+                    onOpenDropdown(opened ? 'review' : null)
+                  }
+                />
+                <PublishDropdown
+                  project={project}
+                  opened={openDropdown === 'publish'}
+                  onOpenChange={(opened) =>
+                    onOpenDropdown(opened ? 'publish' : null)
+                  }
+                />
+              </div>
+            </>
+          ))}
       </div>
     </header>
   );

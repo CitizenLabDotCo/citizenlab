@@ -10,6 +10,7 @@ import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 
 import { useIntl } from 'utils/cl-intl';
 
+import StatsSkeleton from '../../WorkspaceSkeleton/StatsSkeleton';
 import messages from '../messages';
 import useInputTermLabels from '../useInputTermLabels';
 import { ManagerFilters, SetFilters } from '../useManagerParams';
@@ -19,7 +20,7 @@ import styles from './SideColumn.module.css';
 
 type RowFilter = Pick<
   Partial<ManagerFilters>,
-  'statuses' | 'assignees' | 'reply'
+  'statuses' | 'assignees' | 'reply' | 'contentWarnings'
 >;
 
 interface Row {
@@ -35,7 +36,11 @@ const sameValues = (values: string[], target: string[]) =>
   target.every((value) => values.includes(value));
 
 const isOnlyFilter = (filters: ManagerFilters, filter: RowFilter) =>
-  (!!filter.reply || !!filter.statuses?.length || !!filter.assignees?.length) &&
+  (!!filter.reply ||
+    !!filter.statuses?.length ||
+    !!filter.assignees?.length ||
+    !!filter.contentWarnings) &&
+  !!filters.contentWarnings === !!filter.contentWarnings &&
   filters.reply === filter.reply &&
   sameValues(filters.statuses, filter.statuses ?? []) &&
   sameValues(filters.assignees, filter.assignees ?? []) &&
@@ -68,7 +73,7 @@ const InputStats = ({
   // A budgeting phase has no vote total: it counts the money allocated.
   const showVotes = isVoting && phase.attributes.voting_method !== 'budgeting';
 
-  if (!counts && !showVotes) return null;
+  if (!counts && !showVotes) return <StatsSkeleton />;
 
   // The online and offline counts add up to the phase's vote total.
   const { votes_count: onlineVotes, manual_votes_count: offlineVotes } =
@@ -135,6 +140,15 @@ const InputStats = ({
       }
     }
   }
+  if (counts?.contentWarnings !== undefined) {
+    rows.push({
+      key: 'contentWarnings',
+      label: formatMessage(messages.contentWarnings),
+      value: counts.contentWarnings,
+      filter: { contentWarnings: true },
+    });
+  }
+
   if (counts && isVoting && !showVotes) {
     rows.push({ key: 'inputs', label: capitalizedTerms, value: counts.total });
   }

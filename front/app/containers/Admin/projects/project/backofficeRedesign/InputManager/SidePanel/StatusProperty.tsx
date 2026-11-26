@@ -29,7 +29,7 @@ const StatusProperty = ({ idea, type }: Props) => {
     type,
     idea.relationships.project.data.id
   );
-  const { mutate: updateIdea } = useUpdateIdea();
+  const { mutate: updateIdea, isPending } = useUpdateIdea();
   const statusId = idea.relationships.idea_status.data?.id;
   const current = statusOptions.find((option) => option.value === statusId);
 
@@ -44,7 +44,7 @@ const StatusProperty = ({ idea, type }: Props) => {
 
   return (
     <PropertyRow label={formatMessage(messages.filterStatus)}>
-      <PropertyMenu label={current?.label}>
+      <PropertyMenu label={current?.label} isPending={isPending}>
         <OptionList
           aria-label={formatMessage(messages.filterStatus)}
           options={statusOptions}

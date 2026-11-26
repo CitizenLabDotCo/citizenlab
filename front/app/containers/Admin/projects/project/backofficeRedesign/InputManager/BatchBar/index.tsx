@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 
 import AlertDialog from 'design-system/AlertDialog';
 import Button from 'design-system/Button';
+import IconButton from 'design-system/IconButton';
 import { ListBoxOption } from 'design-system/ListBox';
 import { MenuTrigger } from 'design-system/Menu';
 import { DialogTrigger } from 'design-system/Popover';
 import SelectionBar from 'design-system/SelectionBar';
 import TagPicker from 'design-system/TagPicker';
+import Text from 'design-system/Text';
 import { Key } from 'design-system/types';
 
 import { IIdeaData } from 'api/ideas/types';
+import useAuthUser from 'api/me/useAuthUser';
 
 import { ManagerType } from 'components/admin/PostManager';
 import useAssigneeOptions, {
@@ -21,28 +24,24 @@ import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
-import OptionList from '../OptionList';
+import OptionList, { Option } from '../OptionList';
 import useInputTermLabels from '../useInputTermLabels';
 import usePickerOptions from '../usePickerOptions';
 import { phaseIds, topicIds } from '../utils';
 
-import BatchFailureAlert from './BatchFailureAlert';
-import SelectAllButton from './SelectAllButton';
+import OfficialUpdatePopover from './OfficialUpdatePopover';
 import StatusPicker from './StatusPicker';
 import useBatchActions, { BatchAttribute } from './useBatchActions';
+import { BatchFeedback } from './useBatchFeedback';
 
 interface Props {
   type: ManagerType;
   projectId: string;
   ideas: IIdeaData[];
-  /** How many inputs match the current filters, on every page. */
-  total: number | undefined;
   onUpdated: (ideas: IIdeaData[], attribute: BatchAttribute) => void;
-  onEdit: (ideaId: string) => void;
+  onFeedback: (feedback: BatchFeedback) => void;
   onClear: () => void;
   onDeleted: (ideaIds: string[]) => void;
-  onSelectAll: () => void;
-  isSelectingAll: boolean;
   selectAllFailed: boolean;
 }
 
@@ -53,21 +52,26 @@ const shared = (ideas: IIdeaData[], values: (idea: IIdeaData) => string[]) =>
         ideas.every((idea) => values(idea).includes(value))
       );
 
+// The pickers report a value; the status line names what was picked.
+const withLabel =
+  (options: Option[], action: (value: string, label: string) => void) =>
+  (value: string) => {
+    const option = options.find((candidate) => candidate.value === value);
+    if (option) action(value, option.label);
+  };
+
 const BatchBar = ({
   type,
   projectId,
   ideas,
-  total,
   onUpdated,
-  onEdit,
+  onFeedback,
   onClear,
   onDeleted,
-  onSelectAll,
-  isSelectingAll,
   selectAllFailed,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { term, terms, termCount } = useInputTermLabels();
+  const { inputTerm, term, terms, termCount } = useInputTermLabels();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [phaseMenuOpen, setPhaseMenuOpen] = useState(false);
   const { statusOptions, tagOptions, phaseOptions } = usePickerOptions(
@@ -75,16 +79,19 @@ const BatchBar = ({
     projectId
   );
   const assigneeOptions = useAssigneeOptions(projectId, getFullName);
+  const { data: authUser } = useAuthUser();
   const {
     setStatus,
     assign,
     toggleTag,
     copyToPhase,
+    postOfficialUpdate,
     deleteAll,
     isDeleting,
-    failure,
   } = useBatchActions({
     ideas,
+    inputTerm,
+    onFeedback,
     onUpdated,
     onDeleted: (ideaIds) => {
       setDeleteModalOpen(false);
@@ -108,27 +115,22 @@ const BatchBar = ({
     tagOptions
       .map((option) => option.value)
       .filter((tagId) => keys.has(tagId) !== sharedTags.includes(tagId))
-      .forEach(toggleTag);
+      .forEach(withLabel(tagOptions, toggleTag));
   };
 
   return (
     <>
       <SelectionBar count={ideas.length} onClearSelection={onClear}>
-        {total !== undefined && ideas.length < total && (
-          <SelectAllButton
-            label={formatMessage(messages.selectAllTerms, {
-              termCount: termCount(total),
-            })}
-            processing={isSelectingAll}
-            failed={selectAllFailed}
-            onClick={onSelectAll}
-          />
+        {selectAllFailed && (
+          <Text as="span" variant="small" tone="danger" role="alert">
+            {formatMessage(messages.selectAllFailed)}
+          </Text>
         )}
 
         <StatusPicker
           options={statusOptions}
           selected={shared(ideas, statusIds)}
-          onSelect={setStatus}
+          onSelect={withLabel(statusOptions, setStatus)}
         />
 
         <MenuTrigger>
@@ -139,7 +141,12 @@ const BatchBar = ({
             aria-label={formatMessage(messages.batchAssign)}
             options={assigneeOptions}
             selected={shared(ideas, assigneeIds)}
-            onToggle={assign}
+            onToggle={withLabel(assigneeOptions, (assigneeId, name) =>
+              assign(assigneeId, {
+                name,
+                isCurrentUser: assigneeId === authUser?.data.id,
+              })
+            )}
             selectionMode="single"
           />
         </MenuTrigger>
@@ -174,10 +181,10 @@ const BatchBar = ({
                   disabled: sharedPhases.includes(option.value),
                 }))}
                 selected={sharedPhases}
-                onToggle={(phaseId) => {
-                  copyToPhase(phaseId);
+                onToggle={withLabel(phaseOptions, (phaseId, phaseLabel) => {
+                  copyToPhase(phaseId, phaseLabel);
                   setPhaseMenuOpen(false);
-                }}
+                })}
               />
             </MenuTrigger>
           ) : (
@@ -192,30 +199,24 @@ const BatchBar = ({
             </Button>
           ))}
 
-        {isSingle && (
-          <Button
-            size={28}
-            icon="square-pen-16"
-            onPress={() => onEdit(ideas[0].id)}
-          >
-            {formatMessage(messages.edit)}
-          </Button>
-        )}
+        <OfficialUpdatePopover
+          inputTerm={inputTerm}
+          count={ideas.length}
+          onSend={postOfficialUpdate}
+        />
 
-        <Button
-          variant="danger"
-          size={28}
+        <IconButton
+          variant="bordered"
           icon="trash-2-16"
+          aria-label={
+            isSingle
+              ? formatMessage(messages.delete)
+              : formatMessage(messages.deleteTerms, {
+                  termCount: termCount(ideas.length),
+                })
+          }
           onPress={() => setDeleteModalOpen(true)}
-        >
-          {isSingle
-            ? formatMessage(messages.delete)
-            : formatMessage(messages.deleteTerms, {
-                termCount: termCount(ideas.length),
-              })}
-        </Button>
-
-        <BatchFailureAlert failure={failure} />
+        />
       </SelectionBar>
 
       <AlertDialog

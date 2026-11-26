@@ -238,7 +238,22 @@ resource 'Ideas' do
         parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
         parameter :filter_trending, 'Filter out truly trending ideas', required: false
 
+        parameter :content_warnings, 'Filter to inputs with active inappropriate-content flags in moderatable projects', required: false
+        parameter :added_by_participants, 'Filter to inputs from resident accounts in moderatable projects', required: false
+
         let(:projects) { [@project.id] }
+
+        example 'Counts flagged inputs in the requested phase' do
+          header_token_for create(:project_moderator, projects: [@project])
+          create(:inappropriate_content_flag, flaggable: @i1)
+          create(:inappropriate_content_flag, flaggable: @i2, deleted_at: Time.current)
+          create(:inappropriate_content_flag, flaggable: create(:idea))
+
+          do_request(phase: @project.phases.first.id, content_warnings: true)
+
+          assert_status 200
+          expect(json_parse(response_body).dig(:data, :attributes, :total)).to eq 1
+        end
 
         example_request 'List idea counts per filter option' do
           assert_status 200

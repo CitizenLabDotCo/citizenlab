@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Cell, Row } from 'design-system/Table';
+import Text from 'design-system/Text';
 
 import { CommonGroundResultItem } from 'api/common_ground/types';
 import { IIdeaData } from 'api/ideas/types';
@@ -44,12 +45,19 @@ const StatementRow = ({
       </Cell>
       {showModeration && (
         <Cell>
-          <AssigneeMark assigneeId={idea.relationships.assignee?.data?.id} />
+          <AssigneeMark
+            assigneeId={idea.relationships.assignee?.data?.id}
+            size={16}
+          />
         </Cell>
       )}
       {showModeration && (
         <Cell tone="secondary" align="end">
-          {idea.attributes.likes_count || '–'}
+          {idea.attributes.likes_count || (
+            <Text as="span" variant="ui" tone="tertiary">
+              –
+            </Text>
+          )}
         </Cell>
       )}
       <Cell align="end">{result?.agree_percent ?? 0}%</Cell>

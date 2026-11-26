@@ -5,6 +5,7 @@ import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
+import LanguageButtonContext from 'components/admin/MultilocFields/LanguageButtonContext';
 import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -55,7 +56,9 @@ const NewProjectButton = () => {
         </Menu>
       </MenuTrigger>
 
-      <NewProjectModal mode={mode} onClose={() => setMode(null)} />
+      <LanguageButtonContext.Provider value>
+        <NewProjectModal mode={mode} onClose={() => setMode(null)} />
+      </LanguageButtonContext.Provider>
     </div>
   );
 };

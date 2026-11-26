@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
+import IconButton from 'design-system/IconButton';
+
 import { IPhaseData } from 'api/phases/types';
 import useDeletePhase from 'api/phases/useDeletePhase';
 import { isTimelinePhase } from 'api/phases/utils';
@@ -53,39 +55,52 @@ const PhaseOptionsMenu = ({ projectId, phase, variant = 'sidebar' }: Props) => {
     );
   };
 
+  const actions = [
+    ...(canChangePlacement(phase)
+      ? [
+          {
+            label: formatMessage(
+              isTimelinePhase(phase)
+                ? placementMessages.moveToSpotlightSurveys
+                : placementMessages.moveToTimeline
+            ),
+            name: 'move-phase',
+            handler: () => setShowMoveModal(true),
+          },
+        ]
+      : []),
+    {
+      label: formatMessage(phaseMessages.deletePhase),
+      name: 'delete-phase',
+      handler: () => setShowDeleteModal(true),
+    },
+  ];
+
   return (
     <>
-      <MoreActionsMenu
-        showLabel={false}
-        color={colors.coolGrey500}
-        ideaTitle={title}
-        menuRight="-12px"
-        data-cy={`e2e-phase-options-${phase.id}`}
-        actions={[
-          ...(canChangePlacement(phase)
-            ? [
-                {
-                  label: formatMessage(
-                    isTimelinePhase(phase)
-                      ? placementMessages.moveToSpotlightSurveys
-                      : placementMessages.moveToTimeline
-                  ),
-                  name: 'move-phase',
-                  handler: () => setShowMoveModal(true),
-                },
-              ]
-            : []),
-          {
-            label: formatMessage(phaseMessages.deletePhase),
-            name: 'delete-phase',
-            handler: () => setShowDeleteModal(true),
-          },
-        ]}
-      />
+      {variant === 'panel' ? (
+        // Moving a survey between the timeline and Spotlight happens in the
+        // phase itself, so the redesigned rail only offers delete.
+        <IconButton
+          icon="trash-2-16"
+          tone="strong"
+          aria-label={formatMessage(phaseMessages.deletePhase)}
+          onPress={() => setShowDeleteModal(true)}
+          data-cy={`e2e-delete-phase-${phase.id}`}
+        />
+      ) : (
+        <MoreActionsMenu
+          showLabel={false}
+          color={colors.coolGrey500}
+          ideaTitle={title}
+          menuRight="-12px"
+          data-cy={`e2e-phase-options-${phase.id}`}
+          actions={actions}
+        />
+      )}
       {showMoveModal && (
         <MovePhaseModal
           phase={phase}
-          variant={variant === 'panel' ? variant : 'default'}
           hasUnsavedChanges={pageSave?.dirty}
           onMoved={() => pageSave?.discardAll()}
           onClose={() => setShowMoveModal(false)}

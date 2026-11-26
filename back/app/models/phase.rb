@@ -113,7 +113,10 @@ class Phase < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
-  SETUP_REVIEW_CARDS = %w[input_term demographics form survey_method survey_placement voting_method views sorting].freeze
+  SETUP_REVIEW_CARDS = %w[
+    input_term demographics form survey_method survey_placement voting_method views sorting
+    participant_actions proposal_requirements
+  ].freeze
 
   validate :validate_reviewed_setup_cards
 

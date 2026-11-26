@@ -29,6 +29,23 @@ export default defineMessages({
     id: 'app.components.PhasePreview.endedTooltip2',
     defaultMessage: 'After it ends',
   },
+  simulate: {
+    id: 'app.components.PhasePreview.simulate',
+    defaultMessage: 'Simulate',
+  },
+  simulateNew: {
+    id: 'app.components.PhasePreview.simulateNew',
+    defaultMessage: 'New',
+  },
+  simulateTooltipTitle: {
+    id: 'app.components.PhasePreview.simulateTooltipTitle',
+    defaultMessage: 'See this phase as residents will',
+  },
+  simulateTooltipText: {
+    id: 'app.components.PhasePreview.simulateTooltipText',
+    defaultMessage:
+      'Check what they will see as the phase progresses. This is only a simulation: your real phase does not change.',
+  },
   newPhase: {
     id: 'app.components.PhasePreview.savePhaseFirst',
     defaultMessage: 'Save this phase to preview its participation form.',

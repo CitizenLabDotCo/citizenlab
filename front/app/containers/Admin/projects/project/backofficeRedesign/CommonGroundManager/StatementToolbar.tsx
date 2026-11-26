@@ -1,11 +1,13 @@
 import React from 'react';
 
+import ActionStatus from 'design-system/ActionStatus';
 import Text from 'design-system/Text';
 
 import { IIdeaData } from 'api/ideas/types';
 
 import { useIntl } from 'utils/cl-intl';
 
+import useBatchFeedback from '../InputManager/BatchBar/useBatchFeedback';
 import FilterMenu from '../InputManager/FilterMenu';
 import { FilterCategory } from '../InputManager/FilterMenu/useFilterCategories';
 import SearchToggle from '../InputManager/SearchToggle';
@@ -18,11 +20,8 @@ import 'design-system/tokens.css';
 interface Props {
   selectedIdeas: IIdeaData[];
   listedTotal: number | undefined;
-  onEdit: (ideaId: string) => void;
   onClearSelection: () => void;
   onDeleted: (ideaIds: string[]) => void;
-  onSelectAll: () => void;
-  isSelectingAll: boolean;
   selectAllFailed: boolean;
   search: string | undefined;
   onSearch: (term: string | null) => void;
@@ -33,11 +32,8 @@ interface Props {
 const StatementToolbar = ({
   selectedIdeas,
   listedTotal,
-  onEdit,
   onClearSelection,
   onDeleted,
-  onSelectAll,
-  isSelectingAll,
   selectAllFailed,
   search,
   onSearch,
@@ -45,18 +41,22 @@ const StatementToolbar = ({
   onClearFilters,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { feedback, setFeedback, dismiss } = useBatchFeedback();
 
   return (
     <div className={styles.toolbar}>
-      {selectedIdeas.length > 0 ? (
+      {feedback ? (
+        <ActionStatus
+          state={feedback.state}
+          message={feedback.message}
+          onDismiss={dismiss}
+        />
+      ) : selectedIdeas.length > 0 ? (
         <StatementBatchBar
           ideas={selectedIdeas}
-          total={listedTotal}
-          onEdit={onEdit}
           onClear={onClearSelection}
+          onFeedback={setFeedback}
           onDeleted={onDeleted}
-          onSelectAll={onSelectAll}
-          isSelectingAll={isSelectingAll}
           selectAllFailed={selectAllFailed}
         />
       ) : (

@@ -1,4 +1,5 @@
 .panel {
+  composes: reveal from '../../../../../../../design-system/Skeleton/Skeleton.module.css';
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -91,4 +92,11 @@
 .setupRow > p,
 .setupUndo > p {
   margin: 0;
+}
+
+/* Under the Survey radio, lined up with its label: the 18 px ring and its 10 px gap. */
+.questionActions {
+  display: flex;
+  gap: var(--gv-space-8);
+  padding-left: calc(var(--gv-size-16) + var(--gv-space-10));
 }

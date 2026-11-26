@@ -10,11 +10,12 @@ import { CLErrors } from 'typings';
 
 import { FieldError } from 'design-system/Field';
 
-import { PresentationMode } from 'api/phases/types';
+import { InputTerm, PresentationMode } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import inputTermMessages from 'containers/Admin/projects/project/inputTermMessages';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -51,6 +52,7 @@ interface Props {
   ) => void;
   title?: MessageDescriptor;
   hideFeed?: boolean;
+  inputTerm?: InputTerm | null;
   variant?: 'default' | 'panel';
 }
 
@@ -62,6 +64,7 @@ const ViewSelector = ({
   handleAvailableViewsChange,
   title,
   hideFeed,
+  inputTerm,
   variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -73,19 +76,31 @@ const ViewSelector = ({
   };
   const ideaFeedEnabled = useFeatureFlag({ name: 'idea_feed' });
 
+  const panel = variant === 'panel';
+  const term = inputTerm ?? 'idea';
+  const input = formatMessage(inputTermMessages.capitalizedSingular, { term });
+  const inputs = formatMessage(inputTermMessages.plural, { term });
+  const capitalizedInputs = formatMessage(inputTermMessages.capitalizedPlural, {
+    term,
+  });
+
   const currentAvailableViews = available_views || ['card'];
 
   const inputFormUrl = `/admin/projects/${projectId}/phases/${phaseId}/form/edit`;
   const inputFormLink = (
     <a href={inputFormUrl} target="_blank" rel="noreferrer">
-      <FormattedMessage {...messages.locationFieldWarningLink} />
+      {panel
+        ? formatMessage(messages.methodFormLink, { input })
+        : formatMessage(messages.locationFieldWarningLink)}
     </a>
   );
 
   const inputTagsUrl = `/admin/projects/${projectId}/general/input-tags`;
   const inputTagsLink = (
     <a href={inputTagsUrl} target="_blank" rel="noreferrer">
-      <FormattedMessage {...messages.inputTagsPageLink} />
+      {panel
+        ? formatMessage(messages.methodTagsLink, { input })
+        : formatMessage(messages.inputTagsPageLink)}
     </a>
   );
 
@@ -94,15 +109,20 @@ const ViewSelector = ({
       value: 'card',
       title: messages.listViewTitle,
       shortTitle: viewNameMessages.list,
-      description: messages.listViewDescription,
+      description: panel
+        ? messages.methodListViewDescription
+        : messages.listViewDescription,
+      descriptionValues: panel ? { inputs: capitalizedInputs } : undefined,
       alwaysEnabled: true,
     },
     {
       value: 'map',
       title: messages.mapViewTitle,
       shortTitle: viewNameMessages.map,
-      description: messages.mapViewDescription,
-      descriptionValues: { inputFormLink },
+      description: panel
+        ? messages.methodMapViewDescription
+        : messages.mapViewDescription,
+      descriptionValues: panel ? { inputFormLink, inputs } : { inputFormLink },
     },
     // Feed view is hidden for voting and proposals phases, as it's only relevant for ideation
     ...(ideaFeedEnabled && !hideFeed
@@ -185,7 +205,9 @@ const ViewSelector = ({
                 onToggle={handleToggle(option.value)}
                 onMakeDefault={handleMakeDefault(option.value)}
               >
-                {option.value === 'map' && <MapConfigButton />}
+                {option.value === 'map' && (
+                  <MapConfigButton projectId={projectId} />
+                )}
               </ViewRow>
             </div>
           ))}

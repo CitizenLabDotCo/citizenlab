@@ -1,0 +1,99 @@
+.fill {
+  height: 100%;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+}
+
+.spread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+/* Lines up with a phase in the timeline: dot, then name and dates. */
+.phaseRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gv-space-10);
+  padding: var(--gv-space-10);
+}
+
+.phasePanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+  padding: var(--gv-space-18);
+}
+
+.phaseSettings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+  padding: 0 var(--gv-space-18) var(--gv-space-18);
+}
+
+/* A Manage list row: checkbox, the input's text, its status. The status
+   column is as wide as the list's, which has no size token. */
+.listRow {
+  display: grid;
+  grid-template-columns: var(--gv-size-16) 1fr 160px;
+  align-items: start;
+  gap: var(--gv-space-16);
+  padding: var(--gv-space-12) var(--gv-space-6);
+  border-bottom: 1px solid var(--gv-border-divider);
+}
+
+.listHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--gv-space-12);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+  padding: var(--gv-space-10);
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-14);
+  padding-top: var(--gv-space-16);
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--gv-space-10);
+}
+
+.cardPair {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: var(--gv-space-14);
+}
+
+/* Fills the row beside the panels, as the view it stands in for does. */
+.view {
+  flex-grow: 1;
+  min-width: 0;
+}

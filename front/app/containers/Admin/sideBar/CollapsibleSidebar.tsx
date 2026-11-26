@@ -22,7 +22,7 @@ const CollapsibleSidebar = () => {
     const place = () => {
       const rect = header?.getBoundingClientRect();
       const top = rect?.top ?? 8;
-      const left = rect ? rect.left + 8 : 8;
+      const left = rect ? rect.left + 4 : 8;
       setPosition((previous) =>
         previous.top === top && previous.left === left
           ? previous

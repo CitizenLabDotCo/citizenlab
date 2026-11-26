@@ -13,12 +13,6 @@
   color: var(--gv-text-primary);
 }
 
-.texts {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-8);
-}
-
 .cards {
   display: flex;
   flex-direction: column;

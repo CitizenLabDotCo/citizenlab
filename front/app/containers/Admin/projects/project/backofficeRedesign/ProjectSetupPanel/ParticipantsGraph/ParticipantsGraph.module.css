@@ -10,7 +10,10 @@
 }
 
 .value {
-  composes: stat from '../../../../../../../design-system/typography.module.css';
+  composes: base from '../../../../../../../design-system/typography.module.css';
+  font-size: 20px;
+  line-height: var(--gv-font-line-height-24);
+  font-weight: var(--gv-font-weight-medium);
   margin-top: var(--gv-space-2);
   color: var(--gv-text-primary);
 }
@@ -42,7 +45,7 @@
 }
 
 .emptyLine {
-  margin-top: var(--gv-space-40);
+  margin-top: var(--gv-space-12);
   border-top: var(--gv-border-width-1) dashed var(--gv-chart-pass);
 }
 

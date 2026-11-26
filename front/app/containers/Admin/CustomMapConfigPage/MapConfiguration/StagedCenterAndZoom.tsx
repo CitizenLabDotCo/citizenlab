@@ -1,7 +1,8 @@
 import React from 'react';
 
 import Banner from 'design-system/Banner';
-import IconButton from 'design-system/IconButton';
+import Button from 'design-system/Button';
+import Text from 'design-system/Text';
 import TextField from 'design-system/TextField';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -18,16 +19,17 @@ export type CenterAndZoomValues = Record<'lat' | 'lng' | 'zoom', string>;
 
 interface Props {
   mapConfig: IMapConfig;
-  /** Edits not saved yet. The page's save button saves them. */
   staged: CenterAndZoomValues | null;
-  invalid: boolean;
+  error?: 'invalid_values' | 'request_failed';
+  onRetry: () => void;
   onChange: (values: CenterAndZoomValues) => void;
 }
 
 const StagedCenterAndZoom = ({
   mapConfig,
   staged,
-  invalid,
+  error,
+  onRetry,
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -44,53 +46,51 @@ const StagedCenterAndZoom = ({
     {
       key: 'lat',
       label: messages.latLabel,
-      tooltip: messages.centerLatLabelTooltip,
     },
     {
       key: 'lng',
       label: messages.lngLabel,
-      tooltip: messages.centerLngLabelTooltip,
     },
     {
       key: 'zoom',
       label: messages.zoomLabel,
-      tooltip: messages.zoomLabelTooltip,
     },
   ] as const;
 
   return (
     <div className={styles.centerAndZoom}>
-      <h3 className={styles.centerAndZoomHeading}>
-        <span className={styles.centerAndZoomTitle}>
-          {formatMessage(messages.mapCenterAndZoom)}
-        </span>
-        <IconButton
-          icon="info-16"
-          size={24}
-          aria-label={formatMessage(messages.mapCenterAndZoomTooltip, {
-            button: formatMessage(messages.saveZoom),
-          })}
-        />
-      </h3>
-      {fields.map(({ key, label, tooltip }) => (
-        <TextField
-          key={key}
-          label={
-            <span className={styles.fieldLabel}>
-              {formatMessage(label)}
-              <IconButton
-                icon="info-16"
-                size={24}
-                aria-label={formatMessage(tooltip)}
-              />
-            </span>
-          }
-          value={values[key]}
-          onChange={(value) => onChange({ ...values, [key]: value })}
-        />
+      <Text as="h3" variant="uiStrong">
+        {formatMessage(messages.mapCenterAndZoom)}
+      </Text>
+      {fields.map(({ key, label }) => (
+        <div key={key} className={styles.fieldRow}>
+          <Text as="span" variant="ui">
+            {formatMessage(label)}
+          </Text>
+          <TextField
+            aria-label={formatMessage(label)}
+            value={values[key]}
+            onChange={(value) => onChange({ ...values, [key]: value })}
+          />
+        </div>
       ))}
-      {invalid && (
-        <Banner tone="error">{formatMessage(messages.errorMessage)}</Banner>
+      <Text variant="small" tone="secondary">
+        {formatMessage(messages.autoSaveZoomHelp, {
+          button: formatMessage(messages.saveZoom),
+        })}
+      </Text>
+      {error === 'invalid_values' && (
+        <Banner tone="error">
+          {formatMessage(messages.invalidCenterAndZoom)}
+        </Banner>
+      )}
+      {error === 'request_failed' && (
+        <Banner tone="error">
+          {formatMessage(messages.mapPositionSaveFailed)}{' '}
+          <Button variant="secondary" onPress={onRetry}>
+            {formatMessage(messages.retryMapPositionSave)}
+          </Button>
+        </Banner>
       )}
     </div>
   );

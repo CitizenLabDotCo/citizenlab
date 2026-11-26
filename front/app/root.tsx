@@ -30,6 +30,7 @@ import {
   isPhasePreviewFrame,
   phasePreviewReady,
 } from 'utils/phasePreview/runtime';
+import { announcePaintedToPreviewParent } from 'utils/previewFrame/painted';
 import { RouterProvider } from 'utils/router';
 import {
   installStaleBuildReload,
@@ -79,7 +80,12 @@ const Root = () => {
           </LanguageProvider>
         </HelmetProvider>
       </OutletsProvider>
-      {!isPhasePreviewFrame() && <ReactQueryDevtools initialIsOpen={false} />}
+      {!isPhasePreviewFrame() && (
+        <ReactQueryDevtools
+          initialIsOpen={false}
+          buttonPosition="bottom-left"
+        />
+      )}
     </QueryClientProvider>
   );
 };
@@ -99,6 +105,7 @@ const mountApplication = () => {
             <Root />
           </StrictMode>
         );
+    announcePaintedToPreviewParent();
   }
 };
 

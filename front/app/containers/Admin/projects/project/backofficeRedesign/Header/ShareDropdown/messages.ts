@@ -38,6 +38,21 @@ export default defineMessages({
     defaultMessage:
       "Residents can't take part until you publish. Meanwhile, share a preview link so colleagues can see the project and give feedback.",
   },
+  shareScheduledPreviewExplanation: {
+    id: 'app.containers.Admin.projects.project.shareScheduledPreviewExplanation',
+    defaultMessage:
+      'Share a preview link so colleagues can see the project before it goes live.',
+  },
+  sharePublishedPreviewExplanation: {
+    id: 'app.containers.Admin.projects.project.sharePublishedPreviewExplanation',
+    defaultMessage:
+      'Share a preview link so colleagues can see what residents see.',
+  },
+  shareArchivedPreviewExplanation: {
+    id: 'app.containers.Admin.projects.project.shareArchivedPreviewExplanation',
+    defaultMessage:
+      'Residents can no longer take part. Share a preview link so colleagues can still see the project.',
+  },
   sharePreviewLink: {
     id: 'app.containers.Admin.projects.project.sharePreviewLink',
     defaultMessage: 'Share a preview link',

@@ -18,7 +18,11 @@ import messages from '../../../../../messages';
 import configMessages from '../../messages';
 import { StyledA, StyledWarning, SurveyServiceRadio } from '../shared/styling';
 
+import ResponseCollectionToggle from './_shared/ResponseCollectionToggle';
+
 interface Props {
+  responsesEnabled: boolean;
+  onToggleResponses: () => void;
   survey_service: TSurveyService | null | undefined;
   survey_embed_url: string | null | undefined;
   apiErrors: CLErrors | null | undefined;
@@ -31,6 +35,8 @@ interface Props {
 }
 
 const SurveyInputs = ({
+  responsesEnabled,
+  onToggleResponses,
   survey_service,
   survey_embed_url,
   apiErrors,
@@ -44,9 +50,6 @@ const SurveyInputs = ({
 
   // In the panel, the service and link are set from the build panel.
   if (layout === 'panel') {
-    // Access rights belong to a saved phase; before that there is nothing to set here.
-    if (!phaseId) return null;
-
     return (
       <>
         <Box pt="14px" mb="10px">
@@ -57,17 +60,32 @@ const SurveyInputs = ({
         </Box>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
+          reviewKey="participant_actions"
+          summary={formatMessage(
+            responsesEnabled
+              ? configMessages.responsesOpen
+              : configMessages.responsesPaused
+          )}
         >
-          <PhaseActionAccessRow
-            phaseId={phaseId}
-            action="taking_survey"
-            label={configMessages.takingSurveyAction}
+          <ResponseCollectionToggle
+            checked={responsesEnabled}
+            external
+            onChange={onToggleResponses}
           />
-          <PhaseActionAccessRow
-            phaseId={phaseId}
-            action="attending_event"
-            label={messages.attendingEventAction}
-          />
+          {phaseId && (
+            <>
+              <PhaseActionAccessRow
+                phaseId={phaseId}
+                action="taking_survey"
+                label={configMessages.takingSurveyAction}
+              />
+              <PhaseActionAccessRow
+                phaseId={phaseId}
+                action="attending_event"
+                label={messages.attendingEventAction}
+              />
+            </>
+          )}
         </PanelGroup>
       </>
     );

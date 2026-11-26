@@ -1,0 +1,8 @@
+/* "Status is Viewed": the facet and value read as text, the connector stays quiet. */
+.label {
+  color: var(--gv-text-primary);
+}
+
+.connector {
+  color: var(--gv-text-secondary);
+}

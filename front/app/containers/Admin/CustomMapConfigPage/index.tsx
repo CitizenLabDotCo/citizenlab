@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
@@ -6,12 +6,15 @@ import styled from 'styled-components';
 
 import IconButton from 'design-system/IconButton';
 import DSSpinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IMapConfig } from 'api/map_config/types';
 import useAddProjectMapConfig from 'api/map_config/useAddProjectMapConfig';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+
+import projectMessages from 'containers/Admin/projects/project/messages';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import { MAP_CONFIG_SAVER_KEY } from 'components/admin/PageSaveContext/constants';
@@ -21,6 +24,7 @@ import Centerer from 'components/UI/Centerer';
 import goBackMessages from 'components/UI/GoBackButton/messages';
 
 import { useIntl } from 'utils/cl-intl';
+import { hasCustomMapSettings } from 'utils/map';
 import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
 import { useParams } from 'utils/router';
 
@@ -56,10 +60,27 @@ export type ViewOptions = 'main' | 'featureLayerUpload' | 'webMapUpload';
 interface Props {
   className?: string;
   passedMapConfig?: IMapConfig;
-  /** `bo` lays the settings and the map out as back-office workspace panels. */
+  /** Uses the back-office workspace panels. */
   variant?: 'default' | 'panel';
   onBack?: () => void;
 }
+
+const MAP_SAVE_DELAY_MS = 650;
+
+type SaveError = 'invalid_values' | 'request_failed';
+
+const parseStaged = (values: CenterAndZoomValues) => {
+  const lat = Number(values.lat.trim() || NaN);
+  const lng = Number(values.lng.trim() || NaN);
+  const zoom = Number(values.zoom.trim() || NaN);
+
+  return Number.isInteger(zoom) && isValidCenterAndZoom(lat, lng, zoom)
+    ? {
+        center: { type: 'Point' as const, coordinates: [lng, lat] },
+        zoom,
+      }
+    : null;
+};
 
 const CustomMapConfigPage = memo<Props>((props) => {
   const { className, passedMapConfig, variant = 'default', onBack } = props;
@@ -73,56 +94,82 @@ const CustomMapConfigPage = memo<Props>((props) => {
   const { data: projectMapConfig, isFetching } = useProjectMapConfig(projectId);
   const [view, setView] = useState<ViewOptions>('main');
   const [mapView, setMapView] = useState<MapView | null>(null);
-  // In the workspace, center and zoom edits wait for the page's save button.
   const [staged, setStaged] = useState<CenterAndZoomValues | null>(null);
-  const [stagedInvalid, setStagedInvalid] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState<{
+    values: CenterAndZoomValues;
+    reason: SaveError;
+  }>();
+  const pending = useRef<{
+    values: CenterAndZoomValues;
+    promise: Promise<void>;
+  }>();
   const { mutateAsync: updateMapConfig } = useUpdateMapConfig(projectId);
 
-  const mapConfig = passedMapConfig || projectMapConfig;
+  const config = passedMapConfig ?? projectMapConfig;
+  const mapConfig = config?.data ? config : undefined;
+  const mapConfigId = mapConfig?.data.id;
+  const stagedError =
+    saveError && saveError.values === staged ? saveError.reason : undefined;
   const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig?.data);
   const defaultLat = defaultLatLng[0];
   const defaultLng = defaultLatLng[1];
   const defaultZoom = getZoomLevel(undefined, appConfig?.data, mapConfig?.data);
 
-  const parseStaged = (values: CenterAndZoomValues) => {
-    const lat = parseFloat(values.lat);
-    const lng = parseFloat(values.lng);
-    const zoom = parseInt(values.zoom, 10);
-
-    return isValidCenterAndZoom(lat, lng, zoom)
-      ? {
-          center: { type: 'Point' as const, coordinates: [lng, lat] },
-          zoom,
-        }
-      : null;
-  };
-
-  const saveStaged = async () => {
-    if (!staged || !mapConfig) return;
+  const saveStaged = useCallback(async () => {
+    if (!staged || !mapConfigId) return;
+    if (pending.current?.values === staged) return pending.current.promise;
 
     const parsed = parseStaged(staged);
     if (!parsed) {
-      setStagedInvalid(true);
+      setSaveError({ values: staged, reason: 'invalid_values' });
       throw new Error('Invalid map center or zoom');
     }
 
-    await updateMapConfig({
-      mapConfigId: mapConfig.data.id,
-      center_geojson: parsed.center,
-      zoom_level: parsed.zoom.toString(),
-    });
-    setStaged(null);
-  };
+    // Keep edits in order even when leaving the workspace triggers a save.
+    const previous = pending.current?.promise ?? Promise.resolve();
+    const promise: Promise<void> = previous
+      .catch(() => undefined)
+      .then(async () => {
+        try {
+          await updateMapConfig({
+            mapConfigId,
+            center_geojson: parsed.center,
+            zoom_level: parsed.zoom.toString(),
+          });
+          setStaged((current) => (current === staged ? null : current));
+          setSaved(true);
+        } catch (error) {
+          setSaveError({ values: staged, reason: 'request_failed' });
+          throw error;
+        }
+      })
+      .finally(() => {
+        if (pending.current?.promise === promise) pending.current = undefined;
+      });
+
+    pending.current = { values: staged, promise };
+    return promise;
+  }, [mapConfigId, staged, updateMapConfig]);
 
   useRegisterPageSaver(MAP_CONFIG_SAVER_KEY, {
     dirty: !!staged,
     save: saveStaged,
   });
 
+  useEffect(() => {
+    if (!isPanel || !staged || stagedError) return;
+
+    const timeout = window.setTimeout(() => {
+      saveStaged().catch(() => undefined);
+    }, MAP_SAVE_DELAY_MS);
+
+    return () => window.clearTimeout(timeout);
+  }, [isPanel, saveStaged, staged, stagedError]);
+
   // The map follows typed values, so they can be checked before saving.
   const stageTyped = (values: CenterAndZoomValues) => {
     setStaged(values);
-    setStagedInvalid(false);
 
     const parsed = parseStaged(values);
     if (mapView && parsed) {
@@ -138,7 +185,7 @@ const CustomMapConfigPage = memo<Props>((props) => {
       appConfig &&
       !isFetching && // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      (mapConfig?.data === null || !mapConfig)
+      !mapConfig
     ) {
       createProjectMapConfig({
         projectId,
@@ -160,9 +207,7 @@ const CustomMapConfigPage = memo<Props>((props) => {
     isFetching,
   ]);
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (projectId && mapConfig?.data?.id) {
+  if (projectId && mapConfig) {
     const featureLayerUpload = (
       <FeatureLayerUpload
         setView={setView}
@@ -195,7 +240,11 @@ const CustomMapConfigPage = memo<Props>((props) => {
                 <StagedCenterAndZoom
                   mapConfig={mapConfig}
                   staged={staged}
-                  invalid={stagedInvalid}
+                  error={stagedError}
+                  onRetry={() => {
+                    setSaveError(undefined);
+                    saveStaged().catch(() => undefined);
+                  }}
                   onChange={stageTyped}
                 />
               }
@@ -234,8 +283,11 @@ const CustomMapConfigPage = memo<Props>((props) => {
         onSaveZoom={
           isPanel
             ? ({ lat, lng, zoom }) => {
-                setStaged({ lat: lat.toString(), lng: lng.toString(), zoom });
-                setStagedInvalid(false);
+                setStaged({
+                  lat: lat.toString(),
+                  lng: lng.toString(),
+                  zoom: Math.trunc(Number(zoom)).toString(),
+                });
               }
             : undefined
         }
@@ -255,8 +307,15 @@ const CustomMapConfigPage = memo<Props>((props) => {
                 />
               )}
               <h2 className={styles.settingsTitle}>
-                {formatMessage(messages.mapConfigurationTitle)}
+                {formatMessage(
+                  hasCustomMapSettings(mapConfig.data, appConfig?.data)
+                    ? projectMessages.editMap
+                    : projectMessages.configureMap
+                )}
               </h2>
+              <Text role="status" variant="small" tone="secondary">
+                {!staged && saved && formatMessage(messages.mapPositionSaved)}
+              </Text>
             </div>
             {settings}
           </div>

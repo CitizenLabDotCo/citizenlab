@@ -24,6 +24,12 @@
   box-shadow: 0 0 0 var(--gv-border-width-2) var(--gv-border-inverse);
 }
 
+.size16 {
+  width: var(--gv-size-16);
+  height: var(--gv-size-16);
+  font-size: 10px;
+}
+
 .initials {
   background: var(--gv-surface-brand-strong);
 }

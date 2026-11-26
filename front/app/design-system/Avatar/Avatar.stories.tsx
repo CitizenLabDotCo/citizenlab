@@ -15,7 +15,7 @@ type Story = StoryObj<typeof Avatar>;
 
 export const Default: Story = {};
 
-const sizes = [28, 24] as const;
+const sizes = [28, 24, 16] as const;
 
 export const AllVariants: Story = {
   render: () => (

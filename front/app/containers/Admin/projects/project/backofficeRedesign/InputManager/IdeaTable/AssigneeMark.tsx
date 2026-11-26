@@ -12,11 +12,14 @@ import messages from '../messages';
 
 interface Props {
   assigneeId: string | undefined;
+  size?: 16 | 24;
 }
 
-const AssigneeMark = ({ assigneeId }: Props) => {
+const AssigneeMark = ({ assigneeId, size = 24 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: user } = useUserById(assigneeId);
+
+  if (!assigneeId && size === 16) return null;
 
   if (!assigneeId) {
     return (
@@ -36,7 +39,7 @@ const AssigneeMark = ({ assigneeId }: Props) => {
         content="image"
         src={user.data.attributes.avatar?.small ?? undefined}
         alt={name}
-        size={24}
+        size={size}
       />
     </TooltipMark>
   );

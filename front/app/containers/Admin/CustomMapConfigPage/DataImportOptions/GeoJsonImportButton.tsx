@@ -131,7 +131,7 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className, variant }) => {
 
   if (variant === 'panel') {
     return (
-      <div className={className}>
+      <div className={`${styles.geoJsonOption} ${className ?? ''}`}>
         <input
           ref={fileInputRef}
           className={styles.fileInput}
@@ -143,7 +143,8 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className, variant }) => {
           aria-hidden
         />
         <DSButton
-          icon="upload-16"
+          trailingIcon="upload-16"
+          fullWidth
           onPress={() => fileInputRef.current?.click()}
           isDisabled={geoJsonImportDisabled}
           disabledReason={

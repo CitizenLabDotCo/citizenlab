@@ -6,9 +6,10 @@
   gap: var(--gv-space-6);
   height: var(--gv-size-28);
   padding-right: var(--gv-space-4);
-  border-radius: var(--gv-radius-full);
-  background: var(--gv-component-filter-surface-applied);
-  color: var(--gv-component-filter-text-applied);
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-6);
+  background: var(--gv-surface-panel);
+  color: var(--gv-component-filter-text);
   outline: none;
   transition-property: background-color;
   transition-duration: var(--gv-motion-duration-fast);
@@ -29,7 +30,7 @@
   gap: var(--gv-space-6);
   height: 100%;
   padding: 0 0 0 var(--gv-space-10);
-  border-radius: var(--gv-radius-full);
+  border-radius: var(--gv-radius-6);
   color: inherit;
   white-space: nowrap;
   cursor: pointer;
@@ -61,5 +62,5 @@
 }
 
 .chip:has([data-hovered]) {
-  background: var(--gv-component-filter-surface-applied-hovered);
+  background: var(--gv-surface-hovered);
 }

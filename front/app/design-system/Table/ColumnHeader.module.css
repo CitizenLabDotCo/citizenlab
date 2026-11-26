@@ -69,14 +69,15 @@ span.trigger {
   color: var(--gv-icon-quiet);
 }
 
-.column:not([data-hovered], [data-focus-visible])
+.column:not([data-focus-visible])
+  .cell:not(:hover)
   .trigger:not([data-pressed], [aria-expanded='true'], [data-focus-visible])
   .chevron {
   visibility: hidden;
 }
 
 /* Hovered, pressed or open: the head lights up. */
-.column[data-hovered] .cell,
+.cell:hover,
 .cell:has(.trigger[aria-expanded='true']) {
   background: var(--gv-surface-panel-subtle);
 }
@@ -85,14 +86,14 @@ span.trigger {
   background: var(--gv-surface-pressed);
 }
 
-.column[data-hovered] .label,
+.cell:hover .label,
 .trigger[data-pressed] .label,
 .trigger[aria-expanded='true'] .label,
 .cell[data-on] .label {
   color: var(--gv-text-primary);
 }
 
-.column[data-hovered] .chevron,
+.cell:hover .chevron,
 .trigger[data-pressed] .chevron,
 .trigger[aria-expanded='true'] .chevron,
 .cell[data-on] .chevron {

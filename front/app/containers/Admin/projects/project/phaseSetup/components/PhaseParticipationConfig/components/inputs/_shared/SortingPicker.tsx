@@ -3,13 +3,13 @@ import React, { useId } from 'react';
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import Button from 'design-system/Button';
 import { FieldError } from 'design-system/Field';
-import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+import Menu, { MenuItem } from 'design-system/Menu';
 
 import { IdeaSortMethod } from 'api/phases/types';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
+import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 import messages from 'containers/Admin/projects/project/messages';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
@@ -63,33 +63,27 @@ export default ({
             <FormattedMessage {...messages.defaultPostSortingTooltip} />
           }
           action={
-            <MenuTrigger>
-              <Button
-                variant="secondary"
-                size={28}
-                hasMenu
-                aria-describedby={errorMessage ? errorId : undefined}
-              >
-                {ideas_order
-                  ? formatMessage(SORTING_LABELS[ideas_order])
-                  : title}
-              </Button>
-              <Menu
-                aria-label={title}
-                selectionMode="single"
-                selectedKeys={new Set(ideas_order ? [ideas_order] : [])}
-                onAction={(key) => {
-                  const option = options.find(({ value }) => value === key);
-                  if (option) handleIdeaDefaultSortMethodChange(option.value);
-                }}
-              >
-                {options.map(({ key, value }) => (
-                  <MenuItem key={key} id={value}>
-                    {formatMessage(SORTING_LABELS[value])}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </MenuTrigger>
+            ideas_order && (
+              <SummaryPill label={formatMessage(SORTING_LABELS[ideas_order])} />
+            )
+          }
+          menuDescribedBy={errorMessage ? errorId : undefined}
+          menu={
+            <Menu
+              aria-label={title}
+              selectionMode="single"
+              selectedKeys={new Set(ideas_order ? [ideas_order] : [])}
+              onAction={(key) => {
+                const option = options.find(({ value }) => value === key);
+                if (option) handleIdeaDefaultSortMethodChange(option.value);
+              }}
+            >
+              {options.map(({ key, value }) => (
+                <MenuItem key={key} id={value}>
+                  {formatMessage(SORTING_LABELS[value])}
+                </MenuItem>
+              ))}
+            </Menu>
           }
         >
           {errorMessage && <FieldError id={errorId}>{errorMessage}</FieldError>}

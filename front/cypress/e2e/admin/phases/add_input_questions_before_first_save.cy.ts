@@ -46,6 +46,7 @@ describe('Adding input questions before saving a phase', () => {
       cy.get('[data-review-card="input_term"]')
         .contains('What should an input be called?')
         .click();
+      cy.press(Cypress.Keyboard.Keys.ESC);
       cy.get('[data-review-card="input_term"]').should('contain', 'Reviewed');
       cy.get('#phase-build-panel-title').type('Input collection');
       cy.get('[data-cy="add-draft-input-questions"]').scrollIntoView().click();

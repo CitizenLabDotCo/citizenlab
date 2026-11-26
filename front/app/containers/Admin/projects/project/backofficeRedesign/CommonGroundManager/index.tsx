@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Banner from 'design-system/Banner';
-import Spinner from 'design-system/Spinner';
 
 import commonGroundResultsKeys from 'api/common_ground/keys/commonGroundResultsKeys';
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
@@ -17,12 +16,13 @@ import { IProjectData } from 'api/projects/types';
 import useLocalize from 'hooks/useLocalize';
 
 import inputManagerMessages from 'components/admin/PostManager/CommonGroundInputManager/messages';
-import NoInputsDisplay from 'components/admin/PostManager/CommonGroundInputManager/NoInputsDisplay';
+import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import FilterChips from '../InputManager/FilterMenu/FilterChips';
+import inputStatsMessages from '../InputManager/messages';
 import NoMatches from '../InputManager/NoMatches';
 import SidePanel from '../InputManager/SidePanel';
 import usePanelNavigation from '../InputManager/usePanelNavigation';
@@ -30,10 +30,12 @@ import useSelection from '../InputManager/useSelection';
 import ImportInputsModal from '../Phase/BuildPanel/BuildFields/MethodSection/CommonGroundSection/ImportInputsModal';
 import ListLoadError from '../Phase/ListLoadError';
 import ManageLayout from '../Phase/ManageLayout';
+import ListRowsSkeleton from '../WorkspaceSkeleton/ListRowsSkeleton';
 
 import AddStatementModal from './AddStatementModal';
-import styles from './CommonGroundManager.module.css';
 import EditStatementModal from './EditStatementModal';
+import EmptyList from './EmptyList';
+import messages from './messages';
 import StatementSideColumn from './StatementSideColumn';
 import StatementTable from './StatementTable';
 import StatementToolbar from './StatementToolbar';
@@ -51,6 +53,12 @@ const CommonGroundManager = ({ project, phase }: Props) => {
   const localize = useLocalize();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
+  const [agreeSort, setAgreeSort] = useState<
+    'new' | 'agree_percent' | '-agree_percent'
+  >('agree_percent');
+  const [participantFilter, setParticipantFilter] = useState(false);
+  const [warningFilter, setWarningFilter] = useState(false);
+  const [unassignedFilter, setUnassignedFilter] = useState(false);
   const [search, setSearch] = useState<string>();
   const [previewId, setPreviewId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -65,16 +73,32 @@ const CommonGroundManager = ({ project, phase }: Props) => {
     phase: phase.id,
     transitive: false,
   };
+  const filteredScope = {
+    ...scope,
+    search,
+    added_by_participants: participantFilter || undefined,
+    content_warnings: warningFilter || undefined,
+    assignee: unassignedFilter ? [UNASSIGNED] : undefined,
+  };
   const { category: agreementCategory, agreements } = useAgreementFilter({
     statements,
-    searched: search ? { ...scope, search } : undefined,
+    filtered:
+      search || participantFilter || warningFilter || unassignedFilter
+        ? filteredScope
+        : undefined,
     onChange: () => setPage(1),
   });
 
-  const listed = { ...scope, search, agreements };
+  const listed = { ...filteredScope, agreements };
+  const agreeSortDirection = {
+    new: undefined,
+    agree_percent: 'descending',
+    '-agree_percent': 'ascending',
+  } as const;
+
   const listParameters = {
     ...listed,
-    sort: 'new' as const,
+    sort: agreeSort,
     'page[size]': PAGE_SIZE,
   };
   const {
@@ -87,7 +111,19 @@ const CommonGroundManager = ({ project, phase }: Props) => {
     'page[number]': page,
   });
   const { data: allCounts } = useIdeasFilterCounts(scope);
+  const { data: participantCounts } = useIdeasFilterCounts({
+    ...scope,
+    added_by_participants: true,
+  });
+  const { data: warningCounts } = useIdeasFilterCounts({
+    ...scope,
+    content_warnings: true,
+  });
   const { data: listedCounts } = useIdeasFilterCounts(listed);
+  const totals = allCounts?.data.attributes;
+  const unassigned =
+    totals?.assignee_id &&
+    totals.total - Object.values(totals.assignee_id).reduce((a, b) => a + b, 0);
   const { data: importJob } = useJobInProgressByPhase(phase.id);
 
   const { progress: importedCount, total: totalToImport } =
@@ -126,6 +162,9 @@ const CommonGroundManager = ({ project, phase }: Props) => {
 
   const clearFilters = () => {
     agreementCategory.clear();
+    setParticipantFilter(false);
+    setWarningFilter(false);
+    setUnassignedFilter(false);
     changeSearch(null);
   };
 
@@ -147,7 +186,35 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         <StatementSideColumn
           projectId={project.id}
           stats={stats}
-          phaseTotal={phaseTotal}
+          filters={[
+            {
+              label: messages.addedByParticipants,
+              value: participantCounts?.data.attributes.total,
+              active: participantFilter,
+              toggle: () => {
+                setParticipantFilter(!participantFilter);
+                setPage(1);
+              },
+            },
+            {
+              label: inputStatsMessages.unassigned,
+              value: unassigned,
+              active: unassignedFilter,
+              toggle: () => {
+                setUnassignedFilter(!unassignedFilter);
+                setPage(1);
+              },
+            },
+            {
+              label: inputStatsMessages.contentWarnings,
+              value: warningCounts?.data.attributes.total,
+              active: warningFilter,
+              toggle: () => {
+                setWarningFilter(!warningFilter);
+                setPage(1);
+              },
+            },
+          ]}
           selectedIds={selection.selectedIds}
           onAdd={() => setAddOpened(true)}
           onImport={() => setImportOpened(true)}
@@ -165,14 +232,11 @@ const CommonGroundManager = ({ project, phase }: Props) => {
       <StatementToolbar
         selectedIdeas={selection.selectedIdeas}
         listedTotal={listedTotal}
-        onEdit={setEditingId}
         onClearSelection={selection.clear}
         onDeleted={(ideaIds) => {
           selection.deselect(ideaIds);
           refreshAfterDelete();
         }}
-        onSelectAll={selection.selectAll}
-        isSelectingAll={selection.isSelectingAll}
         selectAllFailed={selection.selectAllFailed}
         search={search}
         onSearch={changeSearch}
@@ -182,27 +246,21 @@ const CommonGroundManager = ({ project, phase }: Props) => {
       <FilterChips categories={[agreementCategory]} onClearAll={clearFilters} />
 
       {isError && <ListLoadError onRetry={() => refetch()} />}
-      {!ideas && !isError && (
-        <div className={styles.loading}>
-          <Spinner />
-        </div>
-      )}
-      {ideas && phaseTotal === 0 && (
-        <NoInputsDisplay
-          isJobInProgress={isImporting}
-          importedCount={importedCount}
-          totalInputsToBeImported={totalToImport}
-          project={project}
-          phaseId={phase.id}
-          setShowPastInputsModal={setImportOpened}
-        />
-      )}
+      {!ideas && !isError && <ListRowsSkeleton />}
+      {ideas && phaseTotal === 0 && !isError && <EmptyList />}
       {ideas && pageIdeas.length === 0 && !!phaseTotal && (
         <NoMatches onClearFilters={clearFilters} />
       )}
       {pageIdeas.length > 0 && (
         <StatementTable
           ideas={pageIdeas}
+          agreeSortDirection={agreeSortDirection[agreeSort]}
+          onSortByAgree={() => {
+            setAgreeSort(
+              agreeSort === 'agree_percent' ? '-agree_percent' : 'agree_percent'
+            );
+            setPage(1);
+          }}
           showModeration={phase.attributes.submission_enabled}
           resultsById={resultsById}
           selectedIds={new Set(selection.selectedIds)}
@@ -211,6 +269,9 @@ const CommonGroundManager = ({ project, phase }: Props) => {
           currentPage={page}
           lastPage={lastPage}
           onSelectOnPage={selection.selectOnPage}
+          total={listedTotal}
+          onSelectAll={selection.selectAll}
+          onClearSelection={selection.clear}
           onOpen={setPreviewId}
           onChangePage={setPage}
         />

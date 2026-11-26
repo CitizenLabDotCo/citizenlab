@@ -34,6 +34,7 @@ import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
 import { useParams } from 'utils/router';
 
 import { getAnalysisScope } from '../../_shared/components/AnalysisBanner/utils';
+import InsightsSkeleton from '../backofficeRedesign/WorkspaceSkeleton/InsightsSkeleton';
 
 import DemographicsSection from './demographics/DemographicsSection';
 import getExportFilename from './getExportFilename';
@@ -201,7 +202,7 @@ const InsightsContent = () => {
   };
 
   if (!phase) {
-    return null;
+    return redesigned ? <InsightsSkeleton /> : null;
   }
 
   const isNativeSurvey = participationMethod === 'native_survey';
@@ -382,7 +383,12 @@ const InsightsContent = () => {
   );
 
   const dashboard = (
-    <Box display="flex" flexDirection="column" gap="16px" pt="16px">
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={redesigned ? '14px' : '16px'}
+      pt="16px"
+    >
       <PageBreakBox>
         <ParticipationMetrics phase={phase.data} />
       </PageBreakBox>
@@ -391,7 +397,7 @@ const InsightsContent = () => {
         <ParticipantsTimeline phase={phase.data} />
       </PageBreakBox>
 
-      <DemographicsSection phase={phase.data} />
+      {!redesigned && <DemographicsSection phase={phase.data} />}
 
       <PageBreakBox>
         <MethodSpecificInsights
@@ -399,6 +405,8 @@ const InsightsContent = () => {
           participationMethod={phase.data.attributes.participation_method}
         />
       </PageBreakBox>
+
+      {redesigned && <DemographicsSection phase={phase.data} />}
     </Box>
   );
   const header = (
@@ -429,12 +437,12 @@ const InsightsContent = () => {
           aria-label="Phase Insights"
         >
           <div className={styles.panelLayout}>
-            <div className={styles.dashboardPanel}>{dashboard}</div>
             <div className={styles.sideColumn}>
               <RecommendedActions phase={phase.data}>
                 {panelActions}
               </RecommendedActions>
             </div>
+            <div className={styles.dashboardPanel}>{dashboard}</div>
           </div>
         </div>
       ) : (

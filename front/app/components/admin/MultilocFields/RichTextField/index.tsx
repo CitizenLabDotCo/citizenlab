@@ -34,6 +34,7 @@ interface Props {
   noLinks?: boolean;
   noAlign?: boolean;
   limitedTextFormatting?: boolean;
+  compactToolbar?: boolean;
   // Adds the "Add button" tool, which turns the selected text into a button link.
   withCTAButton?: boolean;
 }
@@ -55,6 +56,7 @@ const RichTextField = ({
   noLinks = false,
   noAlign = false,
   limitedTextFormatting = false,
+  compactToolbar = false,
   withCTAButton = false,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -87,6 +89,12 @@ const RichTextField = ({
     ariaLabel,
     placeholder,
   });
+
+  // Quill reads the placeholder once; it changes with the language shown.
+  useEffect(() => {
+    if (!editor) return;
+    editor.root.setAttribute('data-placeholder', placeholder ?? '');
+  }, [editor, placeholder]);
 
   useEffect(() => {
     if (!editor || !editorRef) return;
@@ -145,6 +153,7 @@ const RichTextField = ({
             noLinks={noLinks}
             noAlign={noAlign}
             limitedTextFormatting={limitedTextFormatting}
+            compactToolbar={compactToolbar}
             withCTAButton={withCTAButton}
           />
         }

@@ -35,6 +35,46 @@ export default defineMessages({
     defaultMessage:
       'These insights include visits and participation recorded during this phase. Activity outside its start and end dates isn’t included.',
   },
+  noParticipationInPhaseDates: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.noParticipationInPhaseDates',
+    defaultMessage: 'No participation in the phase dates',
+  },
+  insightsCoversInputsInManage: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsCoversInputsInManage',
+    defaultMessage: `{inputTerm, select,
+      idea {Insights covers {dateRange}. Ideas added outside these dates are in the {manageLink}}
+      option {Insights covers {dateRange}. Options added outside these dates are in the {manageLink}}
+      project {Insights covers {dateRange}. Projects added outside these dates are in the {manageLink}}
+      question {Insights covers {dateRange}. Questions added outside these dates are in the {manageLink}}
+      issue {Insights covers {dateRange}. Issues added outside these dates are in the {manageLink}}
+      contribution {Insights covers {dateRange}. Contributions added outside these dates are in the {manageLink}}
+      proposal {Insights covers {dateRange}. Proposals added outside these dates are in the {manageLink}}
+      initiative {Insights covers {dateRange}. Initiatives added outside these dates are in the {manageLink}}
+      petition {Insights covers {dateRange}. Petitions added outside these dates are in the {manageLink}}
+      comment {Insights covers {dateRange}. Comments added outside these dates are in the {manageLink}}
+      response {Insights covers {dateRange}. Responses added outside these dates are in the {manageLink}}
+      suggestion {Insights covers {dateRange}. Suggestions added outside these dates are in the {manageLink}}
+      topic {Insights covers {dateRange}. Topics added outside these dates are in the {manageLink}}
+      post {Insights covers {dateRange}. Posts added outside these dates are in the {manageLink}}
+      story {Insights covers {dateRange}. Stories added outside these dates are in the {manageLink}}
+      observation {Insights covers {dateRange}. Observations added outside these dates are in the {manageLink}}
+      other {Insights covers {dateRange}. Inputs added outside these dates are in the {manageLink}}
+    }`,
+  },
+  insightsCoversVotesInManage: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsCoversVotesInManage',
+    defaultMessage:
+      'Insights covers {dateRange}. Votes added outside these dates are in the {manageLink}',
+  },
+  insightsCoversResponsesExcluded: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsCoversResponsesExcluded',
+    defaultMessage:
+      'Insights covers {dateRange}. Responses added outside these dates are not included',
+  },
+  manageTabLink: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.manageTabLink',
+    defaultMessage: 'Manage tab',
+  },
   buildView: {
     id: 'app.containers.Admin.projects.project.buildView',
     defaultMessage: 'Build',
@@ -96,6 +136,14 @@ export default defineMessages({
   deleteReport: {
     id: 'app.containers.Admin.projects.project.deleteReport',
     defaultMessage: 'Delete report',
+  },
+  annotateSummary: {
+    id: 'app.containers.Admin.projects.project.annotateSummary',
+    defaultMessage: 'Annotate',
+  },
+  signUpSummary: {
+    id: 'app.containers.Admin.projects.project.signUpSummary',
+    defaultMessage: 'Sign up',
   },
   annotatingDocumentAction: {
     id: 'app.containers.Admin.projects.project.annotatingDocumentAction',

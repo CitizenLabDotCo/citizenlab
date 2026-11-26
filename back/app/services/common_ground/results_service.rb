@@ -35,6 +35,13 @@ module CommonGround
         .reselect('ideas.id')
     end
 
+    def order_by_agree_percent(scope, direction)
+      percent = Arel.sql("COALESCE(#{agree_percent_sql}, 0)")
+      scope
+        .joins("LEFT JOIN (#{reaction_counts_by_idea.to_sql}) reaction_counts ON reaction_counts.idea_id = ideas.id")
+        .reorder(percent.public_send(direction), Idea.arel_table[:id].asc)
+    end
+
     private
 
     REACTION_COUNT_COLUMNS = %w[likes_count dislikes_count neutral_reactions_count].freeze

@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { Controller } from 'react-hook-form';
+import { SupportedLocale } from 'typings';
 
 import { TFieldName } from 'components/UI/Error';
 
@@ -9,6 +10,8 @@ import useFormMultilocField from './useFormMultilocField';
 
 interface Props {
   name: TFieldName;
+  // Set when one switcher above drives a group of fields.
+  locale?: SupportedLocale;
   label?: ReactNode;
   'aria-label': string;
   placeholder?: string;
@@ -22,6 +25,7 @@ interface Props {
 // A MultilocRichTextField bound to the surrounding react-hook-form form.
 const FormMultilocRichTextField = ({
   name,
+  locale,
   label,
   'aria-label': ariaLabel,
   placeholder,
@@ -41,6 +45,7 @@ const FormMultilocRichTextField = ({
       render={({ field }) => (
         <MultilocRichTextField
           id={name}
+          locale={locale}
           label={label}
           aria-label={ariaLabel}
           placeholder={placeholder}

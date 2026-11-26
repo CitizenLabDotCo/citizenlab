@@ -19,6 +19,7 @@ export interface ManagerFilters {
   assignees: string[];
   topics: string[];
   reply?: ReplyFilter;
+  contentWarnings?: boolean;
   source?: SourceFilter;
   phase?: string;
 }
@@ -38,6 +39,7 @@ const NO_REPLACED_FILTERS = {
   assignee: undefined,
   topics: undefined,
   feedback_needed: undefined,
+  content_warnings: undefined,
   source: undefined,
   phase: undefined,
 };
@@ -50,7 +52,7 @@ const list = (value: string | string[] | undefined) =>
 const joined = (values: string[]) =>
   values.length > 0 ? values.join(',') : undefined;
 
-const useManagerParams = (phaseId: string) => {
+const useManagerParams = (phaseId: string, phaseSort: Sort = DEFAULT_SORT) => {
   const search = useSearch({ strict: false });
 
   const filters: ManagerFilters = useMemo(
@@ -64,15 +66,17 @@ const useManagerParams = (phaseId: string) => {
           : search.feedback_needed === 'false'
           ? 'replied'
           : undefined,
+      contentWarnings: search.content_warnings === 'true',
       source: isSourceFilter(search.source) ? search.source : undefined,
       phase: search.phase === ALL_PHASES ? undefined : search.phase || phaseId,
     }),
     [search, phaseId]
   );
 
+  const defaultSort = filters.phase === phaseId ? phaseSort : DEFAULT_SORT;
   const page = Math.max(1, parseInt(search.page ?? '1', 10) || 1);
   const sort: Sort =
-    ideaSortValues.find((value) => value === search.sort) ?? DEFAULT_SORT;
+    ideaSortValues.find((value) => value === search.sort) ?? defaultSort;
   const searchTerm = search.search;
   const selectedIdeaId = search.selected_idea_id;
 
@@ -83,6 +87,7 @@ const useManagerParams = (phaseId: string) => {
       input_topics: filters.topics,
       feedback_needed: filters.reply === 'awaiting' || undefined,
       official_feedback: filters.reply === 'replied' || undefined,
+      content_warnings: filters.contentWarnings || undefined,
       imported: filters.source ? filters.source === 'imported' : undefined,
       phase: filters.phase,
       search: searchTerm,
@@ -109,6 +114,9 @@ const useManagerParams = (phaseId: string) => {
           ? String(changes.reply === 'awaiting')
           : undefined;
       }
+      if ('contentWarnings' in changes) {
+        updates.content_warnings = changes.contentWarnings ? 'true' : undefined;
+      }
       if ('source' in changes) updates.source = changes.source;
       if ('phase' in changes) {
         updates.phase =
@@ -128,12 +136,15 @@ const useManagerParams = (phaseId: string) => {
     updateSearchParams(NO_FILTERS);
   }, []);
 
-  const setSort = useCallback((sort: Sort) => {
-    updateSearchParams({
-      page: undefined,
-      sort: sort === DEFAULT_SORT ? undefined : sort,
-    });
-  }, []);
+  const setSort = useCallback(
+    (sort: Sort) => {
+      updateSearchParams({
+        page: undefined,
+        sort: sort === defaultSort ? undefined : sort,
+      });
+    },
+    [defaultSort]
+  );
 
   const setPage = useCallback((page: number) => {
     updateSearchParams({ page: page > 1 ? String(page) : undefined });

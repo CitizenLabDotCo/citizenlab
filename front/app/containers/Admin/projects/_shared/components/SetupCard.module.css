@@ -1,12 +1,7 @@
-.titleRow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--gv-space-4);
-  max-width: 100%;
-}
-
-.infoMark {
-  --gv-tooltip-mark-radius: var(--gv-radius-4);
+.titleTarget {
+  composes: ringOutside from '../../../../../design-system/focus.module.css';
+  border-radius: var(--gv-radius-4);
+  cursor: default;
 }
 
 .review {

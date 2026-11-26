@@ -42,7 +42,9 @@ export type SetupReviewCard =
   | 'survey_placement'
   | 'voting_method'
   | 'views'
-  | 'sorting';
+  | 'sorting'
+  | 'participant_actions'
+  | 'proposal_requirements';
 
 export interface IPhaseAttributes {
   reviewed_setup_cards?: SetupReviewCard[];

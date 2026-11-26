@@ -86,6 +86,90 @@ describe('Project setup feedback', () => {
     cy.get('[placeholder="Search tags"]').should('be.visible');
   });
 
+  it('keeps unsaved details when switching phase tabs', () => {
+    cy.visit(
+      `/admin/projects/${projectId}/phases/new?project_backoffice_redesign&participation_method=ideation`
+    );
+
+    cy.get('#phase-build-panel-title').type('Unsaved phase title');
+    cy.contains('[role="tab"]', /^Manage$/).click();
+    cy.contains('Ideas will appear here').should('be.visible');
+    cy.contains('[role="tab"]', /^Insights$/).click();
+    cy.contains('Insights will appear here').should('be.visible');
+    cy.contains('[role="tab"]', /^Build$/).click();
+    cy.get('#phase-build-panel-title').should(
+      'have.value',
+      'Unsaved phase title'
+    );
+    cy.location('pathname').should('include', '/phases/new');
+  });
+
+  it('validates and autosaves the map position, even after retrying a failed save', () => {
+    cy.apiCreatePhase({
+      projectId,
+      title: 'Map setup',
+      startAt: '2026-01-01',
+      participationMethod: 'ideation',
+    }).then(({ body }) => {
+      const path = `/admin/projects/${projectId}/phases/${body.data.id}/setup?project_backoffice_redesign&map_config=true`;
+      let failNext = true;
+      cy.intercept('PATCH', '**/web_api/v1/map_configs/*', (request) => {
+        if (failNext) {
+          failNext = false;
+          request.reply({ statusCode: 503, body: {} });
+        }
+      }).as('updateMap');
+      cy.visit(path.replace('&map_config=true', ''));
+      cy.get('[data-review-card="views"]')
+        .contains('button', 'Available views')
+        .click();
+      cy.contains('Displays ideas as pins').should('be.visible');
+      cy.contains('a', 'Idea form').should('be.visible');
+      cy.contains('button', 'Configure map').click();
+      cy.contains('h2', 'Configure map').should('be.visible');
+
+      const latitude = () => cy.get('input[aria-label="Default latitude"]');
+      const zoom = () => cy.get('input[aria-label="Map zoom level"]');
+      cy.contains('button', /^Save$/).should('not.exist');
+
+      latitude().clear().type('12.5north');
+      cy.contains('Enter valid coordinates').should('be.visible');
+      cy.get('@updateMap.all').should('have.length', 0);
+      zoom().clear().type('8.5');
+      latitude().clear().type('12.5');
+      cy.contains('Enter valid coordinates').should('be.visible');
+      cy.get('@updateMap.all').should('have.length', 0);
+
+      zoom().clear().type('8');
+      cy.wait('@updateMap').its('response.statusCode').should('eq', 503);
+      cy.contains('The map position could not be saved.').should('be.visible');
+      cy.contains('button', 'Try again').click();
+      cy.wait('@updateMap').its('response.statusCode').should('eq', 200);
+      cy.contains('[role="status"]', /^Saved$/).should('be.visible');
+
+      cy.visit(path);
+      cy.contains('h2', 'Edit map').should('be.visible');
+      latitude().should('have.value', '12.5');
+      zoom().should('have.value', '8');
+    });
+  });
+
+  it('opens the editor when the project preview is clicked', () => {
+    cy.visit(
+      `/admin/projects/${projectId}/project-page?project_backoffice_redesign`
+    );
+
+    cy.dataCy('e2e-project-page-preview')
+      .find('iframe')
+      .should('have.attr', 'tabindex', '-1')
+      .and('have.css', 'pointer-events', 'none');
+    cy.dataCy('e2e-edit-page-content').click(25, 25);
+    cy.location('pathname').should(
+      'include',
+      `/admin/project-page-builder/projects/${projectId}`
+    );
+  });
+
   it('saves project edits before opening a participation method', () => {
     cy.visit(`/admin/projects/${projectId}?project_backoffice_redesign`);
     setupCard('homepage-card').click();
@@ -241,8 +325,10 @@ describe('Project setup feedback', () => {
       cy.get('[data-review-card="input_term"]')
         .contains('What should an input be called?')
         .click();
+      cy.press(Cypress.Keyboard.Keys.ESC);
       cy.get('[data-review-card="input_term"]').should('contain', 'Reviewed');
       cy.get('[data-review-card="sorting"]').contains('Sorting').click();
+      cy.press(Cypress.Keyboard.Keys.ESC);
       cy.get('[data-review-card="sorting"]').should('contain', 'Reviewed');
       cy.clearLocalStorage();
       cy.clearCookies();
@@ -286,7 +372,7 @@ describe('Project setup feedback', () => {
     };
     for (let attempt = 0; attempt < 2; attempt++) {
       scrollAway();
-      cy.contains('button', /^Save changes$/).click();
+      cy.contains('button', /^Save$/).click();
       expectErrorInView('Missing start date');
     }
 
@@ -296,12 +382,12 @@ describe('Project setup feedback', () => {
     cy.intercept('POST', `**/web_api/v1/projects/${projectId}/phases`).as(
       'createOpenPhase'
     );
-    cy.contains('button', /^Save changes$/).click();
+    cy.contains('button', /^Save$/).click();
     cy.wait('@createOpenPhase').its('response.statusCode').should('eq', 422);
     expectErrorInView('This cannot be empty.');
 
     cy.get('#phase-build-panel-title').type('Open-ended phase');
-    cy.contains('button', /^Save changes$/).click();
+    cy.contains('button', /^Save$/).click();
     cy.wait('@createOpenPhase').then(({ response }) => {
       expect(response?.statusCode).to.eq(201);
       expect(response?.body.data.attributes.end_at).to.eq(null);
@@ -337,7 +423,7 @@ describe('Project setup feedback', () => {
     cy.get('#phase-build-panel-title').type('Phase with tags');
     cy.contains('button', 'Idea tags').click();
     cy.get('#phase-add-input-tag').type('Unsaved tag{enter}');
-    cy.contains('button', /^Save changes$/).click();
+    cy.contains('button', /^Save$/).click();
     cy.wait('@createPhase').then(({ response }) => {
       expect(response?.statusCode).to.eq(201);
       cy.wait('@failedTag');
@@ -345,7 +431,7 @@ describe('Project setup feedback', () => {
       cy.contains('The tags could not be saved').should('be.visible');
       cy.contains('Unsaved tag').scrollIntoView().should('be.visible');
 
-      cy.contains('button', /^Save changes$/).click();
+      cy.contains('button', /^Save$/).click();
       cy.location('pathname').should(
         'include',
         `/phases/${response?.body.data.id}/setup`
@@ -374,7 +460,7 @@ describe('Project setup feedback', () => {
     );
     cy.get('[role="dialog"]').contains('example.pdf').should('be.visible');
     cy.get('[role="dialog"]').contains('button', 'Done').click();
-    cy.contains('button', /^Save changes$/).click();
+    cy.contains('button', /^Save$/).click();
     cy.wait('@createPhase').then(({ response }) => {
       expect(response?.statusCode).to.eq(201);
       cy.wait('@failedAttachment');
@@ -383,8 +469,9 @@ describe('Project setup feedback', () => {
       cy.get('[data-review-card="input_term"]')
         .contains('What should an input be called?')
         .click();
+      cy.press(Cypress.Keyboard.Keys.ESC);
       cy.get('[data-review-card="input_term"]').should('contain', 'Reviewed');
-      cy.contains('button', /^Save changes$/).click();
+      cy.contains('button', /^Save$/).click();
       cy.location('pathname').should(
         'include',
         `/phases/${response?.body.data.id}/setup`

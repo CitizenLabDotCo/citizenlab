@@ -3,18 +3,26 @@ import React, { useRef } from 'react';
 import { Box, Text, Title, Spinner } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
+import ChartLegend from 'design-system/ChartLegend';
+import DashboardCard from 'design-system/DashboardCard';
+import Skeleton from 'design-system/Skeleton';
+
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import Chart from 'components/admin/GraphCards/ParticipantsCard/Chart';
+import {
+  SERIES,
+  SeriesKey,
+} from 'components/admin/GraphCards/ParticipantsCard/series';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import { useIntl } from 'utils/cl-intl';
 
-import InsightCard from './InsightCard';
 import messages from './messages';
+import styles from './ParticipantsTimeline.module.css';
 import { usePdfExportContext } from './pdf/PdfExportContext';
 import WordExportableInsight from './word/WordExportableInsight';
 
@@ -33,6 +41,14 @@ const ParticipantsTimeline = ({ phase }: Props) => {
   const graphRef = useRef<SVGElement>(null);
 
   const { data, isPending, error } = usePhaseInsights({ phaseId: phase.id });
+
+  if (isPending && redesigned) {
+    return (
+      <WordExportableInsight exportId="participation-timeline" skipExport>
+        <Skeleton shape="block" height={266} />
+      </WordExportableInsight>
+    );
+  }
 
   if (isPending) {
     return (
@@ -91,10 +107,45 @@ const ParticipantsTimeline = ({ phase }: Props) => {
   const exportMenu = (
     <ReportExportMenu
       name="participation-timeline"
+      variant={redesigned ? 'dashboard' : 'default'}
       svgNode={graphRef}
       xlsx={{ data: xlsxData }}
     />
   );
+  if (redesigned) {
+    const series: SeriesKey[] = showParticipants
+      ? ['participants', 'visitors']
+      : ['visitors'];
+
+    return (
+      <DashboardCard title={title} actions={exportMenu}>
+        <WordExportableInsight
+          exportId="participation-timeline"
+          heading={title}
+        >
+          <div className={styles.chart}>
+            <Chart
+              timeSeries={chartData}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={resolution}
+              showParticipants={showParticipants}
+              showVisitors
+              showLegend={false}
+              innerRef={graphRef}
+            />
+          </div>
+          <ChartLegend
+            items={series.map((key) => ({
+              label: formatMessage(SERIES[key].label),
+              color: SERIES[key].color,
+            }))}
+          />
+        </WordExportableInsight>
+      </DashboardCard>
+    );
+  }
+
   const chart = (
     <WordExportableInsight
       exportId="participation-timeline"
@@ -114,14 +165,6 @@ const ParticipantsTimeline = ({ phase }: Props) => {
       />
     </WordExportableInsight>
   );
-
-  if (redesigned) {
-    return (
-      <InsightCard title={title} actions={exportMenu}>
-        {chart}
-      </InsightCard>
-    );
-  }
 
   return (
     <Box mt="8px" bg="white" py="24px" borderRadius="8px">

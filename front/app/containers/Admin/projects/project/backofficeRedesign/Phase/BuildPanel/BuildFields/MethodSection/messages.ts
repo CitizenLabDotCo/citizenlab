@@ -1,9 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  downloadForm: {
+    id: 'app.containers.Admin.projects.project.downloadForm',
+    defaultMessage: 'Download form',
+  },
   addQuestions: {
     id: 'app.containers.Admin.projects.project.addQuestions',
     defaultMessage: 'Add questions',
+  },
+  addQuestionsToDownload: {
+    id: 'app.containers.Admin.projects.project.addQuestionsToDownload',
+    defaultMessage: 'Add questions to download the form',
   },
   editSurvey: {
     id: 'app.containers.Admin.projects.project.editSurvey',
