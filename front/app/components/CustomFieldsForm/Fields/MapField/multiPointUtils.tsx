@@ -12,8 +12,10 @@ import {
   getFillSymbol,
   getLineSymbol,
   getMapPinSymbol,
+  getPinLabelSymbol,
   getShapeSymbol,
-  newPinPointGraphic,
+  newNumberedPinGraphics,
+  PIN_NUMBER_ATTRIBUTE,
 } from 'components/EsriMap/utils';
 
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
@@ -44,12 +46,22 @@ export const isMultiPointInput = (inputType: MapInputType) => {
 export const exceedsPinLimit = (pinCount: number, maxPins?: number) =>
   !!maxPins && pinCount > maxPins;
 
+// isAnswerFull
+// Description: Whether an answer has all the pins it will take. A question
+// limited to a single location is never full: the next click moves its pin
+// rather than being refused, so saying it is full would contradict that.
+export const isAnswerFull = (pinCount: number, maxPins?: number) =>
+  maxPins !== 1 && exceedsPinLimit(pinCount + 1, maxPins);
+
 // handleMapClickMultipoint
 // Description: Handles map click for line, polygon or multipoint input
 export const handleMapClickMultipoint = (
   event: any,
   mapView: MapView,
-  handleMultiPointChange: ((points: number[][] | undefined) => void) | undefined
+  handleMultiPointChange:
+    | ((points: number[][] | undefined) => void)
+    | undefined,
+  maxPins?: number
 ) => {
   // Project the point to Web Mercator, in case the map is using a different projection
   const projectedPoint = projectPointToWebMercator(event.mapPoint);
@@ -58,11 +70,30 @@ export const handleMapClickMultipoint = (
     projectedPoint.longitude || 0,
     projectedPoint.latitude || 0,
   ];
+
+  // A question that takes a single location reads like the single pin input
+  // it replaces: the next click moves the pin instead of being refused for
+  // being one too many.
+  if (maxPins === 1) {
+    handleMultiPointChange?.([newPoint]);
+    return;
+  }
+
   const currentPointCoordinates = getUserInputPoints(mapView);
 
   // Update the form data
   currentPointCoordinates.push([newPoint[0], newPoint[1]]);
   handleMultiPointChange?.(currentPointCoordinates);
+};
+
+// removePinAt
+// Description: Takes one pin out of a list. An empty MultiPoint has no valid
+// WKT to travel as, so the last pin leaving clears the answer instead of
+// leaving an empty list behind.
+export const removePinAt = (coordinates: number[][], index: number) => {
+  const remaining = coordinates.filter((_, pinIndex) => pinIndex !== index);
+
+  return remaining.length > 0 ? remaining : undefined;
 };
 
 // getCoordinatesFromMultiPointData
@@ -143,9 +174,14 @@ export const setupPointDrag = ({
       if (pointBeingDragged.current) {
         event.stopPropagation();
 
-        // Remove any existing temporary graphics
-        temporaryDragGraphic.current &&
+        // Remove any existing temporary graphics. A multipoint preview is two
+        // of them, the pin and the number on it, and nothing else draws into
+        // the view's own graphics for this input, so they clear together.
+        if (inputType === 'multipoint') {
+          mapView.graphics.removeAll();
+        } else if (temporaryDragGraphic.current) {
           mapView.graphics.remove(temporaryDragGraphic.current);
+        }
 
         // Create a temporary "preview" point graphic and add it to the map view
         temporaryDragGraphic.current = pointBeingDragged.current.clone();
@@ -153,7 +189,11 @@ export const setupPointDrag = ({
         // Change the symbol colour so we can identify it as the preview point
         temporaryDragGraphic.current.symbol =
           inputType === 'multipoint'
-            ? getMapPinSymbol({ color: tenantSecondaryColor, sizeInPx: 44 })
+            ? getMapPinSymbol({
+                color: tenantSecondaryColor,
+                sizeInPx: 44,
+                solid: true,
+              })
             : getShapeSymbol({
                 shape: 'circle',
                 color: tenantSecondaryColor,
@@ -172,8 +212,27 @@ export const setupPointDrag = ({
         });
 
         // Add the preview graphic to the map
-        temporaryDragGraphic.current.geometry = mapView.toMap(event);
+        const previewGeometry = mapView.toMap(event);
+        temporaryDragGraphic.current.geometry = previewGeometry;
         mapView.graphics.add(temporaryDragGraphic.current);
+
+        // A pin keeps its number while it moves, so it stays matched to its
+        // row under the map. The number rides along as its own graphic,
+        // because a graphic can only carry one symbol.
+        const pinNumber =
+          pointBeingDragged.current.attributes?.[PIN_NUMBER_ATTRIBUTE];
+
+        if (inputType === 'multipoint' && pinNumber) {
+          mapView.graphics.add(
+            new Graphic({
+              geometry: previewGeometry,
+              symbol: getPinLabelSymbol({
+                label: String(pinNumber),
+                sizeInPx: 44,
+              }),
+            })
+          );
+        }
       }
     } else if (event.action === 'end') {
       // END ACTION: Update the form data with the new coordinates and remove temporary graphics
@@ -365,7 +424,8 @@ export const convertCoordinatesToGeoJSON = (
 };
 
 // updateMultiPointsDataAndDisplay
-// Description: Handles when multipoint (E.g. Line/Polygon) data changes
+// Description: Draws the answer of an input that collects several points, so
+// a line, a polygon or a multipoint.
 export const updateMultiPointsDataAndDisplay = ({
   data,
   mapView,
@@ -375,15 +435,20 @@ export const updateMultiPointsDataAndDisplay = ({
 }: UpdateMultiPointsDataAndDisplayProps) => {
   const coordinates = data ?? [];
 
-  // Create graphics for the user input points. A multipoint's points are
-  // standalone locations, so they get the same pin as a single point question;
-  // a line or polygon's points are vertices of a shape, so they stay dots.
-  const pointGraphics = coordinates.map((coordinates) => {
+  // A multipoint's points are standalone locations, so they get a numbered
+  // pin that matches their row under the map; a line or polygon's points are
+  // vertices of a shape, so they stay unnumbered dots.
+  const pinNumberGraphics: Graphic[] = [];
+
+  const pointGraphics = coordinates.map((coordinates, index) => {
     if (inputType === 'multipoint') {
-      return newPinPointGraphic(
+      const { pin, label } = newNumberedPinGraphics(
         { type: 'Point', coordinates },
-        tenantPrimaryColor
+        tenantPrimaryColor,
+        index + 1
       );
+      pinNumberGraphics.push(label);
+      return pin;
     }
 
     return new Graphic({
@@ -443,11 +508,13 @@ export const updateMultiPointsDataAndDisplay = ({
       userInputLayer.removeAll();
       userInputLayer.addMany(connectingGraphics);
       userInputLayer.addMany(pointGraphics);
+      userInputLayer.addMany(pinNumberGraphics);
     } else {
       // Add a new graphics layer to store the user inputs
       const graphicsLayer = new GraphicsLayer({ title: 'User Input' });
       graphicsLayer.addMany(connectingGraphics);
       graphicsLayer.addMany(pointGraphics);
+      graphicsLayer.addMany(pinNumberGraphics);
 
       // mapView.map is not always defined, so we do need to check here.
       // The type comes from ArcGIS, so we can't change it.

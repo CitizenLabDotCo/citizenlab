@@ -4,6 +4,7 @@ import MapView from '@arcgis/core/views/MapView';
 
 import { IMapConfig } from 'api/map_config/types';
 
+import { PIN_LABEL_ATTRIBUTE } from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
 
 import { geocode, reverseGeocode } from 'utils/locationTools';
@@ -63,7 +64,12 @@ export const getUserInputPoints = (
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   userGraphicsLayer?.graphics?.forEach((graphic) => {
-    if (graphic.geometry?.type === 'point') {
+    // A pin's number sits at the same spot as the pin, so counting it here
+    // would read every pin twice.
+    if (
+      graphic.geometry?.type === 'point' &&
+      !graphic.attributes?.[PIN_LABEL_ATTRIBUTE]
+    ) {
       // We want just a list of the points
       filteredGraphics.push(graphic);
     }

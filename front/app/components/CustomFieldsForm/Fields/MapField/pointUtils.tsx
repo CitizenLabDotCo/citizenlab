@@ -10,7 +10,7 @@ import { Option } from 'components/UI/LocationInput';
 
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
 
-import { reverseGeocodeAndSave } from './utils';
+import { getUserInputGraphicsLayer, reverseGeocodeAndSave } from './utils';
 
 // handleMapClickPoint
 // Description: Handles map click for Point input
@@ -58,7 +58,9 @@ type UpdatePointDataAndDisplayProps = {
 };
 
 // clearPointData
-// Description: Clears the point data
+// Description: Clears the data a user put on the map. A single point lives in
+// the view's own graphics, while the inputs that collect several points keep
+// theirs in a layer, so an empty answer has to clear both.
 export const clearPointData = (
   mapView: MapView | null | undefined,
   setAddress?: (value: React.SetStateAction<Option>) => void
@@ -69,4 +71,5 @@ export const clearPointData = (
       label: '',
     });
   mapView?.graphics.removeAll();
+  getUserInputGraphicsLayer(mapView)?.removeAll();
 };

@@ -18,6 +18,7 @@ import { createRenderer } from '@arcgis/core/smartMapping/renderers/heatmap.js';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
+import TextSymbol from '@arcgis/core/symbols/TextSymbol';
 import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
 import { colors } from '@citizenlab/cl2-component-library';
@@ -103,22 +104,63 @@ const getTileAttribution = (tileProvider: string): string => {
   return MAPTILER_ATTRIBUTION; // MapTiler Basic is the default map
 };
 
+// The pin is drawn in a 32 unit box: its tip sits at the bottom and the centre
+// of its head 5 units above the middle of the box.
+const MAP_PIN_OUTLINE =
+  'M16,3.5c-4.142,0-7.5,3.358-7.5,7.5c0,4.143,7.5,18.121,7.5,18.121S23.5,15.143,23.5,11C23.5,6.858,20.143,3.5,16,3.5z';
+const MAP_PIN_HEAD_RING =
+  'M16,14.584c-1.979,0-3.584-1.604-3.584-3.584S14.021,7.416,16,7.416S19.584,9.021,19.584,11S17.979,14.584,16,14.584z';
+const MAP_PIN_HEAD_OFFSET_RATIO = 5 / 32;
+const MAP_PIN_Y_OFFSET = 15;
+const DEFAULT_MAP_PIN_SIZE = 38;
+
 // getMapPinSymbol
-// Description: Get a map pin symbol (with an optional color value)
+// Description: Get a map pin symbol (with an optional color value). A solid pin
+// has no ring punched out of its head, leaving room for a label.
 type MapPinSymbolProps = {
   color?: string;
   sizeInPx?: number;
+  solid?: boolean;
 };
-export const getMapPinSymbol = ({ color, sizeInPx }: MapPinSymbolProps) => {
+export const getMapPinSymbol = ({
+  color,
+  sizeInPx,
+  solid,
+}: MapPinSymbolProps) => {
   return new SimpleMarkerSymbol({
     color,
     outline: {
       color: colors.white,
     },
-    size: sizeInPx ? `${sizeInPx}px` : '38px',
+    size: `${sizeInPx ?? DEFAULT_MAP_PIN_SIZE}px`,
     xoffset: 0,
-    yoffset: 15,
-    path: 'M16,3.5c-4.142,0-7.5,3.358-7.5,7.5c0,4.143,7.5,18.121,7.5,18.121S23.5,15.143,23.5,11C23.5,6.858,20.143,3.5,16,3.5z M16,14.584c-1.979,0-3.584-1.604-3.584-3.584S14.021,7.416,16,7.416S19.584,9.021,19.584,11S17.979,14.584,16,14.584z',
+    yoffset: MAP_PIN_Y_OFFSET,
+    path: solid ? MAP_PIN_OUTLINE : `${MAP_PIN_OUTLINE} ${MAP_PIN_HEAD_RING}`,
+  });
+};
+
+// getPinLabelSymbol
+// Description: A short label to sit inside the head of a map pin, which is why
+// it carries the pin's own offset plus the head's share of the pin height.
+export const getPinLabelSymbol = ({
+  label,
+  sizeInPx = DEFAULT_MAP_PIN_SIZE,
+}: {
+  label: string;
+  sizeInPx?: number;
+}) => {
+  return new TextSymbol({
+    text: label,
+    color: colors.white,
+    font: {
+      family: 'Noto Sans',
+      size: Math.round(sizeInPx / 3.5),
+      weight: 'bold',
+    },
+    horizontalAlignment: 'center',
+    verticalAlignment: 'middle',
+    xoffset: 0,
+    yoffset: MAP_PIN_Y_OFFSET + sizeInPx * MAP_PIN_HEAD_OFFSET_RATIO,
   });
 };
 
@@ -359,6 +401,46 @@ export const newPinPointGraphic = (point: GeoJSON.Point, color: string) => {
       sizeInPx: 44,
     }),
   });
+};
+
+// A number shares its pin's geometry, so anything counting the points a user
+// put on the map has to tell the two apart.
+export const PIN_LABEL_ATTRIBUTE = 'isPinLabel';
+// Both halves of a numbered pin carry the number, so whichever one a drag
+// picks up can keep showing it.
+export const PIN_NUMBER_ATTRIBUTE = 'pinNumber';
+
+// newNumberedPinGraphics
+// Description: A map pin carrying a number, as the pin and the number it
+// shows. They are separate graphics, so add the pin first to keep the number
+// on top of every pin around it.
+export const newNumberedPinGraphics = (
+  point: GeoJSON.Point,
+  color: string,
+  pinNumber: number,
+  sizeInPx = 44
+) => {
+  const geometryOf = () =>
+    new Point({
+      longitude: point.coordinates[0],
+      latitude: point.coordinates[1],
+    });
+
+  return {
+    pin: new Graphic({
+      geometry: geometryOf(),
+      symbol: getMapPinSymbol({ color, sizeInPx, solid: true }),
+      attributes: { [PIN_NUMBER_ATTRIBUTE]: pinNumber },
+    }),
+    label: new Graphic({
+      geometry: geometryOf(),
+      symbol: getPinLabelSymbol({ label: String(pinNumber), sizeInPx }),
+      attributes: {
+        [PIN_LABEL_ATTRIBUTE]: true,
+        [PIN_NUMBER_ATTRIBUTE]: pinNumber,
+      },
+    }),
+  };
 };
 
 // addPointGraphicToMap

@@ -3,9 +3,21 @@ import {
   convertGeojsonToWKT,
   convertWKTToGeojson,
   exceedsPinLimit,
+  handleMapClickMultipoint,
   isLineOrPolygonInput,
+  isAnswerFull,
   isMultiPointInput,
+  removePinAt,
 } from './multiPointUtils';
+import { fakeMapViewWith, userInputLayerWithPins } from './testUtils';
+
+// The real one runs the Esri projection engine, which needs a browser.
+jest.mock('utils/mapUtils/map', () => ({
+  projectPointToWebMercator: (geometry: {
+    longitude: number;
+    latitude: number;
+  }) => geometry,
+}));
 
 describe('convertGeojsonToWKT', () => {
   it('correctly converts a GeoJSON Point to WKT', async () => {
@@ -198,5 +210,99 @@ describe('exceedsPinLimit', () => {
   it('allows any number of pins when there is no limit', () => {
     expect(exceedsPinLimit(12, undefined)).toBe(false);
     expect(exceedsPinLimit(12, 0)).toBe(false);
+  });
+});
+
+describe('isAnswerFull', () => {
+  it('is full once the pins reach the limit', () => {
+    expect(isAnswerFull(3, 3)).toBe(true);
+    expect(isAnswerFull(2, 3)).toBe(false);
+  });
+
+  it('is never full without a limit', () => {
+    expect(isAnswerFull(12, undefined)).toBe(false);
+    expect(isAnswerFull(12, 0)).toBe(false);
+  });
+
+  it('is never full at a single location, where a click moves the pin', () => {
+    expect(isAnswerFull(1, 1)).toBe(false);
+  });
+});
+
+describe('removePinAt', () => {
+  const THREE_PINS = [
+    [4.35, 50.85],
+    [4.36, 50.86],
+    [4.37, 50.87],
+  ];
+
+  it('takes out the pin at that position and closes the gap', () => {
+    expect(removePinAt(THREE_PINS, 1)).toEqual([
+      [4.35, 50.85],
+      [4.37, 50.87],
+    ]);
+  });
+
+  it('clears the answer when the last pin goes, as an empty MultiPoint has no WKT', () => {
+    expect(removePinAt([[4.35, 50.85]], 0)).toBeUndefined();
+  });
+
+  it('leaves the pins alone when the position is not one of them', () => {
+    expect(removePinAt(THREE_PINS, 7)).toEqual(THREE_PINS);
+  });
+});
+
+describe('handleMapClickMultipoint', () => {
+  // handleMapClickMultipoint reads the pins already on the map and the point
+  // that was clicked; a real MapView needs a browser to draw into.
+  const mapViewWithPins = (coordinates: number[][]) =>
+    fakeMapViewWith(userInputLayerWithPins(coordinates));
+
+  const clickAt = (longitude: number, latitude: number) => ({
+    mapPoint: { longitude, latitude },
+  });
+
+  it('adds the clicked location to the pins already there', () => {
+    const handleMultiPointChange = jest.fn();
+
+    handleMapClickMultipoint(
+      clickAt(4.36, 50.86),
+      mapViewWithPins([[4.35, 50.85]]),
+      handleMultiPointChange
+    );
+
+    expect(handleMultiPointChange).toHaveBeenCalledWith([
+      [4.35, 50.85],
+      [4.36, 50.86],
+    ]);
+  });
+
+  it('moves the pin instead of adding one when a single location is allowed', () => {
+    const handleMultiPointChange = jest.fn();
+
+    handleMapClickMultipoint(
+      clickAt(4.36, 50.86),
+      mapViewWithPins([[4.35, 50.85]]),
+      handleMultiPointChange,
+      1
+    );
+
+    expect(handleMultiPointChange).toHaveBeenCalledWith([[4.36, 50.86]]);
+  });
+
+  it('keeps adding pins when the limit is above one', () => {
+    const handleMultiPointChange = jest.fn();
+
+    handleMapClickMultipoint(
+      clickAt(4.36, 50.86),
+      mapViewWithPins([[4.35, 50.85]]),
+      handleMultiPointChange,
+      3
+    );
+
+    expect(handleMultiPointChange).toHaveBeenCalledWith([
+      [4.35, 50.85],
+      [4.36, 50.86],
+    ]);
   });
 });
