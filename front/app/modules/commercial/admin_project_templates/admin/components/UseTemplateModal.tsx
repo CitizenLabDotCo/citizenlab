@@ -329,7 +329,6 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
     const successMessage = (
       <>
         <FormattedMessage {...messages.successMessage} />
-        <FormattedMessage {...messages.findItInProjectsList} />
         {showGoBackLink && (
           <FormattedMessage
             {...messages.goBackTo}

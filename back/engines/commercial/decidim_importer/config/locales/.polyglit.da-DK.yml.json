@@ -43,5 +43,15 @@
     "state": "verified",
     "verified_at": "2026-07-30T08:23:15.905748Z",
     "verified_by": "kielgast@govocal.com"
+  },
+  "decidim_importer.private_space_members": {
+    "state": "verified",
+    "verified_at": "2026-11-25T16:20:48.131629Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "decidim_importer.untitled_folder": {
+    "state": "verified",
+    "verified_at": "2026-11-25T16:20:48.131629Z",
+    "verified_by": "kielgast@govocal.com"
   }
 }

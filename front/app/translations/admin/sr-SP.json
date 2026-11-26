@@ -92,7 +92,6 @@
   "app.components.ProjectTemplatePreview.projectsOverviewPage": "страница са прегледом пројеката",
   "app.components.ProjectTemplatePreview.responseError": "Упс! Нешто није у реду.",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Погледајте још шаблона",
-  "app.components.ProjectTemplatePreview.successMessage": "Пројекат је успешно креиран!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Унесите назив пројекта",
   "app.components.ProjectTemplatePreview.useTemplate": "Користите овај шаблон",
   "app.components.UserSearch.addModerators": "Додати",
