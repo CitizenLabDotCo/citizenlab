@@ -16,10 +16,6 @@ import 'design-system/tokens.css';
 const Preview = styled(PhonePreview)`
   transition: transform 150ms ease-out, box-shadow 150ms ease-out;
 
-  &:hover .${styles.veil}, &:focus-within .${styles.veil} {
-    opacity: 1;
-  }
-
   &:hover,
   &:focus-within {
     transform: translateY(-2px);
@@ -87,12 +83,14 @@ const PagePreview = ({
 
   if (variant === 'workspace') {
     return (
-      <Preview
+      <PhonePreview
         src={src}
         title={iframeTitle}
         interactive={false}
         dataCy={dataCy}
         alignTop={alignTop}
+        className={styles.workspacePhone}
+        shadow={false}
         skeleton
       >
         <UnstyledButton
@@ -105,7 +103,7 @@ const PagePreview = ({
         >
           <span className={styles.glassButton}>{editText}</span>
         </UnstyledButton>
-      </Preview>
+      </PhonePreview>
     );
   }
 

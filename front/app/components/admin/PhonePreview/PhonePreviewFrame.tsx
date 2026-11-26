@@ -14,6 +14,8 @@ interface Props {
   dataCy?: string;
   alignTop?: boolean;
   bottomSpace?: number;
+  // The library's preview frame has no shadow.
+  shadow?: boolean;
   children?: ReactNode;
 }
 
@@ -23,6 +25,7 @@ const PhonePreviewFrame = ({
   dataCy,
   alignTop = false,
   bottomSpace = 0,
+  shadow = true,
   children,
 }: Props) => {
   const { scale, containerRef } = useFitPhonePreview(bottomSpace);
@@ -49,7 +52,7 @@ const PhonePreviewFrame = ({
         border={`1.5px solid ${colors.grey300}`}
         borderRadius="22px"
         overflow="hidden"
-        boxShadow="0 10px 30px rgba(20, 25, 40, 0.07)"
+        boxShadow={shadow ? '0 10px 30px rgba(20, 25, 40, 0.07)' : undefined}
       >
         <Box
           w={`${PHONE_LOGICAL_WIDTH}px`}

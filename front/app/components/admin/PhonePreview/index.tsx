@@ -23,6 +23,7 @@ interface Props {
   bottomSpace?: number;
   // Shows a skeleton screen until the page in the phone shows its content.
   skeleton?: boolean;
+  shadow?: boolean;
   children?: ReactNode;
 }
 
@@ -37,6 +38,7 @@ const PhonePreview = ({
   alignTop = false,
   bottomSpace = 0,
   skeleton = false,
+  shadow = true,
   children,
 }: Props) => {
   const screenRef = useRef<HTMLDivElement>(null);
@@ -72,6 +74,7 @@ const PhonePreview = ({
       dataCy={dataCy}
       alignTop={alignTop}
       bottomSpace={bottomSpace}
+      shadow={shadow}
       screen={
         <Box ref={screenRef} w="100%" h="100%">
           <Box
