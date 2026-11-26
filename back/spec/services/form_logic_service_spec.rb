@@ -345,5 +345,80 @@ describe FormLogicService do
 
       expect(question1.reload.logic).to eq('rules' => [{ 'if' => option1.id, 'goto_page_id' => page2.id }])
     end
+
+    it 'keeps the second of two consecutive rules with unknown options (current behaviour)' do
+      question1.update!(logic: { 'rules' => [
+        { 'if' => 'UNKNOWN_1', 'goto_page_id' => page2.id },
+        { 'if' => 'UNKNOWN_2', 'goto_page_id' => page2.id },
+        { 'if' => option1.id, 'goto_page_id' => page2.id }
+      ] })
+
+      form_logic.replace_temp_ids!({}, {})
+
+      expect(question1.reload.logic['rules'].pluck('if')).to eq ['UNKNOWN_2', option1.id]
+    end
+
+    it 'keeps no_answer on an optional select and drops it on a required select' do
+      rules = [{ 'if' => 'no_answer', 'goto_page_id' => page2.id }, { 'if' => 'any_other_answer', 'goto_page_id' => page2.id }]
+      question1.update!(required: false, logic: { 'rules' => rules })
+      form_logic.replace_temp_ids!({}, {})
+      expect(question1.reload.logic['rules'].pluck('if')).to eq %w[no_answer any_other_answer]
+
+      question1.update!(required: true, logic: { 'rules' => rules })
+      described_class.new(fields.map(&:reload)).replace_temp_ids!({}, {})
+      expect(question1.reload.logic['rules'].pluck('if')).to eq %w[any_other_answer]
+    end
+
+    it 'replaces temp ids of options and pages' do
+      question1.update!(logic: { 'rules' => [{ 'if' => 'TEMP-ID-OPTION', 'goto_page_id' => 'TEMP-ID-PAGE' }] })
+
+      form_logic.replace_temp_ids!({ 'TEMP-ID-PAGE' => last_page.id }, { 'TEMP-ID-OPTION' => option2.id })
+
+      expect(question1.reload.logic).to eq('rules' => [{ 'if' => option2.id, 'goto_page_id' => last_page.id }])
+    end
+
+    it 'does not check the values of linear scale rules' do
+      scale = fields[1]
+      scale.update!(logic: { 'rules' => [{ 'if' => 99, 'goto_page_id' => page2.id }, { 'if' => '2', 'goto_page_id' => page2.id }] })
+
+      form_logic.replace_temp_ids!({}, {})
+
+      expect(scale.reload.logic['rules'].pluck('if')).to eq [99, '2']
+      expect(form_logic).to be_valid
+    end
+
+    it 'replaces a temp id in page logic and leaves unknown ids as they are' do
+      page1.update!(logic: { 'next_page_id' => 'TEMP-ID-PAGE' })
+      fields[0].update!(logic: { 'next_page_id' => 'TEMP-ID-UNKNOWN' })
+
+      form_logic.replace_temp_ids!({ 'TEMP-ID-PAGE' => last_page.id }, {})
+
+      expect(page1.reload.logic).to eq('next_page_id' => last_page.id)
+      expect(fields[0].reload.logic).to eq('next_page_id' => 'TEMP-ID-UNKNOWN')
+    end
+  end
+
+  describe '#remove_select_logic_option_from_custom_fields' do
+    let(:question) { fields[3] }
+    let(:option1) { question.options[0] }
+    let(:option2) { question.options[1] }
+    let(:target) { fields[4] }
+
+    it 'removes only the rules of the given option' do
+      question.update!(logic: { 'rules' => [
+        { 'if' => option1.id, 'goto_page_id' => target.id },
+        { 'if' => option2.id, 'goto_page_id' => target.id },
+        { 'if' => 'any_other_answer', 'goto_page_id' => target.id }
+      ] })
+
+      described_class.new([question]).remove_select_logic_option_from_custom_fields(option1)
+
+      expect(question.reload.logic['rules'].pluck('if')).to eq [option2.id, 'any_other_answer']
+    end
+
+    it 'leaves a field without logic untouched' do
+      expect { described_class.new([question]).remove_select_logic_option_from_custom_fields(option1) }
+        .not_to(change { question.reload.updated_at })
+    end
   end
 end
