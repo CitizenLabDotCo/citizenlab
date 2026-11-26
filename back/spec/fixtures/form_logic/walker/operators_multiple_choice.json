@@ -1,0 +1,343 @@
+{
+  "description": "List answers: `contains_any`, `contains_all`.",
+  "cases": [
+    {
+      "description": "contains_any matches one shared option",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_any", "value": ["a", "b"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["c", "b"]},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": ["c", "b"]}
+      }
+    },
+    {
+      "description": "contains_any does not match without shared options",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_any", "value": ["a", "b"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["c"]},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": ["c"]}
+      }
+    },
+    {
+      "description": "contains_any does not match an empty answer",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_any", "value": ["a"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": []},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": []}}
+    },
+    {
+      "description": "contains_any does not match a missing answer",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_any", "value": ["a"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "contains_any never matches a single value",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_any", "value": ["a"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "a"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "a"}
+      }
+    },
+    {
+      "description": "contains_any with an empty list never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_any", "value": []}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["a"]},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": ["a"]}
+      }
+    },
+    {
+      "description": "contains_any treats 1 and 1.0 as equal",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_any", "value": [1]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": [1.0]},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": [1.0]}}
+    },
+    {
+      "description": "contains_any ignores list items that are lists",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_any", "value": ["a"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": [["a"]]},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": [["a"]]}
+      }
+    },
+    {
+      "description": "contains_any with a string value never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_any", "value": "a"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["a"]},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": ["a"]}
+      }
+    },
+    {
+      "description": "contains_all matches when every option is chosen",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_all", "value": ["a", "b"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["b", "c", "a"]},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": ["b", "c", "a"]}
+      }
+    },
+    {
+      "description": "contains_all does not match when one option is missing",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_all", "value": ["a", "b"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["a"]},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": ["a"]}
+      }
+    },
+    {
+      "description": "contains_all ignores duplicates",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_all", "value": ["a", "a"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["a"]},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": ["a"]}}
+    },
+    {
+      "description": "contains_all with an empty list matches any list answer",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_all", "value": []}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["x"]},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": ["x"]}}
+    },
+    {
+      "description": "contains_all with an empty list matches an empty list answer",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_all", "value": []}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": []},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": []}}
+    },
+    {
+      "description": "contains_all with an empty list does not match a missing answer",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_all", "value": []}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "contains_all never matches a single value",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_all", "value": ["a"]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "a"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": "a"}
+      }
+    },
+    {
+      "description": "contains_all treats 1 and 1.0 as equal",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_all", "value": [1.0]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": [1]},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": [1]}}
+    },
+    {
+      "description": "contains_all with a list containing a list never matches",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "contains_all", "value": [["a"]]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": [["a"]]},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": [["a"]]}
+      }
+    }
+  ]
+}

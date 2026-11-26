@@ -1,0 +1,456 @@
+{
+  "description": "Single choice (select) rules.",
+  "cases": [
+    {
+      "description": "a matching option jumps",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "an option without a rule goes to the next page",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "blue"},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "no answer without a no_answer rule goes to the next page",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a no_answer rule fires without an answer",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "no_answer", "goto_page_id": "page-4"}]},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a no_answer rule fires for an empty string",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "no_answer", "goto_page_id": "page-4"}]},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": ""},
+      "expected": {"path": ["p1", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a no_answer rule does not fire with an answer",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "no_answer", "goto_page_id": "page-4"}]},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "any_other_answer on a select",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {
+            "rules": [
+              {"if": "red-id", "goto_page_id": "page-3"},
+              {"if": "any_other_answer", "goto_page_id": "page-4"}
+            ]
+          },
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "blue"},
+      "divergent": {
+        "runtime": ["p1", "p2", "p3", "p4", "p5", "form_end"],
+        "engine": ["p1", "p4", "p5", "form_end"]
+      }
+    },
+    {
+      "description": "any_other_answer does not fire for an option with its own rule",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {
+            "rules": [
+              {"if": "red-id", "goto_page_id": "page-3"},
+              {"if": "any_other_answer", "goto_page_id": "page-4"}
+            ]
+          },
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "any_other_answer does not fire without an answer",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "any_other_answer", "goto_page_id": "page-4"}]},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "an answer for a deleted option matches no rule",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {
+            "rules": [
+              {"if": "red-id", "goto_page_id": "page-3"},
+              {"if": "any_other_answer", "goto_page_id": "page-4"}
+            ]
+          },
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "purple"},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a rule for a deleted option never fires",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "gone-id", "goto_page_id": "page-3"}]},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "rules match on option id, not on option key",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red", "goto_page_id": "page-3"}]},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "two rules for the same option: the farthest target wins",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {
+            "rules": [{"if": "red-id", "goto_page_id": "page-3"}, {"if": "red-id", "goto_page_id": "page-5"}]
+          },
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p5", "form_end"]}
+    },
+    {
+      "description": "two rules for the same option: the farthest target wins in any order",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {
+            "rules": [{"if": "red-id", "goto_page_id": "page-5"}, {"if": "red-id", "goto_page_id": "page-3"}]
+          },
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p5", "form_end"]}
+    },
+    {
+      "description": "a rule can jump to the end page",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-6"}]},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "form_end"]}
+    },
+    {
+      "description": "rules of a disabled question are ignored",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ],
+          "enabled": false
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a rule with an empty rules list is no logic",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": []},
+          "options": [
+            {"id": "red-id", "key": "red"},
+            {"id": "blue-id", "key": "blue"},
+            {"id": "green-id", "key": "green"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a rule on a select_image question never fires",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "pic-id",
+          "key": "pic",
+          "input_type": "select_image",
+          "logic": {"rules": [{"if": "a-id", "goto_page_id": "page-3"}]},
+          "options": [{"id": "a-id", "key": "a"}, {"id": "b-id", "key": "b"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"pic": "a"},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    }
+  ]
+}

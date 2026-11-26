@@ -113,6 +113,12 @@ module InputTypeStrategy
       false
     end
 
+    # Operators a logic condition may use with this field as its source. Becomes the single
+    # registry behind supports_logic? (FE and BE), the Validator and the builder's pickers.
+    def logic_operators
+      []
+    end
+
     # The JSON schema for a single value, permissive by default.
     def json_schema
       {}

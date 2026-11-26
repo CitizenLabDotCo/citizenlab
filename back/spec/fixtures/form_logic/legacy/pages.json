@@ -1,0 +1,371 @@
+{
+  "description": "Page defaults and how they combine with question rules on the same page.",
+  "cases": [
+    {
+      "description": "no logic at all",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a page default skips pages",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {"next_page_id": "page-4"}},
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a page default to the end page",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {"next_page_id": "page-6"}},
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "form_end"]}
+    },
+    {
+      "description": "chained page defaults",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {"next_page_id": "page-3"}},
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {"next_page_id": "page-5"}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p3", "p5", "form_end"]}
+    },
+    {
+      "description": "a page default to the next page changes nothing",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {"next_page_id": "page-2"}},
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a page default on a page that is skipped is never applied",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {"next_page_id": "page-3"}},
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {"next_page_id": "page-5"}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a page default with an empty logic object is no logic",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a page default with an empty rules list is no logic",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {"rules": []}},
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a page default plus an unmatched question rule: the page default is ignored",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {"next_page_id": "page-4"}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [{"id": "red-id", "key": "red"}, {"id": "blue-id", "key": "blue"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "blue"},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a page default plus a matched question rule: the question rule wins",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {"next_page_id": "page-4"}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [{"id": "red-id", "key": "red"}, {"id": "blue-id", "key": "blue"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a page default plus a question with an empty rules list: the page default applies",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {"next_page_id": "page-4"}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": []},
+          "options": [{"id": "red-id", "key": "red"}, {"id": "blue-id", "key": "blue"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "blue"},
+      "expected": {"path": ["p1", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a page default plus rules on a disabled question: the page default applies",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {"next_page_id": "page-4"}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [{"id": "red-id", "key": "red"}, {"id": "blue-id", "key": "blue"}],
+          "enabled": false
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a page default plus leftover rules on a question type without logic: the page default is ignored",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {"next_page_id": "page-4"}},
+        {
+          "id": "count-id",
+          "key": "count",
+          "input_type": "number",
+          "logic": {"rules": [{"if": 3, "goto_page_id": "page-3"}]}
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"count": 1},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "two questions with matching rules on one page: the last question wins",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [{"id": "red-id", "key": "red"}, {"id": "blue-id", "key": "blue"}]
+        },
+        {
+          "id": "size-id",
+          "key": "size",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "s-id", "goto_page_id": "page-4"}]},
+          "options": [{"id": "s-id", "key": "s"}, {"id": "l-id", "key": "l"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red", "size": "s"},
+      "expected": {"path": ["p1", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "two questions with matching rules: the last question wins even with a nearer target",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-5"}]},
+          "options": [{"id": "red-id", "key": "red"}, {"id": "blue-id", "key": "blue"}]
+        },
+        {
+          "id": "size-id",
+          "key": "size",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "s-id", "goto_page_id": "page-3"}]},
+          "options": [{"id": "s-id", "key": "s"}, {"id": "l-id", "key": "l"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red", "size": "s"},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "two questions with rules, only the first matches: the first question's rule applies",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [{"id": "red-id", "key": "red"}, {"id": "blue-id", "key": "blue"}]
+        },
+        {
+          "id": "size-id",
+          "key": "size",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "s-id", "goto_page_id": "page-4"}]},
+          "options": [{"id": "s-id", "key": "s"}, {"id": "l-id", "key": "l"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red", "size": "l"},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "two questions with rules, the last one unanswered with a no_answer rule: the no_answer rule wins",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [{"id": "red-id", "key": "red"}, {"id": "blue-id", "key": "blue"}]
+        },
+        {
+          "id": "size-id",
+          "key": "size",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "no_answer", "goto_page_id": "page-5"}]},
+          "options": [{"id": "s-id", "key": "s"}, {"id": "l-id", "key": "l"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red"},
+      "expected": {"path": ["p1", "p5", "form_end"]}
+    },
+    {
+      "description": "rules on later pages still apply after a jump",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [{"id": "red-id", "key": "red"}, {"id": "blue-id", "key": "blue"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {
+          "id": "size-id",
+          "key": "size",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "l-id", "goto_page_id": "page-5"}]},
+          "options": [{"id": "s-id", "key": "s"}, {"id": "l-id", "key": "l"}]
+        },
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red", "size": "l"},
+      "expected": {"path": ["p1", "p3", "p5", "form_end"]}
+    },
+    {
+      "description": "rules on a skipped page never apply",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "colour-id",
+          "key": "colour",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "red-id", "goto_page_id": "page-3"}]},
+          "options": [{"id": "red-id", "key": "red"}, {"id": "blue-id", "key": "blue"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {
+          "id": "size-id",
+          "key": "size",
+          "input_type": "select",
+          "logic": {"rules": [{"if": "l-id", "goto_page_id": "page-6"}]},
+          "options": [{"id": "s-id", "key": "s"}, {"id": "l-id", "key": "l"}]
+        },
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"colour": "red", "size": "l"},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    }
+  ]
+}

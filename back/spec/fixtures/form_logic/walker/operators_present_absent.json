@@ -1,0 +1,265 @@
+{
+  "description": "What counts as answered: `present` and `absent`.",
+  "cases": [
+    {
+      "description": "missing is not present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "missing is absent",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "absent"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "null is not present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": null},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": null}
+      }
+    },
+    {
+      "description": "null is absent",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "absent"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": null},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": null}}
+    },
+    {
+      "description": "an empty string is not present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ""},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": ""}}
+    },
+    {
+      "description": "an empty string is absent",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "absent"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ""},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": ""}}
+    },
+    {
+      "description": "an empty list is not present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": []},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": []}}
+    },
+    {
+      "description": "an empty list is absent",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "absent"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": []},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": []}}
+    },
+    {
+      "description": "an empty object is not present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": {}},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": {}}}
+    },
+    {
+      "description": "an empty object is absent",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "absent"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": {}},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": {}}}
+    },
+    {
+      "description": "a space is present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": " "},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": " "}}
+    },
+    {
+      "description": "a space is not absent",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "absent"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": " "},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": " "}
+      }
+    },
+    {
+      "description": "zero is present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 0},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 0}}
+    },
+    {
+      "description": "zero is not absent",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "absent"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 0},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 0}}
+    },
+    {
+      "description": "false is present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": false},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": false}}
+    },
+    {
+      "description": "false is not absent",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "absent"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": false},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": false}
+      }
+    },
+    {
+      "description": "the string 0 is present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": "0"},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": "0"}}
+    },
+    {
+      "description": "a list with an empty string is present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": [""]},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": [""]}}
+    },
+    {
+      "description": "an object with an empty value is present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": {"en": ""}},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["q"],
+        "required_ids": [],
+        "answers": {"q": {"en": ""}}
+      }
+    },
+    {
+      "description": "a non-empty list is present",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "present"}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": ["a"]},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": ["a"]}}
+    }
+  ]
+}

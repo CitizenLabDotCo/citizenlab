@@ -1,0 +1,194 @@
+{
+  "description": "Questions with a display condition (`display`).",
+  "programs": {
+    "car": {
+      "pages": [{"id": "p1", "fields": ["owns_car", "brand", "km"]}, {"id": "p2", "fields": ["why"]}],
+      "fields": {
+        "owns_car": {"required": true},
+        "brand": {"required": true, "display": {"field": "owns_car", "op": "one_of", "value": ["yes"]}},
+        "km": {"display": {"field": "brand", "op": "present"}},
+        "why": {"display": {"field": "owns_car", "op": "one_of", "value": ["no"]}, "required": true}
+      }
+    }
+  },
+  "cases": [
+    {
+      "description": "hidden: not visible, not required, answer dropped",
+      "program": "car",
+      "answers": {"owns_car": "no", "brand": "volvo", "km": 9, "why": "bus"},
+      "expected": {
+        "path": ["p1", "p2"],
+        "visible_ids": ["owns_car", "why"],
+        "required_ids": ["owns_car", "why"],
+        "answers": {"owns_car": "no", "why": "bus"}
+      }
+    },
+    {
+      "description": "shown: visible and required",
+      "program": "car",
+      "answers": {"owns_car": "yes", "brand": "volvo", "km": 9},
+      "expected": {
+        "path": ["p1", "p2"],
+        "visible_ids": ["owns_car", "brand", "km"],
+        "required_ids": ["owns_car", "brand"],
+        "answers": {"owns_car": "yes", "brand": "volvo", "km": 9}
+      }
+    },
+    {
+      "description": "shown but unanswered: still required",
+      "program": "car",
+      "answers": {"owns_car": "yes"},
+      "expected": {
+        "path": ["p1", "p2"],
+        "visible_ids": ["owns_car", "brand"],
+        "required_ids": ["owns_car", "brand"],
+        "answers": {"owns_car": "yes"}
+      }
+    },
+    {
+      "description": "nothing answered: every question that depends on an answer is hidden",
+      "program": "car",
+      "answers": {},
+      "expected": {
+        "path": ["p1", "p2"],
+        "visible_ids": ["owns_car"],
+        "required_ids": ["owns_car"],
+        "answers": {}
+      }
+    },
+    {
+      "description": "a chain: hiding a question hides the questions that depend on it",
+      "program": "car",
+      "answers": {"owns_car": "maybe", "brand": "volvo", "km": 1},
+      "expected": {
+        "path": ["p1", "p2"],
+        "visible_ids": ["owns_car"],
+        "required_ids": ["owns_car"],
+        "answers": {"owns_car": "maybe"}
+      }
+    },
+    {
+      "description": "a display condition on a later question on the same page sees no answer yet",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a", "b"]}],
+        "fields": {"a": {"display": {"field": "b", "op": "present"}}}
+      },
+      "answers": {"a": 1, "b": 2},
+      "expected": {"path": ["p1"], "visible_ids": ["b"], "required_ids": [], "answers": {"b": 2}}
+    },
+    {
+      "description": "a display condition can use a question from an earlier page",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a"]}, {"id": "p2", "fields": ["b"]}],
+        "fields": {"b": {"display": {"field": "a", "op": "eq", "value": 1}}}
+      },
+      "answers": {"a": 1, "b": "x"},
+      "expected": {
+        "path": ["p1", "p2"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": 1, "b": "x"}
+      }
+    },
+    {
+      "description": "a display condition on its own answer never shows the question",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a"]}],
+        "fields": {"a": {"display": {"field": "a", "op": "present"}}}
+      },
+      "answers": {"a": 1},
+      "expected": {"path": ["p1"], "visible_ids": [], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "a display condition with not shows the question when the answer is missing",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a", "b"]}],
+        "fields": {"b": {"display": {"not": {"field": "a", "op": "present"}}}}
+      },
+      "answers": {"b": 2},
+      "expected": {"path": ["p1"], "visible_ids": ["a", "b"], "required_ids": [], "answers": {"b": 2}}
+    },
+    {
+      "description": "a display condition on a question from a skipped page hides the question",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["a"], "next": "p3"},
+          {"id": "p2", "fields": ["b"]},
+          {"id": "p3", "fields": ["c"]}
+        ],
+        "fields": {"c": {"display": {"field": "b", "op": "eq", "value": "x"}}}
+      },
+      "answers": {"b": "x", "c": 1},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["a"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "a hidden question cannot trigger a jump",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [{"when": {"field": "b", "op": "eq", "value": "x"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ],
+        "fields": {"b": {"display": {"field": "a", "op": "eq", "value": 1}}}
+      },
+      "answers": {"a": 2, "b": "x"},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["a"], "required_ids": [], "answers": {"a": 2}}
+    },
+    {
+      "description": "a hidden question is absent for later jumps",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [{"when": {"field": "b", "op": "absent"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ],
+        "fields": {"b": {"display": {"field": "a", "op": "eq", "value": 1}}}
+      },
+      "answers": {"a": 2, "b": "x"},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["a"], "required_ids": [], "answers": {"a": 2}}
+    },
+    {
+      "description": "an empty all as display always shows",
+      "program": {"pages": [{"id": "p1", "fields": ["a"]}], "fields": {"a": {"display": {"all": []}}}},
+      "answers": {},
+      "expected": {"path": ["p1"], "visible_ids": ["a"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "an empty any as display always hides",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a"]}],
+        "fields": {"a": {"display": {"any": []}, "required": true}}
+      },
+      "answers": {"a": 1},
+      "expected": {"path": ["p1"], "visible_ids": [], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "a null display always shows",
+      "program": {"pages": [{"id": "p1", "fields": ["a"]}], "fields": {"a": {"display": null}}},
+      "answers": {},
+      "expected": {"path": ["p1"], "visible_ids": ["a"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "a question listed on two pages can be hidden on one and shown on the other",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["x", "q"]}, {"id": "p2", "fields": ["y", "q"]}],
+        "fields": {"q": {"display": {"field": "y", "op": "present"}}}
+      },
+      "answers": {"y": 1, "q": 2},
+      "expected": {
+        "path": ["p1", "p2"],
+        "visible_ids": ["x", "y", "q"],
+        "required_ids": [],
+        "answers": {"y": 1, "q": 2}
+      }
+    }
+  ]
+}

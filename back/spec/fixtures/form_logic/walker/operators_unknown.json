@@ -1,0 +1,72 @@
+{
+  "description": "An unknown operator is a broken program, not a silent false.",
+  "cases": [
+    {
+      "description": "an unknown operator raises when it is evaluated",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "between", "value": [1, 3]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 2},
+      "raises": "unknown_operator"
+    },
+    {
+      "description": "an unknown operator raises even without an answer",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "equals", "value": "a"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "raises": "unknown_operator"
+    },
+    {
+      "description": "an unknown operator on a page that is skipped is never evaluated",
+      "program": {
+        "pages": [
+          {"id": "p1", "next": "p3"},
+          {
+            "id": "p2",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "between", "value": [1]}, "goto": "end"}]
+          },
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p3"], "visible_ids": [], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "an unknown operator after a matching jump is never evaluated",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [
+              {"when": {"field": "q", "op": "present"}, "goto": "p3"},
+              {"when": {"field": "q", "op": "between", "value": [1]}, "goto": "end"}
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"q": 1},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 1}}
+    }
+  ]
+}

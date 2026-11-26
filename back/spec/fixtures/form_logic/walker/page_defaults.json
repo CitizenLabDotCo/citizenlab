@@ -1,0 +1,204 @@
+{
+  "description": "The page default (`next`) when no jump matches.",
+  "cases": [
+    {
+      "description": "next skips pages",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q1"], "next": "p3"},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q2": "stale"},
+      "expected": {
+        "path": ["p1", "p3", "p4"],
+        "visible_ids": ["q1", "q3", "q4"],
+        "required_ids": [],
+        "answers": {}
+      }
+    },
+    {
+      "description": "next can go to the last page",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q1"], "next": "p4"},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p4"], "visible_ids": ["q1", "q4"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "next null means the following page",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q1"], "next": null},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {},
+      "expected": {
+        "path": ["p1", "p2", "p3", "p4"],
+        "visible_ids": ["q1", "q2", "q3", "q4"],
+        "required_ids": [],
+        "answers": {}
+      }
+    },
+    {
+      "description": "a missing next means the following page",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q1"]},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {},
+      "expected": {
+        "path": ["p1", "p2", "p3", "p4"],
+        "visible_ids": ["q1", "q2", "q3", "q4"],
+        "required_ids": [],
+        "answers": {}
+      }
+    },
+    {
+      "description": "next end stops after the page",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q1"], "next": "end"},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q2": 1},
+      "expected": {"path": ["p1"], "visible_ids": ["q1"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "next end on a later page",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q1"]},
+          {"id": "p2", "fields": ["q2"], "next": "end"},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p2"], "visible_ids": ["q1", "q2"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "next to the following page is the same as no next",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q1"], "next": "p2"},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {},
+      "expected": {
+        "path": ["p1", "p2", "p3", "p4"],
+        "visible_ids": ["q1", "q2", "q3", "q4"],
+        "required_ids": [],
+        "answers": {}
+      }
+    },
+    {
+      "description": "chained defaults",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q1"], "next": "p3"},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"], "next": "end"},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["q1", "q3"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "next to the page itself ends the walk",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q1"]},
+          {"id": "p2", "fields": ["q2"], "next": "p2"},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p2"], "visible_ids": ["q1", "q2"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "next to an earlier page ends the walk",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q1"]},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"], "next": "p1"},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q1", "q2", "q3"],
+        "required_ids": [],
+        "answers": {}
+      }
+    },
+    {
+      "description": "next to an unknown page ends the walk",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q1"], "next": "nope"},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1"], "visible_ids": ["q1"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "next on the last page is ignored",
+      "program": {"pages": [{"id": "p1", "fields": ["q1"]}, {"id": "p2", "fields": ["q2"], "next": "p1"}]},
+      "answers": {},
+      "expected": {"path": ["p1", "p2"], "visible_ids": ["q1", "q2"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "a page whose id is end can never be jumped to",
+      "program": {"pages": [{"id": "p1", "next": "end"}, {"id": "end", "fields": ["q"]}]},
+      "answers": {"q": 1},
+      "expected": {"path": ["p1"], "visible_ids": [], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "a page whose id is end is still reached in order",
+      "program": {"pages": [{"id": "p1"}, {"id": "end", "fields": ["q"]}]},
+      "answers": {"q": 1},
+      "expected": {"path": ["p1", "end"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": 1}}
+    },
+    {
+      "description": "duplicate page ids: the last one wins as a target",
+      "program": {
+        "pages": [
+          {"id": "a", "next": "b"},
+          {"id": "b", "fields": ["x"]},
+          {"id": "c", "fields": ["y"]},
+          {"id": "b", "fields": ["z"]}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["a", "b"], "visible_ids": ["z"], "required_ids": [], "answers": {}}
+    }
+  ]
+}

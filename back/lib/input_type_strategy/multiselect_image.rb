@@ -29,5 +29,9 @@ module InputTypeStrategy
     def answers_one_of(answers, values)
       answers.where('value ?| array[:values]', values: values)
     end
+
+    def logic_operators
+      %w[contains_any contains_all present absent]
+    end
   end
 end

@@ -13,5 +13,9 @@ module InputTypeStrategy
     def supports_logic?
       true
     end
+
+    def logic_operators
+      %w[present absent]
+    end
   end
 end

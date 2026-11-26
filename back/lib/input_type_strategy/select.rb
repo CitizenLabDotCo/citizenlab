@@ -30,6 +30,10 @@ module InputTypeStrategy
       true
     end
 
+    def logic_operators
+      %w[one_of none_of present absent]
+    end
+
     def json_schema
       schema = { type: 'string' }
       option_keys = custom_field.ordered_transformed_options.map(&:key)
