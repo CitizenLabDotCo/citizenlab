@@ -42,10 +42,20 @@ resource 'Users' do
       end
     end
 
-    context 'when project moderator' do
-      before { header_token_for create(:project_moderator) }
+    %i[project_moderator project_folder_moderator space_moderator].each do |moderator_factory|
+      context "when #{moderator_factory.to_s.humanize(capitalize: false)}" do
+        before { header_token_for create(moderator_factory) }
 
-      example_request '[error] Get a UserJot identity as a project moderator' do
+        example_request "Get a UserJot identity as a #{moderator_factory.to_s.humanize(capitalize: false)}" do
+          assert_status 200
+        end
+      end
+    end
+
+    context 'when resident' do
+      before { header_token_for create(:user) }
+
+      example_request '[error] Get a UserJot identity as a resident' do
         assert_status 401
       end
     end

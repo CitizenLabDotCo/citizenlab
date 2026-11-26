@@ -25,6 +25,7 @@ const MODERATOR_ROUTES = [
   '/admin/project-page-builder',
   '/admin/custom-page-builder',
   '/admin/inspiration-hub',
+  '/admin/product-feedback',
 ];
 
 const isCommunityMonitorRoute = (item: IRouteItem) => {
