@@ -394,7 +394,9 @@ module ReportBuilder
       end
 
       def block_writer
-        @block_writer ||= ChartBlockWriter.new(@author, locale: @locale, run_id: @run_record&.id)
+        @block_writer ||= ChartBlockWriter.new(
+          @author, locale: @locale, run_id: @run_record&.id, query_scope: query_scope
+        )
       end
 
       # Rendering the report, one part of it, or one chart, and reporting what the

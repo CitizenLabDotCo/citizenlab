@@ -369,6 +369,19 @@ describe ReportBuilder::Composition::ReportComposer do
         expect(tool_results.first[:content].first[:text]).to include 'line 2'
       end
 
+      context 'when the chart reads an admin-only view' do
+        let(:sql) { 'SELECT count(*) AS count FROM reporting_staff_activities' }
+
+        it 'refuses it for an admin too, because the report reads its project only' do
+          stub_converse(tool_call('author_chart_block', authored), write_layout(text_layout), done)
+
+          expect { described_class.new(project, locale: 'en', client: client, author: create(:admin)).compose }
+            .not_to change(ContentBuilder::CustomBlock, :count)
+          expect(tool_results.first[:status]).to eq 'error'
+          expect(tool_results.first[:content].first[:text]).to include 'reporting_staff_activities'
+        end
+      end
+
       it 'says so plainly when the block cannot be checked at all' do
         stub_request(:post, 'http://custom_block_renderer:3100/build').to_timeout
         stub_converse(tool_call('author_chart_block', authored), write_layout(text_layout), done)
