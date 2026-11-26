@@ -455,8 +455,8 @@ describe SanitizationService do
         'empty declarations' | %(<iframe src="#{wistia}" style=";display:block;;margin:auto;"></iframe>) | %(<iframe src="#{wistia}" style="display:block;margin:auto;"></iframe>)
         'negative margin on an image' | '<img src="https://e.com/a.png" style="display:block;margin:-500px 0 0;">' | '<img src="https://e.com/a.png" style="display:block;">'
         'reported payload' | %(<iframe class="ql-video dzUxwG fXHwxu" src="#{wistia}" width="1920" height="1000" style="width:100%;height:100vh;background:white;border:0;"></iframe>) | %(<iframe class="ql-video" src="#{wistia}" width="1920" height="1000" style="width:100%;"></iframe>)
+        'app class on a button' | '<a href="https://e.com" class="custom-button sc-x">t</a>' | '<a href="https://e.com" class="custom-button" rel="nofollow">t</a>'
         # Found in stored content, written by the editor or pasted from a word processor.
-        'button link' | '<a href="https://e.com" class="custom-button sc-x">t</a>' | '<a href="https://e.com" class="custom-button" rel="nofollow">t</a>'
         'pasted alignment' | '<p style="text-align:justify;line-height:normal;">t</p>' | '<p style="text-align:justify;">t</p>'
         'pasted colours' | '<p style="color:rgb(1, 2, 3);font-size:9px;"><strong style="color:#ddd;position:fixed;">a</strong><a href="https://e.com" style="color:black;display:block;">b</a></p>' | '<p style="color:rgb(1, 2, 3);"><strong style="color:#ddd;">a</strong><a href="https://e.com" style="color:black;" rel="nofollow">b</a></p>'
         'colour hiding a url' | '<p style="color:url(https://e.com/x);">t</p>' | '<p>t</p>'
@@ -467,6 +467,30 @@ describe SanitizationService do
       with_them do
         it 'keeps only what the editor writes' do
           expect(service.sanitize(input, features)).to eq output
+        end
+      end
+
+      # Only some fields keep the button, and colours only come with text pasted into a full editor.
+      describe 'a button and colours' do
+        input = '<a href="https://e.com" class="custom-button sc-x" style="color:white;">t</a><strong style="color:transparent;">x</strong>'
+
+        where(:case_name, :field_features, :output) do
+          'a user bio' | %i[decoration link] | '<a href="https://e.com" rel="nofollow">t</a><strong>x</strong>'
+          'an idea' | Idea::BODY_SANITIZE_FEATURES | '<a href="https://e.com" class="custom-button" style="color:white;" rel="nofollow">t</a><strong style="color:transparent;">x</strong>'
+          'a phase' | %i[title alignment list decoration link button image video] | '<a href="https://e.com" class="custom-button" style="color:white;" rel="nofollow">t</a><strong style="color:transparent;">x</strong>'
+          'an invite' | %i[decoration link button image] | '<a href="https://e.com" class="custom-button" style="color:white;" rel="nofollow">t</a><strong>x</strong>'
+        end
+
+        with_them do
+          it 'keeps them only where the editor writes them' do
+            expect(service.sanitize(input, field_features)).to eq output
+          end
+        end
+
+        it 'keeps neither in a comment' do
+          output = service.sanitize_comment_body('<a href="https://e.com" class="custom-button" style="color:white;">https://e.com</a>')
+
+          expect(output).to eq '<a href="https://e.com" target="_blank" rel="noreferrer noopener nofollow">https://e.com</a>'
         end
       end
 

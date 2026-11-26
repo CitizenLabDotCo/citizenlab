@@ -545,7 +545,7 @@ class Phase < ApplicationRecord
     service = SanitizationService.new
     multiloc = service.sanitize_multiloc(
       multiloc,
-      %i[title alignment list decoration link image video]
+      %i[title alignment list decoration link button image video]
     )
     multiloc = service.remove_multiloc_empty_trailing_tags(multiloc)
     service.linkify_multiloc(multiloc)

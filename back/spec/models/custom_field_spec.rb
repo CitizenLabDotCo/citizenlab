@@ -379,6 +379,14 @@ RSpec.describe CustomField do
       custom_field = create(:custom_field, description_multiloc: description_multiloc)
       expect(custom_field.description_multiloc).to eq(description_multiloc)
     end
+
+    # Admins put the editor's button in some stored descriptions.
+    it 'keeps a button' do
+      description = '<p><a class="custom-button" href="https://www.example.com" rel="nofollow">Go</a></p>'
+      custom_field = create(:custom_field, description_multiloc: { 'en' => description })
+
+      expect(custom_field.description_multiloc['en']).to eq description
+    end
   end
 
   describe '#accept' do

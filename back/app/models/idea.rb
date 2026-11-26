@@ -77,8 +77,9 @@ class Idea < ApplicationRecord
   SUBMISSION_STATUSES = %w[submitted published].freeze
 
   # `SanitizationService` features allowed in the body, shared with anything that re-sanitizes a
-  # stored body (e.g. machine translations).
-  BODY_SANITIZE_FEATURES = %i[title alignment list decoration link image video].freeze
+  # stored body (e.g. machine translations). The idea editor offers no button, but many stored ideas
+  # written by admins hold one.
+  BODY_SANITIZE_FEATURES = %i[title alignment list decoration link button image video].freeze
 
   attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService
 

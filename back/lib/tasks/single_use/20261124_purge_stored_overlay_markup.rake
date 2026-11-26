@@ -145,8 +145,7 @@ namespace :single_use do
 
       script.reporter.add_change(old_value, new_value, context: context)
       payload = likely_payload.call(old_value, new_value)
-      # Only the start of a payload is printed: keeping every row's whole value would hold every
-      # changed text, base64 images included, in memory until the end of the run.
+      # Only the start of a payload is printed: the whole value is in the JSON report.
       before = (old_value.is_a?(String) ? old_value : old_value.to_json).truncate(400) if payload
       affected << context.merge(host: tenant.host, payload: payload, before: before)
       record.update_columns(attribute => new_value) if script.execute?

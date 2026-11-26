@@ -284,7 +284,9 @@ class SanitizationService
       },
       alignment: {
         tags: %w[],
-        tag_attributes: %w[p h2 h3 li].index_with { %w[class style] },
+        # Pasted text also brings a colour on its bold, italic or linked words.
+        tag_attributes: %w[p h2 h3 li].index_with { %w[class style] }
+          .merge(%w[b u i em strong a].index_with { %w[style] }),
         # The editor aligns with a class; text pasted from elsewhere brings `text-align` instead.
         values: {
           'class' => /\Aql-align-(?:left|center|right|justify)\z/,
@@ -297,14 +299,16 @@ class SanitizationService
       },
       decoration: {
         tags: %w[b u i em strong],
-        attributes: %w[],
-        tag_attributes: %w[b u i em strong].index_with { %w[style] },
-        values: { 'style' => TEXT_STYLE }
+        attributes: %w[]
       },
       link: {
         tags: %w[a],
-        attributes: %w[href target rel],
-        # The editor's call-to-action button.
+        attributes: %w[href target rel]
+      },
+      # The editor's call-to-action button, only on the fields whose editor offers it or where admins
+      # already put some (ideas, form field descriptions).
+      button: {
+        tags: %w[a],
         tag_attributes: { 'a' => %w[class style] },
         values: { 'class' => /\Acustom-button\z/, 'style' => TEXT_STYLE }
       },

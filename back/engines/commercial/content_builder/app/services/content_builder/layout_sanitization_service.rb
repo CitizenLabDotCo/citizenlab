@@ -2,7 +2,7 @@
 
 module ContentBuilder
   class LayoutSanitizationService
-    def sanitize(craftjson, text_features: %i[title alignment list decoration link image video])
+    def sanitize(craftjson, text_features: %i[title alignment list decoration link button image video])
       sanitize_html_in_text_elements craftjson, text_features
     end
 
