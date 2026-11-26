@@ -2746,6 +2746,7 @@
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.when": "When",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject2": "Who can see this project?",
   "app.containers.Admin.projects.setupReview.failed": "Review could not be saved. Select the card to try again.",
+  "app.containers.Admin.projects.shared.SettingsPanel.collapseAll": "Collapse all",
   "app.containers.Admin.projects.shared.SettingsPanel.expandAll": "Expand all",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Phase report",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Add some text about the phase",
