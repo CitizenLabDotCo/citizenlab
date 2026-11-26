@@ -1,0 +1,324 @@
+{
+  "description": "Legacy multiple choice rules, which can no longer be created.",
+  "cases": [
+    {
+      "description": "one selected option with a rule jumps",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect",
+          "logic": {"rules": [{"if": "a-id", "goto_page_id": "page-3"}]},
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"tags": ["a"]},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a selected option with a rule jumps even if others are selected",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect",
+          "logic": {"rules": [{"if": "a-id", "goto_page_id": "page-3"}]},
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"tags": ["b", "a"]},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "two selected options with rules: the farthest target wins",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect",
+          "logic": {
+            "rules": [{"if": "a-id", "goto_page_id": "page-4"}, {"if": "b-id", "goto_page_id": "page-3"}]
+          },
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"tags": ["a", "b"]},
+      "expected": {"path": ["p1", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "two selected options with rules: the farthest target wins in any order",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect",
+          "logic": {
+            "rules": [{"if": "b-id", "goto_page_id": "page-3"}, {"if": "a-id", "goto_page_id": "page-4"}]
+          },
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"tags": ["b", "a"]},
+      "expected": {"path": ["p1", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "selected options without rules go to the next page",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect",
+          "logic": {"rules": [{"if": "a-id", "goto_page_id": "page-3"}]},
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"tags": ["c"]},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "an empty selection fires no_answer",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect",
+          "logic": {"rules": [{"if": "no_answer", "goto_page_id": "page-5"}]},
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"tags": []},
+      "expected": {"path": ["p1", "p5", "form_end"]}
+    },
+    {
+      "description": "a missing selection fires no_answer",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect",
+          "logic": {"rules": [{"if": "no_answer", "goto_page_id": "page-5"}]},
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p5", "form_end"]}
+    },
+    {
+      "description": "any_other_answer on a multiple choice question",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect",
+          "logic": {
+            "rules": [
+              {"if": "a-id", "goto_page_id": "page-3"},
+              {"if": "any_other_answer", "goto_page_id": "page-5"}
+            ]
+          },
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"tags": ["c"]},
+      "divergent": {"runtime": ["p1", "p2", "p3", "p4", "p5", "form_end"], "engine": ["p1", "p5", "form_end"]}
+    },
+    {
+      "description": "any_other_answer competes with other selected options on distance",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect",
+          "logic": {
+            "rules": [
+              {"if": "a-id", "goto_page_id": "page-3"},
+              {"if": "any_other_answer", "goto_page_id": "page-5"}
+            ]
+          },
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"tags": ["a", "c"]},
+      "divergent": {"runtime": ["p1", "p3", "p4", "p5", "form_end"], "engine": ["p1", "p5", "form_end"]}
+    },
+    {
+      "description": "any_other_answer does not fire when only options with rules are selected",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect",
+          "logic": {
+            "rules": [
+              {"if": "a-id", "goto_page_id": "page-3"},
+              {"if": "any_other_answer", "goto_page_id": "page-5"}
+            ]
+          },
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"tags": ["a"]},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "image multiple choice behaves the same",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect_image",
+          "logic": {"rules": [{"if": "a-id", "goto_page_id": "page-3"}]},
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"tags": ["a"]},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a deleted option in the answer is ignored",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "tags-id",
+          "key": "tags",
+          "input_type": "multiselect",
+          "logic": {"rules": [{"if": "a-id", "goto_page_id": "page-3"}]},
+          "options": [
+            {"id": "a-id", "key": "a"},
+            {"id": "b-id", "key": "b"},
+            {"id": "c-id", "key": "c"},
+            {"id": "d-id", "key": "d"}
+          ]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"tags": ["zz", "a"]},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    }
+  ]
+}

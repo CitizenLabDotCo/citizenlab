@@ -1,0 +1,306 @@
+{
+  "description": "Linear scale and rating rules.",
+  "cases": [
+    {
+      "description": "a matching value jumps",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {"rules": [{"if": 4, "goto_page_id": "page-3"}]},
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 4},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "another value goes to the next page",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {"rules": [{"if": 4, "goto_page_id": "page-3"}]},
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 2},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a rule stored as a string matches the number",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {"rules": [{"if": "4", "goto_page_id": "page-3"}]},
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 4},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a rule stored as a number does not match a string answer",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {"rules": [{"if": 4, "goto_page_id": "page-3"}]},
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": "4"},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "any_other_answer fires for a value without a rule",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {
+            "rules": [
+              {"if": 4, "goto_page_id": "page-3"},
+              {"if": "any_other_answer", "goto_page_id": "page-4"}
+            ]
+          },
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 1},
+      "expected": {"path": ["p1", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "any_other_answer does not fire for a value with a rule",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {
+            "rules": [
+              {"if": 4, "goto_page_id": "page-3"},
+              {"if": "any_other_answer", "goto_page_id": "page-4"}
+            ]
+          },
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 4},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "any_other_answer does not fire for a value above the maximum",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {"rules": [{"if": "any_other_answer", "goto_page_id": "page-4"}]},
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 7},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "no_answer fires without an answer",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {"rules": [{"if": "no_answer", "goto_page_id": "page-5"}]},
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p5", "form_end"]}
+    },
+    {
+      "description": "no_answer and a zero answer",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {"rules": [{"if": "no_answer", "goto_page_id": "page-5"}]},
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 0},
+      "divergent": {"runtime": ["p1", "p5", "form_end"], "engine": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a rule without a value never fires",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {"rules": [{"if": null, "goto_page_id": "page-3"}]},
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 3},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "a rule above the maximum fires for that value",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {"rules": [{"if": 9, "goto_page_id": "page-3"}]},
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 9},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "rating rules behave like linear scale rules",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "rating",
+          "logic": {"rules": [{"if": 2, "goto_page_id": "page-4"}]},
+          "maximum": 5
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 2},
+      "expected": {"path": ["p1", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "rating any_other_answer uses the maximum",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "rating",
+          "logic": {
+            "rules": [
+              {"if": 2, "goto_page_id": "page-4"},
+              {"if": "any_other_answer", "goto_page_id": "page-5"}
+            ]
+          },
+          "maximum": 3
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 3},
+      "expected": {"path": ["p1", "p5", "form_end"]}
+    },
+    {
+      "description": "a scale with every value ruled never fires any_other_answer",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "score-id",
+          "key": "score",
+          "input_type": "linear_scale",
+          "logic": {
+            "rules": [
+              {"if": 1, "goto_page_id": "page-3"},
+              {"if": 2, "goto_page_id": "page-3"},
+              {"if": "any_other_answer", "goto_page_id": "page-5"}
+            ]
+          },
+          "maximum": 2
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"score": 2},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    }
+  ]
+}

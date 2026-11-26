@@ -1,0 +1,65 @@
+{
+  "description": "Ranking rules, which only the API can create.",
+  "cases": [
+    {
+      "description": "an option rule never fires",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "rank-id",
+          "key": "rank",
+          "input_type": "ranking",
+          "logic": {"rules": [{"if": "a-id", "goto_page_id": "page-3"}]},
+          "options": [{"id": "a-id", "key": "a"}, {"id": "b-id", "key": "b"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"rank": ["a", "b"]},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "any_other_answer never fires",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "rank-id",
+          "key": "rank",
+          "input_type": "ranking",
+          "logic": {"rules": [{"if": "any_other_answer", "goto_page_id": "page-3"}]},
+          "options": [{"id": "a-id", "key": "a"}, {"id": "b-id", "key": "b"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {"rank": ["b", "a"]},
+      "expected": {"path": ["p1", "p2", "p3", "p4", "p5", "form_end"]}
+    },
+    {
+      "description": "no_answer fires without an answer",
+      "fields": [
+        {"id": "page-1", "key": "p1", "input_type": "page", "logic": {}},
+        {
+          "id": "rank-id",
+          "key": "rank",
+          "input_type": "ranking",
+          "logic": {"rules": [{"if": "no_answer", "goto_page_id": "page-3"}]},
+          "options": [{"id": "a-id", "key": "a"}, {"id": "b-id", "key": "b"}]
+        },
+        {"id": "page-2", "key": "p2", "input_type": "page", "logic": {}},
+        {"id": "page-3", "key": "p3", "input_type": "page", "logic": {}},
+        {"id": "page-4", "key": "p4", "input_type": "page", "logic": {}},
+        {"id": "page-5", "key": "p5", "input_type": "page", "logic": {}},
+        {"id": "page-6", "key": "form_end", "input_type": "page", "logic": {}}
+      ],
+      "answers": {},
+      "expected": {"path": ["p1", "p3", "p4", "p5", "form_end"]}
+    }
+  ]
+}
