@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.addQuestions',
     defaultMessage: 'Add questions',
   },
+  addQuestionsToDownload: {
+    id: 'app.containers.Admin.projects.project.addQuestionsToDownload',
+    defaultMessage: 'Add questions to download the form',
+  },
   editSurvey: {
     id: 'app.containers.Admin.projects.project.editSurvey',
     defaultMessage: 'Edit survey',

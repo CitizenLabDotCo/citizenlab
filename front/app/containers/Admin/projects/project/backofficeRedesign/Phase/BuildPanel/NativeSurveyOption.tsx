@@ -62,18 +62,15 @@ const NativeSurveyOption = ({
       />
       {customFields && (
         <div className={styles.questionActions}>
-          <Button fullWidth variant="secondary" onPress={onAddQuestions}>
-            {formatMessage(
-              hasQuestions
-                ? methodSectionMessages.editSurvey
-                : methodSectionMessages.addQuestions
-            )}
-          </Button>
           <Button
-            variant="secondary"
+            variant="quiet"
             icon="download-16"
             aria-label={formatMessage(methodSectionMessages.downloadForm)}
-            isDisabled={!hasQuestions}
+            disabledReason={
+              hasQuestions
+                ? undefined
+                : formatMessage(methodSectionMessages.addQuestionsToDownload)
+            }
             href={
               hasQuestions
                 ? router.buildLocation({
@@ -84,6 +81,15 @@ const NativeSurveyOption = ({
             }
             target="_blank"
           />
+          {hasQuestions ? (
+            <Button variant="secondary" onPress={onAddQuestions}>
+              {formatMessage(methodSectionMessages.editSurvey)}
+            </Button>
+          ) : (
+            <Button variant="primary" icon="plus-16" onPress={onAddQuestions}>
+              {formatMessage(methodSectionMessages.addQuestions)}
+            </Button>
+          )}
         </div>
       )}
     </div>
