@@ -309,12 +309,14 @@ describe MultiTenancy::Templates::TenantSerializer do
     it 'leaves survey logic out of the template (current behaviour)' do
       survey_phase = create(:native_survey_phase)
       form = create(:custom_form, participation_context: survey_phase)
-      create(:custom_field_page, resource: form).update!(logic: { next_page_id: create(:custom_field_form_end_page, resource: form).id })
+      page = create(:custom_field_page, resource: form, key: 'page_with_logic')
+      page.update!(logic: { next_page_id: create(:custom_field_form_end_page, resource: form).id })
 
       template = tenant_serializer.run(deserializer_format: true)
 
-      expect(template['models']['custom_field'].size).to be >= 2
-      expect(template['models']['custom_field']).to all(satisfy { |field| !field.key?('logic') })
+      exported_page = template['models']['custom_field'].find { |field| field['key'] == 'page_with_logic' }
+      expect(exported_page).to be_present
+      expect(exported_page).not_to have_key('logic')
     end
 
     it 'successfully exports custom field' do

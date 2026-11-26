@@ -100,12 +100,24 @@ resource 'Idea Custom Fields' do
     context 'when admin' do
       before { admin_header_token }
 
-      example 'Returns the stored logic, including that of disabled fields, without the user fields page', document: false do
+      example 'Returns the stored logic, including that of disabled fields', document: false do
         do_request
 
         assert_status 200
-        expect(response_data.map { |data| data.dig(:attributes, :key) }).not_to include('user_page')
         expect(data_for(disabled_field).dig(:attributes, :logic)).to eq({ rules: [{ if: disabled_field.options.first.id, goto_page_id: form_end.id }] })
+      end
+
+      example 'Leaves out the user fields page and keeps jumps to the end page when user fields are asked in the form', document: false do
+        user_field = create(:custom_field_select, :for_registration, :with_options, key: 'user_select_field', enabled: true)
+        permission = phase.permissions.find_by(action: 'posting_idea')
+        permission.update!(permitted_by: 'users', user_fields_in_form: true, custom_fields_behavior: 'custom', user_data_collection: 'all_data')
+        create(:permissions_custom_field, custom_field: user_field, permission: permission)
+
+        do_request
+
+        assert_status 200
+        expect(response_data.map { |data| data.dig(:attributes, :key) }).not_to include('user_page', 'u_user_select_field')
+        expect(data_for(page2).dig(:attributes, :logic)).to eq({ next_page_id: form_end.id })
       end
 
       example 'Remaps option and page ids of the copied logic but clears linear scale values (current behaviour)', document: false do

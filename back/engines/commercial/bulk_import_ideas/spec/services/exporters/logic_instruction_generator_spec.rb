@@ -204,6 +204,18 @@ describe BulkImportIdeas::Exporters::LogicInstructionGenerator do
 
         expect(fields.pluck(:logic_instructions).compact).to be_empty
       end
+
+      it 'describes the same rules once the page is enabled' do
+        select_field.update!(logic: { 'rules' => [{ 'if' => select_field.options.first.id, 'goto_page_id' => page3.id }] })
+        page1.update!(logic: { 'next_page_id' => page3.id })
+        page3.update!(enabled: true)
+        fields = build_field_hashes
+        generator.attach_logic_instructions(fields)
+
+        instructions = fields.find { |f| f[:id] == select_field.id }[:logic_instructions]
+        expect(instructions).to include 'If you answered <strong>A</strong> for Question 1, go to <strong>Section C</strong> next.'
+        expect(instructions).to include 'Go to <strong>Section C</strong> next.'
+      end
     end
 
     context 'no logic on the form' do

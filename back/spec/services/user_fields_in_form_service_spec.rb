@@ -432,10 +432,13 @@ describe UserFieldsInFormService do
           expect(first_id).not_to eq second_id
         end
 
-        it 'raises for a form with logic but no end page (current behaviour)' do
+        it 'raises for a form without an end page, whether or not it has logic (current behaviour, B12)' do
           fields = custom_form.custom_fields.order(:ordering).to_a.reject(&:form_end_page?)
+          fields_without_logic = custom_form.custom_fields.order(:ordering).to_a.reject(&:form_end_page?).each { |field| field.logic = {} }
+          nil_id_error = [NoMethodError, /undefined method ['`]id' for nil/]
 
-          expect { described_class.add_user_fields_to_form(fields, phase.pmethod, custom_form) }.to raise_error(NoMethodError)
+          expect { described_class.add_user_fields_to_form(fields, phase.pmethod, custom_form) }.to raise_error(*nil_id_error)
+          expect { described_class.add_user_fields_to_form(fields_without_logic, phase.pmethod, custom_form) }.to raise_error(*nil_id_error)
         end
       end
 
