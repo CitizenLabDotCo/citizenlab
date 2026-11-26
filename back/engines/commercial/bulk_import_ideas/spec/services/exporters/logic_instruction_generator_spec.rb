@@ -159,6 +159,53 @@ describe BulkImportIdeas::Exporters::LogicInstructionGenerator do
       end
     end
 
+    context 'rules that are not about an option' do
+      let!(:scale_field) do
+        create(:custom_field_linear_scale, resource: custom_form, title_multiloc: { 'en' => 'How much?' }, maximum: 5).tap do |field|
+          field.insert_at(select_field.ordering + 1)
+        end
+      end
+
+      before do
+        select_field.update!(logic: { 'rules' => [
+          { 'if' => select_field.options.first.id, 'goto_page_id' => page2.id },
+          { 'if' => 'any_other_answer', 'goto_page_id' => end_page.id },
+          { 'if' => 'no_answer', 'goto_page_id' => end_page.id }
+        ] })
+        scale_field.update!(logic: { 'rules' => [{ 'if' => 1, 'goto_page_id' => end_page.id }] })
+      end
+
+      it 'leaves out any_other_answer, no_answer and linear scale rules (current behaviour)' do
+        pf = IdeaCustomFieldsService.new(custom_form).printable_fields
+        gen = described_class.new(pf, IdeaCustomFieldsService.new(custom_form).all_fields, 'en')
+        fields = build_field_hashes_from(pf)
+        gen.attach_logic_instructions(fields)
+
+        instructions = fields.find { |f| f[:id] == scale_field.id }[:logic_instructions]
+        expect(instructions).to eq '<em>If you answered <strong>A</strong> for Question 1, go to <strong>Section B</strong> next.</em>'
+      end
+    end
+
+    context 'rules that jump to a page that is not printed' do
+      let!(:page3) { create(:custom_field_page, resource: custom_form, enabled: false, title_multiloc: { 'en' => 'Third page' }).tap { |page| page.insert_at(end_page.ordering) } }
+
+      it 'leaves out an option rule to a disabled page (current behaviour)' do
+        select_field.update!(logic: { 'rules' => [{ 'if' => select_field.options.first.id, 'goto_page_id' => page3.id }] })
+        fields = build_field_hashes
+        generator.attach_logic_instructions(fields)
+
+        expect(fields.pluck(:logic_instructions).compact).to be_empty
+      end
+
+      it 'leaves out page logic to a disabled page (current behaviour)' do
+        page1.update!(logic: { 'next_page_id' => page3.id })
+        fields = build_field_hashes
+        generator.attach_logic_instructions(fields)
+
+        expect(fields.pluck(:logic_instructions).compact).to be_empty
+      end
+    end
+
     context 'no logic on the form' do
       it 'does not attach any instructions' do
         fields = build_field_hashes
