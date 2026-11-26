@@ -514,7 +514,10 @@ describe SideFxIdeaService do
         )
       end
 
-      before { create(:idea_status_proposed) }
+      before do
+        create(:idea_status_proposed)
+        create(:custom_field_gender)
+      end
 
       it "updates the user profile from the survey input fields when 'user_fields_in_form' is turned on" do
         phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)

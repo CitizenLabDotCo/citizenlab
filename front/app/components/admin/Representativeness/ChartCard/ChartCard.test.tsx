@@ -65,12 +65,24 @@ describe('<ChartCard />', () => {
     expect(screen.getByText('FIELD TITLE')).toBeInTheDocument();
   });
 
-  it('shows representativeness score', () => {
+  // TAN-9042: R-score hidden
+  // it('shows representativeness score', () => {
+  //   render(<ChartCard userCustomField={userCustomField} />);
+
+  //   expect(screen.getByText('Representativeness score:')).toBeInTheDocument();
+  //   expect(screen.getByText('80')).toBeInTheDocument();
+  //   expect(screen.getByText('/100')).toBeInTheDocument();
+  // });
+
+  it('does not show representativeness score', () => {
     render(<ChartCard userCustomField={userCustomField} />);
 
-    expect(screen.getByText('Representativeness score:')).toBeInTheDocument();
-    expect(screen.getByText('80')).toBeInTheDocument();
-    expect(screen.getByText('/100')).toBeInTheDocument();
+    expect(screen.getByText('FIELD TITLE')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Representativeness score:')
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('80')).not.toBeInTheDocument();
+    expect(screen.queryByText('/100')).not.toBeInTheDocument();
   });
 });
 

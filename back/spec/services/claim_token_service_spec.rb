@@ -123,6 +123,7 @@ RSpec.describe ClaimTokenService do
     end
 
     it 'syncs user demographics by most recently created idea' do
+      create(:custom_field_gender)
       user = create(:user)
       idea1 = create(:idea, author: nil, created_at: 2.hours.ago, custom_field_answers: [
         build(:custom_field_answer, key: 'field', value: 'value'),
@@ -142,6 +143,7 @@ RSpec.describe ClaimTokenService do
 
     context 'idea in survey phase' do
       before do
+        create(:custom_field_gender)
         @project = create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true })
         @phase = @project.phases.first
         @permission = @phase.permissions.find_by(action: 'posting_idea')

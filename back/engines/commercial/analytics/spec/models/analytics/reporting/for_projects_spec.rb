@@ -7,8 +7,13 @@ require 'rails_helper'
 # row in every view, and each rule must keep the rows of one project and none of
 # the other's.
 RSpec.describe 'Reporting view project rules' do # rubocop:disable RSpec/DescribeClass
-  # The community monitor and the census data have their own examples below.
-  special = [Analytics::Reporting::CommunityMonitorScore, Analytics::Reporting::ReferenceDistribution]
+  # The community monitor, the census data and the platform baselines have their
+  # own examples below.
+  special = [
+    Analytics::Reporting::CommunityMonitorScore,
+    Analytics::Reporting::ReferenceDistribution,
+    Analytics::Reporting::PlatformBaseline
+  ]
   views = McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLES.reject(&:admin_only?) - special
 
   let!(:mine) { create_reporting_rows }
@@ -45,5 +50,11 @@ RSpec.describe 'Reporting view project rules' do # rubocop:disable RSpec/Describ
     census = Analytics::Reporting::ReferenceDistribution
 
     expect(census.for_projects([]).to_sql).to eq census.all.to_sql
+  end
+
+  it 'keeps every platform baseline, for any projects' do
+    baselines = Analytics::Reporting::PlatformBaseline
+
+    expect(baselines.for_projects([]).to_sql).to eq baselines.all.to_sql
   end
 end
