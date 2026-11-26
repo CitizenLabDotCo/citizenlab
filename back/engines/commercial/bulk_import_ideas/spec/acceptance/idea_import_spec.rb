@@ -269,6 +269,40 @@ resource 'BulkImportIdeasImportIdeas' do
           expect(draft_ideas[0].answer_for_key('select_field_other')).to be_nil
         end
       end
+
+      context 'when the survey has logic' do
+        let(:project) { create(:project_with_active_native_survey_phase) }
+        let(:phase) { project.phases.first }
+        let(:survey_form) { create(:custom_form, participation_context: phase) }
+        let!(:page1) { create(:custom_field_page, resource: survey_form) }
+        let!(:select_field) { create(:custom_field_select, :with_options, resource: survey_form, key: 'select_field', required: true) }
+        let!(:page2) { create(:custom_field_page, resource: survey_form) }
+        let!(:required_text) { create(:custom_field_text, resource: survey_form, key: 'required_text', required: true) }
+        let!(:form_end) { create(:custom_field_form_end_page, resource: survey_form) }
+        let!(:draft_ideas) do
+          create_list(:idea, 2, project: project, creation_phase: phase, phases: [phase], publication_status: 'draft').each do |idea|
+            idea.update! idea_import: create(:idea_import, idea: idea)
+          end
+        end
+
+        before { create(:custom_field_answer, answerable: draft_ideas[0], key: 'select_field', value: 'option1') }
+
+        example 'Approves ideas with unanswered required questions on any page once the form has logic (currently existing bug, N8)', document: false do
+          select_field.update!(logic: { rules: [{ if: select_field.options.first.id, goto_page_id: form_end.id }] })
+
+          do_request
+          assert_status 200
+          expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 2, not_approved: 0 } })
+        end
+
+        example 'Still checks required questions when every rule was removed', document: false do
+          select_field.update!(logic: { rules: [] })
+
+          do_request
+          assert_status 200
+          expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 0, not_approved: 2 } })
+        end
+      end
     end
 
     context 'idea import metadata' do

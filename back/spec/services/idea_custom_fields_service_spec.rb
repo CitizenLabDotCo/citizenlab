@@ -386,6 +386,35 @@ describe IdeaCustomFieldsService do
       expect(fields[8].map_config).to be_nil
     end
 
+    it 'clears the values of copied linear scale rules and keeps catch-all rules (currently existing bug, B3)' do
+      create(:custom_field_page, resource: custom_form)
+      scale_field = create(:custom_field_linear_scale, resource: custom_form, maximum: 5)
+      page2 = create(:custom_field_page, resource: custom_form)
+      scale_field.update!(logic: { rules: [
+        { if: 2, goto_page_id: page2.id },
+        { if: 'any_other_answer', goto_page_id: page2.id },
+        { if: 'no_answer', goto_page_id: page2.id }
+      ] })
+
+      fields = service.duplicate_all_fields
+
+      expect(fields[1].logic['rules'].pluck('if')).to eq [nil, 'any_other_answer', 'no_answer']
+      expect(fields[1].logic['rules'].pluck('goto_page_id')).to all(eq fields[2].id)
+      expect(scale_field.reload.logic['rules'].first['if']).to eq 2
+    end
+
+    it 'clears the target of a rule to a page that is not in the form (current behaviour)' do
+      create(:custom_field_page, resource: custom_form)
+      select_field = create(:custom_field_select, :with_options, resource: custom_form)
+      page2 = create(:custom_field_page, resource: custom_form)
+      select_field.update!(logic: { rules: [{ if: select_field.options.first.id, goto_page_id: page2.id }] })
+      select_field.update_column(:logic, { 'rules' => [{ 'if' => select_field.options.first.id, 'goto_page_id' => 'deleted-page-id' }] })
+
+      fields = service.duplicate_all_fields
+
+      expect(fields[1].logic['rules'].first['goto_page_id']).to be_nil
+    end
+
     describe 'remove_ignored_update_params' do
       it 'removes code and input_type from params for updating' do
         params = {
@@ -395,6 +424,38 @@ describe IdeaCustomFieldsService do
         }
         expect(service.remove_ignored_update_params(params)).to match({ required: true })
       end
+    end
+  end
+
+  describe '#fields_to_validate_on_import' do
+    let(:survey_project) { create(:single_phase_native_survey_project) }
+    let(:custom_form) { create(:custom_form, participation_context: survey_project.phases.first) }
+    let!(:page) { create(:custom_field_page, resource: custom_form) }
+    let!(:required_field) { create(:custom_field_select, :with_options, resource: custom_form, required: true) }
+    let!(:optional_field) { create(:custom_field_text, resource: custom_form, required: false) }
+    let!(:form_end) { create(:custom_field_form_end_page, resource: custom_form) }
+
+    it 'returns the required questions when the form has no logic' do
+      expect(service.fields_to_validate_on_import).to eq [required_field]
+    end
+
+    it 'returns the required questions when every rule was removed' do
+      required_field.update!(logic: { rules: [] })
+
+      expect(service.fields_to_validate_on_import).to eq [required_field]
+    end
+
+    it 'returns nothing when any field has logic (currently existing bug, N8)' do
+      page.update!(logic: { next_page_id: form_end.id })
+
+      expect(service.fields_to_validate_on_import).to eq []
+    end
+
+    it 'returns nothing when only a disabled field has logic (currently existing bug, N8)' do
+      optional_select = create(:custom_field_select, :with_options, resource: custom_form, enabled: false)
+      optional_select.update!(logic: { rules: [{ if: optional_select.options.first.id, goto_page_id: form_end.id }] })
+
+      expect(service.fields_to_validate_on_import).to eq []
     end
   end
 end

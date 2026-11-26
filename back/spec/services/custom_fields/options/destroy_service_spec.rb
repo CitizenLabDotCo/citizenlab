@@ -43,6 +43,34 @@ describe CustomFields::Options::DestroyService do
       end
     end
 
+    context 'when an option with logic of a ranking field is destroyed' do
+      let(:ranking_field) { create(:custom_field_ranking, :with_options, :for_custom_form) }
+      let(:option) { ranking_field.options.first }
+      let(:page) { create(:custom_field_page, resource: ranking_field.resource) }
+
+      before { ranking_field.update!(logic: { rules: [{ if: option.id, goto_page_id: page.id }] }) }
+
+      it 'leaves the rule of the deleted option in place (currently existing bug, B8)' do
+        service.destroy!(option, current_user)
+
+        expect(ranking_field.reload.logic['rules'].pluck('if')).to eq [option.id]
+      end
+    end
+
+    context 'when the last option with a rule of a select is destroyed' do
+      let(:select_field) { create(:custom_field_select, :with_options, :for_custom_form) }
+      let(:option) { select_field.options.first }
+      let(:page) { create(:custom_field_page, resource: select_field.resource) }
+
+      before { select_field.update!(logic: { rules: [{ if: option.id, goto_page_id: page.id }, { if: 'any_other_answer', goto_page_id: page.id }] }) }
+
+      it 'keeps the catch-all rules' do
+        service.destroy!(option, current_user)
+
+        expect(select_field.reload.logic).to eq('rules' => [{ 'if' => 'any_other_answer', 'goto_page_id' => page.id }])
+      end
+    end
+
     context 'when deleting a select custom-form field option' do
       let(:field) { create(:custom_field_select, :with_options, :for_custom_form) }
       let!(:idea) { create(:idea, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'option1')]) }
