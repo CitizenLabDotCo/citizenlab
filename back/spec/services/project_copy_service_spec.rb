@@ -142,6 +142,25 @@ describe ProjectCopyService do
       end
     end
 
+    it 'drops survey logic when copying a project (currently existing bug, B10)' do
+      project = create(:single_phase_native_survey_project, title_multiloc: { en: 'with logic' })
+      form = create(:custom_form, participation_context: project.phases.first)
+      page1 = create(:custom_field_page, resource: form)
+      select_field = create(:custom_field_select, :with_options, resource: form)
+      page2 = create(:custom_field_page, resource: form)
+      form_end = create(:custom_field_form_end_page, resource: form)
+      select_field.update!(logic: { rules: [{ if: select_field.options.first.id, goto_page_id: form_end.id }] })
+      page1.update!(logic: { next_page_id: page2.id })
+
+      template = service.export project, local_copy: true
+      expect(template['models']['custom_field']).to all(satisfy { |field| !field.key?('logic') })
+
+      copied_project = service.import(template, local_copy: true)
+      copied_fields = copied_project.phases.first.custom_form.custom_fields
+      expect(copied_fields.size).to eq 4
+      expect(copied_fields.map(&:logic)).to all(eq({}))
+    end
+
     it 'successfully exports custom field text images' do
       description_multiloc = { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' }
       field = create(:custom_field, :for_custom_form, description_multiloc: description_multiloc)

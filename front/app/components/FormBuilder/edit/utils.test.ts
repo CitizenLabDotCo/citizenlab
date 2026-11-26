@@ -243,7 +243,7 @@ function makeGroup(
 function makeQuestion(
   id: string,
   inputType: string,
-  rules: { goto_page_id: string }[] = []
+  rules: { if?: string | number; goto_page_id: string }[] = []
 ): IFlatCustomField {
   return {
     id,
@@ -436,6 +436,150 @@ describe('transformFieldForSubmission', () => {
       select_count_enabled: false,
       minimum_select_count: null,
       maximum_select_count: null,
+    });
+  });
+});
+
+describe('detectConflictsByPage combinations', () => {
+  const conflictTypes = (groups: NestedGroupingStructure[], pageId: string) =>
+    detectConflictsByPage(groups)[pageId]?.map(
+      (conflict) => conflict.conflictType
+    );
+
+  it('reports no conflict when every question target equals the page default', () => {
+    const question = makeQuestion('q', 'select', [
+      { if: 'option-a', goto_page_id: 'page3' },
+      { if: 'any_other_answer', goto_page_id: 'page3' },
+    ]);
+
+    expect(
+      conflictTypes(
+        [makeGroup('page1', { next_page_id: 'page3' }, [question])],
+        'page1'
+      )
+    ).toBeUndefined();
+  });
+
+  it('reports a question-vs-page conflict once when one of several targets differs from the page default', () => {
+    const question = makeQuestion('q', 'select', [
+      { if: 'option-a', goto_page_id: 'page3' },
+      { if: 'option-b', goto_page_id: 'page4' },
+      { if: 'option-c', goto_page_id: 'page5' },
+    ]);
+
+    expect(
+      conflictTypes(
+        [makeGroup('page1', { next_page_id: 'page3' }, [question])],
+        'page1'
+      )
+    ).toEqual([LogicConflictType.QUESTION_VS_PAGE_LOGIC]);
+  });
+
+  it.each(['any_other_answer', 'no_answer'])(
+    'counts a %s rule like any other rule',
+    (condition) => {
+      const question = makeQuestion('q', 'select', [
+        { if: condition, goto_page_id: 'page4' },
+      ]);
+
+      expect(
+        conflictTypes(
+          [makeGroup('page1', { next_page_id: 'page3' }, [question])],
+          'page1'
+        )
+      ).toEqual([LogicConflictType.QUESTION_VS_PAGE_LOGIC]);
+    }
+  );
+
+  it('reports an inter-question conflict for rating and linear scale questions on one page', () => {
+    const rating = makeQuestion('q1', 'rating', [
+      { if: 1, goto_page_id: 'page3' },
+    ]);
+    const scale = makeQuestion('q2', 'linear_scale', [
+      { if: 5, goto_page_id: 'page4' },
+    ]);
+
+    expect(
+      conflictTypes([makeGroup('page1', {}, [rating, scale])], 'page1')
+    ).toEqual([LogicConflictType.INTER_QUESTION_CONFLICT]);
+  });
+
+  it('reports an inter-question conflict even when both questions jump to the same page (currently existing bug, N2)', () => {
+    const first = makeQuestion('q1', 'select', [
+      { if: 'option-a', goto_page_id: 'page3' },
+    ]);
+    const second = makeQuestion('q2', 'select', [
+      { if: 'option-b', goto_page_id: 'page3' },
+    ]);
+
+    expect(
+      conflictTypes([makeGroup('page1', {}, [first, second])], 'page1')
+    ).toEqual([LogicConflictType.INTER_QUESTION_CONFLICT]);
+  });
+
+  it('does not report a select question whose options jump to different pages', () => {
+    const question = makeQuestion('q', 'select', [
+      { if: 'option-a', goto_page_id: 'page3' },
+      { if: 'option-b', goto_page_id: 'page4' },
+    ]);
+
+    expect(
+      conflictTypes([makeGroup('page1', {}, [question])], 'page1')
+    ).toBeUndefined();
+  });
+
+  it('reports a multiselect with different targets on a page with a default as two conflicts', () => {
+    const question = makeQuestion('q', 'multiselect', [
+      { if: 'option-a', goto_page_id: 'page3' },
+      { if: 'option-b', goto_page_id: 'page4' },
+    ]);
+
+    expect(
+      conflictTypes(
+        [makeGroup('page1', { next_page_id: 'page3' }, [question])],
+        'page1'
+      )
+    ).toEqual([
+      LogicConflictType.MULTIPLE_GOTO_IN_MULTISELECT,
+      LogicConflictType.QUESTION_VS_PAGE_LOGIC,
+    ]);
+  });
+
+  it('does not count a question with an empty rules list', () => {
+    const empty = makeQuestion('q1', 'select', []);
+    const withRule = makeQuestion('q2', 'select', [
+      { if: 'option-a', goto_page_id: 'page3' },
+    ]);
+
+    expect(
+      conflictTypes(
+        [makeGroup('page1', { next_page_id: 'page3' }, [empty, withRule])],
+        'page1'
+      )
+    ).toBeUndefined();
+  });
+
+  it('reports conflicts under the page they occur on only', () => {
+    const first = makeQuestion('q1', 'select', [
+      { if: 'option-a', goto_page_id: 'page4' },
+    ]);
+    const second = makeQuestion('q2', 'select', [
+      { if: 'option-a', goto_page_id: 'page4' },
+    ]);
+    const groups = [
+      makeGroup('page1', { next_page_id: 'page3' }, []),
+      makeGroup('page2', {}, [first, second]),
+      makeGroup('page3', {}, []),
+      makeGroup('page4', {}, []),
+    ];
+
+    expect(detectConflictsByPage(groups)).toEqual({
+      page2: [
+        {
+          conflictType: LogicConflictType.INTER_QUESTION_CONFLICT,
+          pageId: 'page2',
+        },
+      ],
     });
   });
 });

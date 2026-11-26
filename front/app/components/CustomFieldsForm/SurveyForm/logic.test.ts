@@ -1,4 +1,13 @@
-import { Pages } from '../util';
+import {
+  IFlatCustomField,
+  IOptionsType,
+  LogicType,
+  QuestionRuleType,
+} from 'api/custom_fields/types';
+
+import { makeCustomField } from 'utils/testUtils/customFields';
+
+import { convertCustomFieldsToNestedPages, Pages } from '../util';
 
 import {
   determineNextPageNumber,
@@ -630,5 +639,548 @@ describe('Survey form logic', () => {
       });
       expect(skippedWhenNo).toEqual([1, 3]);
     });
+  });
+});
+
+const pageField = (id: string, logic: LogicType = {}, key = id) =>
+  makeCustomField({ id, key, input_type: 'page', logic });
+
+const endPage = () => pageField('page-end', {}, 'form_end');
+
+// Option ids are UUIDs while answers hold option keys, as with real data.
+const abcOptions = [
+  { id: 'id-a', key: 'a', title_multiloc: { en: 'A' } },
+  { id: 'id-b', key: 'b', title_multiloc: { en: 'B' } },
+  { id: 'id-c', key: 'c', title_multiloc: { en: 'C' } },
+];
+
+const abcOptionsWithIdEqualToKey = abcOptions.map((option) => ({
+  ...option,
+  id: option.key,
+}));
+
+const nextPage = (
+  pages: Pages,
+  formData: Record<string, unknown>,
+  pageIndex = 0
+) =>
+  determineNextPageNumber({
+    pages,
+    currentPage: pages[pageIndex].page,
+    formData,
+  });
+
+describe('determineNextPageNumber edge cases', () => {
+  describe('select', () => {
+    const buildPages = (options: IOptionsType[], rules: QuestionRuleType[]) =>
+      convertCustomFieldsToNestedPages([
+        pageField('p1'),
+        makeCustomField({
+          id: 'q',
+          input_type: 'select',
+          options,
+          logic: { rules },
+        }),
+        pageField('p2'),
+        pageField('p3'),
+        pageField('p4'),
+        pageField('p5'),
+        endPage(),
+      ]);
+
+    it('maps the answered option key to its id to match an explicit rule', () => {
+      const pages = buildPages(abcOptions, [
+        { if: 'id-a', goto_page_id: 'p3' },
+      ]);
+
+      expect(nextPage(pages, { q: 'a' })).toBe(2);
+      expect(nextPage(pages, { q: 'b' })).toBe(1);
+    });
+
+    it('does not apply the any-other-answer rule when option ids differ from keys (currently existing bug, B2)', () => {
+      const pages = buildPages(abcOptions, [
+        { if: 'id-a', goto_page_id: 'p3' },
+        { if: 'any_other_answer', goto_page_id: 'p4' },
+      ]);
+
+      expect(nextPage(pages, { q: 'a' })).toBe(2);
+      expect(nextPage(pages, { q: 'c' })).toBe(1);
+    });
+
+    it('applies the any-other-answer rule only when option ids equal keys', () => {
+      const pages = buildPages(abcOptionsWithIdEqualToKey, [
+        { if: 'a', goto_page_id: 'p3' },
+        { if: 'any_other_answer', goto_page_id: 'p4' },
+      ]);
+
+      expect(nextPage(pages, { q: 'a' })).toBe(2);
+      expect(nextPage(pages, { q: 'c' })).toBe(3);
+    });
+
+    it('applies the no-answer rule only when the question is unanswered', () => {
+      const pages = buildPages(abcOptions, [
+        { if: 'no_answer', goto_page_id: 'p5' },
+      ]);
+
+      expect(nextPage(pages, {})).toBe(4);
+      expect(nextPage(pages, { q: undefined })).toBe(4);
+      expect(nextPage(pages, { q: null })).toBe(4);
+      expect(nextPage(pages, { q: '' })).toBe(4);
+      expect(nextPage(pages, { q: 'a' })).toBe(1);
+    });
+
+    it('matches no rule for the key of an option that no longer exists (currently existing bug, B15)', () => {
+      const pages = buildPages(abcOptionsWithIdEqualToKey, [
+        { if: 'a', goto_page_id: 'p3' },
+        { if: 'any_other_answer', goto_page_id: 'p4' },
+        { if: 'no_answer', goto_page_id: 'p5' },
+      ]);
+
+      expect(nextPage(pages, { q: 'deleted_option' })).toBe(1);
+    });
+
+    it('returns -1 when the rule target is not one of the pages (currently existing bug, N9)', () => {
+      const pages = buildPages(abcOptions, [
+        { if: 'id-a', goto_page_id: 'disabled-page' },
+      ]);
+
+      expect(nextPage(pages, { q: 'a' })).toBe(-1);
+    });
+
+    it('returns -1 when a matching rule has no target page (currently existing bug, N9)', () => {
+      const pages = buildPages(abcOptions, [{ if: 'id-a', goto_page_id: '' }]);
+
+      expect(nextPage(pages, { q: 'a' })).toBe(-1);
+    });
+
+    it('returns the last page index for a rule that jumps to the end page', () => {
+      const pages = buildPages(abcOptions, [
+        { if: 'id-a', goto_page_id: 'page-end' },
+      ]);
+
+      expect(nextPage(pages, { q: 'a' })).toBe(pages.length - 1);
+    });
+  });
+
+  describe('page default next page', () => {
+    const buildPages = (questionLogic: LogicType) =>
+      convertCustomFieldsToNestedPages([
+        pageField('p1', { next_page_id: 'p4' }),
+        makeCustomField({
+          id: 'q',
+          input_type: 'select',
+          options: abcOptions,
+          logic: questionLogic,
+        }),
+        pageField('p2'),
+        pageField('p3'),
+        pageField('p4'),
+        endPage(),
+      ]);
+
+    it('follows the page default when no question on the page has rules', () => {
+      expect(nextPage(buildPages({}), { q: 'a' })).toBe(3);
+    });
+
+    it('treats a question with an empty rules list as having no rules', () => {
+      expect(nextPage(buildPages({ rules: [] }), { q: 'a' })).toBe(3);
+    });
+
+    it('lets a matching question rule override the page default', () => {
+      const pages = buildPages({ rules: [{ if: 'id-a', goto_page_id: 'p3' }] });
+
+      expect(nextPage(pages, { q: 'a' })).toBe(2);
+    });
+
+    it('goes to the sequential next page, ignoring the page default, when the question rules do not match (currently existing bug, B6)', () => {
+      const pages = buildPages({ rules: [{ if: 'id-a', goto_page_id: 'p3' }] });
+
+      expect(nextPage(pages, { q: 'b' })).toBe(1);
+      expect(nextPage(pages, {})).toBe(1);
+    });
+  });
+
+  describe('several questions with rules on one page', () => {
+    const buildPages = (
+      firstRules: QuestionRuleType[],
+      secondRules: QuestionRuleType[]
+    ) =>
+      convertCustomFieldsToNestedPages([
+        pageField('p1'),
+        makeCustomField({
+          id: 'q1',
+          input_type: 'select',
+          options: abcOptions,
+          logic: { rules: firstRules },
+        }),
+        makeCustomField({
+          id: 'q2',
+          input_type: 'select',
+          options: abcOptions,
+          logic: { rules: secondRules },
+        }),
+        pageField('p2'),
+        pageField('p3'),
+        pageField('p4'),
+        endPage(),
+      ]);
+
+    it('uses the last matching question, even when its target is nearer (currently existing bug, N2)', () => {
+      const pages = buildPages(
+        [{ if: 'id-a', goto_page_id: 'p4' }],
+        [{ if: 'id-a', goto_page_id: 'p3' }]
+      );
+
+      expect(nextPage(pages, { q1: 'a', q2: 'a' })).toBe(2);
+    });
+
+    it('keeps an earlier match when a later question does not match', () => {
+      const pages = buildPages(
+        [{ if: 'id-a', goto_page_id: 'p4' }],
+        [{ if: 'id-a', goto_page_id: 'p3' }]
+      );
+
+      expect(nextPage(pages, { q1: 'a', q2: 'b' })).toBe(3);
+    });
+  });
+
+  describe('legacy multiselect', () => {
+    const buildPages = (
+      options: IOptionsType[],
+      rules: QuestionRuleType[],
+      inputType: 'multiselect' | 'multiselect_image' = 'multiselect'
+    ) =>
+      convertCustomFieldsToNestedPages([
+        pageField('p1'),
+        makeCustomField({
+          id: 'q',
+          input_type: inputType,
+          options,
+          logic: { rules },
+        }),
+        pageField('p2'),
+        pageField('p3'),
+        pageField('p4'),
+        pageField('p5'),
+        endPage(),
+      ]);
+
+    it.each(['multiselect', 'multiselect_image'] as const)(
+      'goes to the farthest target when several selected %s options have rules',
+      (inputType) => {
+        const pages = buildPages(
+          abcOptions,
+          [
+            { if: 'id-b', goto_page_id: 'p4' },
+            { if: 'id-a', goto_page_id: 'p3' },
+          ],
+          inputType
+        );
+
+        expect(nextPage(pages, { q: ['a', 'b'] })).toBe(3);
+        expect(nextPage(pages, { q: ['a'] })).toBe(2);
+      }
+    );
+
+    it('does not apply the any-other-answer rule when option ids differ from keys (currently existing bug, B2)', () => {
+      const pages = buildPages(abcOptions, [
+        { if: 'id-a', goto_page_id: 'p3' },
+        { if: 'any_other_answer', goto_page_id: 'p4' },
+      ]);
+
+      expect(nextPage(pages, { q: ['c'] })).toBe(1);
+      expect(nextPage(pages, { q: ['a', 'c'] })).toBe(2);
+    });
+
+    it('applies the any-other-answer rule when option ids equal keys', () => {
+      const pages = buildPages(abcOptionsWithIdEqualToKey, [
+        { if: 'a', goto_page_id: 'p3' },
+        { if: 'any_other_answer', goto_page_id: 'p4' },
+      ]);
+
+      expect(nextPage(pages, { q: ['c'] })).toBe(3);
+      expect(nextPage(pages, { q: ['a'] })).toBe(2);
+      expect(nextPage(pages, { q: ['a', 'c'] })).toBe(3);
+    });
+
+    it('applies the no-answer rule to an empty selection', () => {
+      const pages = buildPages(abcOptions, [
+        { if: 'no_answer', goto_page_id: 'p5' },
+      ]);
+
+      expect(nextPage(pages, { q: [] })).toBe(4);
+      expect(nextPage(pages, {})).toBe(4);
+      expect(nextPage(pages, { q: ['a'] })).toBe(1);
+    });
+  });
+
+  describe.each(['linear_scale', 'rating'] as const)('%s', (inputType) => {
+    const buildPages = (rules: QuestionRuleType[]) =>
+      convertCustomFieldsToNestedPages([
+        pageField('p1'),
+        makeCustomField({
+          id: 'q',
+          input_type: inputType,
+          maximum: 5,
+          logic: { rules },
+        }),
+        pageField('p2'),
+        pageField('p3'),
+        pageField('p4'),
+        pageField('p5'),
+        endPage(),
+      ]);
+
+    it('matches an integer rule value against an integer answer', () => {
+      const pages = buildPages([{ if: 3, goto_page_id: 'p3' }]);
+
+      expect(nextPage(pages, { q: 3 })).toBe(2);
+      expect(nextPage(pages, { q: 2 })).toBe(1);
+    });
+
+    it('matches a string rule value against an integer answer (current behaviour)', () => {
+      const pages = buildPages([{ if: '3', goto_page_id: 'p3' }]);
+
+      expect(nextPage(pages, { q: 3 })).toBe(2);
+    });
+
+    it('does not match an integer rule value against a string answer', () => {
+      const pages = buildPages([{ if: 3, goto_page_id: 'p3' }]);
+
+      expect(nextPage(pages, { q: '3' })).toBe(1);
+    });
+
+    it('applies the any-other-answer rule only to values without their own rule', () => {
+      const pages = buildPages([
+        { if: 3, goto_page_id: 'p3' },
+        { if: 'any_other_answer', goto_page_id: 'p4' },
+      ]);
+
+      expect(nextPage(pages, { q: 3 })).toBe(2);
+      expect(nextPage(pages, { q: 1 })).toBe(3);
+      expect(nextPage(pages, { q: 5 })).toBe(3);
+      expect(nextPage(pages, {})).toBe(1);
+      expect(nextPage(pages, { q: null })).toBe(1);
+    });
+
+    it('does not apply the any-other-answer rule to values outside 1 to maximum', () => {
+      const pages = buildPages([
+        { if: 'any_other_answer', goto_page_id: 'p4' },
+      ]);
+
+      expect(nextPage(pages, { q: 6 })).toBe(1);
+      expect(nextPage(pages, { q: 0 })).toBe(1);
+    });
+
+    it('goes to the farther target when a string rule value also leaves the value to the any-other-answer rule (current behaviour)', () => {
+      const pages = buildPages([
+        { if: '3', goto_page_id: 'p3' },
+        { if: 'any_other_answer', goto_page_id: 'p4' },
+      ]);
+
+      expect(nextPage(pages, { q: 3 })).toBe(3);
+    });
+
+    it('applies the no-answer rule to empty answers', () => {
+      const pages = buildPages([{ if: 'no_answer', goto_page_id: 'p5' }]);
+
+      expect(nextPage(pages, {})).toBe(4);
+      expect(nextPage(pages, { q: null })).toBe(4);
+      expect(nextPage(pages, { q: '' })).toBe(4);
+      expect(nextPage(pages, { q: [] })).toBe(4);
+      expect(nextPage(pages, { q: 1 })).toBe(1);
+    });
+
+    it('treats the value 0 as no answer', () => {
+      const pages = buildPages([{ if: 'no_answer', goto_page_id: 'p5' }]);
+
+      expect(nextPage(pages, { q: 0 })).toBe(4);
+    });
+  });
+
+  describe('other input types', () => {
+    const buildPages = (
+      attributes: Partial<IFlatCustomField> &
+        Pick<IFlatCustomField, 'input_type'>,
+      rules: QuestionRuleType[]
+    ) =>
+      convertCustomFieldsToNestedPages([
+        pageField('p1'),
+        makeCustomField({ id: 'q', ...attributes, logic: { rules } }),
+        pageField('p2'),
+        pageField('p3'),
+        endPage(),
+      ]);
+
+    it('never matches a ranking rule on an option id, because answers hold ranked keys (currently existing bug, B8)', () => {
+      const pages = buildPages({ input_type: 'ranking', options: abcOptions }, [
+        { if: 'id-a', goto_page_id: 'p3' },
+      ]);
+
+      expect(nextPage(pages, { q: ['a', 'b', 'c'] })).toBe(1);
+      expect(nextPage(pages, { q: ['a'] })).toBe(1);
+    });
+
+    it('matches a ranking rule whose value equals the comma-joined ranked keys (currently existing bug, B8)', () => {
+      const pages = buildPages({ input_type: 'ranking', options: abcOptions }, [
+        { if: 'a,b,c', goto_page_id: 'p3' },
+      ]);
+
+      expect(nextPage(pages, { q: ['a', 'b', 'c'] })).toBe(2);
+    });
+
+    it('matches a text rule by equality with the answer', () => {
+      const pages = buildPages({ input_type: 'text' }, [
+        { if: 'hello', goto_page_id: 'p3' },
+      ]);
+
+      expect(nextPage(pages, { q: 'hello' })).toBe(2);
+      expect(nextPage(pages, { q: 'Hello' })).toBe(1);
+    });
+
+    it('matches a string rule value against a number answer but not the other way round', () => {
+      const withStringRule = buildPages({ input_type: 'number' }, [
+        { if: '5', goto_page_id: 'p3' },
+      ]);
+      const withIntegerRule = buildPages({ input_type: 'number' }, [
+        { if: 5, goto_page_id: 'p3' },
+      ]);
+
+      expect(nextPage(withStringRule, { q: 5 })).toBe(2);
+      expect(nextPage(withIntegerRule, { q: '5' })).toBe(1);
+    });
+
+    it('applies the no-answer rule to any input type', () => {
+      const pages = buildPages({ input_type: 'multiline_text' }, [
+        { if: 'no_answer', goto_page_id: 'p3' },
+      ]);
+
+      expect(nextPage(pages, { q: '' })).toBe(2);
+      expect(nextPage(pages, { q: 'text' })).toBe(1);
+    });
+  });
+});
+
+describe('getValidPagePath and getSkippedPageIndices edge cases', () => {
+  const selectOn = (id: string, rules: QuestionRuleType[]) =>
+    makeCustomField({
+      id,
+      input_type: 'select',
+      options: abcOptions,
+      logic: { rules },
+    });
+
+  it('stops the path at a page whose rule targets a page that is not in the form (currently existing bug, N9)', () => {
+    const pages = convertCustomFieldsToNestedPages([
+      pageField('p1'),
+      selectOn('q', [{ if: 'id-a', goto_page_id: 'disabled-page' }]),
+      pageField('p2'),
+      pageField('p3'),
+      endPage(),
+    ]);
+
+    expect(getValidPagePath({ pages, formData: { q: 'a' } })).toEqual([0]);
+    expect(getSkippedPageIndices({ pages, formData: { q: 'a' } })).toEqual([
+      1, 2, 3,
+    ]);
+  });
+
+  it('stops the path at a page whose rule targets an earlier page', () => {
+    const pages = convertCustomFieldsToNestedPages([
+      pageField('p1'),
+      pageField('p2'),
+      selectOn('q', [{ if: 'id-a', goto_page_id: 'p1' }]),
+      pageField('p3'),
+      endPage(),
+    ]);
+
+    expect(nextPage(pages, { q: 'a' }, 1)).toBe(0);
+    expect(getValidPagePath({ pages, formData: { q: 'a' } })).toEqual([0, 1]);
+    expect(getSkippedPageIndices({ pages, formData: { q: 'a' } })).toEqual([
+      2, 3,
+    ]);
+  });
+
+  it('stops the path at a page whose rule targets itself', () => {
+    const pages = convertCustomFieldsToNestedPages([
+      pageField('p1'),
+      selectOn('q', [{ if: 'id-a', goto_page_id: 'p1' }]),
+      pageField('p2'),
+      endPage(),
+    ]);
+
+    expect(nextPage(pages, { q: 'a' })).toBe(0);
+    expect(getValidPagePath({ pages, formData: { q: 'a' } })).toEqual([0]);
+  });
+
+  it('stops the path at a page whose default next page is earlier', () => {
+    const pages = convertCustomFieldsToNestedPages([
+      pageField('p1'),
+      pageField('p2', { next_page_id: 'p1' }),
+      pageField('p3'),
+      endPage(),
+    ]);
+
+    expect(getValidPagePath({ pages })).toEqual([0, 1]);
+  });
+
+  it('skips every page between a jump to the end page and the end page', () => {
+    const pages = convertCustomFieldsToNestedPages([
+      pageField('p1'),
+      selectOn('q', [{ if: 'id-a', goto_page_id: 'page-end' }]),
+      pageField('p2'),
+      pageField('p3'),
+      endPage(),
+    ]);
+
+    expect(getValidPagePath({ pages, formData: { q: 'a' } })).toEqual([0, 3]);
+    expect(getSkippedPageIndices({ pages, formData: { q: 'a' } })).toEqual([
+      1, 2,
+    ]);
+  });
+
+  it('can jump to a user fields page placed before the end page', () => {
+    const pages = convertCustomFieldsToNestedPages([
+      pageField('p1'),
+      selectOn('q', [{ if: 'id-a', goto_page_id: 'random-user-page-id' }]),
+      pageField('p2'),
+      pageField('random-user-page-id', {}, 'user_page'),
+      makeCustomField({
+        id: 'u_gender',
+        input_type: 'select',
+        options: abcOptions,
+      }),
+      endPage(),
+    ]);
+
+    expect(nextPage(pages, { q: 'a' })).toBe(2);
+    expect(getValidPagePath({ pages, formData: { q: 'a' } })).toEqual([
+      0, 2, 3,
+    ]);
+  });
+
+  it('updates the skipped pages when an answer changes', () => {
+    const pages = convertCustomFieldsToNestedPages([
+      pageField('p1'),
+      selectOn('q1', [
+        { if: 'id-a', goto_page_id: 'p3' },
+        { if: 'id-b', goto_page_id: 'p4' },
+      ]),
+      pageField('p2'),
+      makeCustomField({ id: 'q2', input_type: 'text' }),
+      pageField('p3', { next_page_id: 'page-end' }),
+      makeCustomField({ id: 'q3', input_type: 'text' }),
+      pageField('p4'),
+      makeCustomField({ id: 'q4', input_type: 'text' }),
+      endPage(),
+    ]);
+
+    expect(getSkippedPageIndices({ pages, formData: {} })).toEqual([3]);
+    expect(
+      getSkippedPageIndices({ pages, formData: { q1: 'a', q3: 'x' } })
+    ).toEqual([1, 3]);
+    expect(
+      getSkippedPageIndices({ pages, formData: { q1: 'b', q3: 'x' } })
+    ).toEqual([1, 2]);
   });
 });
