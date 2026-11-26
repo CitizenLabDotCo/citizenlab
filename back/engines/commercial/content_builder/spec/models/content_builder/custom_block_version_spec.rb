@@ -105,22 +105,32 @@ RSpec.describe ContentBuilder::CustomBlockVersion do
     end
 
     it 'accepts an explanation with a caveat and one without' do
-      parts = { 'included' => 'Every contribution.', 'calculation' => 'One per contribution.' }
+      parts = {
+        'included' => { 'en' => 'Every contribution.', 'nl-BE' => 'Elke bijdrage.' },
+        'calculation' => { 'en' => 'One per contribution.' }
+      }
 
       expect(build(:custom_block_version, manifest: { 'explanation' => parts })).to be_valid
-      expect(build(:custom_block_version, manifest: { 'explanation' => parts.merge('caveat' => 'Mondays.') }))
-        .to be_valid
+      expect(
+        build(:custom_block_version, manifest: {
+          'explanation' => parts.merge('caveat' => { 'en' => 'Weeks start on a Monday.' })
+        })
+      ).to be_valid
     end
 
     it 'rejects an explanation that says what is counted but not how' do
-      version = build(:custom_block_version, manifest: { 'explanation' => { 'included' => 'Every contribution.' } })
+      version = build(:custom_block_version, manifest: {
+        'explanation' => { 'included' => { 'en' => 'Every contribution.' } }
+      })
 
       expect(version).to be_invalid
       expect(version.errors.details[:manifest]).to include(hash_including(error: :explanation_invalid))
     end
 
-    it 'rejects the single string an explanation used to be' do
-      version = build(:custom_block_version, manifest: { 'explanation' => 'Counts contributions.' })
+    it 'rejects a part that is one string rather than a multiloc' do
+      version = build(:custom_block_version, manifest: {
+        'explanation' => { 'included' => 'Every contribution.', 'calculation' => 'One per contribution.' }
+      })
 
       expect(version).to be_invalid
       expect(version.errors.details[:manifest]).to include(hash_including(error: :explanation_invalid))

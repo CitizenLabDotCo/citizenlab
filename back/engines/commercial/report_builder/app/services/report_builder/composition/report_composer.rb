@@ -96,15 +96,21 @@ module ReportBuilder
 
         # A run that was stopped — out of rounds, out of time, cancelled — did not
         # finish, and a review pass would only spend more of what ran out.
-        return result[:layout] unless result[:stopped] == 'done'
+        return localize(result[:layout]) unless result[:stopped] == 'done'
 
-        review(result[:layout])
+        localize(review(result[:layout]))
       rescue StandardError
         # The charts were authored for a report that never got written — whether the
         # model gave up or the provider threw. Nothing lists a block or can reach one
         # without a report placing it, so they would only sit in the database.
         discard_authored_blocks
         raise
+      end
+
+      # The run writes one locale and the platform may publish in several. This is the
+      # last step, so it also covers whatever the review pass changed.
+      def localize(layout)
+        LayoutTranslator.new(locale: @locale).call(layout)
       end
 
       # What has been checked so far proves the report is well-formed, not that it shows

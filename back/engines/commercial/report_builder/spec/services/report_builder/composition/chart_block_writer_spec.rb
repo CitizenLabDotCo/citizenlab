@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe ReportBuilder::Composition::ChartBlockWriter do
-  subject(:chart_writer) { described_class.new(author, locale: 'en') }
+  subject(:chart_writer) { described_class.new(author, locale: 'en', translator: translator) }
 
   # Layer 2's restricted role is cluster-global; provision it idempotently so the
   # authored query can be validated the way the composer validates it.
@@ -15,6 +15,19 @@ describe ReportBuilder::Composition::ChartBlockWriter do
   # rubocop:enable RSpec/BeforeAfterAll
 
   let(:author) { create(:admin) }
+  let(:other_locales) { AppConfiguration.instance.settings('core', 'locales') - ['en'] }
+  # Stands in for the model that fills in the platform's other locales: each text
+  # comes back tagged with the locale it is supposedly in, so a spec can see which
+  # string went where without a model call.
+  let(:translator) do
+    instance_double(ReportBuilder::Composition::Translator).tap do |double|
+      allow(double).to receive(:call) do |texts|
+        texts.transform_values do |text|
+          { 'en' => text }.merge(other_locales.index_with { |locale| "#{locale}: #{text}" })
+        end
+      end
+    end
+  end
   let(:sql) { 'SELECT count(*) AS count FROM reporting_contributions' }
   let(:source) do
     <<~TSX
@@ -72,7 +85,7 @@ describe ReportBuilder::Composition::ChartBlockWriter do
       expect(ContentBuilder::CustomBlock.find(result.block_id)).to be_published
       expect(version.source).to eq source
       expect(version.bundle).to eq 'export default function Block(){return null}'
-      expect(version.messages).to eq messages
+      expect(version.messages['en']).to eq messages['en']
       expect(version.sdk_version).to eq 'v1'
       expect(version.toolchain).to include('esbuild' => '0.28.2')
     end
@@ -85,7 +98,7 @@ describe ReportBuilder::Composition::ChartBlockWriter do
     it 'names the block in the report locale' do
       result = author_with
 
-      expect(ContentBuilder::CustomBlock.find(result.block_id).title_multiloc).to eq('en' => 'Chart')
+      expect(ContentBuilder::CustomBlock.find(result.block_id).title_multiloc).to include('en' => 'Chart')
     end
 
     it 'refuses a source that is empty' do
@@ -93,8 +106,26 @@ describe ReportBuilder::Composition::ChartBlockWriter do
         .to raise_error described_class::Rejected, /source is required/
     end
 
-    it 'stores the explanation of what the chart counts' do
-      expect(stored_version(author_with).explanation).to eq explanation
+    it 'stores the explanation of what the chart counts, in every platform locale' do
+      stored = stored_version(author_with).explanation
+
+      expect(stored.keys).to match_array %w[included calculation caveat]
+      expect(stored['included']).to eq(
+        { 'en' => explanation['included'] }
+          .merge(other_locales.index_with { |locale| "#{locale}: #{explanation['included']}" })
+      )
+    end
+
+    it 'names the block and writes its catalogues in every platform locale' do
+      result = author_with
+      locale = other_locales.first
+
+      expect(ContentBuilder::CustomBlock.find(result.block_id).title_multiloc)
+        .to include('en' => 'Chart', locale => "#{locale}: Chart")
+      expect(stored_version(result).messages).to include(
+        'en' => { 'total' => 'Contributions' },
+        locale => { 'total' => "#{locale}: Contributions" }
+      )
     end
 
     it 'drops a caveat the author had none to give' do
@@ -103,7 +134,7 @@ describe ReportBuilder::Composition::ChartBlockWriter do
         explanation: explanation.merge('caveat' => '  ')
       )
 
-      expect(stored_version(result).explanation).to eq explanation.except('caveat')
+      expect(stored_version(result).explanation.keys).to match_array %w[included calculation]
     end
 
     it 'finishes a part the author left unpunctuated' do
@@ -112,7 +143,8 @@ describe ReportBuilder::Composition::ChartBlockWriter do
         explanation: explanation.merge('included' => 'Every contribution in this project')
       )
 
-      expect(stored_version(result).explanation['included']).to eq 'Every contribution in this project.'
+      expect(stored_version(result).explanation.dig('included', 'en'))
+        .to eq 'Every contribution in this project.'
     end
 
     it 'keeps a part the author invented out of the manifest' do
@@ -121,7 +153,7 @@ describe ReportBuilder::Composition::ChartBlockWriter do
         explanation: explanation.merge('sql' => 'SELECT 1')
       )
 
-      expect(stored_version(result).explanation).to eq explanation
+      expect(stored_version(result).explanation.keys).to match_array %w[included calculation caveat]
     end
 
     it 'refuses a chart that explains nothing' do
@@ -291,9 +323,10 @@ describe ReportBuilder::Composition::ChartBlockWriter do
     end
 
     it 'keeps the explanation the chart was stored with' do
+      previous = stored_version(authored).explanation
       result = chart_writer.edit(block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')")
 
-      expect(stored_version(result).explanation).to eq explanation
+      expect(stored_version(result).explanation).to eq previous
     end
 
     it 'takes a new explanation when the edit changes what is counted' do
@@ -307,7 +340,9 @@ describe ReportBuilder::Composition::ChartBlockWriter do
         explanation: rewritten
       )
 
-      expect(stored_version(result).explanation).to eq rewritten
+      expect(stored_version(result).explanation.dig('included', 'en')).to eq rewritten['included']
+      expect(stored_version(result).explanation.dig('included', other_locales.first))
+        .to eq "#{other_locales.first}: #{rewritten['included']}"
     end
 
     it 'carries the catalogues over, so the edit does not silently drop them' do
@@ -315,7 +350,7 @@ describe ReportBuilder::Composition::ChartBlockWriter do
         block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')"
       )
 
-      expect(stored_version(result).messages).to eq messages
+      expect(stored_version(result).messages['en']).to eq messages['en']
     end
 
     # Silence here would be worse than an error: the model would go on to place a

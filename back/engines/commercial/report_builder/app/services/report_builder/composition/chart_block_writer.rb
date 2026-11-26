@@ -48,10 +48,12 @@ module ReportBuilder
       #   single-locale by design, and a block's catalogues follow it.
       # @param run_id [String, nil] the Run doing the authoring, recorded on every
       #   version so a chart can be traced back to the conversation that wrote it.
-      def initialize(author, locale: nil, run_id: nil)
+      # @param translator [Translator, nil] what fills in the platform's other locales.
+      def initialize(author, locale: nil, run_id: nil, translator: nil)
         @author = author
         @locale = locale
         @run_id = run_id
+        @translator = translator
       end
 
       # @param title [String] the block name admins see in the builder.
@@ -66,11 +68,12 @@ module ReportBuilder
 
         parts = validate_explanation!(explanation)
         schema = validate_config_schema!(config_schema)
-        catalogues = normalize_messages(messages)
-        built = build!(source, schema, catalogues, parts)
+        title_multiloc, catalogues, explanation_multilocs =
+          localize(title.to_s.strip.presence || 'Chart', normalize_messages(messages), parts)
+        built = build!(source, schema, catalogues, explanation_multilocs)
 
         block = ContentBuilder::CustomBlock.create!(
-          title_multiloc: { locale => title.to_s.strip.presence || 'Chart' },
+          title_multiloc: title_multiloc,
           status: 'draft',
           created_by: @author
         )
@@ -120,7 +123,7 @@ module ReportBuilder
         source = replace_once!(previous.source, find, replace.to_s)
         built = build!(
           source, previous.manifest['config_schema'], previous.messages,
-          explanation.present? ? validate_explanation!(explanation) : previous.manifest['explanation']
+          explanation.present? ? localize_explanation(explanation) : previous.manifest['explanation']
         )
 
         version = block.versions.create!(
@@ -166,12 +169,59 @@ module ReportBuilder
         @locale.presence || AppConfiguration.instance.settings('core', 'locales')&.first || 'en'
       end
 
+      def locales
+        @locales ||= AppConfiguration.instance.settings('core', 'locales').presence || [locale]
+      end
+
+      # One call for the whole block: its name, every string it displays, and every
+      # part of its explanation. A chart that only speaks the language the run was
+      # written in is a chart half the platform's readers cannot read.
+      #
+      # @return [Array(Hash, Hash, Hash)] the title multiloc, the catalogues keyed by
+      #   locale, and the explanation parts as multilocs.
+      def localize(title, catalogues, parts)
+        catalogue = catalogues[locale] || catalogues.values.first || {}
+        multilocs = translate([title, *catalogue.values, *parts.values])
+
+        [
+          multilocs.first,
+          catalogues_for(catalogue.keys.zip(multilocs[1, catalogue.size] || []).to_h),
+          parts.keys.zip(multilocs.last(parts.size)).to_h
+        ]
+      end
+
+      def localize_explanation(explanation)
+        parts = validate_explanation!(explanation)
+        parts.keys.zip(translate(parts.values)).to_h
+      end
+
+      # Keyed by position, because a catalogue key is the model's to choose and could
+      # collide with anything else sent in the same call.
+      def translate(texts)
+        ids = texts.each_index.map { |index| "t#{index}" }
+        multilocs = translator.call(ids.zip(texts).to_h)
+        ids.map { |id| multilocs[id] || {} }
+      end
+
+      # Every locale carries every key: a catalogue missing one fails the build, and
+      # the text the run wrote stands in better than a blank.
+      def catalogues_for(message_multilocs)
+        return {} if message_multilocs.empty?
+
+        locales.index_with do |target|
+          message_multilocs.transform_values { |multiloc| multiloc[target].presence || multiloc[locale] }
+        end
+      end
+
+      def translator
+        @translator ||= Translator.new(locale: locale, locales: locales)
+      end
+
       def build!(source, schema, catalogues, explanation)
         result = ContentBuilder::CustomBlocks::BlockBuilder.new.call(
           source: source,
           manifest: manifest(schema, explanation),
-          messages: catalogues,
-          locales: [locale]
+          messages: catalogues
         )
         return result if result.succeeded
 

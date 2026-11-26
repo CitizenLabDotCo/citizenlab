@@ -68,7 +68,8 @@ module ContentBuilder
     end
 
     # What this chart counts, written for an admin: +included+, +calculation+ and an
-    # optional +caveat+. Nil on blocks authored before it was asked for.
+    # optional +caveat+, each a multiloc. Nil on blocks authored before it was asked
+    # for.
     def explanation
       manifest['explanation']
     end
@@ -144,14 +145,20 @@ module ContentBuilder
       return if explanation.nil? || explanation_parts_valid?
 
       errors.add :manifest, :explanation_invalid,
-        message: 'explanation must be an object with a non-empty included and calculation, and an optional caveat'
+        message: 'explanation must be an object of included, calculation and an optional caveat, each a multiloc'
     end
 
     def explanation_parts_valid?
       return false unless explanation.is_a?(Hash)
+      return false unless REQUIRED_EXPLANATION_PARTS.all? { |part| explanation.key?(part) }
 
-      REQUIRED_EXPLANATION_PARTS.all? { |part| explanation[part].is_a?(String) && explanation[part].present? } &&
-        explanation.except(*REQUIRED_EXPLANATION_PARTS).all? { |_, text| text.is_a?(String) }
+      explanation.values.all? { |part| multiloc_with_text?(part) }
+    end
+
+    def multiloc_with_text?(part)
+      part.is_a?(Hash) &&
+        part.all? { |locale, text| locale.is_a?(String) && text.is_a?(String) } &&
+        part.values.any?(&:present?)
     end
 
     def validate_messages
