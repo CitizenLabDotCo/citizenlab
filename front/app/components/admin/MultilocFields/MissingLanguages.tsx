@@ -12,7 +12,7 @@ interface Props {
 // The one line under a language group that names what is left to translate.
 const MissingLanguages = ({ message }: Props) =>
   message ? (
-    <p role="alert" className={styles.missingLanguages}>
+    <p role="alert" className={styles.missingLanguages} data-save-error>
       <Icon name="info-16" className={styles.missingLanguagesIcon} />
       {message}
     </p>

@@ -100,10 +100,11 @@ const ProjectWorkspace = ({
     if (!finishedSaving || !inPhase) return;
 
     // Wait for field errors to mount after every save attempt, including retries.
-    // Design-system fields render their error in the errorMessage slot.
+    // Design-system fields render their error in the errorMessage slot; a
+    // language group marks the line that names what is left to translate.
     const frame = requestAnimationFrame(() => {
       const error = workspaceRef.current?.querySelector<HTMLElement>(
-        '[slot="errorMessage"], .e2e-error-message:not(.error-exit):not(.error-exit-active)'
+        '[slot="errorMessage"], [data-save-error], .e2e-error-message:not(.error-exit):not(.error-exit-active)'
       );
       error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
