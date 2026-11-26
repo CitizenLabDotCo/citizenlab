@@ -2709,6 +2709,8 @@
   "app.designSystem.FilterBar.addFilter": "Add filter",
   "app.designSystem.FilterBar.clear": "Clear",
   "app.designSystem.FilterBar.removeFilter": "Remove filter",
+  "app.designSystem.LanguageSwitcher.languagesDone": "{done} of {total} languages done",
+  "app.designSystem.LanguageSwitcher.toTranslate": "{language}, to translate",
   "app.designSystem.Modal.close": "Close",
   "app.designSystem.Pagination.next": "Next page",
   "app.designSystem.Pagination.page": "Page {page}",
