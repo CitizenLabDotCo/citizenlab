@@ -86,7 +86,7 @@ RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
     let(:users) do
       birthyears = [2000, 1950]
       users = birthyears.map do |year|
-        create(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: year)])
+        create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: ref_distribution.custom_field, value: year)])
       end
       # Users without year of birth should not affect the score.
       users << create(:user)

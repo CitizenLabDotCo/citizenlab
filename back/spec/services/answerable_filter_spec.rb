@@ -8,9 +8,9 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a select field' do
-    let_it_be(:field) { create(:custom_field_select, key: 'color') }
-    let_it_be(:red) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'color', value: 'red')]) }
-    let_it_be(:blue) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'color', value: 'blue')]) }
+    let_it_be(:field) { create(:custom_field_select) }
+    let_it_be(:red) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'red')]) }
+    let_it_be(:blue) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'blue')]) }
     let_it_be(:unanswered) { create(:user) }
 
     it 'eq matches users with that answer' do
@@ -36,10 +36,10 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a multiselect field' do
-    let_it_be(:field) { create(:custom_field_multiselect, key: 'pets') }
-    let_it_be(:cat_and_dog) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'pets', value: %w[cat dog])]) }
-    let_it_be(:dog_only) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'pets', value: ['dog'])]) }
-    let_it_be(:none_selected) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'pets', value: [])]) }
+    let_it_be(:field) { create(:custom_field_multiselect) }
+    let_it_be(:cat_and_dog) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: %w[cat dog])]) }
+    let_it_be(:dog_only) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: ['dog'])]) }
+    let_it_be(:none_selected) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: [])]) }
     let_it_be(:unanswered) { create(:user) }
 
     it 'eq matches users who selected the option, whatever else they selected' do
@@ -62,9 +62,9 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a text field' do
-    let_it_be(:field) { create(:custom_field, key: 'motto') }
-    let_it_be(:carpe) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'motto', value: 'carpe diem')]) }
-    let_it_be(:yolo) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'motto', value: 'yolo')]) }
+    let_it_be(:field) { create(:custom_field) }
+    let_it_be(:carpe) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'carpe diem')]) }
+    let_it_be(:yolo) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'yolo')]) }
     let_it_be(:unanswered) { create(:user) }
 
     it 'eq matches the exact text' do
@@ -78,9 +78,9 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a number field' do
-    let_it_be(:field) { create(:custom_field_number, key: 'bikes') }
-    let_it_be(:two) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'bikes', value: 2)]) }
-    let_it_be(:five) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'bikes', value: 5)]) }
+    let_it_be(:field) { create(:custom_field_number) }
+    let_it_be(:two) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 2)]) }
+    let_it_be(:five) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 5)]) }
     let_it_be(:unanswered) { create(:user) }
 
     it 'eq compares numerically, so an integer answer matches its float form' do
@@ -106,9 +106,9 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a checkbox field' do
-    let_it_be(:field) { create(:custom_field_checkbox, key: 'attends') }
-    let_it_be(:yes) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'attends', value: true)]) }
-    let_it_be(:no) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'attends', value: false)]) }
+    let_it_be(:field) { create(:custom_field_checkbox) }
+    let_it_be(:yes) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: true)]) }
+    let_it_be(:no) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: false)]) }
     let_it_be(:unanswered) { create(:user) }
 
     it 'eq distinguishes false answers from missing ones' do
@@ -119,9 +119,9 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a date field' do
-    let_it_be(:field) { create(:custom_field_date, key: 'member_since') }
-    let_it_be(:january) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'member_since', value: '2026-01-15')]) }
-    let_it_be(:march) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'member_since', value: '2026-03-15')]) }
+    let_it_be(:field) { create(:custom_field_date) }
+    let_it_be(:january) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: '2026-01-15')]) }
+    let_it_be(:march) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: '2026-03-15')]) }
 
     it 'one_of matches the exact dates' do
       expect(filter(field).one_of(%w[2026-01-15 2026-06-01])).to contain_exactly(january)
@@ -136,9 +136,9 @@ RSpec.describe AnswerableFilter do
 
   context 'with a multiselect image field' do
     let_it_be(:form) { create(:custom_form, participation_context: create(:project)) }
-    let_it_be(:field) { create(:custom_field_multiselect_image, resource: form, key: 'pictures') }
-    let_it_be(:sunset) { create(:idea, project: form.participation_context, custom_field_answers: [build(:custom_field_answer, key: 'pictures', value: %w[sunset])]) }
-    let_it_be(:none_selected) { create(:idea, project: form.participation_context, custom_field_answers: [build(:custom_field_answer, key: 'pictures', value: [])]) }
+    let_it_be(:field) { create(:custom_field_multiselect_image, resource: form) }
+    let_it_be(:sunset) { create(:idea, project: form.participation_context, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: %w[sunset])]) }
+    let_it_be(:none_selected) { create(:idea, project: form.participation_context, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: [])]) }
 
     it 'one_of matches ideas that selected any of the options' do
       expect(described_class.new(field, Idea).one_of(%w[sunset beach])).to contain_exactly(sunset)
@@ -152,18 +152,18 @@ RSpec.describe AnswerableFilter do
 
   context 'with rating and sentiment scale fields' do
     let_it_be(:form) { create(:custom_form, participation_context: create(:project)) }
-    let_it_be(:rating_field) { create(:custom_field_rating, resource: form, key: 'rating_q') }
-    let_it_be(:sentiment_field) { create(:custom_field_sentiment_linear_scale, resource: form, key: 'sentiment_q') }
+    let_it_be(:rating_field) { create(:custom_field_rating, resource: form) }
+    let_it_be(:sentiment_field) { create(:custom_field_sentiment_linear_scale, resource: form) }
     let_it_be(:idea) do
       create(:idea, project: form.participation_context, custom_field_answers: [
-        build(:custom_field_answer, key: 'rating_q', value: 4),
-        build(:custom_field_answer, key: 'sentiment_q', value: 2)
+        build(:custom_field_answer, custom_field: rating_field, value: 4),
+        build(:custom_field_answer, custom_field: sentiment_field, value: 2)
       ])
     end
     let_it_be(:other_idea) do
       create(:idea, project: form.participation_context, custom_field_answers: [
-        build(:custom_field_answer, key: 'rating_q', value: 1),
-        build(:custom_field_answer, key: 'sentiment_q', value: 5)
+        build(:custom_field_answer, custom_field: rating_field, value: 1),
+        build(:custom_field_answer, custom_field: sentiment_field, value: 5)
       ])
     end
 
@@ -183,16 +183,16 @@ RSpec.describe AnswerableFilter do
     let_it_be(:project) { create(:project) }
     let_it_be(:form) { create(:custom_form, participation_context: project) }
     let_it_be(:field) { create(:custom_field_linear_scale, resource: form, key: 'rating') }
-    let_it_be(:good) { create(:idea, project: project, custom_field_answers: [build(:custom_field_answer, key: 'rating', value: 4)]) }
-    let_it_be(:bad) { create(:idea, project: project, custom_field_answers: [build(:custom_field_answer, key: 'rating', value: 1)]) }
+    let_it_be(:good) { create(:idea, project: project, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 4)]) }
+    let_it_be(:bad) { create(:idea, project: project, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 1)]) }
 
     it 'filters ideas by their answers' do
       expect(described_class.new(field, Idea).eq(4)).to contain_exactly(good)
     end
 
     it 'does not mix in user answers for the same key' do
-      create(:custom_field_number, key: 'rating')
-      create(:user, custom_field_answers: [build(:custom_field_answer, key: 'rating', value: 4)])
+      user_field = create(:custom_field_number, key: 'rating')
+      create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: user_field, value: 4)])
 
       expect(described_class.new(field, Idea).eq(4)).to contain_exactly(good)
       expect(described_class.new(field, Idea.where(project: project)).present).to contain_exactly(good, bad)
@@ -201,7 +201,7 @@ RSpec.describe AnswerableFilter do
     it 'does not mix in answers of another form field with the same key' do
       other_form = create(:custom_form, participation_context: create(:project))
       other_field = create(:custom_field_linear_scale, resource: other_form, key: 'rating')
-      create(:idea, project: other_form.participation_context, custom_field_answers: [build(:custom_field_answer, key: 'rating', value: 4, custom_field: other_field)])
+      create(:idea, project: other_form.participation_context, custom_field_answers: [build(:custom_field_answer, custom_field: other_field, value: 4)])
 
       expect(described_class.new(field, Idea).eq(4)).to contain_exactly(good)
     end

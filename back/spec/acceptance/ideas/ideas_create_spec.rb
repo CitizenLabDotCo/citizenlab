@@ -546,7 +546,8 @@ resource 'Ideas' do
       context 'when resident' do
         before { header_token_for(resident) }
 
-        let(:resident) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)]) }
+        let(:age_field) { create(:custom_field, key: 'age') }
+        let(:resident) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: age_field, value: 30)]) }
         let(:publication_status) { 'published' }
 
         example 'does not assign anyone to the created idea', document: false do
@@ -599,7 +600,7 @@ resource 'Ideas' do
             permission = phase.permissions.find_by(action: 'posting_idea')
             permission.update!(custom_fields_behavior: 'custom', user_data_collection: 'all_data')
             permission.permissions_custom_fields = [
-              create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
+              create(:permissions_custom_field, custom_field: age_field)
             ]
 
             project
@@ -792,7 +793,8 @@ resource 'Ideas' do
         end
 
         context 'Creating a community monitor survey response when only demographics are collected' do
-          let(:resident) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)]) }
+          let(:age_field) { create(:custom_field, key: 'age') }
+          let(:resident) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: age_field, value: 30)]) }
 
           before do
             permission = phase.permissions.find_by(action: 'posting_idea')
@@ -802,7 +804,7 @@ resource 'Ideas' do
               user_data_collection: 'demographics_only'
             )
             permission.permissions_custom_fields = [
-              create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
+              create(:permissions_custom_field, custom_field: age_field)
             ]
           end
 

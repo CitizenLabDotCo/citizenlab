@@ -8,7 +8,7 @@ describe Export::Xlsx::ValueVisitor do
   end
 
   let(:option_index) { {} }
-  let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, key: field_key, value: 'John')]) }
+  let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'John')]) }
   let(:field) { create(:custom_field, input_type: 'text', key: field_key) }
 
   describe '#default' do
@@ -24,7 +24,7 @@ describe Export::Xlsx::ValueVisitor do
     context 'for a non built-in field' do
       let(:field_key) { 'name' }
       let(:field) { create(:custom_field, input_type: 'text', key: field_key) }
-      let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, key: field_key, value: 'John')]) }
+      let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'John')]) }
 
       it 'returns the field value from the answer' do
         expect(visitor.default(field)).to eq 'John'
@@ -35,7 +35,7 @@ describe Export::Xlsx::ValueVisitor do
   context 'visit_xxx methods' do
     let(:field_key) { 'field_1' }
     let!(:field) { create(:custom_field, resource_type: 'CustomForm', input_type: input_type, key: field_key) }
-    let(:answers) { value.nil? ? [] : [build(:custom_field_answer, key: field_key, value: value)] }
+    let(:answers) { value.nil? ? [] : [build(:custom_field_answer, custom_field: field, value: value)] }
     let(:model) { build(:idea, custom_field_answers: answers) }
 
     describe '#visit_text' do

@@ -21,7 +21,7 @@ describe Export::CustomFieldForExport do
       )
     end
     let(:name) { 'John' }
-    let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, key: 'name', value: name)]) }
+    let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, custom_field:, value: name)]) }
 
     describe '#value_from' do
       context 'for a simple field' do
@@ -33,7 +33,7 @@ describe Export::CustomFieldForExport do
       context 'for a select field without options' do
         let(:input_type) { 'select' }
         let(:field_value) { 'cat' }
-        let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, key: 'name', value: field_value)]) }
+        let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, custom_field:, value: field_value)]) }
 
         it 'returns the empty string' do
           expect(report_field.value_from(model)).to eq ''
@@ -43,7 +43,7 @@ describe Export::CustomFieldForExport do
       context 'for a select field with options' do
         let(:input_type) { 'select' }
         let(:field_value) { 'cat' }
-        let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, key: 'name', value: field_value)]) }
+        let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, custom_field:, value: field_value)]) }
         let!(:field_option1) do
           create(
             :custom_field_option,
@@ -98,7 +98,7 @@ describe Export::CustomFieldForExport do
         end
 
         context 'when the field value is "outside"' do
-          let(:model) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: 'outside')]) }
+          let(:model) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field:, value: 'outside')]) }
 
           it 'returns "Somewhere else"' do
             expect(report_field.value_from(model)).to eq 'Somewhere else'
@@ -112,7 +112,7 @@ describe Export::CustomFieldForExport do
               title_multiloc: { 'en' => 'Paris', 'nl-NL' => 'Parijs' }
             )
           end
-          let(:model) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)]) }
+          let(:model) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field:, value: area.id)]) }
 
           it 'returns the area for the field' do
             I18n.with_locale('nl-NL') do
@@ -160,7 +160,7 @@ describe Export::CustomFieldForExport do
       described_class.new(custom_field, Export::Geojson::ValueVisitor, :author)
     end
 
-    let(:user) { build(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: 1984)]) }
+    let(:user) { build(:user, custom_field_answers: [build(:custom_field_answer, custom_field:, value: 1984)]) }
     let(:input_type) { 'number' }
     let(:custom_field) do
       create(
@@ -182,7 +182,7 @@ describe Export::CustomFieldForExport do
 
       context 'for a select field without options' do
         let(:input_type) { 'select' }
-        let(:user) { build(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: '1991')]) }
+        let(:user) { build(:user, custom_field_answers: [build(:custom_field_answer, custom_field:, value: '1991')]) }
 
         it 'returns the empty string' do
           expect(report_field.value_from(model)).to eq ''
@@ -192,7 +192,7 @@ describe Export::CustomFieldForExport do
       context 'for a select field with options' do
         let(:input_type) { 'select' }
         let(:field_value) { '1990' }
-        let(:user) { build(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: '1990')]) }
+        let(:user) { build(:user, custom_field_answers: [build(:custom_field_answer, custom_field:, value: '1990')]) }
         let!(:field_option1) do
           create(
             :custom_field_option,

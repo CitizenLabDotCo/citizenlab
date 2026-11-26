@@ -259,7 +259,7 @@ resource 'BulkImportIdeasImportIdeas' do
         example 'Approves ideas where "other" is selected but the "other" text is blank' do
           # The respondent ticked "other" but left the "please specify" line blank,
           # so there is no answer for the synthetic `select_field_other` field.
-          create(:custom_field_answer, answerable: draft_ideas[0], key: 'select_field', value: 'other')
+          create(:custom_field_answer, answerable: draft_ideas[0], custom_field: select_field, value: 'other')
           # The required question itself is left unanswered, which should still block approval.
 
           do_request

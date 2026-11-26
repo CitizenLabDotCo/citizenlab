@@ -42,7 +42,7 @@ module GeneralHelper
   # `project`, a moderator of another project, a folder moderator and a space
   # moderator. When admins and moderators are excluded from statistics, ALL of them
   # are excluded, not only the moderators of the project in question. The given
-  # custom field answers (as `{ key => value }`) and attributes are applied to every user.
+  # custom field answers (as `{ custom_field => value }`) and attributes are applied to every user.
   def create_admins_and_moderators(project: create(:project), answers: {}, **attributes)
     [
       [:admin],
@@ -51,7 +51,7 @@ module GeneralHelper
       [:project_folder_moderator],
       [:space_moderator]
     ].map do |factory, role_attributes = {}|
-      custom_field_answers = answers.map { |key, value| build(:custom_field_answer, key: key, value: value) }
+      custom_field_answers = answers.map { |custom_field, value| build(:custom_field_answer, custom_field:, value:) }
       create(factory, **role_attributes, custom_field_answers: custom_field_answers, **attributes)
     end
   end

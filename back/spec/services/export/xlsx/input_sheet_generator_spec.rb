@@ -84,7 +84,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            author: create(:user, custom_field_answers: [build(:custom_field_answer, key: create(:custom_field_birthyear).key, value: 1999)]),
+            author: create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: create(:custom_field_birthyear), value: 1999)]),
             assignee: assignee,
             manual_votes_amount: 5
           )
@@ -169,7 +169,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            custom_field_answers: [build(:custom_field_answer, key: extra_idea_field.key, value: 'Answer')],
+            custom_field_answers: [build(:custom_field_answer, custom_field: extra_idea_field, value: 'Answer')],
             assignee: assignee
           )
         end
@@ -394,6 +394,15 @@ describe Export::Xlsx::InputSheetGenerator do
       let!(:matrix_field) { create(:custom_field_matrix_linear_scale, resource: form) }
       let!(:end_page_field) { create(:custom_field_page, key: 'form_end', resource: form) }
 
+      let(:gender_field) { create(:custom_field_gender, :with_options, title_multiloc: { 'en' => 'Gender' }) }
+      let(:birthyear_field) { create(:custom_field_birthyear, title_multiloc: { 'en' => 'Birth year' }) }
+      let(:demographic_answers) do
+        [
+          build(:custom_field_answer, custom_field: birthyear_field, value: 1999),
+          build(:custom_field_answer, custom_field: gender_field, value: 'female')
+        ]
+      end
+      let(:author_answers) { [] }
       let(:survey_response1) do
         create(
           :idea,
@@ -401,13 +410,10 @@ describe Export::Xlsx::InputSheetGenerator do
           creation_phase: phase,
           phases: [phase],
           custom_field_answers: [
-            build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog]),
-            build(:custom_field_answer, key: ranking_field.key, value: %w[by_train by_bike])
+            build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat dog]),
+            build(:custom_field_answer, custom_field: ranking_field, value: %w[by_train by_bike])
           ],
-          author: create(:user, custom_field_answers: [
-            build(:custom_field_answer, key: 'birthyear', value: 1999),
-            build(:custom_field_answer, key: 'gender', value: 'female')
-          ])
+          author: create(:user, custom_field_answers: author_answers)
         )
       end
       let(:survey_response2) do
@@ -417,8 +423,8 @@ describe Export::Xlsx::InputSheetGenerator do
           creation_phase: phase,
           phases: [phase],
           custom_field_answers: [
-            build(:custom_field_answer, key: multiselect_field.key, value: %w[cat]),
-            build(:custom_field_answer, key: matrix_field.key, value: { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 4 })
+            build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat]),
+            build(:custom_field_answer, custom_field: matrix_field, value: { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 4 })
           ]
         )
       end
@@ -429,8 +435,8 @@ describe Export::Xlsx::InputSheetGenerator do
           creation_phase: phase,
           phases: [phase],
           custom_field_answers: [
-            build(:custom_field_answer, key: multiselect_field.key, value: %w[dog]),
-            build(:custom_field_answer, key: ranking_field.key, value: %w[by_bike by_train])
+            build(:custom_field_answer, custom_field: multiselect_field, value: %w[dog]),
+            build(:custom_field_answer, custom_field: ranking_field, value: %w[by_bike by_train])
           ],
           author: nil
         )
@@ -565,9 +571,11 @@ describe Export::Xlsx::InputSheetGenerator do
 
         # User custom fields appear in different places depending on whether they come from the user or the inputs
         context 'user fields' do
+          let(:author_answers) { demographic_answers }
+
           before do
-            create(:custom_field_gender, :with_options, title_multiloc: { 'en' => 'Gender' })
-            create(:custom_field_birthyear, title_multiloc: { 'en' => 'Birth year' })
+            gender_field
+            birthyear_field
           end
 
           it 'Generates an sheet with user fields from the user' do
@@ -602,8 +610,8 @@ describe Export::Xlsx::InputSheetGenerator do
           it 'Generates an sheet with user fields from the inputs' do
             phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
             survey_response1.answer_for_key(ranking_field.key).destroy!
-            create(:custom_field_answer, answerable: survey_response1, key: 'u_birthyear', value: 1998, custom_field: CustomField.find_by(code: 'birthyear'))
-            create(:custom_field_answer, answerable: survey_response1, key: 'u_gender', value: 'male', custom_field: CustomField.find_by(code: 'gender'))
+            create(:custom_field_answer, answerable: survey_response1, key: 'u_birthyear', custom_field: birthyear_field, value: 1998)
+            create(:custom_field_answer, answerable: survey_response1, key: 'u_gender', custom_field: gender_field, value: 'male')
             survey_response1.custom_field_answers.reset
             expect(xlsx.first[:column_headers]).to match([
               'ID',
@@ -732,12 +740,14 @@ describe Export::Xlsx::InputSheetGenerator do
       end
 
       context 'when the survey is fully anonymous' do
+        let(:author_answers) { demographic_answers }
+
         before do
           config = AppConfiguration.instance
           config.settings['core']['private_attributes_in_export'] = true
           config.save!
-          create(:custom_field_gender, :with_options, title_multiloc: { 'en' => 'Gender' })
-          create(:custom_field_birthyear, title_multiloc: { 'en' => 'Birth year' })
+          gender_field
+          birthyear_field
           phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
         end
 
@@ -768,12 +778,14 @@ describe Export::Xlsx::InputSheetGenerator do
       end
 
       context 'when the survey collects demographics only' do
+        let(:author_answers) { demographic_answers }
+
         before do
           config = AppConfiguration.instance
           config.settings['core']['private_attributes_in_export'] = true
           config.save!
-          create(:custom_field_gender, :with_options, title_multiloc: { 'en' => 'Gender' })
-          create(:custom_field_birthyear, title_multiloc: { 'en' => 'Birth year' })
+          gender_field
+          birthyear_field
           phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'demographics_only')
         end
 
@@ -936,7 +948,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            author: create(:user, custom_field_answers: [build(:custom_field_answer, key: create(:custom_field_birthyear).key, value: 1999)]),
+            author: create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: create(:custom_field_birthyear), value: 1999)]),
             assignee: assignee,
             manual_votes_amount: 12
           )
@@ -1021,7 +1033,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            custom_field_answers: [build(:custom_field_answer, key: extra_idea_field.key, value: 'Answer')],
+            custom_field_answers: [build(:custom_field_answer, custom_field: extra_idea_field, value: 'Answer')],
             assignee: assignee
           )
         end

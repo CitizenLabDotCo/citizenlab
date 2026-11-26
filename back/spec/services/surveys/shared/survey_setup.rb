@@ -315,12 +315,12 @@ RSpec.shared_context 'survey_setup' do
   let_it_be(:responses) do
     create(:idea_status_proposed)
     male_user = create(:user, custom_field_answers: [
-      build(:custom_field_answer, key: 'gender', value: 'male'),
-      build(:custom_field_answer, key: 'domicile', value: domicile_user_custom_field.options[0].area.id)
+      build(:custom_field_answer, custom_field: gender_user_custom_field, value: 'male'),
+      build(:custom_field_answer, custom_field: domicile_user_custom_field, value: domicile_user_custom_field.options[0].area.id)
     ])
     female_user = create(:user, custom_field_answers: [
-      build(:custom_field_answer, key: 'gender', value: 'female'),
-      build(:custom_field_answer, key: 'domicile', value: domicile_user_custom_field.options[1].area.id)
+      build(:custom_field_answer, custom_field: gender_user_custom_field, value: 'female'),
+      build(:custom_field_answer, custom_field: domicile_user_custom_field, value: domicile_user_custom_field.options[1].area.id)
     ])
     no_gender_user = create(:user)
     idea_file1 = create(:idea_file)
@@ -330,24 +330,24 @@ RSpec.shared_context 'survey_setup' do
       project: project,
       phases: phases_of_inputs,
       custom_field_answers: [
-        build(:custom_field_answer, key: text_field.key, value: 'Red'),
-        build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog]),
-        build(:custom_field_answer, key: select_field.key, value: 'ny'),
-        build(:custom_field_answer, key: ranking_field.key, value: %w[by_bike by_train by_foot]),
-        build(:custom_field_answer, key: file_upload_field.key, value: { 'id' => idea_file1.id, 'name' => idea_file1.name }),
-        build(:custom_field_answer, key: shapefile_upload_field.key, value: { 'id' => idea_file2.id, 'name' => idea_file2.name }),
-        build(:custom_field_answer, key: point_field.key, value: { type: 'Point', coordinates: [42.42, 24.24] }),
-        build(:custom_field_answer, key: line_field.key, value: { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] }),
-        build(:custom_field_answer, key: polygon_field.key, value: { type: 'Polygon', coordinates: [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]] }),
-        build(:custom_field_answer, key: linear_scale_field.key, value: 3),
-        build(:custom_field_answer, key: rating_field.key, value: 3),
-        build(:custom_field_answer, key: number_field.key, value: 42),
-        build(:custom_field_answer, key: matrix_linear_scale_field.key, value: {
+        build(:custom_field_answer, custom_field: text_field, value: 'Red'),
+        build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat dog]),
+        build(:custom_field_answer, custom_field: select_field, value: 'ny'),
+        build(:custom_field_answer, custom_field: ranking_field, value: %w[by_bike by_train by_foot]),
+        build(:custom_field_answer, custom_field: file_upload_field, value: { 'id' => idea_file1.id, 'name' => idea_file1.name }),
+        build(:custom_field_answer, custom_field: shapefile_upload_field, value: { 'id' => idea_file2.id, 'name' => idea_file2.name }),
+        build(:custom_field_answer, custom_field: point_field, value: { type: 'Point', coordinates: [42.42, 24.24] }),
+        build(:custom_field_answer, custom_field: line_field, value: { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] }),
+        build(:custom_field_answer, custom_field: polygon_field, value: { type: 'Polygon', coordinates: [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]] }),
+        build(:custom_field_answer, custom_field: linear_scale_field, value: 3),
+        build(:custom_field_answer, custom_field: rating_field, value: 3),
+        build(:custom_field_answer, custom_field: number_field, value: 42),
+        build(:custom_field_answer, custom_field: matrix_linear_scale_field, value: {
           'send_more_animals_to_space' => 1,
           'ride_bicycles_more_often' => 3
         }),
-        build(:custom_field_answer, key: sentiment_linear_scale_field.key, value: 3),
-        build(:custom_field_answer, key: multipoint_field.key, value: { type: 'MultiPoint', coordinates: [[1.1, 2.2], [3.3, 4.4], [5.5, 6.6]] })
+        build(:custom_field_answer, custom_field: sentiment_linear_scale_field, value: 3),
+        build(:custom_field_answer, custom_field: multipoint_field, value: { type: 'MultiPoint', coordinates: [[1.1, 2.2], [3.3, 4.4], [5.5, 6.6]] })
       ],
       idea_files: [idea_file1, idea_file2],
       author: female_user,
@@ -358,21 +358,21 @@ RSpec.shared_context 'survey_setup' do
       project: project,
       phases: phases_of_inputs,
       custom_field_answers: [
-        build(:custom_field_answer, key: text_field.key, value: 'Blue'),
-        build(:custom_field_answer, key: multiselect_field.key, value: %w[cow pig cat]),
-        build(:custom_field_answer, key: select_field.key, value: 'la'),
-        build(:custom_field_answer, key: ranking_field.key, value: %w[by_train by_bike by_foot]),
-        build(:custom_field_answer, key: point_field.key, value: { type: 'Point', coordinates: [11.22, 33.44] }),
-        build(:custom_field_answer, key: line_field.key, value: { type: 'LineString', coordinates: [[1.2, 2.3], [3.4, 4.5]] }),
-        build(:custom_field_answer, key: polygon_field.key, value: { type: 'Polygon', coordinates: [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]] }),
-        build(:custom_field_answer, key: linear_scale_field.key, value: 4),
-        build(:custom_field_answer, key: rating_field.key, value: 4),
-        build(:custom_field_answer, key: matrix_linear_scale_field.key, value: {
+        build(:custom_field_answer, custom_field: text_field, value: 'Blue'),
+        build(:custom_field_answer, custom_field: multiselect_field, value: %w[cow pig cat]),
+        build(:custom_field_answer, custom_field: select_field, value: 'la'),
+        build(:custom_field_answer, custom_field: ranking_field, value: %w[by_train by_bike by_foot]),
+        build(:custom_field_answer, custom_field: point_field, value: { type: 'Point', coordinates: [11.22, 33.44] }),
+        build(:custom_field_answer, custom_field: line_field, value: { type: 'LineString', coordinates: [[1.2, 2.3], [3.4, 4.5]] }),
+        build(:custom_field_answer, custom_field: polygon_field, value: { type: 'Polygon', coordinates: [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]] }),
+        build(:custom_field_answer, custom_field: linear_scale_field, value: 4),
+        build(:custom_field_answer, custom_field: rating_field, value: 4),
+        build(:custom_field_answer, custom_field: matrix_linear_scale_field, value: {
           'send_more_animals_to_space' => 1
         }),
-        build(:custom_field_answer, key: sentiment_linear_scale_field.key, value: 2),
+        build(:custom_field_answer, custom_field: sentiment_linear_scale_field, value: 2),
         build(:custom_field_answer, key: "#{sentiment_linear_scale_field.key}_follow_up", value: 'Just not good', custom_field: sentiment_linear_scale_field),
-        build(:custom_field_answer, key: multipoint_field.key, value: { type: 'MultiPoint', coordinates: [[1.2, 2.3], [3.4, 4.5]] })
+        build(:custom_field_answer, custom_field: multipoint_field, value: { type: 'MultiPoint', coordinates: [[1.2, 2.3], [3.4, 4.5]] })
       ],
       author: male_user,
       created_at: '2025-04-16'
@@ -382,15 +382,15 @@ RSpec.shared_context 'survey_setup' do
       project: project,
       phases: phases_of_inputs,
       custom_field_answers: [
-        build(:custom_field_answer, key: text_field.key, value: 'Green'),
-        build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog]),
-        build(:custom_field_answer, key: select_field.key, value: 'other'),
+        build(:custom_field_answer, custom_field: text_field, value: 'Green'),
+        build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat dog]),
+        build(:custom_field_answer, custom_field: select_field, value: 'other'),
         build(:custom_field_answer, key: "#{select_field.key}_other", value: 'Austin', custom_field: select_field),
-        build(:custom_field_answer, key: multiselect_image_field.key, value: ['house']),
-        build(:custom_field_answer, key: matrix_linear_scale_field.key, value: {
+        build(:custom_field_answer, custom_field: multiselect_image_field, value: ['house']),
+        build(:custom_field_answer, custom_field: matrix_linear_scale_field, value: {
           'ride_bicycles_more_often' => 3
         }),
-        build(:custom_field_answer, key: sentiment_linear_scale_field.key, value: 5),
+        build(:custom_field_answer, custom_field: sentiment_linear_scale_field, value: 5),
         build(:custom_field_answer, key: "#{sentiment_linear_scale_field.key}_follow_up", value: 'Great thanks very much', custom_field: sentiment_linear_scale_field)
       ],
       author: female_user,
@@ -401,13 +401,13 @@ RSpec.shared_context 'survey_setup' do
       project: project,
       phases: phases_of_inputs,
       custom_field_answers: [
-        build(:custom_field_answer, key: text_field.key, value: 'Pink'),
-        build(:custom_field_answer, key: multiselect_field.key, value: %w[dog cat cow]),
-        build(:custom_field_answer, key: select_field.key, value: 'other'),
-        build(:custom_field_answer, key: ranking_field.key, value: %w[by_bike by_foot by_train]),
+        build(:custom_field_answer, custom_field: text_field, value: 'Pink'),
+        build(:custom_field_answer, custom_field: multiselect_field, value: %w[dog cat cow]),
+        build(:custom_field_answer, custom_field: select_field, value: 'other'),
+        build(:custom_field_answer, custom_field: ranking_field, value: %w[by_bike by_foot by_train]),
         build(:custom_field_answer, key: "#{select_field.key}_other", value: 'Miami', custom_field: select_field),
-        build(:custom_field_answer, key: multiselect_image_field.key, value: ['house']),
-        build(:custom_field_answer, key: matrix_linear_scale_field.key, value: {
+        build(:custom_field_answer, custom_field: multiselect_image_field, value: ['house']),
+        build(:custom_field_answer, custom_field: matrix_linear_scale_field, value: {
           'send_more_animals_to_space' => 3,
           'ride_bicycles_more_often' => 4
         })
@@ -420,11 +420,11 @@ RSpec.shared_context 'survey_setup' do
       project: project,
       phases: phases_of_inputs,
       custom_field_answers: [
-        build(:custom_field_answer, key: text_field.key, value: ''), # Empty text field - can be saved from visitor survey with multiple pages
-        build(:custom_field_answer, key: select_field.key, value: 'la'),
-        build(:custom_field_answer, key: multiselect_image_field.key, value: ['school']),
-        build(:custom_field_answer, key: ranking_field.key, value: %w[by_bike by_train by_foot]),
-        build(:custom_field_answer, key: sentiment_linear_scale_field.key, value: 1)
+        build(:custom_field_answer, custom_field: text_field, value: ''), # Empty text field - can be saved from visitor survey with multiple pages
+        build(:custom_field_answer, custom_field: select_field, value: 'la'),
+        build(:custom_field_answer, custom_field: multiselect_image_field, value: ['school']),
+        build(:custom_field_answer, custom_field: ranking_field, value: %w[by_bike by_train by_foot]),
+        build(:custom_field_answer, custom_field: sentiment_linear_scale_field, value: 1)
       ],
       author: female_user,
       created_at: '2025-03-11'
@@ -434,14 +434,14 @@ RSpec.shared_context 'survey_setup' do
       project: project,
       phases: phases_of_inputs,
       custom_field_answers: [
-        build(:custom_field_answer, key: text_field.key, value: "   \n"), # Empty text field - can be saved from visitor survey with multiple pages
-        build(:custom_field_answer, key: select_field.key, value: 'other'),
+        build(:custom_field_answer, custom_field: text_field, value: "   \n"), # Empty text field - can be saved from visitor survey with multiple pages
+        build(:custom_field_answer, custom_field: select_field, value: 'other'),
         build(:custom_field_answer, key: "#{select_field.key}_other", value: 'Seattle', custom_field: select_field),
-        build(:custom_field_answer, key: matrix_linear_scale_field.key, value: {
+        build(:custom_field_answer, custom_field: matrix_linear_scale_field, value: {
           'send_more_animals_to_space' => 4,
           'ride_bicycles_more_often' => 4
         }),
-        build(:custom_field_answer, key: sentiment_linear_scale_field.key, value: 2)
+        build(:custom_field_answer, custom_field: sentiment_linear_scale_field, value: 2)
       ],
       author: male_user,
       created_at: '2025-03-06'
@@ -460,9 +460,9 @@ RSpec.shared_context 'survey_setup' do
           project: project,
           phases: phases_of_inputs,
           custom_field_answers: [
-            build(:custom_field_answer, key: linear_scale_field.key, value: value),
-            build(:custom_field_answer, key: rating_field.key, value: value),
-            build(:custom_field_answer, key: sentiment_linear_scale_field.key, value: (value <= 5 ? value : 1))
+            build(:custom_field_answer, custom_field: linear_scale_field, value: value),
+            build(:custom_field_answer, custom_field: rating_field, value: value),
+            build(:custom_field_answer, custom_field: sentiment_linear_scale_field, value: (value <= 5 ? value : 1))
           ],
           author: no_gender_user,
           created_at: '2025-02-25'

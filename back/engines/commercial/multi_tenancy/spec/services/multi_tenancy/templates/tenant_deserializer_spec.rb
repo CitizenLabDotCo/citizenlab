@@ -207,7 +207,7 @@ describe MultiTenancy::Templates::TenantDeserializer do
         create(:follower, followable: ideas[0], user: users[1])
 
         field = create(:custom_field)
-        create(:custom_field_answer, answerable: users[0], key: field.key, value: 'blue')
+        create(:custom_field_answer, answerable: users[0], custom_field: field, value: 'blue')
         create(:consent, user: users[1], consented: false)
 
         expected = snapshot

@@ -26,7 +26,7 @@ RSpec.describe 'reporting_reference_distributions parity with the representative
     distribution = create(:categorical_distribution, custom_field: gender, distribution: { male.id => 480, female.id => 520 })
     # 'unspecified' has no base data, so both scores leave those users out.
     { 'male' => 3, 'female' => 1, 'unspecified' => 2 }.each do |value, count|
-      create_list(:user, count) { |user| user.custom_field_answers.create!(key: 'gender', value: value) }
+      create_list(:custom_field_answer, count, custom_field: gender, value: value)
     end
 
     view_rscore = recipe_rscore('gender', 'SELECT user_id, question_id, answer_value FROM reporting_user_question_answers') do
@@ -54,11 +54,12 @@ RSpec.describe 'reporting_reference_distributions parity with the representative
 
   it 'gives the dashboard R-score for an age distribution' do
     distribution = create(:binned_distribution, bins: [nil, 25, 50, nil], counts: [30, 40, 30])
+    birthyear = distribution.custom_field
     [1990, 1990, 1960, 1960, 1960, 1940, Time.zone.today.year - 10].each do |year|
-      create(:user).custom_field_answers.create!(key: 'birthyear', value: year)
+      create(:custom_field_answer, custom_field: birthyear, value: year)
     end
     # Validation only runs on save, so older data can hold malformed years.
-    create(:user).custom_field_answers.build(key: 'birthyear', value: 'unknown').save!(validate: false)
+    build(:custom_field_answer, custom_field: birthyear, value: 'unknown').save!(validate: false)
 
     age = Analytics::Reporting::ReferenceDistribution::AGE_SQL
     ages_sql = <<~SQL.squish
@@ -75,9 +76,9 @@ RSpec.describe 'reporting_reference_distributions parity with the representative
   end
 
   it 'treats an invalid numeric birth year as unknown instead of failing the age recipe' do
-    create(:binned_distribution, bins: [nil, 25, 50, nil], counts: [30, 40, 30])
-    create(:user).custom_field_answers.create!(key: 'birthyear', value: 1990)
-    create(:user).custom_field_answers.build(key: 'birthyear', value: 0).save!(validate: false)
+    birthyear = create(:binned_distribution, bins: [nil, 25, 50, nil], counts: [30, 40, 30]).custom_field
+    create(:custom_field_answer, custom_field: birthyear, value: 1990)
+    build(:custom_field_answer, custom_field: birthyear, value: 0).save!(validate: false)
 
     age = Analytics::Reporting::ReferenceDistribution::AGE_SQL
     ages = ActiveRecord::Base.connection.select_values(<<~SQL.squish)

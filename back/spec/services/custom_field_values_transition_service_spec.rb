@@ -21,14 +21,6 @@ RSpec.describe CustomFieldValuesTransitionService do
 
       expect(service.assign(user, { 'pet' => 'cat' })).to be true
     end
-
-    it 'still updates an existing answer that has no field' do
-      user = create(:user)
-      user.custom_field_answers.create!(key: 'retired', value: 'x')
-
-      expect(service.assign(user, { 'retired' => 'y' })).to be true
-      expect(user.answer_for_key('retired')).to have_attributes(value: 'y', custom_field_id: nil)
-    end
   end
 
   describe '#assign!' do
@@ -108,15 +100,6 @@ RSpec.describe CustomFieldValuesTransitionService do
       expect(idea.answer_for_key('shared').custom_field_id).to eq destination_field.id
     end
 
-    it 'still updates an existing answer that has no field' do
-      user = create(:user)
-      user.custom_field_answers.create!(key: 'retired', value: 'x')
-
-      service.assign!(user, { 'retired' => 'y' })
-
-      expect(user.answer_for_key('retired')).to have_attributes(value: 'y', custom_field_id: nil)
-    end
-
     it 'deletes all answers when assigning empty values' do
       user = create(:user)
       service.assign!(user, { 'pet' => 'cat' })
@@ -165,8 +148,8 @@ RSpec.describe CustomFieldValuesTransitionService do
   describe '#custom_field_values' do
     it 'returns the answers as a hash, without the answers marked for destruction' do
       user = build(:user, custom_field_answers: [
-        build(:custom_field_answer, key: 'kept', value: 'yes'),
-        build(:custom_field_answer, key: 'gone', value: 'no').tap(&:mark_for_destruction)
+        build(:custom_field_answer, custom_field: create(:custom_field, key: 'kept'), value: 'yes'),
+        build(:custom_field_answer, custom_field: create(:custom_field, key: 'gone'), value: 'no').tap(&:mark_for_destruction)
       ])
 
       expect(service.custom_field_values(user)).to eq('kept' => 'yes')
@@ -180,8 +163,8 @@ RSpec.describe CustomFieldValuesTransitionService do
   describe '#changed_values' do
     let(:user) do
       build(:user, custom_field_answers: [
-        build(:custom_field_answer, key: 'pet', value: 'cat'),
-        build(:custom_field_answer, key: 'colour', value: 'red')
+        build(:custom_field_answer, custom_field: field, value: 'cat'),
+        build(:custom_field_answer, custom_field: create(:custom_field, key: 'colour'), value: 'red')
       ])
     end
 

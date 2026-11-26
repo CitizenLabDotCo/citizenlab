@@ -8,10 +8,8 @@ require 'rails_helper'
 RSpec.describe 'reporting_user_question_answers parity with FieldValueCounter' do # rubocop:disable RSpec/DescribeClass
   it 'produces the same distribution as the product demographics counter' do
     field = create(:custom_field_gender, :with_options)
-    create_list(:user, 2) do |user|
-      user.custom_field_answers.create!(key: 'gender', value: 'male')
-    end
-    create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female')])
+    create_list(:custom_field_answer, 2, custom_field: field, value: 'male')
+    create(:custom_field_answer, custom_field: field, value: 'female')
     create(:user) # unanswered
 
     counts = Analytics::Reporting::UserQuestionAnswer

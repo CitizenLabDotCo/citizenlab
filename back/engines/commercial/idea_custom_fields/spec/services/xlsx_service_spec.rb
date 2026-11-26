@@ -11,7 +11,7 @@ describe XlsxService do
       @project = create(:project)
       @form = create(:custom_form, participation_context: @project)
 
-      create(
+      number_field = create(
         :custom_field,
         :for_custom_form,
         resource: @form,
@@ -21,7 +21,7 @@ describe XlsxService do
         title_multiloc: { 'en' => 'How many times did it rain this year?' }
       )
 
-      create(
+      date_field = create(
         :custom_field,
         :for_custom_form,
         resource: @form,
@@ -74,17 +74,17 @@ describe XlsxService do
       )
 
       @idea1 = create(:idea, project: @project, custom_field_answers: [
-        build(:custom_field_answer, key: 'number_field', value: 9),
-        build(:custom_field_answer, key: 'multiselect_field', value: %w[option1 option2])
+        build(:custom_field_answer, custom_field: number_field, value: 9),
+        build(:custom_field_answer, custom_field: multiselect_field, value: %w[option1 option2])
       ])
       @idea2 = create(:idea, project: @project, custom_field_answers: [
-        build(:custom_field_answer, key: 'number_field', value: 22),
-        build(:custom_field_answer, key: 'date_field', value: '19-05-2022'),
-        build(:custom_field_answer, key: 'select_field', value: 'hippopotamus')
+        build(:custom_field_answer, custom_field: number_field, value: 22),
+        build(:custom_field_answer, custom_field: date_field, value: '19-05-2022'),
+        build(:custom_field_answer, custom_field: select_field, value: 'hippopotamus')
       ])
       @idea3 = create(:idea, project: @project, custom_field_answers: [
-        build(:custom_field_answer, key: 'select_field', value: 'fruitfly'),
-        build(:custom_field_answer, key: 'multiselect_field', value: %w[option1])
+        build(:custom_field_answer, custom_field: select_field, value: 'fruitfly'),
+        build(:custom_field_answer, custom_field: multiselect_field, value: %w[option1])
       ])
     end
 
@@ -180,7 +180,7 @@ describe XlsxService do
         @project_no_form = create(:project)
         @project_with_form = create(:project)
         @form = create(:custom_form, participation_context: @project_with_form)
-        create(
+        sugars_field = create(
           :custom_field,
           :for_custom_form,
           resource: @form,
@@ -190,7 +190,7 @@ describe XlsxService do
           title_multiloc: { 'en' => 'How many sugars?' }
         )
         @idea1 = create(:idea, project: @project_no_form)
-        @idea2 = create(:idea, project: @project_with_form, custom_field_answers: [build(:custom_field_answer, key: 'number_field', value: 5)])
+        @idea2 = create(:idea, project: @project_with_form, custom_field_answers: [build(:custom_field_answer, custom_field: sugars_field, value: 5)])
       end
 
       let(:xlsx) { service.generate_ideas_xlsx([@idea1, @idea2], view_private_attributes: false) }

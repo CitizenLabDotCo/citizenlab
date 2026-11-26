@@ -7,8 +7,9 @@ RSpec.describe Answerable do
     let_it_be(:user) { create(:user) }
 
     before_all do
-      create(:custom_field_answer, answerable: user, key: 'pet', value: 'other')
-      create(:custom_field_answer, answerable: user, key: 'pet_other', value: 'A ferret')
+      pet_field = create(:custom_field, key: 'pet')
+      create(:custom_field_answer, answerable: user, custom_field: pet_field, value: 'other')
+      create(:custom_field_answer, answerable: user, key: 'pet_other', custom_field: pet_field, value: 'A ferret')
     end
 
     it 'returns the answer stored under the key' do

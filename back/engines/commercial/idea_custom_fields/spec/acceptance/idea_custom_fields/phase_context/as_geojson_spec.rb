@@ -160,8 +160,8 @@ resource 'Idea Custom Fields' do
 
     let(:user) do
       create(:user, custom_field_answers: [
-        build(:custom_field_answer, key: 'gender', value: 'female'),
-        build(:custom_field_answer, key: 'domicile', value: area.id)
+        build(:custom_field_answer, custom_field: custom_field_gender, value: 'female'),
+        build(:custom_field_answer, custom_field: custom_field_domicile, value: area.id)
       ])
     end
 
@@ -172,16 +172,16 @@ resource 'Idea Custom Fields' do
         creation_phase: phase,
         project: project,
         custom_field_answers: [
-          build(:custom_field_answer, key: custom_field_text.key, value: 'Text answer'),
-          build(:custom_field_answer, key: custom_field_multiline_text.key, value: 'Multiline answer'),
-          build(:custom_field_answer, key: custom_field_select.key, value: custom_field_option1.key),
-          build(:custom_field_answer, key: custom_field_multiselect.key, value: [custom_field_option2.key, custom_field_option3.key]),
-          build(:custom_field_answer, key: custom_field_multiselect_image.key, value: [custom_field_option4.key, custom_field_option5.key]),
-          build(:custom_field_answer, key: custom_field_linear_scale.key, value: 3),
-          build(:custom_field_answer, key: custom_field_number.key, value: 42),
-          build(:custom_field_answer, key: custom_field_point.key, value: { type: 'Point', coordinates: [1.1, 2.2] }),
-          build(:custom_field_answer, key: custom_field_line.key, value: { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] }),
-          build(:custom_field_answer, key: custom_field_polygon.key, value: { type: 'Polygon', coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]] })
+          build(:custom_field_answer, custom_field: custom_field_text, value: 'Text answer'),
+          build(:custom_field_answer, custom_field: custom_field_multiline_text, value: 'Multiline answer'),
+          build(:custom_field_answer, custom_field: custom_field_select, value: custom_field_option1.key),
+          build(:custom_field_answer, custom_field: custom_field_multiselect, value: [custom_field_option2.key, custom_field_option3.key]),
+          build(:custom_field_answer, custom_field: custom_field_multiselect_image, value: [custom_field_option4.key, custom_field_option5.key]),
+          build(:custom_field_answer, custom_field: custom_field_linear_scale, value: 3),
+          build(:custom_field_answer, custom_field: custom_field_number, value: 42),
+          build(:custom_field_answer, custom_field: custom_field_point, value: { type: 'Point', coordinates: [1.1, 2.2] }),
+          build(:custom_field_answer, custom_field: custom_field_line, value: { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] }),
+          build(:custom_field_answer, custom_field: custom_field_polygon, value: { type: 'Polygon', coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]] })
         ]
       )
     end
@@ -194,7 +194,7 @@ resource 'Idea Custom Fields' do
         author_id: nil,
         creation_phase: phase,
         project: project,
-        custom_field_answers: [build(:custom_field_answer, key: custom_field_point.key, value: { type: 'Point', coordinates: [3.3, 4.4] })]
+        custom_field_answers: [build(:custom_field_answer, custom_field: custom_field_point, value: { type: 'Point', coordinates: [3.3, 4.4] })]
       )
     end
     let!(:idea_phase2) { create(:ideas_phase, idea: idea2, phase: phase) }

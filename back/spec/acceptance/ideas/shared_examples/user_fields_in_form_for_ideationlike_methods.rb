@@ -108,7 +108,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
 
       context 'when logged in' do
         before do
-          @user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'select_field', value: 'option2')])
+          @user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @user_select_field, value: 'option2')])
           header_token_for @user
         end
 
@@ -134,7 +134,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
 
       context 'when logged in but anonymous' do
         before do
-          @user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'select_field', value: 'option2')])
+          @user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @user_select_field, value: 'option2')])
           header_token_for @user
           @phase.update!(allow_anonymous_participation: true)
         end

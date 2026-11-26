@@ -40,8 +40,8 @@ resource 'Phase insights' do
       cause2 = create(:cause, phase: phase)
 
       # Users
-      user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female'), build(:custom_field_answer, key: 'birthyear', value: 1980)])
-      user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male'), build(:custom_field_answer, key: 'birthyear', value: 1990)])
+      user1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field_gender, value: 'female'), build(:custom_field_answer, custom_field: custom_field_birthyear, value: 1980)])
+      user2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field_gender, value: 'male'), build(:custom_field_answer, custom_field: custom_field_birthyear, value: 1990)])
       user3 = create(:user)
 
       # Volunteerings

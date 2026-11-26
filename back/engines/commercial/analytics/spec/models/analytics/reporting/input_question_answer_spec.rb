@@ -13,9 +13,9 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
     let(:response) do
       create(:idea_status_proposed)
       create(:native_survey_response, project: project).tap do |response|
-        response.custom_field_answers.create!(key: select_question.key, value: 'option1')
-        response.custom_field_answers.create!(key: scale_question.key, value: 4)
-        response.custom_field_answers.create!(key: multiselect_question.key, value: %w[option1 option2])
+        create(:custom_field_answer, answerable: response, custom_field: select_question, value: 'option1')
+        create(:custom_field_answer, answerable: response, custom_field: scale_question, value: 4)
+        create(:custom_field_answer, answerable: response, custom_field: multiselect_question, value: %w[option1 option2])
       end
     end
 
@@ -54,7 +54,7 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       option.update!(title_multiloc: { 'en' => 'Less than the proposed amount' })
       create(:idea_status_proposed)
       relabelled_response = create(:native_survey_response, project: project)
-      relabelled_response.custom_field_answers.create!(key: select_question.key, value: 'no_opinion_540')
+      create(:custom_field_answer, answerable: relabelled_response, custom_field: select_question, value: 'no_opinion_540')
       row = described_class.find_by!(input_id: relabelled_response.id)
 
       expect(row.value_text).to eq 'no_opinion_540'
@@ -74,7 +74,7 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
           scale_question.update!(linear_scale_label_3_multiloc: {})
           create(:idea_status_proposed)
           scale_response = create(:native_survey_response, project: project)
-          scale_response.custom_field_answers.create!(key: scale_question.key, value: value)
+          create(:custom_field_answer, answerable: scale_response, custom_field: scale_question, value: value)
 
           expect(described_class.find_by!(input_id: scale_response.id).value_label).to eq label
         end
@@ -105,8 +105,8 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       uncategorised = create(:custom_field_sentiment_linear_scale, resource: form)
       create(:idea_status_proposed)
       response = create(:native_survey_response, project: project)
-      response.custom_field_answers.create!(key: categorised.key, value: 2)
-      response.custom_field_answers.create!(key: uncategorised.key, value: 5)
+      create(:custom_field_answer, answerable: response, custom_field: categorised, value: 2)
+      create(:custom_field_answer, answerable: response, custom_field: uncategorised, value: 5)
       view_categories = described_class.where(input_id: response.id).pluck(:question_id, :question_category).to_h
       custom_field_categories = [categorised, uncategorised].to_h { |question| [question.id, question.reload.question_category] }
 
@@ -138,7 +138,7 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       form = create(:custom_form, participation_context: project)
       question = create(:custom_field, resource: form, input_type: 'text')
       idea = create(:idea, project: project)
-      idea.custom_field_answers.create!(key: question.key, value: 'By bicycle')
+      create(:custom_field_answer, answerable: idea, custom_field: question, value: 'By bicycle')
       row = described_class.find_by!(input_id: idea.id)
 
       expect(row.question_id).to eq question.id
@@ -156,7 +156,7 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
 
     it 'explodes ranking answers into one row per option, with its rank and title' do
       ranking = create(:custom_field_ranking, :with_options, resource: form)
-      response.custom_field_answers.create!(key: ranking.key, value: %w[by_bike by_train])
+      create(:custom_field_answer, answerable: response, custom_field: ranking, value: %w[by_bike by_train])
       rows = described_class.where(input_id: response.id).order(:value_numeric)
 
       expect(rows.pluck(:value_text, :value_numeric, :value_label))
@@ -177,7 +177,8 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
 
     it 'explodes matrix answers into one row per answered statement, with point and statement labels' do
       matrix = create(:custom_field_matrix_linear_scale, resource: form)
-      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 3 })
+      value = { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 3 }
+      create(:custom_field_answer, answerable: response, custom_field: matrix, value: value)
       rows = described_class.where(input_id: response.id).order(:value_numeric)
 
       expect(rows.pluck(:statement_key, :statement_label, :value_numeric, :value_label, :value_text)).to eq [
@@ -211,7 +212,7 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
 
     it 'labels a matrix point stored as a decimal like the whole point' do
       matrix = create(:custom_field_matrix_linear_scale, resource: form)
-      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => 5.0 })
+      create(:custom_field_answer, answerable: response, custom_field: matrix, value: { 'send_more_animals_to_space' => 5.0 })
 
       expect(described_class.find_by!(input_id: response.id).value_label).to eq 'Strongly agree'
     end
@@ -219,7 +220,8 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
     # Matrix answers aren't type-checked on write, so the API can store any value.
     it 'keeps filters on value_numeric working when a matrix answer is not a number' do
       matrix = create(:custom_field_matrix_linear_scale, resource: form)
-      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => 'abc', 'ride_bicycles_more_often' => 4 })
+      value = { 'send_more_animals_to_space' => 'abc', 'ride_bicycles_more_often' => 4 }
+      create(:custom_field_answer, answerable: response, custom_field: matrix, value: value)
 
       expect(described_class.where('value_numeric >= 4').pluck(:statement_key)).to eq ['ride_bicycles_more_often']
     end
@@ -231,15 +233,16 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       label_attribute = "linear_scale_label_#{top}_multiloc"
       scale = create(:custom_field_linear_scale, resource: form, maximum: top, label_attribute => { 'en' => 'Top' })
       matrix = create(:custom_field_matrix_linear_scale, resource: form, maximum: top, label_attribute => { 'en' => 'Top' })
-      response.custom_field_answers.create!(key: scale.key, value: top)
-      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => top })
+      create(:custom_field_answer, answerable: response, custom_field: scale, value: top)
+      create(:custom_field_answer, answerable: response, custom_field: matrix, value: { 'send_more_animals_to_space' => top })
 
       expect(described_class.where(input_id: response.id).pluck(:value_label)).to eq %w[Top Top]
     end
 
     it 'records a file upload answer without the file name' do
       file_upload = create(:custom_field_file_upload, resource: form)
-      response.custom_field_answers.create!(key: file_upload.key, value: { 'id' => create(:file_attachment).id, 'name' => 'jane_doe_cv.pdf' })
+      value = { 'id' => create(:file_attachment).id, 'name' => 'jane_doe_cv.pdf' }
+      create(:custom_field_answer, answerable: response, custom_field: file_upload, value: value)
       row = described_class.find_by!(input_id: response.id)
 
       expect(row.question_type).to eq 'file_upload'
@@ -274,7 +277,7 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       with_them do
         it 'gives the geometry as GeoJSON, with no text value' do
           question = create(factory, resource: form)
-          response.custom_field_answers.create!(key: question.key, value: geometry)
+          create(:custom_field_answer, answerable: response, custom_field: question, value: geometry)
           row = described_class.find_by!(input_id: response.id)
 
           expect(row.question_type).to eq question.input_type
@@ -300,7 +303,8 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
 
     it 'records a shapefile upload answer like a file upload: no file name, no geometry' do
       shapefile_upload = create(:custom_field_shapefile_upload, resource: form)
-      response.custom_field_answers.create!(key: shapefile_upload.key, value: { 'id' => create(:file_attachment).id, 'name' => 'jane_doe_garden.zip' })
+      value = { 'id' => create(:file_attachment).id, 'name' => 'jane_doe_garden.zip' }
+      create(:custom_field_answer, answerable: response, custom_field: shapefile_upload, value: value)
       row = described_class.find_by!(input_id: response.id)
 
       expect(row.question_type).to eq 'shapefile_upload'

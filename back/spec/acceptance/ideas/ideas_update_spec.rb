@@ -422,16 +422,6 @@ resource 'Ideas' do
           end
         end
 
-        example 'Edit an idea that stores an answer without a field', document: false do
-          create(:custom_form, :with_default_fields, participation_context: project)
-          input.custom_field_answers.create!(key: 'orphan', value: 'x')
-
-          do_request idea: { title_multiloc: { 'en' => 'Changed title' }, publication_status: 'published' }
-
-          assert_status 200
-          expect(input.reload.answer_for_key('orphan').value).to eq 'x'
-        end
-
         example 'Removing the author of a published idea', document: false do
           input.update! publication_status: 'published'
           do_request idea: { author_id: nil }
@@ -925,13 +915,14 @@ resource 'Ideas' do
         permission = phase.permissions.find_by(action: 'posting_idea')
         permission.update!(custom_fields_behavior: 'custom')
         permission.permissions_custom_fields = [
-          create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
+          create(:permissions_custom_field, custom_field: age_field)
         ]
 
         project
       end
 
-      let(:author) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)]) }
+      let(:age_field) { create(:custom_field, key: 'age') }
+      let(:author) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: age_field, value: 30)]) }
       let(:input) { create(:native_survey_response, project: project, author: author) }
 
       context 'when author' do
