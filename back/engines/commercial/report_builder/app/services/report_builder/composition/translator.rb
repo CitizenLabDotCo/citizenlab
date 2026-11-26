@@ -35,8 +35,11 @@ module ReportBuilder
         return multilocs if multilocs.empty? || targets.empty?
 
         translations = translate(written)
+        by_target = targets.index_with { |target| texts_for(translations, target) }.compact
+        report_missing(targets - by_target.keys)
+
         multilocs.to_h do |id, multiloc|
-          filled = targets.index_with { |target| translations.dig(target, id) }
+          filled = by_target.transform_values { |texts_in_locale| texts_in_locale[id] }
           [id, multiloc.merge(filled.compact_blank)]
         end
       end
@@ -53,11 +56,38 @@ module ReportBuilder
           [@locale]
       end
 
+      # A locale that did not come back leaves its readers with a language they did
+      # not ask for, and nothing about the page says so. Loud here, because the only
+      # other way to notice is to read the report in that language.
+      def report_missing(missing)
+        return if missing.empty?
+
+        ErrorReporter.report_msg(
+          "Report translation came back without #{missing.join(', ')}",
+          extra: { locale: @locale, targets: targets }
+        )
+      end
+
+      # A model asked for nl-BE sometimes answers under nl, and a locale that does not
+      # match exactly is a reader silently left with a language they did not ask for.
+      # Only a target can be matched, so an invented locale still goes nowhere.
+      def texts_for(translations, target)
+        found = translations[target] ||
+                translations.find { |locale, _| language(locale) == language(target) }&.last
+
+        found if found.is_a?(Hash)
+      end
+
+      def language(locale)
+        locale.to_s.downcase.split(/[-_]/).first
+      end
+
       def translate(texts)
         reply = chat.ask(prompt(texts)).content.to_s
         # The model is asked for one JSON object; taking the outermost braces makes a
         # code fence or a line of preamble harmless.
-        JSON.parse(reply[/\{.*\}/m].to_s).slice(*targets)
+        parsed = JSON.parse(reply[/\{.*\}/m].to_s)
+        parsed.is_a?(Hash) ? parsed : {}
       rescue StandardError => e
         ErrorReporter.report(e, extra: { locale: @locale, targets: targets, ids: texts.keys })
         {}
@@ -82,7 +112,8 @@ module ReportBuilder
           #{JSON.pretty_generate(texts)}
 
           Answer with one JSON object and nothing else: each locale code above as a key,
-          holding an object with exactly the same ids and the translated text as values.
+          written exactly as it is written above, holding an object with exactly the same
+          ids and the translated text as values.
         PROMPT
       end
 

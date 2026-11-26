@@ -36,6 +36,16 @@ describe ReportBuilder::Composition::Translator do
     )
   end
 
+  # A reader who gets the language the run was written in has silently lost the
+  # translation, so a tag that is nearly right still counts.
+  it 'takes an answer the model tagged with the language rather than the locale' do
+    allow(chat).to receive(:ask)
+      .and_return(reply_class.new({ 'nl' => { 't0' => 'Elke bijdrage.' } }.to_json))
+
+    expect(translator.call('t0' => 'Every contribution.'))
+      .to eq('t0' => { 'en' => 'Every contribution.', 'nl-BE' => 'Elke bijdrage.' })
+  end
+
   it 'ignores a locale the platform does not publish in' do
     allow(chat).to receive(:ask)
       .and_return(reply_class.new({ 'de-DE' => { 't0' => 'Jeder Beitrag.' } }.to_json))

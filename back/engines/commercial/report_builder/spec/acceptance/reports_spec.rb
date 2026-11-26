@@ -900,6 +900,20 @@ resource 'Reports' do
         expect(enqueued.args.to_json).to include 'only-in-the-editor'
       end
 
+      # Otherwise an admin reading the platform in another language gets a chart
+      # written in theirs, in the middle of a report written in one language.
+      example 'The turn is written in the report\'s language, not the reader\'s', :active_job_que_adapter,
+        document: false do
+        report.chat!(locale: 'en')
+        current_user.update!(locale: 'nl-NL')
+
+        do_request
+        assert_status 201
+
+        enqueued = QueJob.by_job_class(ReportBuilder::ReviseReportJob).last
+        expect(enqueued.args.to_json).to include '"locale":"en"'
+      end
+
       example '[error] Ask while a turn is running', :active_job_que_adapter do
         report.chat!(locale: 'en').update!(status: 'running', turn_started_at: Time.current)
 

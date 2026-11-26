@@ -288,14 +288,15 @@ module ReportBuilder
           Use the same keys in every locale. A key the source never reads, or a key a
           locale does not define, is reported as an error.
 
-          An axis label you work out from a value in a query result is a string a reader
-          sees, and the easiest one to forget. A query returning type = 'reaction' shows
-          "Reactions" because you chose that word, not because the database holds it, so
-          it belongs in the catalogue with everything else. msg() takes a literal key, so
-          name the values one at a time:
+          The strings a reader sees are not only the ones you write in JSX. A label you
+          work out from a value in a query result — a type, a status, a category, a
+          bucket you named yourself — is a word you chose rather than a word the data
+          holds, so it belongs in the catalogue with everything else. These are the
+          easiest strings to forget and the ones that leave a chart half-translated.
+          msg() takes a literal key, so name the values one at a time:
 
           const LABELS: Record<string, string> = {
-            reaction: msg('type_reaction'), comment: msg('type_comment'),
+            draft: msg('status_draft'), published: msg('status_published'),
           };
 
           Any word a reader reads and the catalogue does not hold is reported as an

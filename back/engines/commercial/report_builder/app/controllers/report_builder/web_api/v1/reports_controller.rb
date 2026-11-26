@@ -247,7 +247,10 @@ module ReportBuilder
             .perform_later(
               report,
               instruction: message,
-              locale: current_user.locale.to_s,
+              # The report's own locale, not the locale of whoever is asking: a report
+              # is written in one language, and a chart added to it in another is a
+              # chart the rest of the report cannot be read with.
+              locale: (report.chat&.locale.presence || current_user.locale).to_s,
               craftjs_json: params[:craftjs_json]&.to_unsafe_h,
               # Which turn this job answers: by the time it runs, the chat may have
               # given up on it and moved on to a newer question.

@@ -74,9 +74,9 @@ const WORDS = /[A-Za-z]{2,}/g;
  * Whether a string literal reads as something a person was meant to read.
  *
  * A block's source is full of strings that are not copy — column names, CSS
- * values, ids, enum values — so the test is for words rather than for letters:
- * "Ideas posted" is copy, "0 0 12px" and "rgba(0, 0, 0, .1)" are not. A single
- * token carrying digits is an identifier or an id, never a sentence.
+ * values, ids, the values of an enum — so the test is for words rather than for
+ * letters: a label reads as a phrase, "0 0 12px" and "rgba(0, 0, 0, .1)" do not.
+ * A single token carrying digits is an identifier or an id, never a sentence.
  */
 const looksLikeCopy = (text: string): boolean => {
   const trimmed = text.trim();
@@ -247,10 +247,10 @@ export const lint = (
       return;
     }
 
-    // The same rule away from the JSX: a label a block derives from a value in a
-    // query result — 'reaction' shown as "Reactions" — is a word the block chose,
-    // and a word the block chose is a word a reader cannot read in their own
-    // language unless it comes from the catalogue.
+    // The same rule away from the JSX. A label a block works out from a value in a
+    // query result is a word the block chose rather than a word the data holds, and
+    // a word the block chose is one a reader cannot read in their own language
+    // unless it comes from the catalogue.
     if (
       ts.isStringLiteral(node) &&
       !isNotCopyPosition(node) &&
@@ -261,7 +261,7 @@ export const lint = (
         "translated-strings",
         `Text a reader sees must come from msg(): found ${JSON.stringify(
           node.text.trim()
-        )}. Give it a key, e.g. { reaction: msg('type_reaction') }.`
+        )}. A label worked out from a value in the data needs a key of its own.`
       );
       return;
     }
