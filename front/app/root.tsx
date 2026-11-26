@@ -30,6 +30,7 @@ import {
   isPhasePreviewFrame,
   phasePreviewReady,
 } from 'utils/phasePreview/runtime';
+import { announcePaintedToPreviewParent } from 'utils/previewFrame/painted';
 import { RouterProvider } from 'utils/router';
 import {
   installStaleBuildReload,
@@ -104,6 +105,7 @@ const mountApplication = () => {
             <Root />
           </StrictMode>
         );
+    announcePaintedToPreviewParent();
   }
 };
 

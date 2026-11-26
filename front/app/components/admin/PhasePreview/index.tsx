@@ -47,9 +47,10 @@ interface Props {
   snapshot: Omit<PreviewSnapshot, 'phase'> & {
     phase?: PreviewSnapshot['phase'];
   };
+  skeleton?: boolean;
 }
 
-const PhasePreview = ({ src, title, snapshot }: Props) => {
+const PhasePreview = ({ src, title, snapshot, skeleton = false }: Props) => {
   const { formatMessage } = useIntl();
   const frameRef = useRef<HTMLIFrameElement>(null);
   const [blocked, setBlocked] = useState(false);
@@ -136,6 +137,7 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
           frameRef={frameRef}
           dataCy="e2e-phase-preview"
           bottomSpace={(isInformation ? 0 : 56) + (blocked ? 32 : 0)}
+          skeleton={skeleton}
         />
       </Box>
       <Box role="status" px="16px">

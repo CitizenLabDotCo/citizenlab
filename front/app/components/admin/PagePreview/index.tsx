@@ -93,6 +93,7 @@ const PagePreview = ({
         interactive={false}
         dataCy={dataCy}
         alignTop={alignTop}
+        skeleton
       >
         <UnstyledButton
           className={[styles.veil, editPageContentClassName]
