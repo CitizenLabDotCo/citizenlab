@@ -32,6 +32,20 @@ class BaseImageUploader < BaseUploader
     CarrierwaveTempRemote.url(identifier, version_name) || super
   end
 
+  # Some servers send the wrong Content-Type: Facebook serves JPEG profile pictures as
+  # image/avif. When the URL has no extension, CarrierWave takes it from that header,
+  # and exiftool refuses to strip a file whose extension doesn't match its content.
+  # Only the filename needs fixing: CarrierWave takes the content type from the file's
+  # bytes first, so the wrong header value passed on here doesn't win.
+  def download!(uri, remote_headers = {})
+    remote_file = downloader.new(self).download(uri, remote_headers)
+    cache!(
+      tempfile: remote_file.file,
+      filename: filename_matching_content(remote_file),
+      content_type: remote_file.content_type
+    )
+  end
+
   # Lower the JPEG quality in the resize itself, so the image is only saved once.
   def resize_to_fill(width, height, gravity = 'Center', combine_options: {}, &)
     super(width, height, gravity, combine_options: jpeg_quality_options.merge(combine_options), &)
@@ -74,6 +88,18 @@ class BaseImageUploader < BaseUploader
 
   def jpeg?
     %w[image/jpeg image/jpg].include?(@file.content_type)
+  end
+
+  # Only renames to an extension we accept. Anything else keeps its name and is left to the
+  # allowlist and exiftool: Marcel reads some AVIFs (major brand mif1) as HEIF, and renaming
+  # those to .heif would get them rejected.
+  def filename_matching_content(remote_file)
+    filename = remote_file.original_filename
+    extensions = Marcel::Magic.by_magic(remote_file.file)&.extensions || []
+    return filename if extensions.include?(File.extname(filename).delete_prefix('.').downcase)
+
+    extension = extensions.find { extension_allowlist.include?(_1) }
+    extension ? "#{File.basename(filename, '.*')}.#{extension}" : filename
   end
 
   # Modified from https://vivianbrown.net/blog/cropping-gifs.html
@@ -148,7 +174,8 @@ class BaseImageUploader < BaseUploader
           exiftool_error_signal: status.termsig
         }
       )
-      raise "Image stripping failed for #{@file.path}: #{stderr}"
+      # CarrierWave's mount turns a ProcessingError into a validation error on the record.
+      raise CarrierWave::ProcessingError
     end
   end
 end
