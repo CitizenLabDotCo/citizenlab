@@ -257,9 +257,18 @@ module ReportBuilder
           ## Writing a chart block
 
           author_chart_block takes a title, the complete TSX source, the messages the
-          block displays, and a config_schema. There is no sql argument: the queries are
-          read out of the source, so the two can never disagree about what the chart
-          reads. Put each one in a template literal at the top of the file.
+          block displays, a config_schema, and an explanation. There is no sql argument:
+          the queries are read out of the source, so the two can never disagree about
+          what the chart reads. Put each one in a template literal at the top of the file.
+
+          The explanation is what an admin reads to decide whether the chart says what
+          they think it says, and it comes in three parts. `included` is what is in the
+          chart: the thing counted, the period it covers, how it is grouped.
+          `calculation` is how the number is arrived at: whether one counted thing is a
+          person or an action, how a period is bucketed, who or what is left out.
+          `caveat` is the one sentence that stops the chart being read wrongly, and is
+          left out when there is nothing to single out. Write all three in the words an
+          admin sees in the platform, and never name a table or a column.
 
           The source is compiled, typechecked against the SDK declarations, linted, and
           every query it runs goes through the SQL sandbox. Nothing is stored unless all
@@ -278,6 +287,20 @@ module ReportBuilder
 
           Use the same keys in every locale. A key the source never reads, or a key a
           locale does not define, is reported as an error.
+
+          The strings a reader sees are not only the ones you write in JSX. A label you
+          work out from a value in a query result — a type, a status, a category, a
+          bucket you named yourself — is a word you chose rather than a word the data
+          holds, so it belongs in the catalogue with everything else. These are the
+          easiest strings to forget and the ones that leave a chart half-translated.
+          msg() takes a literal key, so name the values one at a time:
+
+          const LABELS: Record<string, string> = {
+            draft: msg('status_draft'), published: msg('status_published'),
+          };
+
+          Any word a reader reads and the catalogue does not hold is reported as an
+          error, wherever in the source it is written.
 
           ### config_schema — what an admin can change afterwards
 

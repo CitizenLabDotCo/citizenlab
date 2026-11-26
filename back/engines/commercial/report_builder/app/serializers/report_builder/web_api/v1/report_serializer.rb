@@ -23,6 +23,14 @@ module ReportBuilder
           serializer: ::WebApi::V1::PhaseSerializer
         )
 
+        # The project a report is about, for a report that is not scoped to a phase.
+        # A phase report reaches its project through the phase instead.
+        belongs_to(
+          :project,
+          record_type: ::WebApi::V1::ProjectSerializer.record_type,
+          serializer: ::WebApi::V1::ProjectSerializer
+        )
+
         belongs_to(
           :owner,
           record_type: ::WebApi::V1::UserSerializer.record_type,

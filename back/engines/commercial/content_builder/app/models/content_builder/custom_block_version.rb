@@ -38,6 +38,10 @@ module ContentBuilder
     # What the settings sidebar can render a control for.
     CONFIG_FIELD_TYPES = %w[string number integer boolean].freeze
 
+    # The parts of an explanation a chart cannot be stored without. A caveat is the
+    # third part and is optional.
+    REQUIRED_EXPLANATION_PARTS = %w[included calculation].freeze
+
     belongs_to :custom_block, class_name: 'ContentBuilder::CustomBlock', inverse_of: :versions
 
     before_validation :set_number, on: :create
@@ -63,6 +67,13 @@ module ContentBuilder
       manifest['queries'] || []
     end
 
+    # What this chart counts, written for an admin: +included+, +calculation+ and an
+    # optional +caveat+, each a multiloc. Nil on blocks authored before it was asked
+    # for.
+    def explanation
+      manifest['explanation']
+    end
+
     private
 
     def set_number
@@ -80,6 +91,7 @@ module ContentBuilder
 
       validate_config_schema
       validate_queries
+      validate_explanation
     end
 
     # A JSON Schema object: the sidebar renders one control per entry in +properties+.
@@ -126,6 +138,27 @@ module ContentBuilder
       return if queries.nil? || (queries.is_a?(Array) && queries.all?(String))
 
       errors.add :manifest, :queries_invalid, message: 'queries must be an array of SQL strings'
+    end
+
+    # Nil is allowed: blocks authored before explanations were asked for have none.
+    def validate_explanation
+      return if explanation.nil? || explanation_parts_valid?
+
+      errors.add :manifest, :explanation_invalid,
+        message: 'explanation must be an object of included, calculation and an optional caveat, each a multiloc'
+    end
+
+    def explanation_parts_valid?
+      return false unless explanation.is_a?(Hash)
+      return false unless REQUIRED_EXPLANATION_PARTS.all? { |part| explanation.key?(part) }
+
+      explanation.values.all? { |part| multiloc_with_text?(part) }
+    end
+
+    def multiloc_with_text?(part)
+      part.is_a?(Hash) &&
+        part.all? { |locale, text| locale.is_a?(String) && text.is_a?(String) } &&
+        part.values.any?(&:present?)
     end
 
     def validate_messages

@@ -102,8 +102,13 @@ module McpServer
 
     # On success, `normalized_sql` carries the query re-rendered from the parse
     # tree: a single statement, no trailing semicolon or comments, safe for the
-    # tool to wrap in a row-capping subquery.
-    Result = Data.define(:valid, :error, :normalized_sql) do
+    # tool to wrap in a row-capping subquery. `relations` names the reporting
+    # tables the query reads, in the order they appear, CTEs excluded.
+    Result = Data.define(:valid, :error, :normalized_sql, :relations) do
+      # Defaulted so a caller that only cares whether the SQL is valid can build
+      # one with the three fields it knows about.
+      def initialize(relations: [], **) = super
+
       def valid? = valid
     end
 
@@ -116,6 +121,7 @@ module McpServer
     def initialize(sql, tables: nil)
       @sql = sql.to_s
       @tables = tables
+      @relations = Set.new
     end
 
     def validate
@@ -123,7 +129,7 @@ module McpServer
       check_single_top_level_select!(parsed)
       validate_statements!(parsed)
       validate_tree!(parsed.tree, Set.new)
-      Result.new(valid: true, error: nil, normalized_sql: parsed.deparse)
+      Result.new(valid: true, error: nil, normalized_sql: parsed.deparse, relations: @relations.to_a)
     rescue ::PgQuery::ParseError => e
       Result.new(valid: false, error: "Could not parse SQL: #{e.message}", normalized_sql: nil)
     rescue Rejected => e
@@ -259,7 +265,11 @@ module McpServer
 
       relname = range_var.relname
       return if visible_ctes.include?(relname)
-      return if allowed_tables.include?(relname)
+
+      if allowed_tables.include?(relname)
+        @relations << relname
+        return
+      end
 
       reject!(
         "Table '#{relname}' is not queryable. Only the reporting tables exposed by " \

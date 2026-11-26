@@ -67,6 +67,52 @@ const isAsConst = (node: ts.AsExpression, sourceFile: ts.SourceFile): boolean =>
 
 const isJsxText = (node: ts.Node): node is ts.JsxText => ts.isJsxText(node);
 
+/** Runs of two or more letters: what a word is, for the purpose below. */
+const WORDS = /[A-Za-z]{2,}/g;
+
+/**
+ * Whether a string literal reads as something a person was meant to read.
+ *
+ * A block's source is full of strings that are not copy — column names, CSS
+ * values, ids, the values of an enum — so the test is for words rather than for
+ * letters: a label reads as a phrase, "0 0 12px" and "rgba(0, 0, 0, .1)" do not.
+ * A single token carrying digits is an identifier or an id, never a sentence.
+ */
+const looksLikeCopy = (text: string): boolean => {
+  const trimmed = text.trim();
+  if (trimmed.length === 0) return false;
+  if (!/\s/.test(trimmed) && /\d/.test(trimmed)) return false;
+
+  const words = trimmed.match(WORDS) ?? [];
+  if (words.length === 0) return false;
+
+  return words.length > 1 || /^[A-Z][a-z]/.test(trimmed);
+};
+
+/**
+ * Positions where a string literal is wiring rather than copy, or is already
+ * covered by the JSX rules above.
+ */
+const isNotCopyPosition = (node: ts.StringLiteral): boolean => {
+  const parent = node.parent;
+  if (!parent) return true;
+  if (ts.isImportDeclaration(parent) || ts.isExportDeclaration(parent))
+    return true;
+  if (ts.isJsxAttribute(parent) || ts.isJsxExpression(parent)) return true;
+  if (ts.isLiteralTypeNode(parent)) return true;
+  // An object key, which names a value rather than showing one.
+  if (
+    (ts.isPropertyAssignment(parent) || ts.isPropertySignature(parent)) &&
+    parent.name === node
+  )
+    return true;
+  // The key handed to msg(), checked by the catalogue rules instead.
+  if (ts.isCallExpression(parent) && calleeName(parent) === MESSAGE_LOOKUP)
+    return true;
+
+  return false;
+};
+
 export interface LintResult {
   diagnostics: Diagnostic[];
   /** Every key the source passes to msg(), for the catalogue checks. */
@@ -197,6 +243,25 @@ export const lint = (
         "no-type-assertion",
         "A type assertion is not allowed. Narrow the value instead, e.g. " +
           "typeof x === 'string' ? x : ''."
+      );
+      return;
+    }
+
+    // The same rule away from the JSX. A label a block works out from a value in a
+    // query result is a word the block chose rather than a word the data holds, and
+    // a word the block chose is one a reader cannot read in their own language
+    // unless it comes from the catalogue.
+    if (
+      ts.isStringLiteral(node) &&
+      !isNotCopyPosition(node) &&
+      looksLikeCopy(node.text)
+    ) {
+      report(
+        node,
+        "translated-strings",
+        `Text a reader sees must come from msg(): found ${JSON.stringify(
+          node.text.trim()
+        )}. A label worked out from a value in the data needs a key of its own.`
       );
       return;
     }

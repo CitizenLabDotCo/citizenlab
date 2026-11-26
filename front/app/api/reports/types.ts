@@ -55,6 +55,13 @@ export interface Report {
         type: 'phase';
       } | null;
     };
+    // Set for a report about a whole project. A phase report has a phase instead.
+    project?: {
+      data: {
+        id: string;
+        type: 'project';
+      } | null;
+    };
   };
 }
 

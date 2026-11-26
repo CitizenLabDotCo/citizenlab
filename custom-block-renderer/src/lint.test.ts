@@ -52,3 +52,44 @@ test("a block cannot open a WebRTC connection", () => {
 
   assert.ok(rules(source).includes("no-network"));
 });
+
+test("a label mapped from a query value is text a reader sees", () => {
+  const source = `
+    import { Box } from 'gv-sdk';
+    export default function Block({ msg }: { msg: (key: string) => string }) {
+      const labels: Record<string, string> = { reaction: 'Reactions', input: 'Ideas posted' };
+      return <Box>{labels.reaction}{msg('title')}</Box>;
+    }
+  `;
+
+  assert.equal(
+    rules(source).filter((rule) => rule === "translated-strings").length,
+    2
+  );
+});
+
+test("the wiring a block is made of is not copy", () => {
+  const source = `
+    import { Box, BarChart, Bar, XAxis } from 'gv-sdk';
+
+    const SQL = \`SELECT type AS label FROM reporting_contributions WHERE project_id = 'd9f0c3e2'\`;
+
+    export default function Block({ msg }: { msg: (key: string) => string }) {
+      const style = { margin: '0 0 12px', border: 'rgba(0, 0, 0, 0.1)' };
+      return (
+        <Box p="24px" style={style}>
+          <BarChart data={[]} layout="vertical">
+            <XAxis type="number" dataKey="participants" />
+            <Bar dataKey="total" />
+          </BarChart>
+          {msg('title')}
+        </Box>
+      );
+    }
+  `;
+
+  assert.deepEqual(
+    rules(source).filter((rule) => rule === "translated-strings"),
+    []
+  );
+});

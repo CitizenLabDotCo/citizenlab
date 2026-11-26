@@ -17,9 +17,17 @@ describe ReportBuilder::Composition::ReportComposer do
     allow(ENV).to receive(:fetch).and_call_original
     allow(ENV).to receive(:fetch).with('CUSTOM_BLOCK_RENDERER_SECRET', nil).and_return('test-secret')
     stub_renderer
+    allow(ReportBuilder::Composition::Translator).to receive(:new).and_return(translator)
   end
 
   let(:project) { create(:project) }
+  # The composition is what these specs are about; what fills in the other locales
+  # afterwards has its own.
+  let(:translator) do
+    instance_double(ReportBuilder::Composition::Translator).tap do |double|
+      allow(double).to receive(:call) { |texts| texts.transform_values { |text| { 'en' => text } } }
+    end
+  end
   let(:sent_messages) { [] }
   # Minimal stand-ins for the AWS SDK response structs.
   let(:content_block_class) { Struct.new(:text, :tool_use) }
@@ -34,7 +42,11 @@ describe ReportBuilder::Composition::ReportComposer do
       'title' => 'Contributions',
       'source' => block_source,
       'messages' => { 'en' => { 'total' => 'Contributions' } },
-      'config_schema' => { 'type' => 'object', 'properties' => {} }
+      'config_schema' => { 'type' => 'object', 'properties' => {} },
+      'explanation' => {
+        'included' => 'Every contribution in this project.',
+        'calculation' => 'Each contribution counts once, not each person.'
+      }
     }
   end
   let(:block_source) do

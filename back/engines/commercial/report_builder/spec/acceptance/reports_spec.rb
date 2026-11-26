@@ -144,7 +144,8 @@ resource 'Reports' do
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
             owner: { data: { id: report.owner_id, type: 'user' } },
-            phase: { data: nil }
+            phase: { data: nil },
+            project: { data: nil }
           }
         )
 
@@ -377,7 +378,8 @@ resource 'Reports' do
           relationships: {
             layout: { data: { id: be_a(String), type: 'content_builder_layout' } },
             owner: { data: { id: be_a(String), type: 'user' } },
-            phase: { data: nil }
+            phase: { data: nil },
+            project: { data: nil }
           }
         )
 
@@ -896,6 +898,20 @@ resource 'Reports' do
 
         enqueued = QueJob.by_job_class(ReportBuilder::ReviseReportJob).last
         expect(enqueued.args.to_json).to include 'only-in-the-editor'
+      end
+
+      # Otherwise an admin reading the platform in another language gets a chart
+      # written in theirs, in the middle of a report written in one language.
+      example 'The turn is written in the report\'s language, not the reader\'s', :active_job_que_adapter,
+        document: false do
+        report.chat!(locale: 'en')
+        current_user.update!(locale: 'nl-NL')
+
+        do_request
+        assert_status 201
+
+        enqueued = QueJob.by_job_class(ReportBuilder::ReviseReportJob).last
+        expect(enqueued.args.to_json).to include '"locale":"en"'
       end
 
       example '[error] Ask while a turn is running', :active_job_que_adapter do

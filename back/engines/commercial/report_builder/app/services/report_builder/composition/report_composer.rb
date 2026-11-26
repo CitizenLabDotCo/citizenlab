@@ -96,15 +96,21 @@ module ReportBuilder
 
         # A run that was stopped — out of rounds, out of time, cancelled — did not
         # finish, and a review pass would only spend more of what ran out.
-        return result[:layout] unless result[:stopped] == 'done'
+        return localize(result[:layout]) unless result[:stopped] == 'done'
 
-        review(result[:layout])
+        localize(review(result[:layout]))
       rescue StandardError
         # The charts were authored for a report that never got written — whether the
         # model gave up or the provider threw. Nothing lists a block or can reach one
         # without a report placing it, so they would only sit in the database.
         discard_authored_blocks
         raise
+      end
+
+      # The run writes one locale and the platform may publish in several. This is the
+      # last step, so it also covers whatever the review pass changed.
+      def localize(layout)
+        LayoutTranslator.new(locale: @locale).call(layout)
       end
 
       # What has been checked so far proves the report is well-formed, not that it shows
@@ -358,7 +364,8 @@ module ReportBuilder
           title: input['title'],
           source: input['source'],
           config_schema: input['config_schema'],
-          messages: input['messages']
+          messages: input['messages'],
+          explanation: input['explanation']
         )
         @authored_blocks << result.block_id
 
@@ -375,7 +382,10 @@ module ReportBuilder
           return { error: true, text: "No block #{block_id} was authored in this run." }
         end
 
-        result = block_writer.edit(block_id: block_id, find: input['find'].to_s, replace: input['replace'].to_s)
+        result = block_writer.edit(
+          block_id: block_id, find: input['find'].to_s, replace: input['replace'].to_s,
+          explanation: input['explanation']
+        )
 
         { text: "Edited. The chart is now #{placement(result)} — patch the node that places it." }
       rescue ChartBlockWriter::Rejected => e

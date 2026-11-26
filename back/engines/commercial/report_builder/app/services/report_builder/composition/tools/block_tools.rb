@@ -49,9 +49,10 @@ module ReportBuilder
                         required: { type: 'array', items: { type: 'string' } }
                       },
                       required: %w[type properties]
-                    }
+                    },
+                    explanation: ExplanationSchema::SCHEMA
                   },
-                  required: %w[title source messages config_schema]
+                  required: %w[title source messages config_schema explanation]
                 }
               }
             }
@@ -73,7 +74,12 @@ module ReportBuilder
                       type: 'string',
                       description: 'The exact text to replace, whitespace included.'
                     },
-                    replace: { type: 'string', description: 'What to put in its place.' }
+                    replace: { type: 'string', description: 'What to put in its place.' },
+                    explanation: ExplanationSchema::SCHEMA.merge(
+                      description: "#{ExplanationSchema::SCHEMA[:description]} Send it only when the " \
+                                   'edit changes what the chart counts; leave it out and the ' \
+                                   'one already stored is kept.'
+                    )
                   },
                   required: %w[block_id find replace]
                 }

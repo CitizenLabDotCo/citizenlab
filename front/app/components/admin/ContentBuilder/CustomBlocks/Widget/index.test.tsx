@@ -44,6 +44,7 @@ const version = (
       created_at: '2026-09-01T00:00:00Z',
       block_title_multiloc: { en: 'Contributions chart' },
       block_status: 'published',
+      data_sources: [],
       ...overrides,
     },
   },

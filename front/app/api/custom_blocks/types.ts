@@ -40,6 +40,14 @@ export interface ConfigSchema {
   required?: string[];
 }
 
+// The three questions an admin asks of a chart. A caveat is only there when the
+// chart has one worth singling out.
+export interface BlockExplanation {
+  included: Multiloc;
+  calculation: Multiloc;
+  caveat?: Multiloc;
+}
+
 export interface BlockManifest {
   manifest_version: number;
   sdk_version: string;
@@ -50,6 +58,9 @@ export interface BlockManifest {
   config_schema?: ConfigSchema;
   // The reporting queries the block runs, read out of its source at build time.
   queries?: string[];
+  // What the chart counts, in plain language, written when the chart was authored.
+  // Absent on blocks authored before it was asked for.
+  explanation?: BlockExplanation;
 }
 
 // locale -> message key -> text
@@ -73,6 +84,10 @@ export interface ICustomBlockVersionData {
     created_at: string;
     block_title_multiloc: Multiloc;
     block_status: CustomBlockStatus;
+    // The reporting tables the block's queries read, derived from the stored SQL.
+    // Any of the tables the query layer exposes, so a reader must tolerate one it
+    // has no copy for.
+    data_sources: string[];
   };
 }
 

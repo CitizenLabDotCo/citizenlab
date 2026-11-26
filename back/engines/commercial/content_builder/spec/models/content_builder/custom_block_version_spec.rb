@@ -103,6 +103,44 @@ RSpec.describe ContentBuilder::CustomBlockVersion do
       expect(version).to be_invalid
       expect(version.errors.details[:manifest]).to include(hash_including(error: :queries_invalid))
     end
+
+    it 'accepts an explanation with a caveat and one without' do
+      parts = {
+        'included' => { 'en' => 'Every contribution.', 'nl-BE' => 'Elke bijdrage.' },
+        'calculation' => { 'en' => 'One per contribution.' }
+      }
+
+      expect(build(:custom_block_version, manifest: { 'explanation' => parts })).to be_valid
+      expect(
+        build(:custom_block_version, manifest: {
+          'explanation' => parts.merge('caveat' => { 'en' => 'Weeks start on a Monday.' })
+        })
+      ).to be_valid
+    end
+
+    it 'rejects an explanation that says what is counted but not how' do
+      version = build(:custom_block_version, manifest: {
+        'explanation' => { 'included' => { 'en' => 'Every contribution.' } }
+      })
+
+      expect(version).to be_invalid
+      expect(version.errors.details[:manifest]).to include(hash_including(error: :explanation_invalid))
+    end
+
+    it 'rejects a part that is one string rather than a multiloc' do
+      version = build(:custom_block_version, manifest: {
+        'explanation' => { 'included' => 'Every contribution.', 'calculation' => 'One per contribution.' }
+      })
+
+      expect(version).to be_invalid
+      expect(version.errors.details[:manifest]).to include(hash_including(error: :explanation_invalid))
+    end
+  end
+
+  describe '#explanation' do
+    it 'is nil on a block authored before explanations were asked for' do
+      expect(build(:custom_block_version, manifest: {}).explanation).to be_nil
+    end
   end
 
   describe '#queries' do
