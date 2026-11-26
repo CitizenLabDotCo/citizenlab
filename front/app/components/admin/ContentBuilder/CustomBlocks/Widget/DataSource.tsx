@@ -120,12 +120,14 @@ const screenLink = (table: string, projectId?: string) => {
           <FormattedMessage {...messages.openRepresentativeness} />
         </Link>
       );
+    // The input manager takes no project in its URL, so this one link is the only
+    // one that cannot be narrowed to the report's project.
     case 'inputs':
-      return projectId ? (
-        <Link to="/admin/ideas" search={{ projects: [projectId] }}>
+      return (
+        <Link to="/admin/ideas">
           <FormattedMessage {...messages.openInputs} />
         </Link>
-      ) : null;
+      );
     case 'participants':
       return projectId ? (
         <Link to="/admin/projects/$projectId/audience" params={{ projectId }}>
