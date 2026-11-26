@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Multiloc, SupportedLocale } from 'typings';
 
+import LanguageSwitcher from 'design-system/LanguageSwitcher';
 import NewDot from 'design-system/NewDot';
 import ToggleButton from 'design-system/ToggleButton';
 import ToggleButtonGroup from 'design-system/ToggleButtonGroup';
 import { Key } from 'design-system/types';
 import 'design-system/tokens.css';
 
+import { appLocalePairs } from 'containers/App/constants';
+
+import LanguageButtonContext from './LanguageButtonContext';
 import styles from './MultilocFields.module.css';
 
 interface Props {
@@ -21,7 +25,8 @@ interface Props {
 }
 
 // Picks which locale of a multilingual field is being edited. Hidden when
-// the platform has one locale.
+// the platform has one locale. The new back office uses the compact Language
+// button; the current back office keeps the segmented switcher.
 const LocaleSwitcher = ({
   'aria-label': ariaLabel,
   locales,
@@ -29,7 +34,27 @@ const LocaleSwitcher = ({
   onChange,
   valueMultiloc,
 }: Props) => {
+  const redesigned = useContext(LanguageButtonContext);
+
   if (locales.length < 2) return null;
+
+  if (redesigned) {
+    return (
+      <LanguageSwitcher
+        aria-label={ariaLabel}
+        languages={locales.map((locale) => ({
+          id: locale,
+          name: appLocalePairs[locale],
+          done: !valueMultiloc || !!valueMultiloc[locale],
+        }))}
+        selectedId={selectedLocale}
+        onChange={(id) => {
+          const locale = locales.find((option) => option === id);
+          if (locale) onChange(locale);
+        }}
+      />
+    );
+  }
 
   const handleSelectionChange = (keys: Set<Key>) => {
     const locale = locales.find((option) => keys.has(option));

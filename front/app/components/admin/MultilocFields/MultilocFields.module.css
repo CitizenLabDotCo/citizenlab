@@ -35,3 +35,32 @@
 .localeCode {
   text-transform: uppercase;
 }
+
+/* The new back office's Language button sits 8 px above the field it drives. */
+.field > .localeRow:has([data-language-switcher]) {
+  margin-bottom: var(--gv-space-4);
+}
+
+/* A Language button 8 px above the fields it drives, the missing line 8 px under them. */
+.languageGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  min-width: 0;
+}
+
+.missingLanguages {
+  composes: small from '../../../design-system/typography.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+  margin: 0;
+  color: var(--gv-text-secondary);
+}
+
+.missingLanguagesIcon {
+  flex-shrink: 0;
+  width: var(--gv-size-icon-14);
+  height: var(--gv-size-icon-14);
+  color: var(--gv-text-danger);
+}

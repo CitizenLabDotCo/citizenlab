@@ -16,6 +16,8 @@ type LabelProps =
 
 type Props = LabelProps & {
   id?: string;
+  // Set when one switcher above drives a group of fields; the field then has none of its own.
+  locale?: SupportedLocale;
   description?: ReactNode;
   placeholder?: string;
   valueMultiloc: Multiloc | null | undefined;
@@ -32,6 +34,7 @@ type Props = LabelProps & {
 // picked in the switcher above it.
 const MultilocTextField = ({
   id,
+  locale,
   label,
   labelTooltip,
   'aria-label': ariaLabel,
@@ -45,7 +48,12 @@ const MultilocTextField = ({
   size,
   maxCharCount,
 }: Props) => {
-  const { locales, selectedLocale, setSelectedLocale } = useSelectedLocale();
+  const {
+    locales,
+    selectedLocale: defaultLocale,
+    setSelectedLocale,
+  } = useSelectedLocale();
+  const selectedLocale = locale ?? defaultLocale;
 
   if (!selectedLocale) return null;
 
@@ -101,7 +109,7 @@ const MultilocTextField = ({
 
   return (
     <div className={styles.field}>
-      {locales.length > 1 && (
+      {!locale && locales.length > 1 && (
         <div className={styles.localeRow}>
           <LocaleSwitcher
             aria-label={name}

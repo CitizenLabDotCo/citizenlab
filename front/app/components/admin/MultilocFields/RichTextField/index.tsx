@@ -90,6 +90,12 @@ const RichTextField = ({
     placeholder,
   });
 
+  // Quill reads the placeholder once; it changes with the language shown.
+  useEffect(() => {
+    if (!editor) return;
+    editor.root.setAttribute('data-placeholder', placeholder ?? '');
+  }, [editor, placeholder]);
+
   useEffect(() => {
     if (!editor || !editorRef) return;
     editorRef(editor.root);
