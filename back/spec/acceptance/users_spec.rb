@@ -2124,6 +2124,19 @@ resource 'Users' do
           end
         end
 
+        example 'Update a user who stores an "Other" text for a question without an "Other" option', document: false do
+          field = create(:custom_field_select, key: 'pet')
+          create(:custom_field_option, custom_field: field, key: 'cat')
+          create(:custom_field_answer, answerable: @user, key: 'pet', value: 'cat')
+          create(:custom_field_answer, answerable: @user, key: 'pet_other', custom_field: field, value: 'A ferret')
+
+          do_request
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :first_name)).to eq first_name
+          expect(@user.reload.answer_for_key('pet_other').value).to eq 'A ferret'
+        end
+
         describe do
           example "Set a user's custom field values" do
             cf = create(:custom_field)
