@@ -336,18 +336,9 @@ const NewPhaseWorkspace = ({
                   participationMethod
                 ) && (
                   <Button
-                    // Survey questions open with the primary Add, as in the library's card.
+                    // A survey's sits next to the download button.
                     fullWidth={participationMethod !== 'native_survey'}
-                    variant={
-                      participationMethod === 'native_survey'
-                        ? 'primary'
-                        : 'secondary'
-                    }
-                    icon={
-                      participationMethod === 'native_survey'
-                        ? 'plus-16'
-                        : undefined
-                    }
+                    variant="secondary"
                     data-cy={
                       participationMethod === 'native_survey'
                         ? 'add-draft-survey-questions'

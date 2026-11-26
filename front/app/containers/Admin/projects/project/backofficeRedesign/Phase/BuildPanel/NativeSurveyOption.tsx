@@ -81,15 +81,13 @@ const NativeSurveyOption = ({
             }
             target="_blank"
           />
-          {hasQuestions ? (
-            <Button variant="secondary" onPress={onAddQuestions}>
-              {formatMessage(methodSectionMessages.editSurvey)}
-            </Button>
-          ) : (
-            <Button variant="primary" icon="plus-16" onPress={onAddQuestions}>
-              {formatMessage(methodSectionMessages.addQuestions)}
-            </Button>
-          )}
+          <Button variant="secondary" onPress={onAddQuestions}>
+            {formatMessage(
+              hasQuestions
+                ? methodSectionMessages.editSurvey
+                : methodSectionMessages.addQuestions
+            )}
+          </Button>
         </div>
       )}
     </div>
