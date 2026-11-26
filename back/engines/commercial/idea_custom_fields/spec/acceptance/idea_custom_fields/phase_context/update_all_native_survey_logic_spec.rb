@@ -132,6 +132,24 @@ resource 'Idea Custom Fields' do
       expect(scale_field.reload.logic['rules'].pluck('if')).to eq [1, '2', 9]
     end
 
+    example 'Keeps the no_answer rule of a linear scale that is made required (current behaviour, N5)', document: false do
+      scale_field.update!(logic: { rules: [{ if: 'no_answer', goto_page_id: page3.id }] })
+      do_request form_params(scale_field => { required: true, logic: { rules: [{ if: 'no_answer', goto_page_id: page3.id }] } })
+
+      assert_status 200
+      expect(scale_field.reload.required).to be true
+      expect(scale_field.logic).to eq({ 'rules' => [{ 'if' => 'no_answer', 'goto_page_id' => page3.id }] })
+    end
+
+    example 'Keeps a linear scale rule above a lowered maximum (current behaviour, N5)', document: false do
+      scale_field.update!(logic: { rules: [{ if: 5, goto_page_id: form_end.id }] })
+      do_request form_params(scale_field => { maximum: 3, logic: { rules: [{ if: 5, goto_page_id: form_end.id }] } })
+
+      assert_status 200
+      expect(scale_field.reload.maximum).to eq 3
+      expect(scale_field.logic['rules'].pluck('if')).to eq [5]
+    end
+
     example 'Stores any_other_answer and no_answer rules of a linear scale', document: false do
       rules = [{ if: 'any_other_answer', goto_page_id: form_end.id }, { if: 'no_answer', goto_page_id: page3.id }]
       do_request form_params(scale_field => { logic: { rules: } })

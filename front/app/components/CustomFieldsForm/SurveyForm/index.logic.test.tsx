@@ -374,6 +374,49 @@ describe('SurveyForm with logic', () => {
     });
   });
 
+  it('erases the answer on a later page when an answer that skips it is picked and then undone (current behaviour, N7)', async () => {
+    const user = userEvent.setup();
+    renderSurvey();
+
+    await choose(user, 'Maybe');
+    await clickNext(user);
+    await user.type(await screen.findByLabelText(/Question Two/), 'long text');
+    await clickPrevious(user);
+    await screen.findByText('Pick one');
+    await clickNext(user);
+    expect(await screen.findByLabelText(/Question Two/)).toHaveValue(
+      'long text'
+    );
+    await clickPrevious(user);
+    await screen.findByText('Pick one');
+
+    await choose(user, 'No');
+    await choose(user, 'Maybe');
+    await clickNext(user);
+
+    expect(await screen.findByLabelText(/Question Two/)).toHaveValue('');
+  });
+
+  it('renders no page and no buttons after a jump to a page that is not in the form (current behaviour, N4)', async () => {
+    mockCustomFields = buildForm({
+      rules: [{ if: 'id-no', goto_page_id: 'page-missing' }],
+    });
+    const user = userEvent.setup();
+    renderSurvey();
+
+    await choose(user, 'No');
+    await clickNext(user);
+
+    await waitFor(() =>
+      expect(screen.queryByText('Pick one')).not.toBeInTheDocument()
+    );
+    expect(screen.queryByText('Question Two')).not.toBeInTheDocument();
+    expect(screen.queryByText('Question Three')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /next|submit/i })
+    ).not.toBeInTheDocument();
+  });
+
   it('saves the draft of a signed-in respondent on every page it visits', async () => {
     mockAuthUser = { data: { id: 'user-1', attributes: {} } };
     mockDraftIdeaQuery = {
