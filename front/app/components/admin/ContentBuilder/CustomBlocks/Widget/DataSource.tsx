@@ -104,19 +104,23 @@ const DESTINATIONS: Record<string, Destination | undefined> = {
   reporting_reference_distributions: 'representativeness',
 };
 
+// The report builder is a document being edited, and a half-written report is
+// not saved. Following a source in place would take the admin out of it.
+const NEW_TAB = { target: '_blank', rel: 'noreferrer' } as const;
+
 // Dropped rather than guessed when the screen needs a project and the report is
 // not about one.
 const screenLink = (table: string, projectId?: string) => {
   switch (DESTINATIONS[table]) {
     case 'users':
       return (
-        <Link to="/admin/users">
+        <Link to="/admin/users" {...NEW_TAB}>
           <FormattedMessage {...messages.openUsers} />
         </Link>
       );
     case 'representativeness':
       return (
-        <Link to="/admin/dashboard/representation">
+        <Link to="/admin/dashboard/representation" {...NEW_TAB}>
           <FormattedMessage {...messages.openRepresentativeness} />
         </Link>
       );
@@ -124,13 +128,17 @@ const screenLink = (table: string, projectId?: string) => {
     // one that cannot be narrowed to the report's project.
     case 'inputs':
       return (
-        <Link to="/admin/ideas">
+        <Link to="/admin/ideas" {...NEW_TAB}>
           <FormattedMessage {...messages.openInputs} />
         </Link>
       );
     case 'participants':
       return projectId ? (
-        <Link to="/admin/projects/$projectId/audience" params={{ projectId }}>
+        <Link
+          to="/admin/projects/$projectId/audience"
+          params={{ projectId }}
+          {...NEW_TAB}
+        >
           <FormattedMessage {...messages.openParticipants} />
         </Link>
       ) : null;
@@ -139,13 +147,18 @@ const screenLink = (table: string, projectId?: string) => {
         <Link
           to="/admin/projects/$projectId/audience/demographics"
           params={{ projectId }}
+          {...NEW_TAB}
         >
           <FormattedMessage {...messages.openDemographics} />
         </Link>
       ) : null;
     case 'events':
       return projectId ? (
-        <Link to="/admin/projects/$projectId/events" params={{ projectId }}>
+        <Link
+          to="/admin/projects/$projectId/events"
+          params={{ projectId }}
+          {...NEW_TAB}
+        >
           <FormattedMessage {...messages.openEvents} />
         </Link>
       ) : null;
