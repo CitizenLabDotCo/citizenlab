@@ -105,8 +105,6 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
   )
 
-  self.ignored_columns += %w[custom_field_values] # backup only; the answers are the source of truth
-
   has_many_text_images from: :body_multiloc
 
   before_validation :sanitize_body_multiloc, if: :body_multiloc

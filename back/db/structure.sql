@@ -1695,7 +1695,6 @@ CREATE TABLE public.users (
     locale character varying,
     bio_multiloc jsonb DEFAULT '{}'::jsonb,
     invite_status character varying,
-    custom_field_values jsonb DEFAULT '{}'::jsonb,
     registration_completed_at timestamp without time zone,
     verified boolean DEFAULT false NOT NULL,
     email_confirmed_at timestamp without time zone,
@@ -1906,7 +1905,6 @@ CREATE TABLE public.ideas (
     assignee_id uuid,
     assigned_at timestamp without time zone,
     proposed_budget integer,
-    custom_field_values jsonb DEFAULT '{}'::jsonb NOT NULL,
     creation_phase_id uuid,
     author_hash character varying,
     anonymous boolean DEFAULT false NOT NULL,
@@ -4425,40 +4423,11 @@ CREATE VIEW public.reporting_contributions AS
     i.author_id AS user_id,
     COALESCE((i.author_id)::text, (i.author_hash)::text, (i.id)::text) AS participant_id
    FROM ((( SELECT ideas.id,
-            ideas.title_multiloc,
-            ideas.body_multiloc,
-            ideas.publication_status,
-            ideas.published_at,
-            ideas.project_id,
-            ideas.author_id,
             ideas.created_at,
-            ideas.updated_at,
-            ideas.likes_count,
-            ideas.dislikes_count,
-            ideas.location_point,
-            ideas.location_description,
-            ideas.comments_count,
-            ideas.idea_status_id,
-            ideas.slug,
-            ideas.budget,
-            ideas.baskets_count,
-            ideas.official_feedbacks_count,
-            ideas.assignee_id,
-            ideas.assigned_at,
-            ideas.proposed_budget,
-            ideas.custom_field_values,
+            ideas.project_id,
             ideas.creation_phase_id,
+            ideas.author_id,
             ideas.author_hash,
-            ideas.anonymous,
-            ideas.internal_comments_count,
-            ideas.votes_count,
-            ideas.followers_count,
-            ideas.submitted_at,
-            ideas.manual_votes_amount,
-            ideas.manual_votes_last_updated_by_id,
-            ideas.manual_votes_last_updated_at,
-            ideas.neutral_reactions_count,
-            ideas.weglot_data,
             COALESCE(ideas.submitted_at, ideas.published_at, ideas.created_at) AS contributed_at
            FROM public.ideas
           WHERE ((ideas.publication_status)::text = 'published'::text)) i
@@ -4507,7 +4476,7 @@ UNION ALL
              LEFT JOIN public.ideas ri ON ((((reactions.reactable_type)::text = 'Idea'::text) AND (ri.id = reactions.reactable_id))))
              LEFT JOIN public.comments rc ON ((((reactions.reactable_type)::text = 'Comment'::text) AND (rc.id = reactions.reactable_id))))
              LEFT JOIN public.ideas rci ON ((rci.id = rc.idea_id)))
-          WHERE ((reactions.reactable_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Comment'::character varying)::text]))) r
+          WHERE ((reactions.reactable_type)::text = ANY ((ARRAY['Idea'::character varying, 'Comment'::character varying])::text[]))) r
      LEFT JOIN public.phases input_creation_ph ON ((input_creation_ph.id = r.input_creation_phase_id)))
      LEFT JOIN public.phases inferred_ph ON (((inferred_ph.project_id = r.project_id) AND ((inferred_ph.placement_type)::text = 'on_timeline'::text) AND (r.created_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (r.created_at < inferred_ph.end_at)))))
 UNION ALL
@@ -5153,32 +5122,32 @@ CREATE VIEW public.reporting_platform_baselines AS
            FROM (projects p
              LEFT JOIN contributions c ON ((c.project_id = p.id)))
         UNION ALL
-         SELECT 'contributions_per_project'::text,
+         SELECT 'contributions_per_project'::text AS text,
             p.id,
             COALESCE(c.contributions, (0)::bigint) AS "coalesce"
            FROM (projects p
              LEFT JOIN contributions c ON ((c.project_id = p.id)))
         UNION ALL
-         SELECT 'visitors_per_project'::text,
+         SELECT 'visitors_per_project'::text AS text,
             p.id,
             COALESCE(v.visitors, (0)::bigint) AS "coalesce"
            FROM (projects p
              LEFT JOIN visitors v ON ((v.project_id = p.id)))
         UNION ALL
-         SELECT 'phases_per_project'::text,
+         SELECT 'phases_per_project'::text AS text,
             p.id,
             COALESCE(pc.phases, (0)::bigint) AS "coalesce"
            FROM (projects p
              LEFT JOIN phase_counts pc ON ((pc.project_id = p.id)))
         UNION ALL
-         SELECT 'online_voters_per_voting_phase'::text,
+         SELECT 'online_voters_per_voting_phase'::text AS text,
             ph.project_id,
             COALESCE(ph.online_voters_count, 0) AS "coalesce"
            FROM (public.reporting_phases ph
              JOIN projects p ON ((p.id = ph.project_id)))
           WHERE (((ph.participation_method)::text = 'voting'::text) AND (ph.start_at <= now()))
         UNION ALL
-         SELECT 'survey_responses_per_survey_phase'::text,
+         SELECT 'survey_responses_per_survey_phase'::text AS text,
             ph.project_id,
             COALESCE(sr.responses, (0)::bigint) AS "coalesce"
            FROM ((public.reporting_phases ph
@@ -11053,6 +11022,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261126163552'),
 ('20261124133741'),
 ('20261113090000'),
 ('20261106130200'),
