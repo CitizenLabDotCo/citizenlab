@@ -425,6 +425,14 @@ describe UserFieldsInFormService do
           expect(page1.reload.logic).to eq('next_page_id' => form_end.id)
         end
 
+        it 'stores the user page id when a rewritten field is saved afterwards (currently existing bug, B12)' do
+          fields = add_user_fields
+          user_page = fields.find { |field| field.key == 'user_page' }
+          fields.find { |field| field.id == page1.id }.save!
+
+          expect(page1.reload.logic).to eq('next_page_id' => user_page.id)
+        end
+
         it 'gives the user page a new id every time (currently existing bug, B12)' do
           first_id = add_user_fields.find { |field| field.key == 'user_page' }.id
           second_id = add_user_fields.find { |field| field.key == 'user_page' }.id
