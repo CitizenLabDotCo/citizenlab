@@ -10,9 +10,9 @@ describe Export::AnswerFieldsForReport do
   describe '#fields_for' do
     context 'for a plain question' do
       let(:field) do
-        create(:custom_field_text, resource: form, key: 'comment', title_multiloc: { 'en' => 'Comment' })
+        create(:custom_field_text, resource: form, title_multiloc: { 'en' => 'Comment' })
       end
-      let(:input) { create(:idea, custom_field_answers: [build(:custom_field_answer, key: 'comment', value: 'Nice one')]) }
+      let(:input) { create(:idea, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'Nice one')]) }
 
       it 'returns a single field with the question header and answer value' do
         fields = builder.fields_for(field)
@@ -27,7 +27,7 @@ describe Export::AnswerFieldsForReport do
       let(:field) { create(:custom_field_matrix_linear_scale, resource: form) }
       let(:input) do
         create(:idea, custom_field_answers: [
-          build(:custom_field_answer, key: field.key, value: { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 5 })
+          build(:custom_field_answer, custom_field: field, value: { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 5 })
         ])
       end
 
@@ -47,7 +47,7 @@ describe Export::AnswerFieldsForReport do
       let(:field) { create(:custom_field_select, :with_options, resource: form) }
       let(:input) do
         create(:idea, custom_field_answers: [
-          build(:custom_field_answer, key: field.key, value: 'other'),
+          build(:custom_field_answer, custom_field: field, value: 'other'),
           build(:custom_field_answer, key: "#{field.key}_other", value: 'Something else', custom_field: field)
         ])
       end
@@ -67,8 +67,8 @@ describe Export::AnswerFieldsForReport do
 
     context 'for a user/registration field' do
       # `custom_field` defaults to a registration (resource_type User) field.
-      let(:field) { create(:custom_field, key: 'residence', title_multiloc: { 'en' => 'Residence' }) }
-      let(:author) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'residence', value: 'Manchester')]) }
+      let(:field) { create(:custom_field, title_multiloc: { 'en' => 'Residence' }) }
+      let(:author) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'Manchester')]) }
       let(:input) { create(:idea, author: author) }
 
       it 'returns a single field read from the author profile' do
@@ -83,7 +83,7 @@ describe Export::AnswerFieldsForReport do
       let(:field) { create(:custom_field_select, :with_options, resource: form, ask_follow_up: true) }
       let(:input) do
         create(:idea, custom_field_answers: [
-          build(:custom_field_answer, key: field.key, value: 'option1'),
+          build(:custom_field_answer, custom_field: field, value: 'option1'),
           build(:custom_field_answer, key: "#{field.key}_follow_up", value: 'Because reasons', custom_field: field)
         ])
       end

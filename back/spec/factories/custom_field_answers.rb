@@ -3,8 +3,8 @@
 FactoryBot.define do
   factory :custom_field_answer do
     answerable { association(:user) }
-    key { 'field_key' }
-    custom_field { CustomField.find_by(key: key) }
+    custom_field { association(:custom_field_text) }
+    key { custom_field.key }
     value { 'an answer' }
   end
 end

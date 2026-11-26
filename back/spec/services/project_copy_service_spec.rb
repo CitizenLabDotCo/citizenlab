@@ -486,9 +486,9 @@ describe ProjectCopyService do
       gender_field = create(:custom_field_gender, :with_options)
       birthyear_field = create(:custom_field_birthyear)
       author = create(:user, custom_field_answers: [
-        build(:custom_field_answer, key: 'gender', value: 'female', custom_field: gender_field),
-        build(:custom_field_answer, key: 'birthyear', value: 1984, custom_field: birthyear_field),
-        build(:custom_field_answer, key: 'postal_code', value: '1000')
+        build(:custom_field_answer, custom_field: gender_field, value: 'female'),
+        build(:custom_field_answer, custom_field: birthyear_field, value: 1984),
+        build(:custom_field_answer, custom_field: create(:custom_field, key: 'postal_code'), value: '1000')
       ])
       idea = create(:idea, author: author)
 

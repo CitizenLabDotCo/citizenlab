@@ -135,7 +135,8 @@ resource 'Ideas' do
   describe 'Update' do
     let(:project) { create(:single_phase_ideation_project) }
     let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
-    let(:idea) { create(:idea, author: user, project: project, custom_field_answers: [build(:custom_field_answer, key: extra_field_name1, value: 'test value')]) }
+    let(:text_field) { create(:custom_field, :for_custom_form, key: extra_field_name1) }
+    let(:idea) { create(:idea, author: user, project: project, custom_field_answers: [build(:custom_field_answer, custom_field: text_field, value: 'test value')]) }
     let(:id) { idea.id }
     let(:extra_field_name1) { 'custom_field_name1' }
     let(:extra_field_name2) { 'custom_field_name2' }

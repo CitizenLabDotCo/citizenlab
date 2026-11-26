@@ -29,7 +29,7 @@ describe Analysis::InputToText do
       input = build(
         :idea,
         custom_field_answers: [
-          build(:custom_field_answer, key: custom_fields[0].key, value: 'Newspaper')
+          build(:custom_field_answer, custom_field: custom_fields[0], value: 'Newspaper')
         ]
       )
       expect(service.execute(input)).to eq({
@@ -45,7 +45,7 @@ describe Analysis::InputToText do
       input1 = build(
         :idea,
         custom_field_answers: [
-          build(:custom_field_answer, key: custom_fields[0].key, value: '')
+          build(:custom_field_answer, custom_field: custom_fields[0], value: '')
         ]
       )
       input2 = build(:idea)
@@ -61,7 +61,7 @@ describe Analysis::InputToText do
       input = build(
         :idea,
         custom_field_answers: [
-          build(:custom_field_answer, key: custom_fields[0].key, value: 'Newspaper')
+          build(:custom_field_answer, custom_field: custom_fields[0], value: 'Newspaper')
         ]
       )
       override_field_labels = {
@@ -92,8 +92,8 @@ describe Analysis::InputToText do
       input = build(
         :idea,
         custom_field_answers: [
-          build(:custom_field_answer, key: custom_field.key, value: 'other'),
-          build(:custom_field_answer, key: "#{custom_field.key}_other", value: 'Because none of the above')
+          build(:custom_field_answer, custom_field: custom_field, value: 'other'),
+          build(:custom_field_answer, key: "#{custom_field.key}_other", custom_field:, value: 'Because none of the above')
         ]
       )
       expect(service.execute(input)).to eq({
@@ -110,7 +110,7 @@ describe Analysis::InputToText do
       input = build(
         :idea,
         custom_field_answers: [
-          build(:custom_field_answer, key: custom_fields[0].key, value: 3)
+          build(:custom_field_answer, custom_field: custom_fields[0], value: 3)
         ]
       )
       expect(service.execute(input)).to eq({
@@ -130,8 +130,8 @@ describe Analysis::InputToText do
       input = build(
         :idea,
         custom_field_answers: [
-          build(:custom_field_answer, key: custom_fields[0].key, value: 'Newspaper'),
-          build(:custom_field_answer, key: custom_fields[1].key, value: 'Yes, I would')
+          build(:custom_field_answer, custom_field: custom_fields[0], value: 'Newspaper'),
+          build(:custom_field_answer, custom_field: custom_fields[1], value: 'Yes, I would')
         ]
       )
 
@@ -157,9 +157,9 @@ describe Analysis::InputToText do
       input = build(
         :idea,
         custom_field_answers: [
-          build(:custom_field_answer, key: custom_fields[0].key, value: 'Newspaper'),
-          build(:custom_field_answer, key: custom_fields[1].key, value: 'Yes, I would'),
-          build(:custom_field_answer, key: custom_fields[2].key, value: 'Blonde')
+          build(:custom_field_answer, custom_field: custom_fields[0], value: 'Newspaper'),
+          build(:custom_field_answer, custom_field: custom_fields[1], value: 'Yes, I would'),
+          build(:custom_field_answer, custom_field: custom_fields[2], value: 'Blonde')
         ]
       )
 
@@ -200,7 +200,7 @@ describe Analysis::InputToText do
       input = build(
         :idea,
         custom_field_answers: [
-          build(:custom_field_answer, key: custom_field.key, value: %w[by_bike by_train])
+          build(:custom_field_answer, custom_field: custom_field, value: %w[by_bike by_train])
         ]
       )
 
@@ -221,7 +221,7 @@ describe Analysis::InputToText do
       input = build(
         :idea,
         custom_field_answers: [
-          build(:custom_field_answer, key: custom_field.key, value: { 'send_more_animals_to_space' => 5, 'more_benches_in_park' => 2 })
+          build(:custom_field_answer, custom_field: custom_field, value: { 'send_more_animals_to_space' => 5, 'more_benches_in_park' => 2 })
         ]
       )
 
@@ -242,7 +242,7 @@ describe Analysis::InputToText do
     input = build(
       :idea,
       custom_field_answers: [
-        build(:custom_field_answer, key: custom_field.key, value: 'Newspaper')
+        build(:custom_field_answer, custom_field: custom_field, value: 'Newspaper')
       ],
       comments: [build(:comment, body_multiloc: { en: 'This is a comment' })]
     )

@@ -44,9 +44,11 @@ FactoryBot.define do
       custom_field_answers do
         gender = ['male', 'female', 'unspecified', nil][rand(4)]
         birthyear = rand(2) == 0 ? (Time.now.year - 12 - rand(100)) : nil
+        gender_field = CustomField.find_by(code: 'gender') || create(:custom_field_gender)
+        birthyear_field = CustomField.find_by(code: 'birthyear') || create(:custom_field_birthyear)
         [
-          gender && build(:custom_field_answer, key: 'gender', value: gender),
-          birthyear && build(:custom_field_answer, key: 'birthyear', value: birthyear)
+          gender && build(:custom_field_answer, custom_field: gender_field, value: gender),
+          birthyear && build(:custom_field_answer, custom_field: birthyear_field, value: birthyear)
         ].compact
       end
     end

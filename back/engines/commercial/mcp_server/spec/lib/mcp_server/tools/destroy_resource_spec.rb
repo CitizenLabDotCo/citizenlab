@@ -146,9 +146,9 @@ describe McpServer::Tools::DestroyResource do
 
   it 'refuses to destroy an area used by a static page project filter, before any side effects' do
     change_lifecycle_stage('demo')
-    create(:custom_field_domicile)
+    domicile_field = create(:custom_field_domicile)
     area = create(:area)
-    user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)])
+    user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: domicile_field, value: area.id)])
     create(:static_page, projects_filter_type: 'areas', areas: [area])
 
     response = destroy('area', area.id)

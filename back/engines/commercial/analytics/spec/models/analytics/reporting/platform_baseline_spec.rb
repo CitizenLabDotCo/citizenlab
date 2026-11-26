@@ -83,7 +83,7 @@ RSpec.describe Analytics::Reporting::PlatformBaseline do
       question = phase.custom_form.custom_fields.first
       count.times do
         response = create(:native_survey_response, project: project, creation_phase: phase)
-        response.custom_field_answers.create!(key: question.key, value: 3)
+        create(:custom_field_answer, answerable: response, custom_field: question, value: 3)
       end
     end
 

@@ -52,7 +52,7 @@ RSpec.describe Analytics::Reporting::ReferenceDistribution do
     area = create(:area)
     outside = create(:custom_field_option, custom_field: domicile, key: 'somewhere_else')
     create(:categorical_distribution, custom_field: domicile, distribution: { area.custom_field_option_id => 70, outside.id => 30 })
-    [area.id, area.id, 'outside'].each { |value| create(:user).custom_field_answers.create!(key: 'domicile', value: value) }
+    [area.id, area.id, 'outside'].each { |value| create(:custom_field_answer, custom_field: domicile, value: value) }
 
     users_per_row = described_class.where(question_id: domicile.id)
       .joins(<<~SQL.squish)

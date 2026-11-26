@@ -315,7 +315,6 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       create(
         :custom_field_select,
         resource: new_form,
-        key: 'page1_select',
         options: [
           create(:custom_field_option, key: 'first'),
           create(:custom_field_option, key: 'second')
@@ -323,14 +322,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       )
     end
     let_it_be(:page2) { create(:custom_field_page, resource: new_form) }
-    let_it_be(:page2_linear_scale) do
-      create(
-        :custom_field_linear_scale,
-        resource: new_form,
-        key: 'page2_linear_scale',
-        maximum: 5
-      )
-    end
+    let_it_be(:page2_linear_scale) { create(:custom_field_linear_scale, resource: new_form, maximum: 5) }
     let_it_be(:page3) { create(:custom_field_page, resource: new_form) }
     let_it_be(:page3_text) { create(:custom_field, resource: new_form) }
     let_it_be(:page4) { create(:custom_field_page, resource: new_form) }
@@ -340,20 +332,20 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
     # Add some responses that will influence logic
     let_it_be(:response1) do
       create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_answers: [
-        build(:custom_field_answer, key: 'page1_select', value: 'first'),
-        build(:custom_field_answer, key: 'page2_linear_scale', value: 1)
+        build(:custom_field_answer, custom_field: page1_select, value: 'first'),
+        build(:custom_field_answer, custom_field: page2_linear_scale, value: 1)
       ])
     end
     let_it_be(:response2) do
       create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_answers: [
-        build(:custom_field_answer, key: 'page1_select', value: 'second'),
-        build(:custom_field_answer, key: 'page2_linear_scale', value: 1)
+        build(:custom_field_answer, custom_field: page1_select, value: 'second'),
+        build(:custom_field_answer, custom_field: page2_linear_scale, value: 1)
       ])
     end
     let_it_be(:response3) do
       create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_answers: [
-        build(:custom_field_answer, key: 'page1_select', value: 'first'),
-        build(:custom_field_answer, key: 'page2_linear_scale', value: 2)
+        build(:custom_field_answer, custom_field: page1_select, value: 'first'),
+        build(:custom_field_answer, custom_field: page2_linear_scale, value: 2)
       ])
     end
 

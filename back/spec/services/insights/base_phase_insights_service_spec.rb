@@ -911,17 +911,19 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
   describe '#parse_user_custom_field_values' do
     let(:prefix) { UserFieldsInFormService.prefix }
+    let(:key1_field) { create(:custom_field, key: 'key1') }
+    let(:key2_field) { create(:custom_field, key: 'key2') }
 
     it 'preferentially merges the parsed item.custom_field_values if present' do
       item = create(:idea, custom_field_answers: [
-        build(:custom_field_answer, key: "#{prefix}key1", value: 'value1'),
-        build(:custom_field_answer, key: 'other_key', value: 'other_value')
+        build(:custom_field_answer, key: "#{prefix}key1", custom_field: key1_field, value: 'value1'),
+        build(:custom_field_answer, value: 'other_value')
       ])
 
       result = service.send(:parse_user_custom_field_values, item, nil)
       expect(result).to eq({ 'key1' => 'value1' })
 
-      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key1', value: 'value2')])
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: key1_field, value: 'value2')])
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key1' => 'value1' })
@@ -929,21 +931,22 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
     it 'merges user.custom_field_values not parsed from item.custom_field_values' do
       item = create(:idea, custom_field_answers: [
-        build(:custom_field_answer, key: "#{prefix}key1", value: 'value1'),
-        build(:custom_field_answer, key: 'other_key', value: 'other_value')
+        build(:custom_field_answer, key: "#{prefix}key1", custom_field: key1_field, value: 'value1'),
+        build(:custom_field_answer, value: 'other_value')
       ])
-      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key2', value: 'value2')])
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: key2_field, value: 'value2')])
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key1' => 'value1', 'key2' => 'value2' })
     end
 
     it 'avoids collisions with similar keys in idea custom_field_values' do
+      user_field = create(:custom_field, key: 'key')
       item = create(:idea, custom_field_answers: [
-        build(:custom_field_answer, key: "#{prefix}key", value: 'value1'),
+        build(:custom_field_answer, key: "#{prefix}key", custom_field: user_field, value: 'value1'),
         build(:custom_field_answer, key: 'key', value: 'value2')
       ])
-      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key', value: 'value3')])
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: user_field, value: 'value3')])
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key' => 'value1' })
@@ -951,7 +954,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
     it 'returns the user.custom_field_values if item.custom_field_values is not present' do
       item = create(:idea)
-      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key2', value: 'value2')])
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: key2_field, value: 'value2')])
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key2' => 'value2' })
@@ -967,9 +970,9 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
     it 'excludes empty string values from item custom_field_values' do
       item = create(:idea, custom_field_answers: [
-        build(:custom_field_answer, key: "#{prefix}domicile", value: ''),
-        build(:custom_field_answer, key: "#{prefix}gender", value: ''),
-        build(:custom_field_answer, key: "#{prefix}postcode", value: '2324km')
+        build(:custom_field_answer, key: "#{prefix}domicile", custom_field: create(:custom_field, key: 'domicile'), value: ''),
+        build(:custom_field_answer, key: "#{prefix}gender", custom_field: create(:custom_field, key: 'gender'), value: ''),
+        build(:custom_field_answer, key: "#{prefix}postcode", custom_field: create(:custom_field, key: 'postcode'), value: '2324km')
       ])
 
       result = service.send(:parse_user_custom_field_values, item, nil)
@@ -977,10 +980,12 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
 
     it 'excludes empty string values when merging item and user custom_field_values' do
-      item = create(:idea, custom_field_answers: [build(:custom_field_answer, key: "#{prefix}key1", value: '')])
+      item = create(:idea, custom_field_answers: [
+        build(:custom_field_answer, key: "#{prefix}key1", custom_field: key1_field, value: '')
+      ])
       user = create(:user, custom_field_answers: [
-        build(:custom_field_answer, key: 'key1', value: 'value1'),
-        build(:custom_field_answer, key: 'key2', value: 'value2')
+        build(:custom_field_answer, custom_field: key1_field, value: 'value1'),
+        build(:custom_field_answer, custom_field: key2_field, value: 'value2')
       ])
 
       result = service.send(:parse_user_custom_field_values, item, user)
@@ -989,8 +994,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
     it 'excludes whitespace-only string values from item custom_field_values' do
       item = create(:idea, custom_field_answers: [
-        build(:custom_field_answer, key: "#{prefix}key1", value: '  '),
-        build(:custom_field_answer, key: "#{prefix}key2", value: 'value2')
+        build(:custom_field_answer, key: "#{prefix}key1", custom_field: key1_field, value: '  '),
+        build(:custom_field_answer, key: "#{prefix}key2", custom_field: key2_field, value: 'value2')
       ])
 
       result = service.send(:parse_user_custom_field_values, item, nil)

@@ -11,7 +11,7 @@ RSpec.describe Analytics::Reporting::CommunityMonitorScore do
 
   def respond(value, **attributes)
     response = create(:native_survey_response, project: phase.project, creation_phase: phase, **attributes)
-    response.custom_field_answers.create!(key: question.key, value: value)
+    create(:custom_field_answer, answerable: response, custom_field: question, value: value)
     response
   end
 

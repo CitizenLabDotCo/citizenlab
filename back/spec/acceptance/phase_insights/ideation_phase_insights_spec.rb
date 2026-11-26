@@ -45,8 +45,8 @@ resource 'Phase insights' do
       user1 = create(:user)
       user2 = create(:user)
       user3 = create(:user)
-      user4 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female'), build(:custom_field_answer, key: 'birthyear', value: 1980)])
-      user5 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male'), build(:custom_field_answer, key: 'birthyear', value: 1990)])
+      user4 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field_gender, value: 'female'), build(:custom_field_answer, custom_field: custom_field_birthyear, value: 1980)])
+      user5 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field_gender, value: 'male'), build(:custom_field_answer, custom_field: custom_field_birthyear, value: 1990)])
 
       # Ideas
       create(:idea, phases: [phase], author: user1, created_at: 25.days.ago, published_at: 25.days.ago) # published before ideation phase (not counted)

@@ -10,73 +10,58 @@ RSpec.describe Idea do
     let!(:optional_field) { create(:custom_field_select, :with_options, :for_custom_form, resource: form, required: false) }
     let!(:disabled_field) { create(:default_input_field, code: 'body_multiloc', resource: form, enabled: false, required: false) }
 
+    def build_answer(field, value)
+      idea.custom_field_answers.build(custom_field: field, key: field.key, value: value)
+    end
+
     context 'when creating ideas' do
       let(:idea) { build(:idea, project: project) }
 
       context 'on create' do
         it 'can persist an idea' do
-          idea.custom_field_answers.build(key: required_field.key, value: 63)
-          idea.custom_field_answers.build(key: optional_field.key, value: 'option1')
+          build_answer(required_field, 63)
+          build_answer(optional_field, 'option1')
           expect(idea.valid?(:create)).to be true
         end
 
         it 'can persist an idea without optional fields' do
-          idea.custom_field_answers.build(key: required_field.key, value: 7)
-          expect(idea.valid?(:create)).to be true
-        end
-
-        it 'can persist an idea with a non-existing field' do
-          idea.custom_field_answers.build(key: required_field.key, value: 15)
-          idea.custom_field_answers.build(key: 'nonexisting_field', value: 22)
+          build_answer(required_field, 7)
           expect(idea.valid?(:create)).to be true
         end
 
         it 'can persist an idea without required field values' do
-          idea.custom_field_answers.build(key: optional_field.key, value: 'option1')
+          build_answer(optional_field, 'option1')
           expect(idea.valid?(:create)).to be true
         end
 
         it 'can persist an idea with non-existing field options' do
-          idea.custom_field_answers.build(key: required_field.key, value: 15)
-          idea.custom_field_answers.build(key: optional_field.key, value: 'non-existing-option')
+          build_answer(required_field, 15)
+          build_answer(optional_field, 'non-existing-option')
           expect(idea.valid?(:create)).to be true
         end
 
         it 'can persist an idea with disabled field values' do
-          idea.custom_field_answers.build(key: required_field.key, value: 15)
-          idea.custom_field_answers.build(key: disabled_field.key, value: 'my value')
+          build_answer(required_field, 15)
+          build_answer(disabled_field, 'my value')
           expect(idea.valid?(:create)).to be true
         end
       end
 
       context 'on publication' do
         it 'can persist an idea' do
-          idea.custom_field_answers.build(key: required_field.key, value: 63)
-          idea.custom_field_answers.build(key: optional_field.key, value: 'option1')
+          build_answer(required_field, 63)
+          build_answer(optional_field, 'option1')
           expect(idea.valid?(:publication)).to be true
         end
 
         it 'can persist an idea without optional fields' do
-          idea.custom_field_answers.build(key: required_field.key, value: 7)
+          build_answer(required_field, 7)
           expect(idea.valid?(:publication)).to be true
-        end
-
-        it 'cannot persist an idea with a non-existing field', skip: 'Cannot be implemented yet' do
-          non_existing_key = 'nonexisting_field'
-          idea.custom_field_answers.build(key: required_field.key, value: 15)
-          idea.custom_field_answers.build(key: non_existing_key, value: 22)
-          expect(idea.valid?(:publication)).to be false
-          expect(idea.errors.details.to_h).to match(
-            custom_field_values: [{
-              error: start_with("The property '#/' contains additional properties [\"#{non_existing_key}\"] outside of the schema when none are allowed in schema"),
-              value: { required_field.key => 15, non_existing_key => 22 }
-            }]
-          )
         end
 
         it 'cannot persist an idea with an invalid field value' do
           idea.proposed_budget = -1
-          idea.custom_field_answers.build(key: required_field.key, value: 80)
+          build_answer(required_field, 80)
           expect(idea.valid?(:publication)).to be false
           expect(idea.errors.details).to eq({
             proposed_budget: [{ error: :greater_than_or_equal_to, value: -1, count: 0 }]
@@ -84,7 +69,7 @@ RSpec.describe Idea do
         end
 
         it 'cannot persist an idea without required field values', skip: 'Cannot be implemented yet' do
-          idea.custom_field_answers.build(key: optional_field.key, value: 'option1')
+          build_answer(optional_field, 'option1')
           expect(idea.valid?(:publication)).to be false
           expect(idea.errors.details.to_h).to match(
             custom_field_values: [{
@@ -96,8 +81,8 @@ RSpec.describe Idea do
 
         it 'cannot persist an idea with non-existing field options', skip: 'Cannot be implemented yet' do
           non_existing_option = 'non-existing-option'
-          idea.custom_field_answers.build(key: required_field.key, value: 15)
-          idea.custom_field_answers.build(key: optional_field.key, value: non_existing_option)
+          build_answer(required_field, 15)
+          build_answer(optional_field, non_existing_option)
           expect(idea.valid?(:publication)).to be false
           expect(idea.errors.details.to_h).to match(
             custom_field_values: [{
@@ -109,8 +94,8 @@ RSpec.describe Idea do
 
         it 'cannot persist an idea with disabled field values', skip: 'Cannot be implemented yet' do
           value_for_disabled_field = 'my value'
-          idea.custom_field_answers.build(key: required_field.key, value: 15)
-          idea.custom_field_answers.build(key: disabled_field.key, value: value_for_disabled_field)
+          build_answer(required_field, 15)
+          build_answer(disabled_field, value_for_disabled_field)
           expect(idea.valid?(:publication)).to be false
           expect(idea.errors.details.to_h).to match(
             custom_field_values: [{
@@ -128,37 +113,24 @@ RSpec.describe Idea do
     end
 
     context 'when updating ideas' do
-      let(:idea) { create(:idea, project: project, custom_field_answers: [build(:custom_field_answer, key: required_field.key, value: 1, custom_field: required_field)]) }
+      let(:idea) { create(:idea, project: project, custom_field_answers: [build(:custom_field_answer, custom_field: required_field, value: 1)]) }
 
       %i[update publication].each do |validation_context|
         context "on #{validation_context}" do
           it 'can persist an idea' do
-            idea.custom_field_answers.build(key: required_field.key, value: 63)
-            idea.custom_field_answers.build(key: optional_field.key, value: 'option1')
+            build_answer(required_field, 63)
+            build_answer(optional_field, 'option1')
             expect(idea.valid?(validation_context)).to be true
           end
 
           it 'can persist an idea without optional fields' do
-            idea.custom_field_answers.build(key: required_field.key, value: 7)
+            build_answer(required_field, 7)
             expect(idea.valid?(validation_context)).to be true
-          end
-
-          it 'cannot persist an idea with a non-existing field', skip: 'Cannot be implemented yet' do
-            non_existing_key = 'nonexisting_field'
-            idea.custom_field_answers.build(key: required_field.key, value: 15)
-            idea.custom_field_answers.build(key: non_existing_key, value: 22)
-            expect(idea.valid?(validation_context)).to be false
-            expect(idea.errors.details.to_h).to match(
-              custom_field_values: [{
-                error: start_with("The property '#/' contains additional properties [\"#{non_existing_key}\"] outside of the schema when none are allowed in schema"),
-                value: { required_field.key => 15, non_existing_key => 22 }
-              }]
-            )
           end
 
           it 'cannot persist an idea with an invalid field value' do
             idea.proposed_budget = -1
-            idea.custom_field_answers.build(key: required_field.key, value: 80)
+            build_answer(required_field, 80)
             expect(idea.valid?(validation_context)).to be false
             expect(idea.errors.details).to eq({
               proposed_budget: [{ error: :greater_than_or_equal_to, value: -1, count: 0 }]
@@ -166,7 +138,7 @@ RSpec.describe Idea do
           end
 
           it 'cannot persist an idea without required field values', skip: 'Cannot be implemented yet' do
-            idea.custom_field_answers.build(key: optional_field.key, value: 'option1')
+            build_answer(optional_field, 'option1')
             expect(idea.valid?(validation_context)).to be false
             expect(idea.errors.details.to_h).to match(
               custom_field_values: [{
@@ -178,8 +150,8 @@ RSpec.describe Idea do
 
           it 'cannot persist an idea with non-existing field options', skip: 'Cannot be implemented yet' do
             non_existing_option = 'non-existing-option'
-            idea.custom_field_answers.build(key: required_field.key, value: 15)
-            idea.custom_field_answers.build(key: optional_field.key, value: non_existing_option)
+            build_answer(required_field, 15)
+            build_answer(optional_field, non_existing_option)
             expect(idea.valid?(validation_context)).to be false
             expect(idea.errors.details.to_h).to match(
               custom_field_values: [{
@@ -191,8 +163,8 @@ RSpec.describe Idea do
 
           it 'cannot persist an idea with disabled field values', skip: 'Cannot be implemented yet' do
             value_for_disabled_field = 'my value'
-            idea.custom_field_answers.build(key: required_field.key, value: 15)
-            idea.custom_field_answers.build(key: disabled_field.key, value: value_for_disabled_field)
+            build_answer(required_field, 15)
+            build_answer(disabled_field, value_for_disabled_field)
             expect(idea.valid?(validation_context)).to be false
             expect(idea.errors.details.to_h).to match(
               custom_field_values: [{
@@ -210,7 +182,7 @@ RSpec.describe Idea do
         idea.reload
         idea.author = create(:user)
         expect(idea.save).to be true
-        idea.custom_field_answers.build(key: optional_field.key, value: 'option1', custom_field: optional_field)
+        build_answer(optional_field, 'option1')
         expect(idea.valid?).to be true
       end
 

@@ -192,7 +192,7 @@ context 'ACM verification (Oostende Itsme)' do
 
   context 'existing user login' do
     let!(:existing_user) do
-      user = create(:user, first_name: 'EXISTING', last_name: 'USER', email: 'test@govocal.com', verified: true, custom_field_answers: [build(:custom_field_answer, key: 'rrn_verification_result', value: 'valid')])
+      user = create(:user, first_name: 'EXISTING', last_name: 'USER', email: 'test@govocal.com', verified: true, custom_field_answers: [build(:custom_field_answer, custom_field: CustomField.find_by!(key: 'rrn_verification_result'), value: 'valid')])
       user.identities << create(:identity, provider: 'acm', user_id: user.id, uid: auth_hash['uid'])
       user.verifications << create(:verification, method_name: 'acm', hashed_uid: Verification::VerificationService.new.send(:hashed_uid, auth_hash['uid'], 'acm'))
       user
@@ -371,7 +371,7 @@ context 'ACM verification (Oostende Itsme)' do
     end
 
     it 'logs in an existing user, calls MAGDA once and refreshes the result' do
-      user = create(:user, first_name: 'EXISTING', last_name: 'USER', email: 'test@govocal.com', verified: true, custom_field_answers: [build(:custom_field_answer, key: 'rrn_verification_result', value: 'lives_outside')])
+      user = create(:user, first_name: 'EXISTING', last_name: 'USER', email: 'test@govocal.com', verified: true, custom_field_answers: [build(:custom_field_answer, custom_field: CustomField.find_by!(key: 'rrn_verification_result'), value: 'lives_outside')])
       user.identities << create(:identity, provider: 'acm', user_id: user.id, uid: auth_hash['uid'])
       user.verifications << create(:verification, method_name: 'acm', hashed_uid: Verification::VerificationService.new.send(:hashed_uid, auth_hash['uid'], 'acm'))
 
