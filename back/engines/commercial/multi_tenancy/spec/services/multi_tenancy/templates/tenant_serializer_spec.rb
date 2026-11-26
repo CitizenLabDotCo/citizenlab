@@ -306,6 +306,17 @@ describe MultiTenancy::Templates::TenantSerializer do
       end
     end
 
+    it 'leaves survey logic out of the template (current behaviour)' do
+      survey_phase = create(:native_survey_phase)
+      form = create(:custom_form, participation_context: survey_phase)
+      create(:custom_field_page, resource: form).update!(logic: { next_page_id: create(:custom_field_form_end_page, resource: form).id })
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      expect(template['models']['custom_field'].size).to be >= 2
+      expect(template['models']['custom_field']).to all(satisfy { |field| !field.key?('logic') })
+    end
+
     it 'successfully exports custom field' do
       description_multiloc = { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' }
       field = create(:custom_field_page, :for_custom_form, description_multiloc: description_multiloc)
