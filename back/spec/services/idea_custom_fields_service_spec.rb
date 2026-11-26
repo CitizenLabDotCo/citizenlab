@@ -445,7 +445,7 @@ describe IdeaCustomFieldsService do
       expect(service.fields_to_validate_on_import).to eq [required_field]
     end
 
-    it 'returns nothing when any field has logic' do
+    it 'returns nothing when any field has logic (currently existing bug, N8)' do
       page.update!(logic: { next_page_id: form_end.id })
 
       expect(service.fields_to_validate_on_import).to eq []
