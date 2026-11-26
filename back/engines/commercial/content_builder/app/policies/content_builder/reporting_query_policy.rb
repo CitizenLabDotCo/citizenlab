@@ -2,15 +2,15 @@
 
 module ContentBuilder
   # Running a reporting query the LLM wrote. Headless: there is no record, the
-  # question is only who may read the platform's reporting data.
+  # question is only who may read reporting data at all.
   #
-  # Admin-only for now. The queries run under a read-only Postgres role over the
-  # curated reporting views, but they are still arbitrary SQL over participation
-  # data, and a published report serves visitors from stored results rather than
-  # by letting them query.
+  # Admins and moderators. Which rows a query reads is not decided here: it runs
+  # with the asker's McpServer::QueryScope, so a moderator reads the projects they
+  # moderate and nothing else. Residents and visitors never query: a published
+  # report serves them from stored results.
   class ReportingQueryPolicy < ApplicationPolicy
     def create?
-      AppConfiguration.instance.feature_activated?('llm_reporting') && active? && admin?
+      AppConfiguration.instance.feature_activated?('llm_reporting') && active_admin_or_moderator?
     end
   end
 end

@@ -9,8 +9,8 @@ resource 'ReportingQueries' do
 
     A report is a picture of a moment: the first time a question is asked of a layout
     the answer is stored, and every later read returns that stored answer. Only an
-    admin, or the renderer rendering a block with its scoped token, can fill a
-    snapshot, so no reader ever causes SQL to run.
+    admin or a moderator, or the renderer rendering a block with its scoped token,
+    can fill a snapshot, so no reader ever causes SQL to run.
   DESC
 
   before do
@@ -86,6 +86,39 @@ resource 'ReportingQueries' do
 
         assert_status 422
         expect(json_response_body[:errors][:query].first[:error]).to eq 'rejected'
+      end
+    end
+
+    # Whether a moderator may ask is the policy's business; which rows the answer
+    # holds is the scope's.
+    context 'when moderator' do
+      let(:project) { create(:project) }
+
+      before { header_token_for create(:project_moderator, projects: [project]) }
+
+      example 'Run a query over the projects the moderator moderates', document: false do
+        do_request(query: sql, layout_id: nil)
+
+        assert_status 200
+        expect(McpServer::ReportingQueryRunner)
+          .to have_received(:run).with(anything, scope: McpServer::QueryScope.new(project_ids: [project.id]))
+      end
+
+      example '[error] Try to read an admin-only view', document: false do
+        do_request(query: 'SELECT count(*) FROM reporting_staff_activities', layout_id: nil)
+
+        assert_status 422
+        expect(json_response_body[:errors][:query].first[:error]).to eq 'rejected'
+      end
+    end
+
+    context 'when resident' do
+      before { header_token_for create(:user) }
+
+      example '[error] Try to run a query', document: false do
+        do_request(query: sql, layout_id: nil)
+
+        assert_status 401
       end
     end
 

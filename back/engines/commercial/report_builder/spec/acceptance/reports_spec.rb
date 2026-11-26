@@ -710,6 +710,27 @@ resource 'Reports' do
       end
     end
 
+    # A run reads the reported project's rows only, so its moderators may start one.
+    describe 'when the user moderates a project' do
+      example 'Generate a report as a moderator of its project', :active_job_que_adapter, document: false do
+        moderator = create(:project_moderator, projects: [phase.project])
+        header_token_for moderator
+
+        expect { do_request }
+          .to change { QueJob.by_job_class(ReportBuilder::GenerateReportJob).count }.by(1)
+
+        assert_status 202
+        expect(response_data.dig(:relationships, :owner, :data, :id)).to eq moderator.id
+      end
+
+      example '[error] Generate a report as a moderator of another project', document: false do
+        header_token_for create(:project_moderator, projects: [create(:project)])
+
+        do_request
+        assert_status 401
+      end
+    end
+
     include_examples 'not authorized to visitors'
     include_examples 'not authorized to normal users'
   end
@@ -832,6 +853,28 @@ resource 'Reports' do
       end
     end
 
+    describe 'when the user moderates a project' do
+      before do
+        run = create(:report_run, report: report, kind: 'revision')
+        run.append_message!(role: 'user', content: 'shorter please', author: create(:admin))
+      end
+
+      example 'Read what an admin asked as a moderator of the reported project', document: false do
+        header_token_for create(:project_moderator, projects: [report.phase.project])
+
+        do_request
+        assert_status 200
+        expect(response_data[:attributes][:turns].pluck(:text)).to eq ['shorter please']
+      end
+
+      example '[error] Read the report chat as a moderator of another project', document: false do
+        header_token_for create(:project_moderator, projects: [create(:project)])
+
+        do_request
+        assert_status 401
+      end
+    end
+
     include_examples 'not authorized to visitors'
     include_examples 'not authorized to normal users'
   end
@@ -937,6 +980,29 @@ resource 'Reports' do
         SettingsService.new.deactivate_feature!('llm_reporting')
 
         do_request
+        assert_status 401
+      end
+    end
+
+    # The chat belongs to the report, not to whoever started it.
+    describe 'when the user moderates a project' do
+      example 'Carry on an admin\'s conversation as a moderator of the reported project', :active_job_que_adapter, document: false do
+        report.chat!(locale: 'en').messages.create!(role: 'user', content: 'shorter please', author: create(:admin))
+        moderator = create(:project_moderator, projects: [report.phase.project])
+        header_token_for moderator
+
+        expect { do_request }
+          .to change { QueJob.by_job_class(ReportBuilder::ReviseReportJob).count }.by(1)
+
+        assert_status 201
+        expect(response_data[:attributes][:turns].pluck(:text)).to eq ['shorter please', message]
+        expect(report.chat.messages.order(:position).last.author_id).to eq moderator.id
+      end
+
+      example '[error] Ask for a change as a moderator of another project', document: false do
+        header_token_for create(:project_moderator, projects: [create(:project)])
+
+        expect { do_request }.not_to change(AIAssistant::Message, :count)
         assert_status 401
       end
     end
