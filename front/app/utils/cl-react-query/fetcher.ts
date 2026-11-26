@@ -53,7 +53,10 @@ interface Delete {
   apiPath?: Path;
 }
 
-type FetcherArgs = Get | Patch | Put | Post | Delete;
+// keepalive lets a request finish after the page unloads.
+type FetcherArgs = (Get | Patch | Put | Post | Delete) & {
+  keepalive?: boolean;
+};
 
 export type BaseData = { id?: string; type: string };
 
@@ -102,6 +105,7 @@ async function fetcher({
   queryParams,
   cacheIndividualItems = true,
   apiPath = API_PATH as Path,
+  keepalive,
 }) {
   const methodMap = {
     get: 'GET',
@@ -130,6 +134,7 @@ async function fetcher({
     method: methodMap[action],
     body: body ? JSON.stringify(body) : undefined,
     credentials: 'include', // Include cookies (session, auth tokens) with all requests
+    keepalive,
     headers: {
       'Content-Type': 'application/json',
     },
