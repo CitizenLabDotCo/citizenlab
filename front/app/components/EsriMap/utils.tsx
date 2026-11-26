@@ -65,12 +65,13 @@ export const getDefaultBasemap = (tileProvider: string | undefined): Layer => {
       },
     });
   }
+  const tileProviderUrl = tileProvider || DEFAULT_TILE_PROVIDER;
   const webTileLayer = new WebTileLayer({
-    urlTemplate: tileProvider || DEFAULT_TILE_PROVIDER,
-    copyright: getTileAttribution(tileProvider || ''),
+    urlTemplate: tileProviderUrl,
+    copyright: getTileAttribution(tileProviderUrl),
   });
 
-  if (tileProvider?.includes('maptiler')) {
+  if (tileProviderUrl.includes('maptiler')) {
     webTileLayer.set('tileInfo.size', 512);
     webTileLayer.set(
       'tileInfo.lods',
