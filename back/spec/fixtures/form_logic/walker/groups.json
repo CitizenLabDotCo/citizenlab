@@ -1,0 +1,566 @@
+{
+  "description": "AND/OR/NOT groups.",
+  "cases": [
+    {
+      "description": "all: every part holds",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {
+                  "all": [{"field": "a", "op": "eq", "value": "yes"}, {"field": "b", "op": "gt", "value": 5}]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes", "b": 6},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes", "b": 6}
+      }
+    },
+    {
+      "description": "all: one part fails",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {
+                  "all": [{"field": "a", "op": "eq", "value": "yes"}, {"field": "b", "op": "gt", "value": 5}]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes", "b": 5},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes", "b": 5}
+      }
+    },
+    {
+      "description": "all: no answers",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {
+                  "all": [{"field": "a", "op": "eq", "value": "yes"}, {"field": "b", "op": "gt", "value": 5}]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["a", "b"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "any: one part holds",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {
+                  "any": [{"field": "a", "op": "eq", "value": "yes"}, {"field": "b", "op": "gt", "value": 5}]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "no", "b": 9},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "no", "b": 9}
+      }
+    },
+    {
+      "description": "any: no part holds",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {
+                  "any": [{"field": "a", "op": "eq", "value": "yes"}, {"field": "b", "op": "gt", "value": 5}]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "no", "b": 1},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "no", "b": 1}
+      }
+    },
+    {
+      "description": "not: flips a failing part",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [{"when": {"not": {"field": "a", "op": "eq", "value": "yes"}}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "no"},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "no"}
+      }
+    },
+    {
+      "description": "not: a missing answer does not equal yes",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [{"when": {"not": {"field": "a", "op": "eq", "value": "yes"}}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["a", "b"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "not: flips a holding part",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [{"when": {"not": {"field": "a", "op": "eq", "value": "yes"}}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes"},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes"}
+      }
+    },
+    {
+      "description": "all with nothing in it always holds",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["a", "b"], "jumps": [{"when": {"all": []}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["a", "b"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "any with nothing in it never holds",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["a", "b"], "jumps": [{"when": {"any": []}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p2", "p3"], "visible_ids": ["a", "b"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "not of an empty any always holds",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["a", "b"], "jumps": [{"when": {"not": {"any": []}}, "goto": "p3"}]},
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["a", "b"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "nested: a and (b > 5 or b unanswered), b unanswered",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {
+                  "all": [
+                    {"field": "a", "op": "eq", "value": "yes"},
+                    {
+                      "any": [
+                        {"field": "b", "op": "gt", "value": 5},
+                        {"not": {"field": "b", "op": "present"}}
+                      ]
+                    }
+                  ]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes"},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes"}
+      }
+    },
+    {
+      "description": "nested: a and (b > 5 or b unanswered), b high",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {
+                  "all": [
+                    {"field": "a", "op": "eq", "value": "yes"},
+                    {
+                      "any": [
+                        {"field": "b", "op": "gt", "value": 5},
+                        {"not": {"field": "b", "op": "present"}}
+                      ]
+                    }
+                  ]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes", "b": 7},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes", "b": 7}
+      }
+    },
+    {
+      "description": "nested: a and (b > 5 or b unanswered), b low",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {
+                  "all": [
+                    {"field": "a", "op": "eq", "value": "yes"},
+                    {
+                      "any": [
+                        {"field": "b", "op": "gt", "value": 5},
+                        {"not": {"field": "b", "op": "present"}}
+                      ]
+                    }
+                  ]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes", "b": 2},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes", "b": 2}
+      }
+    },
+    {
+      "description": "double negation",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [{"when": {"not": {"not": {"field": "a", "op": "eq", "value": "yes"}}}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes"},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes"}
+      }
+    },
+    {
+      "description": "deep nesting",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {
+                  "all": [
+                    {
+                      "all": [
+                        {"all": [{"any": [{"not": {"not": {"field": "a", "op": "eq", "value": "yes"}}}]}]}
+                      ]
+                    }
+                  ]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes"},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes"}
+      }
+    },
+    {
+      "description": "the same part twice",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {
+                  "all": [
+                    {"field": "a", "op": "eq", "value": "yes"},
+                    {"field": "a", "op": "eq", "value": "yes"}
+                  ]
+                },
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes"},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes"}
+      }
+    },
+    {
+      "description": "all with one part",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [{"when": {"all": [{"field": "b", "op": "gt", "value": 5}]}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"b": 10},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["a", "b"], "required_ids": [], "answers": {"b": 10}}
+    },
+    {
+      "description": "a group may mix questions",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {"any": [{"field": "a", "op": "absent"}, {"field": "b", "op": "absent"}]},
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes"},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes"}
+      }
+    },
+    {
+      "description": "a group key wins over leaf keys in the same object",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {"all": [{"field": "a", "op": "eq", "value": "yes"}], "field": "b", "op": "present"},
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes"},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes"}
+      }
+    },
+    {
+      "description": "all wins over any in the same object",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {"when": {"all": [{"field": "a", "op": "eq", "value": "yes"}], "any": []}, "goto": "p3"}
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes"},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes"}
+      }
+    },
+    {
+      "description": "an unknown operator inside a group that stops early is not evaluated",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {"any": [{"field": "a", "op": "eq", "value": "yes"}, {"field": "b", "op": "nope"}]},
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes"},
+      "expected": {
+        "path": ["p1", "p3"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "yes"}
+      }
+    },
+    {
+      "description": "an unknown operator inside a group that does not stop early raises",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a", "b"],
+            "jumps": [
+              {
+                "when": {"all": [{"field": "a", "op": "eq", "value": "yes"}, {"field": "b", "op": "nope"}]},
+                "goto": "p3"
+              }
+            ]
+          },
+          {"id": "p2"},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": "yes"},
+      "raises": "unknown_operator"
+    }
+  ]
+}

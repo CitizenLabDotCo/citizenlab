@@ -9,8 +9,8 @@ RSpec.describe FormLogic::SurveyWalker do
   files = Dir[fixture_dir.join('*.json')]
 
   it 'still has a full corpus' do
-    expect(files.size).to be >= 8
-    expect(files.sum { |file| JSON.parse(File.read(file))['cases'].size }).to be >= 150
+    expect(files.size).to be >= 12
+    expect(files.sum { |file| JSON.parse(File.read(file))['cases'].size }).to be >= 200
   end
 
   files.each do |file|

@@ -1,0 +1,131 @@
+{
+  "description": "Conditional required (`required_if`).",
+  "cases": [
+    {
+      "description": "required_if holds",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["rating", "reason"]}],
+        "fields": {"reason": {"required_if": {"field": "rating", "op": "lte", "value": 2}}}
+      },
+      "answers": {"rating": 1},
+      "expected": {
+        "path": ["p1"],
+        "visible_ids": ["rating", "reason"],
+        "required_ids": ["reason"],
+        "answers": {"rating": 1}
+      }
+    },
+    {
+      "description": "required_if does not hold",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["rating", "reason"]}],
+        "fields": {"reason": {"required_if": {"field": "rating", "op": "lte", "value": 2}}}
+      },
+      "answers": {"rating": 4},
+      "expected": {
+        "path": ["p1"],
+        "visible_ids": ["rating", "reason"],
+        "required_ids": [],
+        "answers": {"rating": 4}
+      }
+    },
+    {
+      "description": "required_if without an answer to the source",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["rating", "reason"]}],
+        "fields": {"reason": {"required_if": {"field": "rating", "op": "lte", "value": 2}}}
+      },
+      "answers": {},
+      "expected": {"path": ["p1"], "visible_ids": ["rating", "reason"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "required true wins over a failing required_if",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a", "b"]}],
+        "fields": {"b": {"required": true, "required_if": {"field": "a", "op": "present"}}}
+      },
+      "answers": {},
+      "expected": {"path": ["p1"], "visible_ids": ["a", "b"], "required_ids": ["b"], "answers": {}}
+    },
+    {
+      "description": "required_if on a hidden question does not make it required",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a", "b"]}],
+        "fields": {"b": {"display": {"field": "a", "op": "eq", "value": 1}, "required_if": {"all": []}}}
+      },
+      "answers": {"a": 2},
+      "expected": {"path": ["p1"], "visible_ids": ["a"], "required_ids": [], "answers": {"a": 2}}
+    },
+    {
+      "description": "required_if sees the question's own answer",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a"]}],
+        "fields": {"a": {"required_if": {"field": "a", "op": "absent"}}}
+      },
+      "answers": {},
+      "expected": {"path": ["p1"], "visible_ids": ["a"], "required_ids": ["a"], "answers": {}}
+    },
+    {
+      "description": "required_if sees the question's own answer when answered",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a"]}],
+        "fields": {"a": {"required_if": {"field": "a", "op": "absent"}}}
+      },
+      "answers": {"a": "x"},
+      "expected": {"path": ["p1"], "visible_ids": ["a"], "required_ids": [], "answers": {"a": "x"}}
+    },
+    {
+      "description": "required_if on a later question on the same page sees no answer yet",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a", "b"]}],
+        "fields": {"a": {"required_if": {"field": "b", "op": "present"}}}
+      },
+      "answers": {"b": 1},
+      "expected": {"path": ["p1"], "visible_ids": ["a", "b"], "required_ids": [], "answers": {"b": 1}}
+    },
+    {
+      "description": "required_if with a group",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a", "b", "c"]}],
+        "fields": {
+          "c": {
+            "required_if": {
+              "any": [{"field": "a", "op": "eq", "value": "x"}, {"field": "b", "op": "eq", "value": "y"}]
+            }
+          }
+        }
+      },
+      "answers": {"b": "y"},
+      "expected": {
+        "path": ["p1"],
+        "visible_ids": ["a", "b", "c"],
+        "required_ids": ["c"],
+        "answers": {"b": "y"}
+      }
+    },
+    {
+      "description": "required_if on a question from a skipped page",
+      "program": {
+        "pages": [{"id": "p1", "next": "p3"}, {"id": "p2", "fields": ["a"]}, {"id": "p3", "fields": ["b"]}],
+        "fields": {"b": {"required_if": {"field": "a", "op": "present"}}}
+      },
+      "answers": {"a": 1},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["b"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "a null required_if is ignored",
+      "program": {"pages": [{"id": "p1", "fields": ["a"]}], "fields": {"a": {"required_if": null}}},
+      "answers": {},
+      "expected": {"path": ["p1"], "visible_ids": ["a"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "required questions on skipped pages are not required",
+      "program": {
+        "pages": [{"id": "p1", "next": "p3"}, {"id": "p2", "fields": ["a"]}, {"id": "p3", "fields": ["b"]}],
+        "fields": {"a": {"required": true}, "b": {"required": true}}
+      },
+      "answers": {},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["b"], "required_ids": ["b"], "answers": {}}
+    }
+  ]
+}

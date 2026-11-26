@@ -1,0 +1,115 @@
+{
+  "description": "Answers that are left behind after the respondent changes an earlier answer.",
+  "programs": {
+    "reroute": {
+      "pages": [
+        {
+          "id": "p1",
+          "fields": ["q1"],
+          "jumps": [
+            {"when": {"field": "q1", "op": "one_of", "value": ["a"]}, "goto": "p3"},
+            {"when": {"field": "q1", "op": "one_of", "value": ["b"]}, "goto": "p4"}
+          ]
+        },
+        {"id": "p2", "fields": ["q2"]},
+        {
+          "id": "p3",
+          "fields": ["q3"],
+          "jumps": [{"when": {"field": "q3", "op": "one_of", "value": ["skip"]}, "goto": "p5"}]
+        },
+        {"id": "p4", "fields": ["q4"]},
+        {"id": "p5", "fields": ["q5"]}
+      ],
+      "fields": {"q3": {"required": true}, "q4": {"required": true}}
+    }
+  },
+  "cases": [
+    {
+      "description": "q1 = a goes to page 3, whose answer applies its own jump",
+      "program": "reroute",
+      "answers": {"q1": "a", "q3": "skip"},
+      "expected": {
+        "path": ["p1", "p3", "p5"],
+        "visible_ids": ["q1", "q3", "q5"],
+        "required_ids": ["q3"],
+        "answers": {"q1": "a", "q3": "skip"}
+      }
+    },
+    {
+      "description": "changing q1 to b drops the page 3 answer and skips its jump",
+      "program": "reroute",
+      "answers": {"q1": "b", "q3": "skip"},
+      "expected": {
+        "path": ["p1", "p4", "p5"],
+        "visible_ids": ["q1", "q4", "q5"],
+        "required_ids": ["q4"],
+        "answers": {"q1": "b"}
+      }
+    },
+    {
+      "description": "changing q1 to b keeps answers on pages that are still on the path",
+      "program": "reroute",
+      "answers": {"q1": "b", "q3": "skip", "q4": "x", "q5": "y"},
+      "expected": {
+        "path": ["p1", "p4", "p5"],
+        "visible_ids": ["q1", "q4", "q5"],
+        "required_ids": ["q4"],
+        "answers": {"q1": "b", "q4": "x", "q5": "y"}
+      }
+    },
+    {
+      "description": "clearing q1 walks every page from page 2, and page 3's own jump still applies",
+      "program": "reroute",
+      "answers": {"q3": "skip", "q4": "x", "q2": "z"},
+      "expected": {
+        "path": ["p1", "p2", "p3", "p5"],
+        "visible_ids": ["q1", "q2", "q3", "q5"],
+        "required_ids": ["q3"],
+        "answers": {"q3": "skip", "q2": "z"}
+      }
+    },
+    {
+      "description": "an answer on a skipped page does not trigger a jump later",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["a"], "next": "p3"},
+          {"id": "p2", "fields": ["b"]},
+          {"id": "p3", "fields": ["c"], "jumps": [{"when": {"field": "b", "op": "present"}, "goto": "end"}]},
+          {"id": "p4", "fields": ["d"]}
+        ]
+      },
+      "answers": {"b": "stale"},
+      "expected": {
+        "path": ["p1", "p3", "p4"],
+        "visible_ids": ["a", "c", "d"],
+        "required_ids": [],
+        "answers": {}
+      }
+    },
+    {
+      "description": "an answer on a skipped page counts as no answer later",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["a"], "next": "p3"},
+          {"id": "p2", "fields": ["b"]},
+          {"id": "p3", "fields": ["c"], "jumps": [{"when": {"field": "b", "op": "absent"}, "goto": "end"}]},
+          {"id": "p4", "fields": ["d"]}
+        ]
+      },
+      "answers": {"b": "stale"},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["a", "c"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "a stale answer on a hidden question does not show its dependants",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a", "b", "c"]}],
+        "fields": {
+          "b": {"display": {"field": "a", "op": "eq", "value": 1}},
+          "c": {"display": {"field": "b", "op": "eq", "value": "x"}}
+        }
+      },
+      "answers": {"a": 2, "b": "x", "c": "y"},
+      "expected": {"path": ["p1"], "visible_ids": ["a"], "required_ids": [], "answers": {"a": 2}}
+    }
+  ]
+}
