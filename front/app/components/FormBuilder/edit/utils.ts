@@ -337,6 +337,8 @@ export const createValidationSchema = (formatMessage: FormatMessage) => {
           include_in_printed_form: boolean(),
           min_characters: nullableNumber,
           max_characters: nullableNumber,
+          minimum_select_count: nullableNumber,
+          maximum_select_count: nullableNumber,
           temp_id: string(),
           logic: validateLogic(formatMessage(messages.logicValidationError)),
         })
@@ -492,7 +494,7 @@ export const transformFieldForSubmission = (
         field.dropdown_layout ||
         isDropdownLayoutForced(field.input_type, field.options?.length ?? 0),
     }),
-    ...(['topic_ids', 'multipoint'].includes(field.input_type) && {
+    ...(field.input_type === 'topic_ids' && {
       maximum_select_count: field.select_count_enabled
         ? field.maximum_select_count
         : null,
@@ -500,6 +502,14 @@ export const transformFieldForSubmission = (
         ? field.minimum_select_count || 0
         : null,
       select_count_enabled: field.select_count_enabled,
+    }),
+    ...(field.input_type === 'multipoint' && {
+      maximum_select_count: field.maximum_select_count ?? null,
+      minimum_select_count: field.minimum_select_count ?? null,
+      // The limits have no toggle of their own, so the flag stays on and an
+      // empty limit is what means "no limit". The API rejects a limit saved
+      // against a field whose flag is off.
+      select_count_enabled: true,
     }),
     ...(field.input_type === 'ranking' && {
       options: field.options || {},

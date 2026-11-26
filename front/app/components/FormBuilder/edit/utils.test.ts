@@ -408,7 +408,6 @@ describe('transformFieldForSubmission', () => {
   it('submits the pin counts for a multipoint field', () => {
     const result = transformFieldForSubmission(
       multipointField({
-        select_count_enabled: true,
         minimum_select_count: 2,
         maximum_select_count: 5,
       }),
@@ -422,9 +421,47 @@ describe('transformFieldForSubmission', () => {
     });
   });
 
-  it('clears the pin counts when the limit is turned off', () => {
+  it('keeps the pin counts enabled when they are left empty, so empty reads as no limit', () => {
+    const result = transformFieldForSubmission(multipointField(), []);
+
+    expect(result).toMatchObject({
+      select_count_enabled: true,
+      minimum_select_count: null,
+      maximum_select_count: null,
+    });
+  });
+
+  it('submits one pin count when only the other is set', () => {
     const result = transformFieldForSubmission(
-      multipointField({
+      multipointField({ maximum_select_count: 3 }),
+      []
+    );
+
+    expect(result).toMatchObject({
+      select_count_enabled: true,
+      minimum_select_count: null,
+      maximum_select_count: 3,
+    });
+  });
+
+  // transformFieldForSubmission reads a handful of attributes, so the fixture
+  // carries those rather than every attribute a saved field has.
+  const topicsField = (
+    overrides: Partial<IFlatCustomField> = {}
+  ): IFlatCustomField =>
+    ({
+      id: 'field-2',
+      input_type: 'topic_ids',
+      key: 'topics',
+      required: false,
+      enabled: true,
+      title_multiloc: { en: 'Which tags?' },
+      ...overrides,
+    } as IFlatCustomField);
+
+  it('still clears the tag counts when the topics limit is turned off', () => {
+    const result = transformFieldForSubmission(
+      topicsField({
         select_count_enabled: false,
         minimum_select_count: 2,
         maximum_select_count: 5,
