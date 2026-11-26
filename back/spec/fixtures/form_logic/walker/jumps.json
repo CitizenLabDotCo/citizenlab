@@ -1,0 +1,399 @@
+{
+  "description": "Jumps: the first matching jump wins, otherwise the page default.",
+  "cases": [
+    {
+      "description": "a matching jump is taken",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "p3"}]
+          },
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {
+        "path": ["p1", "p3", "p4"],
+        "visible_ids": ["q", "q3", "q4"],
+        "required_ids": [],
+        "answers": {"q": "red"}
+      }
+    },
+    {
+      "description": "an unmatched jump falls through to the following page",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "p3"}]
+          },
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "blue"},
+      "expected": {
+        "path": ["p1", "p2", "p3", "p4"],
+        "visible_ids": ["q", "q2", "q3", "q4"],
+        "required_ids": [],
+        "answers": {"q": "blue"}
+      }
+    },
+    {
+      "description": "an unmatched jump falls through to next",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "p3"}],
+            "next": "p4"
+          },
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "blue"},
+      "expected": {
+        "path": ["p1", "p4"],
+        "visible_ids": ["q", "q4"],
+        "required_ids": [],
+        "answers": {"q": "blue"}
+      }
+    },
+    {
+      "description": "a matching jump beats next",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "p3"}],
+            "next": "p4"
+          },
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {
+        "path": ["p1", "p3", "p4"],
+        "visible_ids": ["q", "q3", "q4"],
+        "required_ids": [],
+        "answers": {"q": "red"}
+      }
+    },
+    {
+      "description": "the first match wins even if a later match goes farther",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [
+              {"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "p2"},
+              {"when": {"field": "q", "op": "present"}, "goto": "p4"}
+            ]
+          },
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {
+        "path": ["p1", "p2", "p3", "p4"],
+        "visible_ids": ["q", "q2", "q3", "q4"],
+        "required_ids": [],
+        "answers": {"q": "red"}
+      }
+    },
+    {
+      "description": "the first match wins even if it goes farther than a later match",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [
+              {"when": {"field": "q", "op": "present"}, "goto": "p4"},
+              {"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "p2"}
+            ]
+          },
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {
+        "path": ["p1", "p4"],
+        "visible_ids": ["q", "q4"],
+        "required_ids": [],
+        "answers": {"q": "red"}
+      }
+    },
+    {
+      "description": "any other answer: present after the explicit cases",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [
+              {"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "p2"},
+              {"when": {"field": "q", "op": "present"}, "goto": "p3"}
+            ]
+          },
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "green"},
+      "expected": {
+        "path": ["p1", "p3", "p4"],
+        "visible_ids": ["q", "q3", "q4"],
+        "required_ids": [],
+        "answers": {"q": "green"}
+      }
+    },
+    {
+      "description": "no answer: absent can end the form",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "absent"}, "goto": "end"}]},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {},
+      "expected": {"path": ["p1"], "visible_ids": ["q"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "no answer: an empty string counts as no answer",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": [{"when": {"field": "q", "op": "absent"}, "goto": "end"}]},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": ""},
+      "expected": {"path": ["p1"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": ""}}
+    },
+    {
+      "description": "a jump to end stops the walk",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "end"}]
+          },
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {"path": ["p1"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": "red"}}
+    },
+    {
+      "description": "a matching jump to an unknown page ends the walk",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "nope"}]
+          },
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {"path": ["p1"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": "red"}}
+    },
+    {
+      "description": "a matching jump to the same page ends the walk",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [{"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "p1"}]
+          },
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {"path": ["p1"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": "red"}}
+    },
+    {
+      "description": "a matching jump to an unknown page does not fall through to later jumps",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["q"],
+            "jumps": [
+              {"when": {"field": "q", "op": "one_of", "value": ["red"]}, "goto": "nope"},
+              {"when": {"field": "q", "op": "present"}, "goto": "p3"}
+            ]
+          },
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {"path": ["p1"], "visible_ids": ["q"], "required_ids": [], "answers": {"q": "red"}}
+    },
+    {
+      "description": "an empty jumps list behaves like no jumps",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"], "jumps": []},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {"q": "red"},
+      "expected": {
+        "path": ["p1", "p2", "p3", "p4"],
+        "visible_ids": ["q", "q2", "q3", "q4"],
+        "required_ids": [],
+        "answers": {"q": "red"}
+      }
+    },
+    {
+      "description": "null jumps behave like no jumps",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["q"]},
+          {"id": "p2", "fields": ["q2"]},
+          {"id": "p3", "fields": ["q3"]},
+          {"id": "p4", "fields": ["q4"]}
+        ]
+      },
+      "answers": {},
+      "expected": {
+        "path": ["p1", "p2", "p3", "p4"],
+        "visible_ids": ["q", "q2", "q3", "q4"],
+        "required_ids": [],
+        "answers": {}
+      }
+    },
+    {
+      "description": "a jump can use a question from an earlier page",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["a"]},
+          {
+            "id": "p2",
+            "fields": ["b"],
+            "jumps": [{"when": {"field": "a", "op": "eq", "value": 1}, "goto": "p4"}]
+          },
+          {"id": "p3"},
+          {"id": "p4"}
+        ]
+      },
+      "answers": {"a": 1},
+      "expected": {
+        "path": ["p1", "p2", "p4"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": 1}
+      }
+    },
+    {
+      "description": "a jump on a question from a later page sees no answer yet",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["a"], "jumps": [{"when": {"field": "b", "op": "absent"}, "goto": "p3"}]},
+          {"id": "p2", "fields": ["b"]},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"b": "filled"},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["a"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "jumps on every page chain together",
+      "program": {
+        "pages": [
+          {
+            "id": "p1",
+            "fields": ["a"],
+            "jumps": [{"when": {"field": "a", "op": "eq", "value": "x"}, "goto": "p3"}]
+          },
+          {"id": "p2"},
+          {
+            "id": "p3",
+            "fields": ["b"],
+            "jumps": [{"when": {"field": "b", "op": "eq", "value": "y"}, "goto": "p5"}]
+          },
+          {"id": "p4"},
+          {"id": "p5"}
+        ]
+      },
+      "answers": {"a": "x", "b": "y"},
+      "expected": {
+        "path": ["p1", "p3", "p5"],
+        "visible_ids": ["a", "b"],
+        "required_ids": [],
+        "answers": {"a": "x", "b": "y"}
+      }
+    },
+    {
+      "description": "a jump on a page that is skipped is never applied",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["a"], "next": "p3"},
+          {"id": "p2", "fields": ["b"], "jumps": [{"when": {"field": "a", "op": "present"}, "goto": "end"}]},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": 1},
+      "expected": {"path": ["p1", "p3"], "visible_ids": ["a"], "required_ids": [], "answers": {"a": 1}}
+    },
+    {
+      "description": "a jump on a page without questions can still use earlier answers",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["a"]},
+          {"id": "p2", "jumps": [{"when": {"field": "a", "op": "eq", "value": 2}, "goto": "end"}]},
+          {"id": "p3"}
+        ]
+      },
+      "answers": {"a": 2},
+      "expected": {"path": ["p1", "p2"], "visible_ids": ["a"], "required_ids": [], "answers": {"a": 2}}
+    },
+    {
+      "description": "a jump on the last page is ignored",
+      "program": {
+        "pages": [
+          {"id": "p1", "fields": ["a"]},
+          {"id": "p2", "fields": ["b"], "jumps": [{"when": {"field": "b", "op": "present"}, "goto": "p1"}]}
+        ]
+      },
+      "answers": {"b": 1},
+      "expected": {"path": ["p1", "p2"], "visible_ids": ["a", "b"], "required_ids": [], "answers": {"b": 1}}
+    }
+  ]
+}

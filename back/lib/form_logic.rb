@@ -13,7 +13,7 @@ module FormLogic
     Compiler.new(fields, v2).call
   end
 
-  def self.evaluate(fields, answers)
-    Evaluator.new(compile(fields)).evaluate(answers)
+  def self.walk(fields, answers)
+    SurveyWalker.new(compile(fields)).walk(answers)
   end
 end

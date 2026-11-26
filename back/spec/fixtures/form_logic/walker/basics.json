@@ -1,0 +1,145 @@
+{
+  "description": "Programs without logic: every page in order, required flags, which answers are kept.",
+  "programs": {
+    "three": {
+      "pages": [
+        {"id": "p1", "fields": ["q1"]},
+        {"id": "p2", "fields": ["q2"]},
+        {"id": "p3", "fields": ["q3"]}
+      ],
+      "fields": {"q1": {"required": true}, "q2": {}, "q3": {"required": false}}
+    }
+  },
+  "cases": [
+    {
+      "description": "walks every page in order",
+      "program": "three",
+      "answers": {},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q1", "q2", "q3"],
+        "required_ids": ["q1"],
+        "answers": {}
+      }
+    },
+    {
+      "description": "keeps answers to visible questions",
+      "program": "three",
+      "answers": {"q1": "a", "q3": 4},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q1", "q2", "q3"],
+        "required_ids": ["q1"],
+        "answers": {"q1": "a", "q3": 4}
+      }
+    },
+    {
+      "description": "drops answers to ids that are on no page",
+      "program": "three",
+      "answers": {"q1": "a", "u_gender": "f", "other": 1},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q1", "q2", "q3"],
+        "required_ids": ["q1"],
+        "answers": {"q1": "a"}
+      }
+    },
+    {
+      "description": "keeps a null answer as null",
+      "program": "three",
+      "answers": {"q2": null},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q1", "q2", "q3"],
+        "required_ids": ["q1"],
+        "answers": {"q2": null}
+      }
+    },
+    {
+      "description": "keeps empty answers as they are",
+      "program": "three",
+      "answers": {"q1": "", "q2": [], "q3": {}},
+      "expected": {
+        "path": ["p1", "p2", "p3"],
+        "visible_ids": ["q1", "q2", "q3"],
+        "required_ids": ["q1"],
+        "answers": {"q1": "", "q2": [], "q3": {}}
+      }
+    },
+    {
+      "description": "an empty program has no path",
+      "program": {"pages": []},
+      "answers": {"q1": "a"},
+      "expected": {"path": [], "visible_ids": [], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "a program without fields settings makes nothing required",
+      "program": {"pages": [{"id": "p1", "fields": ["q1"]}]},
+      "answers": {"q1": 1},
+      "expected": {"path": ["p1"], "visible_ids": ["q1"], "required_ids": [], "answers": {"q1": 1}}
+    },
+    {
+      "description": "fields settings may be null",
+      "program": {"pages": [{"id": "p1", "fields": ["q1"]}], "fields": null},
+      "answers": {},
+      "expected": {"path": ["p1"], "visible_ids": ["q1"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "a page without a fields list has no questions",
+      "program": {"pages": [{"id": "p1"}, {"id": "p2", "fields": ["q2"]}]},
+      "answers": {"q2": "x"},
+      "expected": {"path": ["p1", "p2"], "visible_ids": ["q2"], "required_ids": [], "answers": {"q2": "x"}}
+    },
+    {
+      "description": "a page with a null fields list has no questions",
+      "program": {"pages": [{"id": "p1", "fields": null}, {"id": "p2", "fields": ["q2"]}]},
+      "answers": {},
+      "expected": {"path": ["p1", "p2"], "visible_ids": ["q2"], "required_ids": [], "answers": {}}
+    },
+    {
+      "description": "only true makes a question required",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["a", "b", "c", "d"]}],
+        "fields": {
+          "a": {"required": true},
+          "b": {"required": "true"},
+          "c": {"required": 1},
+          "d": {"required": null}
+        }
+      },
+      "answers": {},
+      "expected": {"path": ["p1"], "visible_ids": ["a", "b", "c", "d"], "required_ids": ["a"], "answers": {}}
+    },
+    {
+      "description": "questions keep their page order",
+      "program": {"pages": [{"id": "p1", "fields": ["z", "a", "m"]}]},
+      "answers": {"a": 1, "z": 2, "m": 3},
+      "expected": {
+        "path": ["p1"],
+        "visible_ids": ["z", "a", "m"],
+        "required_ids": [],
+        "answers": {"z": 2, "a": 1, "m": 3}
+      }
+    },
+    {
+      "description": "a question listed on two pages is visited twice",
+      "program": {
+        "pages": [{"id": "p1", "fields": ["q"]}, {"id": "p2", "fields": ["q"]}],
+        "fields": {"q": {"required": true}}
+      },
+      "answers": {"q": 1},
+      "expected": {
+        "path": ["p1", "p2"],
+        "visible_ids": ["q", "q"],
+        "required_ids": ["q", "q"],
+        "answers": {"q": 1}
+      }
+    },
+    {
+      "description": "a page that has a question with the same id as a page is fine",
+      "program": {"pages": [{"id": "p1", "fields": ["p1"]}]},
+      "answers": {"p1": "x"},
+      "expected": {"path": ["p1"], "visible_ids": ["p1"], "required_ids": [], "answers": {"p1": "x"}}
+    }
+  ]
+}

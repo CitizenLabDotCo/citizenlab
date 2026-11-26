@@ -1,6 +1,6 @@
-// The compiled runtime program the backend serializes with the form's custom fields.
-// Built by FormLogic::Compiler (back/lib/form_logic/compiler.rb); see evaluator.rb for the
-// semantics. Everything is in answer space: field keys and option keys.
+// The compiled program the backend serializes with the form's custom fields.
+// Built by FormLogic::Compiler (back/lib/form_logic/compiler.rb); see survey_walker.rb for
+// the semantics. Pages and questions are referenced by custom field id.
 
 export type Operator =
   | 'present'
@@ -15,17 +15,20 @@ export type Operator =
   | 'lt'
   | 'lte';
 
+export type Leaf = { field: string; op: Operator; value?: unknown };
+
 export type Condition =
   | { all: Condition[] }
   | { any: Condition[] }
   | { not: Condition }
-  | { key: string; op: Operator; value?: unknown };
+  | Leaf;
 
-export type PageTarget = string; // a page key or 'end'
+// A page id, or 'end'.
+export type PageTarget = string;
 
 export interface ProgramPage {
-  key: string;
-  fields: string[];
+  id: string;
+  fields?: string[];
   jumps?: { when: Condition; goto: PageTarget }[];
   next?: PageTarget | null;
 }
@@ -38,14 +41,15 @@ export interface ProgramField {
 
 export interface Program {
   pages: ProgramPage[];
-  fields?: Record<string, ProgramField>;
+  fields?: Record<string, ProgramField> | null;
 }
 
+// Answers keyed by question id.
 export type Answers = Record<string, unknown>;
 
-export interface EvaluationResult {
+export interface Walk {
   path: string[];
-  visibleKeys: string[];
-  requiredKeys: string[];
+  visibleIds: string[];
+  requiredIds: string[];
   answers: Answers;
 }
