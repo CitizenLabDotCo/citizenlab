@@ -47,7 +47,7 @@ export const WithSwitch: Story = {
       <Banner
         tone="info"
         action={
-          <Switch size={36} isSelected>
+          <Switch size={28} isSelected>
             New project back office
           </Switch>
         }

@@ -12,8 +12,8 @@ type LabelProps =
   | { children?: undefined; 'aria-label': string };
 
 type SwitchProps = LabelProps & {
-  // 36 for forms and panels, 26 for the side panel.
-  size: 36 | 26;
+  // 36 for forms and panels, 28 in a banner, 26 for the side panel.
+  size: 36 | 28 | 26;
   isSelected?: boolean;
   onChange?: (isSelected: boolean) => void;
   isDisabled?: boolean;

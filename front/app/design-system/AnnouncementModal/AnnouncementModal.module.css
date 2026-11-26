@@ -1,10 +1,7 @@
-/* The prototype's announcement modal: 520 wide, the picture inset 8 px. Not in the
-   Figma library yet, so its 520 width and 16 px radius have no token; update both
-   from there once it is added. */
+/* Figma's announcement modal is 520 wide, a size no other modal uses. */
 .modal {
   width: 520px;
   max-width: calc(100vw - var(--gv-space-32));
-  border-radius: 16px;
 }
 
 .dialog {
@@ -14,7 +11,7 @@
 
 .media {
   height: 316px;
-  border-radius: var(--gv-radius-12);
+  border-radius: var(--gv-radius-8);
   background: var(--gv-surface-control-subtle);
   overflow: hidden;
 }

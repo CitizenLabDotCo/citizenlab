@@ -18,7 +18,7 @@ export const Default: Story = {};
 export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: 16 }}>
-      {([36, 26] as const).map((size) => (
+      {([36, 28, 26] as const).map((size) => (
         <div key={size} style={{ display: 'flex', gap: 24 }}>
           <Switch size={size}>Allow comments</Switch>
           <Switch size={size} isSelected>
