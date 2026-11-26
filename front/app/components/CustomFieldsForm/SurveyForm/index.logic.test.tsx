@@ -143,7 +143,6 @@ const buildForm = ({
   rules = [
     { if: 'id-yes', goto_page_id: 'page-end' },
     { if: 'id-no', goto_page_id: 'page-3' },
-    { if: 'any_other_answer', goto_page_id: 'page-3' },
   ],
 }: {
   firstPageLogic?: LogicType;
@@ -262,6 +261,12 @@ describe('SurveyForm with logic', () => {
   });
 
   it('does not follow the any-other-answer rule of a select and goes to the next page (current behaviour)', async () => {
+    mockCustomFields = buildForm({
+      rules: [
+        { if: 'id-yes', goto_page_id: 'page-end' },
+        { if: 'any_other_answer', goto_page_id: 'page-3' },
+      ],
+    });
     const user = userEvent.setup();
     renderSurvey();
 
