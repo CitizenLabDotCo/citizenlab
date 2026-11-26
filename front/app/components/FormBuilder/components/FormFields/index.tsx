@@ -49,7 +49,9 @@ const FormFields = ({
     if (field.code) {
       return field.enabled;
     }
-    return true;
+    // Deleting the questions of a survey keeps them, switched off, so Undo can
+    // restore them. They are not part of the form until then.
+    return field.enabled !== false;
   };
 
   const lastPage = formCustomFields[formCustomFields.length - 1];
