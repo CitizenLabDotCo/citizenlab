@@ -6,7 +6,7 @@ require 'rails_helper'
 # pin today's respondent paths in
 # front/app/components/CustomFieldsForm/SurveyForm/logic.characterization.test.ts.
 RSpec.describe FormLogic do
-  files = Dir[Rails.root.join('spec/fixtures/form_logic/legacy/*.json')]
+  files = Rails.root.glob('spec/fixtures/form_logic/legacy/*.json')
 
   it 'still has a full corpus' do
     expect(files.sum { |file| JSON.parse(File.read(file))['cases'].size }).to be >= 70

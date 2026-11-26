@@ -6,14 +6,19 @@ module FormLogic
 
   class InvalidProgram < StandardError; end
 
-  # fields: the form's ordered custom fields (pages and questions), with stored logic in any
-  # shape (legacy v1 or v2).
-  def self.compile(fields)
-    v2 = LegacyNormalizer.new(fields).call
-    Compiler.new(fields, v2).call
+  # fields: the form's custom fields (records or FormLogic::Field) in form order, with their
+  # stored logic.
+  def self.normalize(fields)
+    LegacyNormalizer.new(fields).call
   end
 
-  def self.walk(fields, answers)
-    SurveyWalker.new(compile(fields)).walk(answers)
+  def self.compile(fields, logic = nil)
+    logic ||= normalize(fields).logic
+    Compiler.new(fields, logic).call
+  end
+
+  # answers: { field id => answer }
+  def self.walk(fields, answers, logic = nil)
+    SurveyWalker.new(compile(fields, logic)).walk(answers)
   end
 end
