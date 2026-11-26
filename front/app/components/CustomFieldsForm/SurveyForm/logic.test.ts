@@ -914,10 +914,7 @@ describe('determineNextPageNumber edge cases', () => {
     });
   });
 
-  describe.each([
-    ['linear_scale', ''],
-    ['rating', ' (current behaviour, B1)'],
-  ] as const)('%s%s', (inputType, _label) => {
+  describe.each(['linear_scale', 'rating'] as const)('%s', (inputType) => {
     const buildPages = (rules: QuestionRuleType[]) =>
       convertCustomFieldsToNestedPages([
         pageField('p1'),
@@ -941,7 +938,7 @@ describe('determineNextPageNumber edge cases', () => {
       expect(nextPage(pages, { q: 2 })).toBe(1);
     });
 
-    it('matches a string rule value against an integer answer (current behaviour, B14)', () => {
+    it('matches a string rule value against an integer answer (current behaviour)', () => {
       const pages = buildPages([{ if: '3', goto_page_id: 'p3' }]);
 
       expect(nextPage(pages, { q: 3 })).toBe(2);
@@ -975,7 +972,7 @@ describe('determineNextPageNumber edge cases', () => {
       expect(nextPage(pages, { q: 0 })).toBe(1);
     });
 
-    it('goes to the farther target when a string rule value also leaves the value to the any-other-answer rule (current behaviour, B14)', () => {
+    it('goes to the farther target when a string rule value also leaves the value to the any-other-answer rule (current behaviour)', () => {
       const pages = buildPages([
         { if: '3', goto_page_id: 'p3' },
         { if: 'any_other_answer', goto_page_id: 'p4' },

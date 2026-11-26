@@ -446,7 +446,7 @@ describe('detectConflictsByPage combinations', () => {
       (conflict) => conflict.conflictType
     );
 
-  it('reports no conflict when every question target equals the page default (current behaviour, B6)', () => {
+  it('reports no conflict when every question target equals the page default', () => {
     const question = makeQuestion('q', 'select', [
       { if: 'option-a', goto_page_id: 'page3' },
       { if: 'any_other_answer', goto_page_id: 'page3' },
@@ -476,7 +476,7 @@ describe('detectConflictsByPage combinations', () => {
   });
 
   it.each(['any_other_answer', 'no_answer'])(
-    'counts a %s rule like any other rule (current behaviour, N5)',
+    'counts a %s rule like any other rule',
     (condition) => {
       const question = makeQuestion('q', 'select', [
         { if: condition, goto_page_id: 'page4' },
@@ -491,7 +491,7 @@ describe('detectConflictsByPage combinations', () => {
     }
   );
 
-  it('reports an inter-question conflict for rating and linear scale questions on one page (current behaviour, B1)', () => {
+  it('reports an inter-question conflict for rating and linear scale questions on one page', () => {
     const rating = makeQuestion('q1', 'rating', [
       { if: 1, goto_page_id: 'page3' },
     ]);
@@ -545,7 +545,7 @@ describe('detectConflictsByPage combinations', () => {
     ]);
   });
 
-  it('does not count a question with an empty rules list (current behaviour, B6)', () => {
+  it('does not count a question with an empty rules list', () => {
     const empty = makeQuestion('q1', 'select', []);
     const withRule = makeQuestion('q2', 'select', [
       { if: 'option-a', goto_page_id: 'page3' },

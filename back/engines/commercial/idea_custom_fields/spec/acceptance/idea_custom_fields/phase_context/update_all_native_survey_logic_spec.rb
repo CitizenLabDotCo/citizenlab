@@ -74,7 +74,7 @@ resource 'Idea Custom Fields' do
       expect(select_field.reload.logic['rules'].pluck('if')).to eq [cat.id, 'any_other_answer', 'no_answer']
     end
 
-    example 'Drops the no_answer rule of a required select without an error (current behaviour, N5)', document: false do
+    example 'Drops the no_answer rule of a required select without an error (current behaviour)', document: false do
       rules = [{ if: cat.id, goto_page_id: page3.id }, { if: 'no_answer', goto_page_id: page2.id }]
       do_request form_params(select_field => { required: true, logic: { rules: } })
 
@@ -82,7 +82,7 @@ resource 'Idea Custom Fields' do
       expect(response_logic(select_field)).to eq({ rules: [{ if: cat.id, goto_page_id: page3.id }] })
     end
 
-    example 'Drops a rule whose option does not exist without an error (current behaviour, B5)', document: false do
+    example 'Drops a rule whose option does not exist without an error (current behaviour)', document: false do
       rules = [{ if: 'unknown-option-id', goto_page_id: page3.id }, { if: dog.id, goto_page_id: page3.id }]
       do_request form_params(select_field => { logic: { rules: } })
 

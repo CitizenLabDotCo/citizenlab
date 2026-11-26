@@ -132,7 +132,7 @@ resource 'Phases' do
       expect(seen_counts).to eq [1, 0, 0]
     end
 
-    example 'Ignores a linear scale rule stored with a string value (current behaviour, B14)', document: false do
+    example 'Ignores a linear scale rule stored with a string value (current behaviour)', document: false do
       scale_field.update!(logic: { rules: [{ if: '3', goto_page_id: form_end.id }, { if: 4, goto_page_id: form_end.id }] })
       respond(scale_field: 3)
       respond(scale_field: 4)

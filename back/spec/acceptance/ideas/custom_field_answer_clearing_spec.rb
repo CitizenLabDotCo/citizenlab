@@ -129,14 +129,14 @@ resource 'Ideas' do
         expect(answer_rows(input)).to eq(stored_answers.except('text_field'))
       end
 
-      example 'Keeps all rows when the only custom field key sent is null (current behaviour, N3)', document: false do
+      example 'Keeps all rows when the only custom field key sent is null (current behaviour)', document: false do
         do_request(idea: { text_field: nil, publication_status: 'draft' })
 
         assert_status 200
         expect(answer_rows(input)).to eq stored_answers
       end
 
-      example '[error] Fails when the request only has a null custom field key (current behaviour, N3)', document: false do
+      example '[error] Fails when the request only has a null custom field key (current behaviour)', document: false do
         expect { do_request(idea: { text_field: nil }) }.to raise_error(ActionController::ParameterMissing)
         expect(answer_rows(input)).to eq stored_answers
       end

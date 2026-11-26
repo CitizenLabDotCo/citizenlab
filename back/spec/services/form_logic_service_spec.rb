@@ -358,7 +358,7 @@ describe FormLogicService do
       expect(question1.reload.logic['rules'].pluck('if')).to eq ['UNKNOWN_2', option1.id]
     end
 
-    it 'keeps no_answer on an optional select and drops it on a required select (current behaviour, N5)' do
+    it 'keeps no_answer on an optional select and drops it on a required select' do
       rules = [{ 'if' => 'no_answer', 'goto_page_id' => page2.id }, { 'if' => 'any_other_answer', 'goto_page_id' => page2.id }]
       question1.update!(required: false, logic: { 'rules' => rules })
       form_logic.replace_temp_ids!({}, {})

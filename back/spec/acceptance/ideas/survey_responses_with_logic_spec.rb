@@ -69,7 +69,7 @@ resource 'Ideas' do
         })
       end
 
-      example 'Publishes without the required question of a skipped page (current behaviour, B11)', document: false do
+      example 'Publishes without the required question of a skipped page', document: false do
         do_request(idea: { publication_status: 'published', select_field: 'skip', last_question: 'end' })
 
         assert_status 201
@@ -97,7 +97,7 @@ resource 'Ideas' do
         header_token_for create(:user)
       end
 
-      example 'Stores the draft without enforcing anything about later pages (current behaviour, B11)', document: false do
+      example 'Stores the draft without enforcing anything about later pages', document: false do
         do_request(idea: { publication_status: 'draft', select_field: 'skip' })
 
         assert_status 201
