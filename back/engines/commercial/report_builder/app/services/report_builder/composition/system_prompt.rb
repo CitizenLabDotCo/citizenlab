@@ -362,10 +362,13 @@ module ReportBuilder
             Where a view's own note gives a formula that uses now() — an age from a birth
             year, whether a phase has started — use it as given: that reads the present
             deliberately, it does not pin a period.
-          - Scope it to this project with its id unless the chart is deliberately about the
-            whole platform. When the context names a reported phase, scope it to that phase
-            too: by phase_id where the view has one, and through reporting_input_phases for
-            inputs and their answers.
+          - Scope it to this project with its id. When the context names a reported phase,
+            scope it to that phase too: by phase_id where the view has one, and through
+            reporting_input_phases for inputs and their answers.
+          - The views hold this project's rows only, so no chart can show another project
+            or the platform's totals. For a comparison with the rest of the platform, read
+            reporting_platform_baselines, which holds platform-wide figures and takes no
+            project id.
           - Count participants with COUNT(DISTINCT participant_id) on reporting_contributions.
 
           ## The reporting views

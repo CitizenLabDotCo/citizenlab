@@ -33,6 +33,29 @@ describe ReportBuilder::Composition::SystemPrompt do
     expect(ErrorReporter).to have_received(:report).with(error)
   end
 
+  # A run reads the reported project's rows only, whoever it is for, so the prompt
+  # describes what such a query can read and nothing it would be refused.
+  describe 'the reporting views' do
+    before { allow(client).to receive(:sdk_declarations).and_return('') }
+
+    it 'describes the views a project report may read, the platform baselines among them' do
+      expect(prompt.text).to include "reporting_contributions: #{Analytics::Reporting::Contribution.table_description}"
+      expect(prompt.text).to include "reporting_platform_baselines: #{Analytics::Reporting::PlatformBaseline.table_description}"
+    end
+
+    it 'leaves out the admin-only views' do
+      admin_only = McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLES.select(&:admin_only?)
+
+      expect(admin_only).not_to be_empty
+      expect(prompt.text).not_to include(*admin_only.map(&:table_name))
+    end
+
+    it 'points comparisons with the platform at the baselines view' do
+      expect(prompt.text).to include 'For a comparison with the rest of the platform'
+      expect(prompt.text).not_to include 'deliberately about the'
+    end
+  end
+
   # The typechecker is strict, and an example the model copies that does not pass it is
   # a failed first attempt in every run.
   describe 'the golden examples' do
