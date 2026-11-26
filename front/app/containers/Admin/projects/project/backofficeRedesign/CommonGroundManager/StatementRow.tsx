@@ -45,10 +45,7 @@ const StatementRow = ({
       </Cell>
       {showModeration && (
         <Cell>
-          <AssigneeMark
-            assigneeId={idea.relationships.assignee?.data?.id}
-            size={16}
-          />
+          <AssigneeMark assigneeId={idea.relationships.assignee?.data?.id} />
         </Cell>
       )}
       {showModeration && (

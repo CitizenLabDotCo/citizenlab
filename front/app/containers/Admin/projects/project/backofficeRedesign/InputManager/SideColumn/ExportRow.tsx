@@ -25,7 +25,8 @@ const ExportRow = ({ type, projectId, selectedIds }: Props) => {
       <Disclosure
         header="button"
         title={formatMessage(messages.export)}
-        actionIcon="download-16"
+        // It opens a menu of exports.
+        actionIcon="chevron-down-16"
       />
       <Popover aria-label={formatMessage(messages.exportParticipationData)}>
         {/* Kept from the menu this replaced; the e2e tests find the export options by it. */}

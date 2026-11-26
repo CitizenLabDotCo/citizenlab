@@ -38,9 +38,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.addStatement',
     defaultMessage: 'Add new statement',
   },
-  importInputs: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.importInputs',
-    defaultMessage: 'Import inputs',
+  importStatements: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.importStatements',
+    defaultMessage: 'Import statements',
   },
   statementCount: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.statementCount',

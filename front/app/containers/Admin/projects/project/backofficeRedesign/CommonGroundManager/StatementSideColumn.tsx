@@ -50,7 +50,7 @@ const StatementSideColumn = ({
         />
         <Disclosure
           header="button"
-          title={formatMessage(messages.importInputs)}
+          title={formatMessage(messages.importStatements)}
           actionIcon="upload-16"
           onPress={onImport}
         />

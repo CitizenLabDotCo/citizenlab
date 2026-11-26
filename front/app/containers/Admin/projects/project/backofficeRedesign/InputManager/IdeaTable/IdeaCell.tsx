@@ -131,7 +131,14 @@ const IdeaCell = ({
     budget: <FormattedBudget value={attributes.budget ?? 0} />,
   };
 
-  return <Cell>{values[column]}</Cell>;
+  // The library's vote rows draw the online and offline counts in the secondary grey.
+  const secondary = ['votes', 'offlineVotes', 'picks', 'offlinePicks'].includes(
+    column
+  );
+
+  return (
+    <Cell tone={secondary ? 'secondary' : undefined}>{values[column]}</Cell>
+  );
 };
 
 export default IdeaCell;

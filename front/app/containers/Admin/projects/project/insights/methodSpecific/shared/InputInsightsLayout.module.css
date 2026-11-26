@@ -21,3 +21,15 @@
   flex: 1 1 0;
   min-width: 280px;
 }
+
+/* Both cards take the row's height, as in the library. */
+.summary,
+.topics {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary > *,
+.topics > * {
+  flex: 1 1 auto;
+}

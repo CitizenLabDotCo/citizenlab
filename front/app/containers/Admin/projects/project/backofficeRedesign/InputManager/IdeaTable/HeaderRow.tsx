@@ -21,10 +21,13 @@ interface Props {
   onSort: (sort: Sort) => void;
 }
 
-// Today's table sized these columns to their content; the widths fit their longest values.
+// The library's list widths; the others fit their longest values.
 const COLUMN_WIDTHS: Partial<Record<ColumnKey, number>> = {
   status: 160,
-  tags: 200,
+  assignee: 88,
+  tags: 168,
+  likes: 56,
+  published: 112,
   totalVotes: 200,
   totalPicks: 200,
   votes: 80,
