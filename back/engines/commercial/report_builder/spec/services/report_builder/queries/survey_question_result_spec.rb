@@ -216,4 +216,35 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
       end
     end
   end
+
+  describe '#run_query with survey logic' do
+    let(:project) { create(:single_phase_native_survey_project) }
+    let(:phase) { project.phases.first }
+    let(:form) { create(:custom_form, participation_context: phase) }
+    let!(:page1) { create(:custom_field_page, resource: form) }
+    let!(:select_field) { create(:custom_field_select, :with_options, resource: form, key: 'select_field') }
+    let!(:page2) { create(:custom_field_page, resource: form) }
+    let!(:text_field) { create(:custom_field_text, resource: form, key: 'text_field') }
+    let!(:form_end) { create(:custom_field_form_end_page, resource: form) }
+
+    before do
+      create(:idea_status_proposed)
+      select_field.update!(logic: { rules: [{ if: select_field.options.find_by(key: 'option1').id, goto_page_id: form_end.id }] })
+      [{ 'select_field' => 'option1', 'text_field' => 'stored but skipped' }, { 'select_field' => 'option2', 'text_field' => 'seen' }].each do |answers|
+        create(
+          :native_survey_response,
+          project: project,
+          phases: [phase],
+          custom_field_answers: answers.map { |key, value| build(:custom_field_answer, key: key, value: value, custom_field: form.custom_fields.find_by(key: key)) }
+        )
+      end
+    end
+
+    it 'counts only the responses whose path reaches the question' do
+      result = query.run_query(phase_id: phase.id, question_id: text_field.id)
+
+      expect(result).to include(totalResponseCount: 1, questionResponseCount: 1)
+      expect(result[:textResponses].pluck(:answer)).to eq ['seen']
+    end
+  end
 end
