@@ -126,6 +126,7 @@ const ProjectsByFilter = ({
   const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
     {
       publicationStatusFilter: PUBLICATION_STATUSES,
+      remove_all_unlisted: true,
       ...queryFilters(filterType, ids),
     },
     { enabled: advancedCustomPagesEnabled && ids.length > 0 }
