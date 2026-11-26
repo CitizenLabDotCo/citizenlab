@@ -47,7 +47,7 @@ describe('Survey logic edge cases (respondent form)', () => {
     }
   });
 
-  it('goes to the next page instead of the any-other-answer target for a select, while the results treat that page as skipped (current behaviour, B2)', () => {
+  it('goes to the next page instead of the any-other-answer target for a select, while the results treat that page as skipped (currently existing bug, B2)', () => {
     const question = 'Where do you live?';
     const optionWithRule = 'City centre';
     const optionWithoutRule = 'Somewhere else';

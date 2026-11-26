@@ -70,7 +70,7 @@ resource 'Phases' do
       expect(seen_counts).to eq [3, 1, 2]
     end
 
-    example 'Applies the page default when no question rule on the page matches, unlike the respondent form (current behaviour, B6)', document: false do
+    example 'Applies the page default when no question rule on the page matches, unlike the respondent form (currently existing bug, B6)', document: false do
       page1.update!(logic: { next_page_id: page3.id })
       select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: form_end.id }] })
       respond(select_field: 'dog', page2_question: 'answered in the form', page3_question: 'c')
@@ -93,7 +93,7 @@ resource 'Phases' do
       expect(seen_counts).to eq [1, 1, 1]
     end
 
-    example 'Lets the last matching question on a page win (current behaviour, N2)', document: false do
+    example 'Lets the last matching question on a page win (currently existing bug, N2)', document: false do
       select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: page3.id }] })
       scale_field.update!(logic: { rules: [{ if: 1, goto_page_id: form_end.id }] })
       respond(select_field: 'cat', scale_field: 2)
@@ -122,7 +122,7 @@ resource 'Phases' do
       expect(seen_counts).to eq [3, 1, 2]
     end
 
-    example 'Treats an answer whose option was deleted as any other answer (current behaviour, B15)', document: false do
+    example 'Treats an answer whose option was deleted as any other answer (currently existing bug, B15)', document: false do
       select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: page2.id }, { if: 'any_other_answer', goto_page_id: form_end.id }] })
       respond(select_field: 'deleted_option')
 
@@ -154,7 +154,7 @@ resource 'Phases' do
       expect([page2_question, page3_question].map { |field| result_for(field)[:totalResponseCount] }).to eq [1, 1]
     end
 
-    example 'Counts no question after a jump to a disabled page as seen (current behaviour, N4)', document: false do
+    example 'Counts no question after a jump to a disabled page as seen (currently existing bug, N4)', document: false do
       page2.update!(enabled: false)
       select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: page2.id }] })
       respond(select_field: 'cat', page2_question: 'b', page3_question: 'c')
@@ -250,7 +250,7 @@ resource 'Phases' do
       expect([page2_question, page3_question].map { |field| result_for(field)[:hidden] }).to eq [true, true]
     end
 
-    example '[error] Fails when a ranking with logic has ranked options without a rule (current behaviour, N1)', document: false do
+    example '[error] Fails when a ranking with logic has ranked options without a rule (currently existing bug, N1)', document: false do
       ranking_field = create(:custom_field_ranking, :with_options, resource: custom_form, key: 'ranking_field')
       by_train = ranking_field.options.find_by(key: 'by_train')
       ranking_field.update!(logic: { rules: [{ if: by_train.id, goto_page_id: form_end.id }] })

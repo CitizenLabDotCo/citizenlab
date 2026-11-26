@@ -329,7 +329,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         expect(next_page_for(%w[cow])).to eq mid_page_field2.id
       end
 
-      it 'raises when options with and without a rule are selected together (current behaviour, N1)' do
+      it 'raises when options with and without a rule are selected together (currently existing bug, N1)' do
         expect { next_page_for(%w[cat cow]) }.to raise_error(ArgumentError, /comparison of/)
       end
     end
@@ -364,7 +364,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         expect(generator.send(:next_page_id_from_logic, ranking_field.reload, input, page_ids)).to eq mid_page_field2.id
       end
 
-      it 'raises when the ranking also has options without a rule (current behaviour, N1)' do
+      it 'raises when the ranking also has options without a rule (currently existing bug, N1)' do
         CustomFieldValuesTransitionService.new.assign(input, { ranking_field.key => %w[by_train by_foot by_bike] })
         input.save!
 

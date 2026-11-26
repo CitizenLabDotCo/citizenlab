@@ -286,14 +286,14 @@ resource 'Ideas' do
         }
       end
 
-      example 'Keeps omitted multiselect, ranking and matrix answers (current behaviour, N3)', document: false do
+      example 'Keeps omitted multiselect, ranking and matrix answers (currently existing bug, N3)', document: false do
         do_request(idea: { text_field: 'Hello' })
 
         assert_status 200
         expect(answer_rows(input)).to eq stored_answers
       end
 
-      example 'Keeps omitted multiselect, ranking and matrix answers when publishing (current behaviour, N3)', document: false do
+      example 'Keeps omitted multiselect, ranking and matrix answers when publishing (currently existing bug, N3)', document: false do
         do_request(idea: { text_field: 'Hello', publication_status: 'published' })
 
         assert_status 200

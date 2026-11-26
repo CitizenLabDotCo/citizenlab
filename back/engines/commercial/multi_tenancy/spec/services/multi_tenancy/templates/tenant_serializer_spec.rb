@@ -306,7 +306,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       end
     end
 
-    it 'leaves survey logic out of the template (current behaviour, B10)' do
+    it 'leaves survey logic out of the template (currently existing bug, B10)' do
       survey_phase = create(:native_survey_phase)
       form = create(:custom_form, participation_context: survey_phase)
       page = create(:custom_field_page, resource: form, key: 'page_with_logic')

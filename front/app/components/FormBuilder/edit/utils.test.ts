@@ -504,7 +504,7 @@ describe('detectConflictsByPage combinations', () => {
     ).toEqual([LogicConflictType.INTER_QUESTION_CONFLICT]);
   });
 
-  it('reports an inter-question conflict even when both questions jump to the same page (current behaviour, N2)', () => {
+  it('reports an inter-question conflict even when both questions jump to the same page (currently existing bug, N2)', () => {
     const first = makeQuestion('q1', 'select', [
       { if: 'option-a', goto_page_id: 'page3' },
     ]);

@@ -70,7 +70,7 @@ resource 'Idea Custom Fields' do
           create(:permissions_custom_field, custom_field: user_field, permission: permission)
         end
 
-        example 'Redirects jumps to the end page to the user fields page, which gets a new id on every request (current behaviour, B12)', document: false do
+        example 'Redirects jumps to the end page to the user fields page, which gets a new id on every request (currently existing bug, B12)', document: false do
           do_request(public_fields: true)
 
           assert_status 200
@@ -120,7 +120,7 @@ resource 'Idea Custom Fields' do
         expect(data_for(page2).dig(:attributes, :logic)).to eq({ next_page_id: form_end.id })
       end
 
-      example 'Remaps option and page ids of the copied logic but clears linear scale values (current behaviour, B3)', document: false do
+      example 'Remaps option and page ids of the copied logic but clears linear scale values (currently existing bug, B3)', document: false do
         do_request(copy: true)
 
         assert_status 200

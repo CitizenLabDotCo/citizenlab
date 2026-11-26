@@ -77,7 +77,7 @@ describe('FormBuilderSettings logic tab', () => {
   it.each([
     { inputType: 'select', label: '' },
     { inputType: 'linear_scale', label: '' },
-    { inputType: 'rating', label: ' (current behaviour, B1)' },
+    { inputType: 'rating', label: ' (currently existing bug, B1)' },
     { inputType: 'page', label: '' },
   ] as const)(
     'shows the logic tab for a $inputType field$label',
@@ -108,7 +108,7 @@ describe('FormBuilderSettings logic tab', () => {
   });
 
   it.each(['multiselect', 'multiselect_image'] as const)(
-    'shows the logic tab for a %s field created before 2026-01-18 that has rules (current behaviour, B7)',
+    'shows the logic tab for a %s field created before 2026-01-18 that has rules (currently existing bug, B7)',
     (inputType) => {
       renderSettings(
         makeField(inputType, {

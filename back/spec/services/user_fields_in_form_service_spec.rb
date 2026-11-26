@@ -425,14 +425,14 @@ describe UserFieldsInFormService do
           expect(page1.reload.logic).to eq('next_page_id' => form_end.id)
         end
 
-        it 'gives the user page a new id every time (current behaviour, B12)' do
+        it 'gives the user page a new id every time (currently existing bug, B12)' do
           first_id = add_user_fields.find { |field| field.key == 'user_page' }.id
           second_id = add_user_fields.find { |field| field.key == 'user_page' }.id
 
           expect(first_id).not_to eq second_id
         end
 
-        it 'raises for a form without an end page, whether or not it has logic (current behaviour, B12)' do
+        it 'raises for a form without an end page, whether or not it has logic (currently existing bug, B12)' do
           fields = custom_form.custom_fields.order(:ordering).to_a.reject(&:form_end_page?)
           fields_without_logic = custom_form.custom_fields.order(:ordering).to_a.reject(&:form_end_page?).each { |field| field.logic = {} }
           nil_id_error = [NoMethodError, /undefined method ['`]id' for nil/]

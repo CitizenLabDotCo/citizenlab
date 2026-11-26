@@ -386,7 +386,7 @@ describe IdeaCustomFieldsService do
       expect(fields[8].map_config).to be_nil
     end
 
-    it 'clears the values of copied linear scale rules and keeps catch-all rules (current behaviour, B3)' do
+    it 'clears the values of copied linear scale rules and keeps catch-all rules (currently existing bug, B3)' do
       create(:custom_field_page, resource: custom_form)
       scale_field = create(:custom_field_linear_scale, resource: custom_form, maximum: 5)
       page2 = create(:custom_field_page, resource: custom_form)
@@ -451,7 +451,7 @@ describe IdeaCustomFieldsService do
       expect(service.fields_to_validate_on_import).to eq []
     end
 
-    it 'returns nothing when only a disabled field has logic (current behaviour, N8)' do
+    it 'returns nothing when only a disabled field has logic (currently existing bug, N8)' do
       optional_select = create(:custom_field_select, :with_options, resource: custom_form, enabled: false)
       optional_select.update!(logic: { rules: [{ if: optional_select.options.first.id, goto_page_id: form_end.id }] })
 

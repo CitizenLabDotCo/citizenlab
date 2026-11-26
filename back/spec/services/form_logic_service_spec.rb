@@ -346,7 +346,7 @@ describe FormLogicService do
       expect(question1.reload.logic).to eq('rules' => [{ 'if' => option1.id, 'goto_page_id' => page2.id }])
     end
 
-    it 'keeps the second of two consecutive rules with unknown options (current behaviour, B5)' do
+    it 'keeps the second of two consecutive rules with unknown options (currently existing bug, B5)' do
       question1.update!(logic: { 'rules' => [
         { 'if' => 'UNKNOWN_1', 'goto_page_id' => page2.id },
         { 'if' => 'UNKNOWN_2', 'goto_page_id' => page2.id },
@@ -377,7 +377,7 @@ describe FormLogicService do
       expect(question1.reload.logic).to eq('rules' => [{ 'if' => option2.id, 'goto_page_id' => last_page.id }])
     end
 
-    it 'does not check the values of linear scale rules (current behaviour, B14)' do
+    it 'does not check the values of linear scale rules (currently existing bug, B14)' do
       scale = fields[1]
       scale.update!(logic: { 'rules' => [{ 'if' => 99, 'goto_page_id' => page2.id }, { 'if' => '2', 'goto_page_id' => page2.id }] })
 

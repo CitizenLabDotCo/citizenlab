@@ -243,7 +243,7 @@ describe('SurveyForm with logic', () => {
     expect(screen.queryByText('Question Two')).not.toBeInTheDocument();
   });
 
-  it('does not follow the any-other-answer rule of a select and goes to the next page (current behaviour, B2)', async () => {
+  it('does not follow the any-other-answer rule of a select and goes to the next page (currently existing bug, B2)', async () => {
     mockCustomFields = buildForm({
       rules: [
         { if: 'id-yes', goto_page_id: 'page-end' },
@@ -259,7 +259,7 @@ describe('SurveyForm with logic', () => {
     expect(await screen.findByText('Question Two')).toBeInTheDocument();
   });
 
-  it('goes to the next page, not the page default, when the answer matches no rule (current behaviour, B6)', async () => {
+  it('goes to the next page, not the page default, when the answer matches no rule (currently existing bug, B6)', async () => {
     mockCustomFields = buildForm({
       firstPageLogic: { next_page_id: 'page-3' },
       rules: [{ if: 'id-yes', goto_page_id: 'page-end' }],
@@ -357,7 +357,7 @@ describe('SurveyForm with logic', () => {
     });
   });
 
-  it('erases the answer on a later page when an answer that skips it is picked and then undone (current behaviour, N7)', async () => {
+  it('erases the answer on a later page when an answer that skips it is picked and then undone (currently existing bug, N7)', async () => {
     const user = userEvent.setup();
     renderSurvey();
 
@@ -380,7 +380,7 @@ describe('SurveyForm with logic', () => {
     expect(await screen.findByLabelText(/Question Two/)).toHaveValue('');
   });
 
-  it('renders no page and no buttons after a jump to a page that is not in the form (current behaviour, N9)', async () => {
+  it('renders no page and no buttons after a jump to a page that is not in the form (currently existing bug, N9)', async () => {
     mockCustomFields = buildForm({
       rules: [{ if: 'id-no', goto_page_id: 'page-missing' }],
     });

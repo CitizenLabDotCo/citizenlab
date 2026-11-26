@@ -44,7 +44,7 @@ describe('LogicIcon', () => {
     ).toBeInTheDocument();
   });
 
-  it('treats page number 999 as the survey end (current behaviour, N6)', async () => {
+  it('treats page number 999 as the survey end (currently existing bug, N6)', async () => {
     render(
       <LogicIcon
         logicConfig={logicConfig()}

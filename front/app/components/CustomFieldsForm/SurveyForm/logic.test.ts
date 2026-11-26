@@ -697,7 +697,7 @@ describe('determineNextPageNumber edge cases', () => {
       expect(nextPage(pages, { q: 'b' })).toBe(1);
     });
 
-    it('does not apply the any-other-answer rule when option ids differ from keys (current behaviour, B2)', () => {
+    it('does not apply the any-other-answer rule when option ids differ from keys (currently existing bug, B2)', () => {
       const pages = buildPages(abcOptions, [
         { if: 'id-a', goto_page_id: 'p3' },
         { if: 'any_other_answer', goto_page_id: 'p4' },
@@ -729,7 +729,7 @@ describe('determineNextPageNumber edge cases', () => {
       expect(nextPage(pages, { q: 'a' })).toBe(1);
     });
 
-    it('matches no rule for the key of an option that no longer exists (current behaviour, B15)', () => {
+    it('matches no rule for the key of an option that no longer exists (currently existing bug, B15)', () => {
       const pages = buildPages(abcOptionsWithIdEqualToKey, [
         { if: 'a', goto_page_id: 'p3' },
         { if: 'any_other_answer', goto_page_id: 'p4' },
@@ -739,7 +739,7 @@ describe('determineNextPageNumber edge cases', () => {
       expect(nextPage(pages, { q: 'deleted_option' })).toBe(1);
     });
 
-    it('returns -1 when the rule target is not one of the pages (current behaviour, N9)', () => {
+    it('returns -1 when the rule target is not one of the pages (currently existing bug, N9)', () => {
       const pages = buildPages(abcOptions, [
         { if: 'id-a', goto_page_id: 'disabled-page' },
       ]);
@@ -747,7 +747,7 @@ describe('determineNextPageNumber edge cases', () => {
       expect(nextPage(pages, { q: 'a' })).toBe(-1);
     });
 
-    it('returns -1 when a matching rule has no target page (current behaviour, N9)', () => {
+    it('returns -1 when a matching rule has no target page (currently existing bug, N9)', () => {
       const pages = buildPages(abcOptions, [{ if: 'id-a', goto_page_id: '' }]);
 
       expect(nextPage(pages, { q: 'a' })).toBe(-1);
@@ -792,7 +792,7 @@ describe('determineNextPageNumber edge cases', () => {
       expect(nextPage(pages, { q: 'a' })).toBe(2);
     });
 
-    it('goes to the sequential next page, ignoring the page default, when the question rules do not match (current behaviour, B6)', () => {
+    it('goes to the sequential next page, ignoring the page default, when the question rules do not match (currently existing bug, B6)', () => {
       const pages = buildPages({ rules: [{ if: 'id-a', goto_page_id: 'p3' }] });
 
       expect(nextPage(pages, { q: 'b' })).toBe(1);
@@ -825,7 +825,7 @@ describe('determineNextPageNumber edge cases', () => {
         endPage(),
       ]);
 
-    it('uses the last matching question, even when its target is nearer (current behaviour, N2)', () => {
+    it('uses the last matching question, even when its target is nearer (currently existing bug, N2)', () => {
       const pages = buildPages(
         [{ if: 'id-a', goto_page_id: 'p4' }],
         [{ if: 'id-a', goto_page_id: 'p3' }]
@@ -882,7 +882,7 @@ describe('determineNextPageNumber edge cases', () => {
       }
     );
 
-    it('does not apply the any-other-answer rule when option ids differ from keys (current behaviour, B2)', () => {
+    it('does not apply the any-other-answer rule when option ids differ from keys (currently existing bug, B2)', () => {
       const pages = buildPages(abcOptions, [
         { if: 'id-a', goto_page_id: 'p3' },
         { if: 'any_other_answer', goto_page_id: 'p4' },
@@ -1012,7 +1012,7 @@ describe('determineNextPageNumber edge cases', () => {
         endPage(),
       ]);
 
-    it('never matches a ranking rule on an option id, because answers hold ranked keys (current behaviour, B8)', () => {
+    it('never matches a ranking rule on an option id, because answers hold ranked keys (currently existing bug, B8)', () => {
       const pages = buildPages({ input_type: 'ranking', options: abcOptions }, [
         { if: 'id-a', goto_page_id: 'p3' },
       ]);
@@ -1021,7 +1021,7 @@ describe('determineNextPageNumber edge cases', () => {
       expect(nextPage(pages, { q: ['a'] })).toBe(1);
     });
 
-    it('matches a ranking rule whose value equals the comma-joined ranked keys (current behaviour, B8)', () => {
+    it('matches a ranking rule whose value equals the comma-joined ranked keys (currently existing bug, B8)', () => {
       const pages = buildPages({ input_type: 'ranking', options: abcOptions }, [
         { if: 'a,b,c', goto_page_id: 'p3' },
       ]);
@@ -1070,7 +1070,7 @@ describe('getValidPagePath and getSkippedPageIndices edge cases', () => {
       logic: { rules },
     });
 
-  it('stops the path at a page whose rule targets a page that is not in the form (current behaviour, N9)', () => {
+  it('stops the path at a page whose rule targets a page that is not in the form (currently existing bug, N9)', () => {
     const pages = convertCustomFieldsToNestedPages([
       pageField('p1'),
       selectOn('q', [{ if: 'id-a', goto_page_id: 'disabled-page' }]),

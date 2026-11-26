@@ -175,7 +175,7 @@ describe BulkImportIdeas::Exporters::LogicInstructionGenerator do
         scale_field.update!(logic: { 'rules' => [{ 'if' => 1, 'goto_page_id' => end_page.id }] })
       end
 
-      it 'leaves out any_other_answer, no_answer and linear scale rules (current behaviour, B9)' do
+      it 'leaves out any_other_answer, no_answer and linear scale rules (currently existing bug, B9)' do
         pf = IdeaCustomFieldsService.new(custom_form).printable_fields
         gen = described_class.new(pf, IdeaCustomFieldsService.new(custom_form).all_fields, 'en')
         fields = build_field_hashes_from(pf)
@@ -189,7 +189,7 @@ describe BulkImportIdeas::Exporters::LogicInstructionGenerator do
     context 'rules that jump to a page that is not printed' do
       let!(:page3) { create(:custom_field_page, resource: custom_form, enabled: false, title_multiloc: { 'en' => 'Third page' }).tap { |page| page.insert_at(end_page.ordering) } }
 
-      it 'leaves out an option rule to a disabled page (current behaviour, B9)' do
+      it 'leaves out an option rule to a disabled page (currently existing bug, B9)' do
         select_field.update!(logic: { 'rules' => [{ 'if' => select_field.options.first.id, 'goto_page_id' => page3.id }] })
         fields = build_field_hashes
         generator.attach_logic_instructions(fields)
@@ -197,7 +197,7 @@ describe BulkImportIdeas::Exporters::LogicInstructionGenerator do
         expect(fields.pluck(:logic_instructions).compact).to be_empty
       end
 
-      it 'leaves out page logic to a disabled page (current behaviour, B9)' do
+      it 'leaves out page logic to a disabled page (currently existing bug, B9)' do
         page1.update!(logic: { 'next_page_id' => page3.id })
         fields = build_field_hashes
         generator.attach_logic_instructions(fields)

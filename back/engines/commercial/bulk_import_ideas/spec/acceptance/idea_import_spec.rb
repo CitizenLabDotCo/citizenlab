@@ -287,7 +287,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
         before { create(:custom_field_answer, answerable: draft_ideas[0], key: 'select_field', value: 'option1') }
 
-        example 'Approves ideas with unanswered required questions on any page once the form has logic (current behaviour, N8)', document: false do
+        example 'Approves ideas with unanswered required questions on any page once the form has logic (currently existing bug, N8)', document: false do
           select_field.update!(logic: { rules: [{ if: select_field.options.first.id, goto_page_id: form_end.id }] })
 
           do_request

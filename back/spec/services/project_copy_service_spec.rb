@@ -142,7 +142,7 @@ describe ProjectCopyService do
       end
     end
 
-    it 'drops survey logic when copying a project (current behaviour, B10)' do
+    it 'drops survey logic when copying a project (currently existing bug, B10)' do
       project = create(:single_phase_native_survey_project, title_multiloc: { en: 'with logic' })
       form = create(:custom_form, participation_context: project.phases.first)
       page1 = create(:custom_field_page, resource: form)
