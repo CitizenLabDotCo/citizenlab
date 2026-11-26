@@ -189,6 +189,29 @@ RSpec.describe CustomField do
       field.save!
       expect(field.logic).to eq({})
     end
+
+    %w[page select linear_scale ranking].each do |input_type|
+      it "keeps the logic of a #{input_type} field" do
+        field = build(:custom_field, resource: create(:custom_form), input_type: input_type, logic: { 'next_page_id' => 'some_page_id' })
+        field.valid?
+        expect(field.logic).to eq({ 'next_page_id' => 'some_page_id' })
+      end
+    end
+
+    %w[rating sentiment_linear_scale multiselect multiselect_image matrix_linear_scale text number select_image].each do |input_type|
+      it "silently clears the logic of a #{input_type} field" do
+        field = build(:custom_field, resource: create(:custom_form), input_type: input_type, logic: { 'rules' => [{ 'if' => 1, 'goto_page_id' => 'some_page_id' }] })
+        field.valid?
+        expect(field.logic).to eq({})
+      end
+    end
+
+    it 'clears the logic of an unsupported field even when it is saved without changing the logic' do
+      field = create(:custom_field_multiselect, resource: create(:custom_form))
+      field.update_column(:logic, { 'rules' => [{ 'if' => 'option-id', 'goto_page_id' => 'some_page_id' }] })
+      field.reload.update!(title_multiloc: { 'en' => 'Changed' })
+      expect(field.reload.logic).to eq({})
+    end
   end
 
   describe 'page_layout validation' do
