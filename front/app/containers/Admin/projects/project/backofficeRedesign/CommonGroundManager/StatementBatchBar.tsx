@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  colors,
-  IconButton,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import AlertDialog from 'design-system/AlertDialog';
+import Button from 'design-system/Button';
+import SelectionBar from 'design-system/SelectionBar';
 
 import { IIdeaData } from 'api/ideas/types';
 
-import WarningModal from 'components/WarningModal';
+import warningModalMessages from 'components/WarningModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -20,6 +16,7 @@ import useBatchActions from '../InputManager/BatchBar/useBatchActions';
 import managerMessages from '../InputManager/messages';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   ideas: IIdeaData[];
@@ -59,59 +56,49 @@ const StatementBatchBar = ({
   const terms = formatMessage(messages.statementsNoun);
 
   return (
-    <Box display="flex" alignItems="center" gap="8px" flexWrap="wrap">
-      <Text variant="boSection" m="0" mr="4px">
-        {formatMessage(managerMessages.selectedCount, { count: ideas.length })}
-      </Text>
-
-      {total !== undefined && ideas.length < total && (
-        <SelectAllButton
-          label={formatMessage(managerMessages.selectAllTerms, {
-            termCount: statementCount(total),
-          })}
-          processing={isSelectingAll}
-          failed={selectAllFailed}
-          onClick={onSelectAll}
-        />
-      )}
-
-      {isSingle && (
-        <Button
-          buttonStyle="bo-secondary"
-          icon="edit"
-          onClick={() => onEdit(ideas[0].id)}
-        >
-          {formatMessage(managerMessages.edit)}
-        </Button>
-      )}
-
-      <Button
-        buttonStyle="bo-delete"
-        icon="delete"
-        onClick={() => setDeleteModalOpen(true)}
-      >
-        {isSingle
-          ? formatMessage(managerMessages.delete)
-          : formatMessage(managerMessages.deleteTerms, {
-              termCount: statementCount(ideas.length),
+    <>
+      <SelectionBar count={ideas.length} onClearSelection={onClear}>
+        {total !== undefined && ideas.length < total && (
+          <SelectAllButton
+            label={formatMessage(managerMessages.selectAllTerms, {
+              termCount: statementCount(total),
             })}
-      </Button>
+            processing={isSelectingAll}
+            failed={selectAllFailed}
+            onClick={onSelectAll}
+          />
+        )}
 
-      <IconButton
-        iconName="close"
-        iconWidth="18px"
-        iconHeight="18px"
-        iconColor={colors.coolGrey600}
-        iconColorOnHover={colors.textPrimary}
-        a11y_buttonActionMessage={formatMessage(managerMessages.clearSelection)}
-        onClick={onClear}
-      />
+        {isSingle && (
+          <Button
+            size={28}
+            icon="square-pen-16"
+            onPress={() => onEdit(ideas[0].id)}
+          >
+            {formatMessage(managerMessages.edit)}
+          </Button>
+        )}
 
-      <BatchFailureAlert failure={failure} />
+        <Button
+          variant="danger"
+          size={28}
+          icon="trash-2-16"
+          onPress={() => setDeleteModalOpen(true)}
+        >
+          {isSingle
+            ? formatMessage(managerMessages.delete)
+            : formatMessage(managerMessages.deleteTerms, {
+                termCount: statementCount(ideas.length),
+              })}
+        </Button>
 
-      <WarningModal
-        open={deleteModalOpen}
-        isLoading={isDeleting}
+        <BatchFailureAlert failure={failure} />
+      </SelectionBar>
+
+      <AlertDialog
+        isOpen={deleteModalOpen}
+        onOpenChange={setDeleteModalOpen}
+        isPending={isDeleting}
         title={
           isSingle
             ? formatMessage(managerMessages.deleteTermTitle, { term })
@@ -119,15 +106,14 @@ const StatementBatchBar = ({
                 termCount: statementCount(ideas.length),
               })
         }
-        explanation={
-          isSingle
-            ? formatMessage(managerMessages.deleteTermExplanation, { term })
-            : formatMessage(managerMessages.deleteTermsExplanation, { terms })
-        }
-        onClose={() => setDeleteModalOpen(false)}
+        confirmLabel={formatMessage(warningModalMessages.confirm)}
         onConfirm={deleteAll}
-      />
-    </Box>
+      >
+        {isSingle
+          ? formatMessage(managerMessages.deleteTermExplanation, { term })
+          : formatMessage(managerMessages.deleteTermsExplanation, { terms })}
+      </AlertDialog>
+    </>
   );
 };
 

@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import AlertDialog from 'design-system/AlertDialog';
 
 import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
-import Modal from 'components/UI/Modal';
-
 import { useIntl } from 'utils/cl-intl';
+import 'design-system/tokens.css';
 
 interface Props {
   opened: boolean;
@@ -18,33 +17,17 @@ const DiscardChangesModal = ({ opened, onKeepEditing, onDiscard }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Modal
-      variant="bo"
-      opened={opened}
-      close={onKeepEditing}
-      width={540}
-      header={formatMessage(messages.unsavedChangesTitle)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
-          <Button
-            buttonStyle="bo-secondary"
-            width="auto"
-            onClick={onKeepEditing}
-          >
-            {formatMessage(messages.unsavedChangesCancel)}
-          </Button>
-          <Button buttonStyle="bo-delete" width="auto" onClick={onDiscard}>
-            {formatMessage(messages.discardChanges)}
-          </Button>
-        </Box>
-      }
+    <AlertDialog
+      isOpen={opened}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onKeepEditing();
+      }}
+      title={formatMessage(messages.unsavedChangesTitle)}
+      confirmLabel={formatMessage(messages.discardChanges)}
+      onConfirm={onDiscard}
     >
-      <Box p="24px">
-        <Text variant="boHelper" m="0px">
-          {formatMessage(messages.unsavedChangesDescription2)}
-        </Text>
-      </Box>
-    </Modal>
+      {formatMessage(messages.unsavedChangesDescription2)}
+    </AlertDialog>
   );
 };
 

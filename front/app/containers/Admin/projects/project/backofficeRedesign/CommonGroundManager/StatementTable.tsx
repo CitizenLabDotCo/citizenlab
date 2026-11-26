@@ -1,26 +1,25 @@
 import React from 'react';
 
-import {
-  Box,
-  Checkbox,
-  colors,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-} from '@citizenlab/cl2-component-library';
+import Pagination from 'design-system/Pagination';
+import Table, {
+  ColumnHeader,
+  TableBody,
+  TableHeader,
+} from 'design-system/Table';
 
 import { CommonGroundResultItem } from 'api/common_ground/types';
 import { IIdeaData } from 'api/ideas/types';
 
 import postManagerMessages from 'components/admin/PostManager/messages';
-import Pagination from 'components/Pagination';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './CommonGroundManager.module.css';
 import messages from './messages';
 import StatementRow from './StatementRow';
+import 'design-system/tokens.css';
+
+const COLUMN_WIDTHS = { assignee: 88, likes: 56, agree: 72, reactions: 88 };
 
 interface Props {
   ideas: IIdeaData[];
@@ -31,8 +30,7 @@ interface Props {
   dimmed: boolean;
   currentPage: number;
   lastPage: number;
-  onToggleSelect: (idea: IIdeaData) => void;
-  onToggleSelectPage: () => void;
+  onSelectOnPage: (ideaIds: Set<string>) => void;
   onOpen: (ideaId: string) => void;
   onChangePage: (page: number) => void;
 }
@@ -46,65 +44,80 @@ const StatementTable = ({
   dimmed,
   currentPage,
   lastPage,
-  onToggleSelect,
-  onToggleSelectPage,
+  onSelectOnPage,
   onOpen,
   onChangePage,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const selectedOnPage = ideas.filter((idea) => selectedIds.has(idea.id));
-  const allSelected = selectedOnPage.length === ideas.length;
+  const pageIds = ideas.map((idea) => idea.id);
+
+  const column = (id: keyof typeof COLUMN_WIDTHS, label: string) => (
+    <ColumnHeader
+      id={id}
+      defaultWidth={COLUMN_WIDTHS[id]}
+      minWidth={COLUMN_WIDTHS[id]}
+      showChevron={false}
+      align={id === 'assignee' ? 'start' : 'end'}
+    >
+      {label}
+    </ColumnHeader>
+  );
 
   return (
-    <Box opacity={dimmed ? 0.4 : 1} overflowX="auto">
-      <Table>
-        <Thead>
-          <Tr background={colors.white}>
-            <Th width="40px" pr="0">
-              <Checkbox
-                size="18px"
-                checked={allSelected}
-                indeterminate={!allSelected && selectedOnPage.length > 0}
-                onChange={onToggleSelectPage}
-                ariaLabel={formatMessage(messages.selectAllOnPage)}
-              />
-            </Th>
-            <Th>{formatMessage(messages.statementColumn)}</Th>
-            {showModeration && (
-              <>
-                <Th>{formatMessage(postManagerMessages.assignee)}</Th>
-                <Th>{formatMessage(postManagerMessages.likes)}</Th>
-              </>
-            )}
-            <Th>{formatMessage(messages.agreeColumn)}</Th>
-            <Th>{formatMessage(messages.reactions)}</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+    <div className={dimmed ? styles.dimmed : undefined}>
+      <Table
+        aria-label={formatMessage(messages.statements)}
+        keyboardNavigationBehavior="tab"
+        selection={{
+          selectedKeys: pageIds.filter((id) => selectedIds.has(id)),
+          onSelectionChange: (keys) =>
+            onSelectOnPage(
+              new Set(keys === 'all' ? pageIds : [...keys].map(String))
+            ),
+          selectAll: formatMessage(messages.selectAllOnPage),
+          selectRow: formatMessage(messages.selectStatement),
+        }}
+      >
+        <TableHeader>
+          <ColumnHeader
+            id="title"
+            isRowHeader
+            defaultWidth="1fr"
+            minWidth={200}
+            showChevron={false}
+          >
+            {formatMessage(messages.statementColumn)}
+          </ColumnHeader>
+          {showModeration &&
+            column('assignee', formatMessage(postManagerMessages.assignee))}
+          {showModeration &&
+            column('likes', formatMessage(postManagerMessages.likes))}
+          {column('agree', formatMessage(messages.agreeColumn))}
+          {column('reactions', formatMessage(messages.reactions))}
+        </TableHeader>
+        <TableBody>
           {ideas.map((idea) => (
             <StatementRow
               key={idea.id}
               idea={idea}
               showModeration={showModeration}
               result={resultsById.get(idea.id)}
-              selected={selectedIds.has(idea.id)}
               active={idea.id === openId}
-              onToggleSelect={() => onToggleSelect(idea)}
               onOpen={() => onOpen(idea.id)}
             />
           ))}
-        </Tbody>
+        </TableBody>
       </Table>
       {lastPage > 1 && (
-        <Box display="flex" justifyContent="center" py="16px">
+        <div className={styles.pagination}>
           <Pagination
-            currentPage={currentPage}
-            totalPages={lastPage}
-            loadPage={onChangePage}
+            page={currentPage}
+            pageCount={lastPage}
+            onChange={onChangePage}
           />
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

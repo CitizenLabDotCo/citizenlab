@@ -1,0 +1,54 @@
+.workspace {
+  display: flex;
+  gap: var(--gv-space-8);
+  height: 100%;
+  background: var(--gv-surface-canvas);
+}
+
+/* Fits the 520px settings column, its padding and a scrollbar. */
+.settingsPanel {
+  flex: 0 0 580px;
+  overflow-y: auto;
+  padding: var(--gv-space-16) var(--gv-space-18);
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-panel);
+}
+
+.settingsHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  margin-bottom: var(--gv-space-8);
+}
+
+.settingsTitle {
+  composes: title from '../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.settingsColumn {
+  flex: 0 0 520px;
+  width: 520px;
+}
+
+.mapPanel {
+  flex-grow: 1;
+  padding: var(--gv-space-16);
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-control-subtle);
+}
+
+.mapFrame {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-12);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+}

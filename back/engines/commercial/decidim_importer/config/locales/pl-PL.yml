@@ -9,3 +9,5 @@ pl-PL:
     debate_information_updates: Aktualizacje informacji
     debate_instructions: Instrukcje
     documents_to_consult: Dokumenty konsultacyjne
+    private_space_members: 'Członkowie: %{space}'
+    untitled_folder: Folder bez tytułu

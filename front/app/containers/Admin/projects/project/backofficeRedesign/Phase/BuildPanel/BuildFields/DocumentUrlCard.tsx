@@ -1,18 +1,18 @@
 import React from 'react';
 
-import { Box, Input, Text, colors } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import { RequiredMarker } from 'design-system/Field';
+import Link from 'design-system/Link';
+import TextField from 'design-system/TextField';
 
 import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
 
-import formBuilderMessages from 'components/FormBuilder/components/messages';
-import Error from 'components/UI/Error';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import PanelField from '../PanelField';
-
-const DOT_SIZE = '6px';
 
 interface Props {
   value: string | null | undefined;
@@ -22,7 +22,9 @@ interface Props {
 
 const DocumentUrlCard = ({ value, errors, onChange }: Props) => {
   const { formatMessage } = useIntl();
+  const apiErrorText = useApiErrorText();
   const apiErrors = errors?.document_annotation_embed_url;
+  const errorText = apiErrorText(apiErrors);
   const label = formatMessage(configMessages.konveioDocumentAnnotationEmbedUrl);
 
   return (
@@ -33,44 +35,27 @@ const DocumentUrlCard = ({ value, errors, onChange }: Props) => {
           {...configMessages.konveioSupport}
           values={{
             supportArticleLink: (
-              <a
+              <Link
                 href={formatMessage(configMessages.konveioSupportPageURL2)}
                 target="_blank"
                 rel="noreferrer"
               >
                 {formatMessage(configMessages.konveioSupportArticle)}
-              </a>
+              </Link>
             ),
           }}
         />
       }
-      action={
-        (!value || apiErrors) && (
-          <Box display="flex" alignItems="center" gap="8px" mr="6px">
-            <Box
-              width={DOT_SIZE}
-              height={DOT_SIZE}
-              borderRadius="50%"
-              background={colors.coolGrey500}
-            />
-            <Text as="span" fontSize="xs" color="coolGrey500" m="0">
-              {formatMessage(formBuilderMessages.required)}
-            </Text>
-          </Box>
-        )
-      }
+      action={(!value || apiErrors) && <RequiredMarker />}
     >
-      <Box>
-        <Input
-          type="text"
-          variant="bo"
-          ariaLabel={label}
-          placeholder="https://"
-          value={value}
-          onChange={onChange}
-        />
-        <Error showBackground={false} showIcon={false} apiErrors={apiErrors} />
-      </Box>
+      <TextField
+        aria-label={label}
+        placeholder="https://"
+        value={value ?? ''}
+        isInvalid={!!errorText}
+        errorMessage={errorText}
+        onChange={onChange}
+      />
     </PanelField>
   );
 };

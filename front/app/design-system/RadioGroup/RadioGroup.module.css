@@ -1,0 +1,75 @@
+.options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gv-space-12);
+}
+
+.radio {
+  composes: body from '../typography.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-10);
+  color: var(--gv-text-body);
+  cursor: pointer;
+}
+
+.radio[data-disabled],
+.withReason {
+  opacity: var(--gv-opacity-disabled);
+  cursor: default;
+}
+
+/* 18 px ring with a 1.5 px border: both off-scale, kept as drawn. */
+.indicator {
+  composes: ringOutside from '../focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--gv-border-control-hovered);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-panel);
+  transition-property: background-color, border-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.dot {
+  display: none;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-brand-strong);
+  transition: background-color var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+.radio[data-hovered]:not(.withReason) .indicator {
+  border-color: var(--gv-text-primary);
+}
+
+.radio[data-pressed]:not(.withReason) .indicator {
+  background: var(--gv-surface-pressed);
+  border-color: var(--gv-text-primary);
+}
+
+.radio[data-selected] .indicator {
+  background: var(--gv-surface-panel);
+  border-color: var(--gv-surface-brand-strong);
+}
+
+.radio[data-selected] .dot {
+  display: block;
+}
+
+.radio[data-selected][data-pressed]:not(.withReason) .indicator {
+  border-color: var(--gv-surface-brand-strong-pressed);
+}
+
+.radio[data-selected][data-pressed]:not(.withReason) .dot {
+  background: var(--gv-surface-brand-strong-pressed);
+}

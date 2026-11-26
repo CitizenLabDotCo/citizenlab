@@ -1,0 +1,5 @@
+/* The app's global reset sets `svg { fill: currentcolor }`; the icons are drawn with strokes. */
+.icon {
+  flex-shrink: 0;
+  fill: none;
+}

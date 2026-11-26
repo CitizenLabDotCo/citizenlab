@@ -1,8 +1,11 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useRef, useState } from 'react';
 
 import { Tooltip } from '@citizenlab/cl2-component-library';
 import flatten from 'geojson-flatten';
 import styled from 'styled-components';
+
+import Banner from 'design-system/Banner';
+import DSButton from 'design-system/Button';
 
 import { IMapConfig } from 'api/map_config/types';
 import useAddMapLayer from 'api/map_layers/useAddMapLayer';
@@ -19,6 +22,8 @@ import { useParams } from 'utils/router';
 import { getUnnamedLayerTitleMultiloc } from '../../../../utils/mapUtils/map';
 import messages from '../messages';
 import { getLayerType } from '../utils';
+
+import styles from './DataImportOptions.module.css';
 
 const Container = styled.div``;
 
@@ -60,11 +65,12 @@ const fileAccept = [
 interface Props {
   mapConfig: IMapConfig;
   className?: string;
-  variant?: 'default' | 'bo';
+  variant?: 'default' | 'panel';
 }
 
 const GeoJsonImportButton = memo<Props>(({ mapConfig, className, variant }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { projectId } = useParams({ strict: false }) as {
     projectId: string;
@@ -123,6 +129,43 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className, variant }) => {
     };
   };
 
+  if (variant === 'panel') {
+    return (
+      <div className={className}>
+        <input
+          ref={fileInputRef}
+          className={styles.fileInput}
+          id="file-attachment-uploader"
+          onChange={handleGeoJsonImport}
+          type="file"
+          accept={fileAccept.join(',')}
+          tabIndex={-1}
+          aria-hidden
+        />
+        <DSButton
+          icon="upload-16"
+          onPress={() => fileInputRef.current?.click()}
+          isDisabled={geoJsonImportDisabled}
+          disabledReason={
+            geoJsonImportDisabled
+              ? formatMessage(messages.geojsonRemoveEsriTooltip)
+              : undefined
+          }
+          isPending={isLoading}
+        >
+          <FormattedMessage {...messages.import} />
+        </DSButton>
+        {importError && (
+          <div className={styles.importError}>
+            <Banner tone="error">
+              <FormattedMessage {...messages.importError} />
+            </Banner>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <Container className={className || ''}>
       <Input
@@ -145,9 +188,7 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className, variant }) => {
           <div>
             <StyledButton
               icon="upload-file"
-              buttonStyle={
-                variant === 'bo' ? 'bo-secondary' : 'secondary-outlined'
-              }
+              buttonStyle="secondary-outlined"
               disabled={geoJsonImportDisabled}
               processing={isLoading}
             >

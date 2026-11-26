@@ -9,3 +9,5 @@ hr-HR:
     debate_information_updates: Ažuriranja informacija
     debate_instructions: Upute
     documents_to_consult: Dokumenti savjetovanja
+    private_space_members: 'Članovi: %{space}'
+    untitled_folder: Neimenovana mapa

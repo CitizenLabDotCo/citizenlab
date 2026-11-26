@@ -16,6 +16,8 @@ module ActiveJobQueExtension
   def self.included(base)
     base.class_eval do
       class_attribute :should_retry
+      # Overrides +Que::Job.maximum_retry_count+ for this job class when set.
+      class_attribute :max_retry_count
 
       class << self
         # rubocop:disable Style/OptionalBooleanParameter
@@ -29,6 +31,14 @@ module ActiveJobQueExtension
 
   def handle_error(error)
     self.class.should_retry ? super : expire
+  end
+
+  # Que resolves its settings on its job wrapper class, which all ActiveJob jobs share, so a job
+  # class can only have its own retry limit through this override.
+  def resolve_que_setting(setting, *)
+    return self.class.max_retry_count if setting == :maximum_retry_count && self.class.max_retry_count
+
+    super
   end
 
   def destroy_in(delay)

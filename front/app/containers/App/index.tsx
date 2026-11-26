@@ -138,9 +138,11 @@ const App = ({ children }: Props) => {
     let timeoutId: number | undefined;
 
     const handleFocus = (e: FocusEvent) => {
-      const target = e.target as HTMLElement;
       // :focus-visible for only keyboard focus
-      if (!target.matches(':focus-visible')) return;
+      const target = e.target;
+      if (!(target instanceof Element) || !target.matches(':focus-visible')) {
+        return;
+      }
       clearTimeout(timeoutId);
       timeoutId = window.setTimeout(() => {
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -424,7 +426,8 @@ const App = ({ children }: Props) => {
               <Authentication />
             </ErrorBoundary>
             <ErrorBoundary>
-              <div id="modal-portal" />
+              {/* Keeps these modals usable above design-system modals. */}
+              <div id="modal-portal" data-react-aria-top-layer />
             </ErrorBoundary>
             {showFrontOfficeNavbar() && (
               <ErrorBoundary>

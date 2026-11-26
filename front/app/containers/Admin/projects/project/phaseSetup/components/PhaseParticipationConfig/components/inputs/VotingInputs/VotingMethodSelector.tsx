@@ -7,6 +7,8 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
+import RadioGroup from 'design-system/RadioGroup';
+
 import { VotingMethod } from 'api/phases/types';
 
 import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
@@ -19,6 +21,7 @@ import BudgetingIcon from './CardIcons/BudgetingIcon';
 import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 const VOTING_METHODS = [
   {
@@ -54,19 +57,24 @@ const VotingMethodSelector = ({
 
   if (layout === 'panel') {
     return (
-      <Box display="flex" flexDirection="column" gap="20px">
+      <RadioGroup
+        aria-label={formatMessage(messages.votingMethodSelectorTitle)}
+        name="voting_method"
+        value={voting_method ?? null}
+        onChange={(value) => {
+          const option = VOTING_METHODS.find(({ method }) => method === value);
+          if (option) handleVotingMethodOnChange(option.method);
+        }}
+      >
         {VOTING_METHODS.map(({ method, title, subtitle }) => (
           <ChoiceRadio
             key={method}
-            name="voting_method"
             value={method}
-            currentValue={voting_method}
             title={formatMessage(title)}
             description={formatMessage(subtitle)}
-            onChange={() => handleVotingMethodOnChange(method)}
           />
         ))}
-      </Box>
+      </RadioGroup>
     );
   }
 

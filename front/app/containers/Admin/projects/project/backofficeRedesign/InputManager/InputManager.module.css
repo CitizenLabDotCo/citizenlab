@@ -1,0 +1,20 @@
+.list {
+  position: relative;
+}
+
+.loading {
+  composes: loading from '../_shared/listManager.module.css';
+}
+
+.changing {
+  composes: dimmed from '../_shared/listManager.module.css';
+}
+
+.changingSpinner {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+}

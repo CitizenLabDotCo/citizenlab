@@ -1,0 +1,32 @@
+/*
+ * The 24 px ghost Icon button (Actions/Icon button, Style=Ghost, Tone=Default,
+ * Size=24) used for the month arrows and the pickers' calendar button.
+ */
+.button {
+  composes: button from '../reset.module.css';
+  composes: ringOutside from '../focus.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-24);
+  height: var(--gv-size-24);
+  border-radius: var(--gv-radius-8);
+  color: var(--gv-icon-tertiary);
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.button[data-hovered],
+.button[data-pressed] {
+  background: var(--gv-surface-pressed);
+  color: var(--gv-icon-primary);
+}
+
+.button[data-disabled] {
+  opacity: var(--gv-opacity-disabled);
+  cursor: default;
+}

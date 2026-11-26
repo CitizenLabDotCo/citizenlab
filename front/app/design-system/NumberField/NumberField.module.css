@@ -1,0 +1,21 @@
+/* 120 wide as drawn: the box holds two 24 px steps and a short number. */
+.group {
+  composes: input from '../TextField/input.module.css';
+  width: 120px;
+  padding: 0 var(--gv-space-4);
+  gap: var(--gv-space-4);
+}
+
+.value {
+  composes: innerInput from '../TextField/input.module.css';
+  text-align: center;
+}
+
+/* The steps are Ghost · Default · 24 Icon buttons. */
+.step {
+  composes: iconButton ghost default size24 from '../IconButton/IconButton.module.css';
+}
+
+.stepIcon {
+  composes: icon from '../IconButton/IconButton.module.css';
+}

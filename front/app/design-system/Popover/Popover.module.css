@@ -1,0 +1,14 @@
+.width320 {
+  width: 320px;
+}
+
+.dialog {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+  max-height: inherit;
+  padding: var(--gv-space-16);
+  overflow: auto;
+  outline: none;
+}

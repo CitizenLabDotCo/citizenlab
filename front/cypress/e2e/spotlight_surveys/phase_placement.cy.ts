@@ -57,11 +57,21 @@ describe('Moving a survey phase on and off the timeline', () => {
     cy.apiRemoveProject(projectId);
   });
 
+  // The old flow's button is aria-disabled, the redesign's natively disabled.
+  const isConfirmDisabled = ($button: JQuery<HTMLElement>) =>
+    $button.is(':disabled') || $button.attr('aria-disabled') === 'true';
+
+  const confirmButtonShouldBeDisabled = () =>
+    cy.dataCy('e2e-phase-placement-confirm').should(($button) => {
+      expect(isConfirmDisabled($button)).to.eq(true);
+    });
+
   // The confirm button stays disabled until the timeline phases have loaded.
   const confirmMove = () => {
     cy.dataCy('e2e-phase-placement-confirm')
-      .find('button')
-      .should('have.attr', 'aria-disabled', 'false')
+      .should(($button) => {
+        expect(isConfirmDisabled($button)).to.eq(false);
+      })
       .click();
   };
 
@@ -153,9 +163,7 @@ describe('Moving a survey phase on and off the timeline', () => {
 
         cy.contains('label', 'Appears on the timeline').click();
         cy.contains('Change the dates').should('be.visible');
-        cy.dataCy('e2e-phase-placement-confirm')
-          .find('button')
-          .should('have.attr', 'aria-disabled', 'true');
+        confirmButtonShouldBeDisabled();
         cy.get('[role="dialog"]')
           .find('.e2e-date-phase-picker-input')
           .should('be.visible');
@@ -226,15 +234,14 @@ describe('Moving a survey phase on and off the timeline', () => {
         cy.contains(
           'Could not load the information needed to move this survey. Try again.'
         ).should('be.visible');
-        cy.dataCy('e2e-phase-placement-confirm')
-          .find('button')
-          .should('have.attr', 'aria-disabled', 'true');
+        confirmButtonShouldBeDisabled();
         cy.then(() => {
           failLayoutRequest = false;
         });
         cy.get('[role="dialog"]')
           .contains('button', 'Retry')
-          .should('have.attr', 'aria-disabled', 'false')
+          // Pending (and ignoring presses) while a load is still running.
+          .should(($button) => expect($button).not.to.have.attr('data-pending'))
           .click();
         cy.wait('@retriedLayout').its('response.statusCode').should('eq', 200);
         confirmMove();

@@ -5,7 +5,10 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { getDraftValues, useOptionalSetupDraft } from './SetupDraftContext';
+import {
+  getProjectDraftValues,
+  useOptionalSetupDraft,
+} from './SetupDraftContext';
 
 export interface SetupReadiness {
   general: boolean;
@@ -21,8 +24,13 @@ const useSetupReadiness = (
 ): { readiness: SetupReadiness; isLoading: boolean } => {
   const localize = useLocalize();
   const draft = useOptionalSetupDraft();
-  const changes = draft?.changes ?? {};
   const imageChanges = draft?.imageChanges ?? {};
+  const {
+    area_ids: areaIds,
+    include_all_areas: includeAllAreas,
+    global_topic_ids: topicIds,
+    description_preview_multiloc: cardDescription,
+  } = draft?.values ?? getProjectDraftValues(project);
   const { data: phases, isLoading: phasesLoading } = usePhases(project.id);
   const { data: images, isLoading: imagesLoading } = useProjectImages(
     project.id
@@ -39,15 +47,7 @@ const useSetupReadiness = (
     imageChanges.image !== undefined
       ? imageChanges.image !== null
       : (images?.data.length ?? 0) > 0;
-  const hasCardDescription =
-    localize(
-      changes.description_preview_multiloc ??
-        attributes.description_preview_multiloc
-    ).trim().length > 0;
-  const { areaIds, includeAllAreas, topicIds } = getDraftValues(
-    project,
-    changes
-  );
+  const hasCardDescription = localize(cardDescription).trim().length > 0;
 
   const platformHasTopics = platformTopics
     ? platformTopics.data.length > 0

@@ -138,6 +138,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.demographicsAndAudience',
     defaultMessage: 'Demographics & Audience',
   },
+  demographicsAndAudienceCard: {
+    id: 'app.containers.Admin.projects.project.insights.demographicsAndAudienceCard',
+    defaultMessage: 'Demographics and audience',
+  },
   noDemographicData: {
     id: 'app.containers.Admin.projects.project.insights.noDemographicData',
     defaultMessage: 'No demographic data available for this phase.',
@@ -319,10 +323,5 @@ export default defineMessages({
   downloadWord: {
     id: 'app.containers.Admin.projects.project.insights.downloadWord',
     defaultMessage: 'Download as Word',
-  },
-  konveioParticipationDataNotice: {
-    id: 'app.containers.Admin.projects.project.insights.konveioParticipationDataNotice',
-    defaultMessage:
-      'Konveio keeps the participation data for this document on its side, so only visitor numbers are available here. After the phase closes, visit your Konveio dashboard for a summary of the feedback and to download the raw participation data.',
   },
 });

@@ -51,7 +51,7 @@ describe('Redesigned event Manage view', () => {
     cy.visit(
       `admin/projects/${projectId}/events/${eventId}?project_backoffice_redesign`
     );
-    cy.contains('button', /^Manage$/).click();
+    cy.contains('[role="tab"]', /^Manage$/).click();
   };
 
   it('lists, searches, filters, sorts, paginates and exports registrants', () => {
@@ -96,6 +96,7 @@ describe('Redesigned event Manage view', () => {
       );
       cy.contains('button', /^1$/).click();
       cy.contains('th', 'Registered').find('button').click();
+      cy.contains('[role="menuitemradio"]', 'Earliest first').click();
       cy.get('[data-cy^="e2e-event-registrant-"]')
         .first()
         .should(
@@ -104,7 +105,7 @@ describe('Redesigned event Manage view', () => {
           `e2e-event-registrant-${oldestAttendanceId}`
         );
       cy.get('[aria-label="Search registrants"]').click();
-      cy.get('[data-cy="e2e-input-manager-search"]').type(email);
+      cy.get('[data-cy="e2e-input-manager-search"] input').type(email);
       cy.contains('1 registrant', { matchCase: false }).should('be.visible');
       cy.get('[data-cy^="e2e-event-registrant-"]')
         .should('have.length', 1)
@@ -112,7 +113,9 @@ describe('Redesigned event Manage view', () => {
       cy.contains('4 of 25').should('be.visible');
       cy.get('[aria-label="Filter"]').click();
       cy.get('[data-cy="e2e-manage-filter-signedUp"]').click();
-      cy.contains('button', /^Earlier$/).click();
+      cy.get('[role="menuitemradio"]')
+        .contains(/^Earlier$/)
+        .click();
       cy.contains('No registrants match these filters').should('be.visible');
       cy.contains('button', 'Export registrants').should('be.visible');
       cy.get('body').type('{esc}');
@@ -133,10 +136,10 @@ describe('Redesigned event Manage view', () => {
       `admin/projects/${projectId}/events/new?project_backoffice_redesign`
     );
     cy.get('#event-title').type('Community walk');
-    cy.contains('button', /^Manage$/).click();
+    cy.contains('[role="tab"]', /^Manage$/).click();
     cy.contains('No registrants yet').should('be.visible');
     cy.contains('button', 'Export registrants').should('not.exist');
-    cy.contains('button', /^Build$/).click();
+    cy.contains('[role="tab"]', /^Build$/).click();
     cy.get('#event-title').should('have.value', 'Community walk');
   });
 

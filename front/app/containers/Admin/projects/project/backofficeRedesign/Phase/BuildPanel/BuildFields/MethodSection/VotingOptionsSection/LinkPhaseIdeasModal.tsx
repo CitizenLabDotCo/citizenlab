@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Spinner, Text } from '@citizenlab/cl2-component-library';
+import Modal from 'design-system/Modal';
+import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import useIdeas from 'api/ideas/useIdeas';
 import usePhase from 'api/phases/usePhase';
 
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
-import PhaseFilter from 'components/UI/PhaseFilter';
-
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
+import PhaseSelect from '../PhaseSelect';
 import { LinkedIdea } from '../useStagedInputs';
 
 import messages from './messages';
+import styles from './VotingOptionsSection.module.css';
 
 interface Props {
   projectId: string;
@@ -68,51 +69,46 @@ const LinkPhaseIdeasModal = ({
 
   return (
     <Modal
-      opened
-      close={onClose}
-      width={MEDIUM_MODAL_WIDTH}
-      variant="bo"
-      header={formatMessage(messages.importFromPreviousPhase)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-secondary" onClick={onClose}>
-            {formatMessage(messages.linkCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            disabled={!ideas?.length}
-            onClick={link}
-          >
-            {formatMessage(messages.linkInputs)}
-          </Button>
-        </Box>
-      }
+      isOpen
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      size={560}
+      title={formatMessage(messages.importFromPreviousPhase)}
+      secondaryAction={{
+        label: formatMessage(messages.linkCancel),
+        onPress: onClose,
+      }}
+      primaryAction={{
+        label: formatMessage(messages.linkInputs),
+        isDisabled: !ideas?.length,
+        onPress: link,
+      }}
     >
-      <Box p="24px" display="flex" flexDirection="column" gap="16px">
-        <Text variant="boLabel" m="0">
+      <div className={styles.body}>
+        <Text variant="ui" tone="secondary">
           {formatMessage(messages.linkPhaseDescription)}
         </Text>
-        <PhaseFilter
+        <PhaseSelect
           label={formatMessage(messages.linkPhaseLabel)}
           projectId={projectId}
           phaseId={fromPhaseId}
           participationMethods={['ideation', 'voting', 'proposals']}
-          customPhaseFilter={(phases) =>
+          filterPhases={(phases) =>
             phases.filter(
               ({ id, attributes }) =>
                 id !== phaseId && !!startAt && attributes.start_at < startAt
             )
           }
-          onPhaseFilter={({ value }) => setFromPhaseId(value)}
-          variant="bo"
+          onChange={setFromPhaseId}
         />
-        {loading && <Spinner size="16px" />}
+        {loading && <Spinner />}
         {ideas && (
-          <Text variant="boHelper" m="0">
+          <Text variant="ui" tone="secondary">
             {formatMessage(messages.nInputsToLink, { count: ideas.length })}
           </Text>
         )}
-      </Box>
+      </div>
     </Modal>
   );
 };

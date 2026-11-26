@@ -1640,6 +1640,19 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "userjot": {
+        "type": "object",
+        "title": "UserJot feedback board",
+        "description": "An embedded UserJot board in the back office where admins can share, browse and upvote feedback on Go Vocal. Under development, not ready for customer use.",
+        "development": true,
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {

@@ -6,6 +6,8 @@ en:
     blog: Blog
     consultations: Consultations
     assemblies: Assemblies
+    untitled_folder: Untitled folder
+    private_space_members: 'Members: %{space}'
     debate_instructions: Instructions
     debate_information_updates: Information updates
     debate_conclusions: Conclusions

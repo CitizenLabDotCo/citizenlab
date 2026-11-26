@@ -1,0 +1,13 @@
+.inputTags {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+  padding: var(--gv-space-18);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  min-height: var(--gv-size-32);
+}

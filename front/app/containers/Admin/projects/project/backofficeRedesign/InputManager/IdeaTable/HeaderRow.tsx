@@ -1,22 +1,13 @@
 import React from 'react';
 
-import {
-  Checkbox,
-  colors,
-  Th,
-  Thead,
-  Tr,
-} from '@citizenlab/cl2-component-library';
+import { ColumnHeader, ColumnMenu, TableHeader } from 'design-system/Table';
 
 import { ideaSortValues, Sort } from 'api/ideas/types';
-
-import SortableHeaderCell from 'components/admin/PostManager/components/PostTable/header/SortableHeaderCell';
 
 import { useIntl } from 'utils/cl-intl';
 import { getSortDirection } from 'utils/paginationUtils';
 
 import { ColumnKey, COLUMNS } from '../columns';
-import messages from '../messages';
 import useInputTermLabels from '../useInputTermLabels';
 
 import ColumnsMenu from './ColumnsMenu';
@@ -27,10 +18,20 @@ interface Props {
   onChangeColumns: (columns: ColumnKey[]) => void;
   sort: Sort;
   onSort: (sort: Sort) => void;
-  allSelected: boolean;
-  someSelected: boolean;
-  onToggleSelectAll: () => void;
 }
+
+const COLUMN_TYPES: Partial<Record<ColumnKey, 'text' | 'date'>> = {
+  status: 'text',
+  assignee: 'text',
+  published: 'date',
+};
+
+// Today's table sized these columns to their content; the widths fit their longest values.
+const COLUMN_WIDTHS: Partial<Record<ColumnKey, number>> = {
+  status: 160,
+  tags: 200,
+};
+const COLUMN_WIDTH = 120;
 
 const HeaderRow = ({
   columns,
@@ -38,76 +39,75 @@ const HeaderRow = ({
   onChangeColumns,
   sort,
   onSort,
-  allSelected,
-  someSelected,
-  onToggleSelectAll,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { terms, capitalizedTerm } = useInputTermLabels();
-  const sortDirection = getSortDirection(sort);
+  const { capitalizedTerm } = useInputTermLabels();
+  const sortedAttribute = sort.replace(/^-/, '');
 
-  // A first click orders descending, a second click on the same column flips it.
-  const handleSort = (attribute: Sort) => () => {
-    const isSameAttribute = sort.replace(/^-/, '') === attribute;
-    const ascending = ideaSortValues.find((value) => value === `-${attribute}`);
+  const sortDirectionOf = (attribute: Sort) =>
+    sortedAttribute === attribute ? getSortDirection(sort) : undefined;
 
-    onSort(
-      isSameAttribute && sortDirection === 'descending' && ascending
-        ? ascending
-        : attribute
-    );
-  };
+  // A descending order is the plain attribute, an ascending one its "-" form.
+  const handleSort =
+    (attribute: Sort) => (direction: 'ascending' | 'descending') => {
+      const ascending = ideaSortValues.find(
+        (value) => value === `-${attribute}`
+      );
+      onSort(direction === 'ascending' && ascending ? ascending : attribute);
+    };
+
+  const hideColumn = (column: ColumnKey) => () =>
+    onChangeColumns(columns.filter((visible) => visible !== column));
 
   return (
-    <Thead>
-      <Tr background={colors.white}>
-        <Th width="40px" pr="0">
-          <Checkbox
-            size="18px"
-            checked={allSelected}
-            indeterminate={!allSelected && someSelected}
-            onChange={onToggleSelectAll}
-            ariaLabel={formatMessage(messages.selectAllOnPage, { terms })}
-          />
-        </Th>
-        <SortableHeaderCell
-          sortAttribute={sort}
-          sortAttributeName="title"
-          sortDirection={sortDirection}
-          onChange={handleSort('title')}
-        >
-          {capitalizedTerm}
-        </SortableHeaderCell>
-        {columns
-          .filter((column) => !COLUMNS[column].mark)
-          .map((column) => {
-            const { label, sort: columnSort } = COLUMNS[column];
+    <TableHeader
+      addColumn={
+        <ColumnsMenu
+          columns={columns}
+          availableColumns={availableColumns}
+          onChange={onChangeColumns}
+        />
+      }
+    >
+      <ColumnHeader
+        id="title"
+        isRowHeader
+        defaultWidth="1fr"
+        minWidth={200}
+        sortDirection={sortDirectionOf('title')}
+        menu={
+          <ColumnMenu columnType="text" onSortChange={handleSort('title')} />
+        }
+      >
+        {capitalizedTerm}
+      </ColumnHeader>
+      {columns
+        .filter((column) => !COLUMNS[column].mark)
+        .map((column) => {
+          const { label, sort: columnSort } = COLUMNS[column];
 
-            return columnSort ? (
-              <SortableHeaderCell
-                key={column}
-                sortAttribute={sort}
-                sortAttributeName={columnSort}
-                sortDirection={sortDirection}
-                onChange={handleSort(columnSort)}
-              >
-                {formatMessage(label)}
-              </SortableHeaderCell>
-            ) : (
-              <Th key={column} style={{ whiteSpace: 'nowrap' }}>
-                {formatMessage(label)}
-              </Th>
-            );
-          })}
-        <Th width="40px">
-          <ColumnsMenu
-            columns={columns}
-            availableColumns={availableColumns}
-            onChange={onChangeColumns}
-          />
-        </Th>
-      </Tr>
-    </Thead>
+          return (
+            <ColumnHeader
+              key={column}
+              id={column}
+              defaultWidth={COLUMN_WIDTHS[column] ?? COLUMN_WIDTH}
+              showChevron={!!columnSort}
+              sortDirection={columnSort && sortDirectionOf(columnSort)}
+              menu={
+                columnSort && (
+                  <ColumnMenu
+                    columnType={COLUMN_TYPES[column] ?? 'number'}
+                    onSortChange={handleSort(columnSort)}
+                    onHide={hideColumn(column)}
+                  />
+                )
+              }
+            >
+              {formatMessage(label)}
+            </ColumnHeader>
+          );
+        })}
+    </TableHeader>
   );
 };
 

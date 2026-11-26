@@ -1,17 +1,23 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useId, useRef } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { FieldError } from 'design-system/Field';
+import { ListBoxOption } from 'design-system/ListBox';
+import { DialogTrigger } from 'design-system/Popover';
+import TagGroup, { Tag, TagAdd } from 'design-system/TagGroup';
+import TagPicker from 'design-system/TagPicker';
+import { Key } from 'design-system/types';
 
 import useGroups from 'api/groups/useGroups';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Error from 'components/UI/Error';
-import PillPicker from 'components/UI/PillPicker';
-
 import { useIntl } from 'utils/cl-intl';
 
+import visibilityMessages from '../../visibilityOptions/messages';
+
 import messages from './messages';
+import styles from './NewProjectForm.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   groupIds: string[];
@@ -23,6 +29,7 @@ const GroupsPicker = ({ groupIds, showError, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: groups } = useGroups({});
+  const errorId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,22 +40,54 @@ const GroupsPicker = ({ groupIds, showError, onChange }: Props) => {
   }, []);
 
   const options = (groups?.data ?? []).map((group) => ({
-    value: group.id,
-    label: localize(group.attributes.title_multiloc),
+    id: group.id,
+    name: localize(group.attributes.title_multiloc),
   }));
+  const selectedOptions = options.filter((option) =>
+    groupIds.includes(option.id)
+  );
+  const chooseGroupsLabel = formatMessage(messages.chooseGroups);
+
+  const handleSelectionChange = (keys: Set<Key>) => {
+    onChange(
+      options.filter((option) => keys.has(option.id)).map(({ id }) => id)
+    );
+  };
 
   return (
-    <Box ref={containerRef} ml="24px" style={{ scrollMarginBottom: '24px' }}>
-      <PillPicker
-        options={options}
-        selected={groupIds}
-        onChange={onChange}
-        addLabel={formatMessage(messages.chooseGroups)}
-        searchPlaceholder={formatMessage(messages.searchGroups)}
-        noMatchLabel={formatMessage(messages.noGroupsMatch)}
-      />
-      {showError && <Error text={formatMessage(messages.groupsRequired)} />}
-    </Box>
+    <div ref={containerRef} className={styles.groupsPicker}>
+      <TagGroup
+        label={formatMessage(visibilityMessages.publishOpenGroups)}
+        items={selectedOptions}
+        onRemove={(keys) =>
+          onChange(groupIds.filter((groupId) => !keys.has(groupId)))
+        }
+        add={
+          <DialogTrigger>
+            <TagAdd aria-describedby={showError ? errorId : undefined}>
+              {chooseGroupsLabel}
+            </TagAdd>
+            <TagPicker
+              aria-label={chooseGroupsLabel}
+              items={options}
+              selectedKeys={new Set(groupIds)}
+              onSelectionChange={handleSelectionChange}
+            >
+              {(option) => (
+                <ListBoxOption id={option.id}>{option.name}</ListBoxOption>
+              )}
+            </TagPicker>
+          </DialogTrigger>
+        }
+      >
+        {(option) => <Tag id={option.id}>{option.name}</Tag>}
+      </TagGroup>
+      {showError && (
+        <FieldError id={errorId}>
+          {formatMessage(messages.groupsRequired)}
+        </FieldError>
+      )}
+    </div>
   );
 };
 

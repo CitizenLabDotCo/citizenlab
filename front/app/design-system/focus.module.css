@@ -1,0 +1,32 @@
+/*
+ * Focused always means focus-visible. Controls draw the ring 2 px outside;
+ * rows, tabs and cells draw it 2 px inside because they touch their neighbours.
+ * Never a shadow.
+ *
+ * The class is repeated in the ring rules so they outrank the opt-out from the app's
+ * global ring in tokens.css whatever order the stylesheets load in.
+ */
+
+.ringOutside,
+.ringOutside:focus-visible,
+.ringOutside:global(.focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+.ringOutside.ringOutside[data-focus-visible] {
+  outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
+  outline-offset: var(--gv-focus-ring-offset);
+}
+
+.ringInside,
+.ringInside:focus-visible,
+.ringInside:global(.focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+.ringInside.ringInside[data-focus-visible] {
+  outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
+  outline-offset: calc(-1 * var(--gv-border-width-focus));
+}

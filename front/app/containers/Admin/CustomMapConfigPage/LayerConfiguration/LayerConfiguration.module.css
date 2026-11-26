@@ -1,0 +1,81 @@
+.heading {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+  margin: 0 0 var(--gv-space-12);
+}
+
+.headingText {
+  composes: ui from '../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.popoverText {
+  composes: ui from '../../../../design-system/typography.module.css';
+  margin: 0;
+  color: var(--gv-text-primary);
+}
+
+.layersList {
+  /* 5px and 25px have no space token; kept as they are today. */
+  margin-top: 5px;
+  margin-bottom: 25px;
+}
+
+.listItem {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.layerIcon {
+  margin-right: var(--gv-space-10);
+}
+
+.layerTitle {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.layerTitleText {
+  composes: ui from '../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  /* 15px has no space token; kept as it is today. */
+  margin-left: 15px;
+}
+
+.spacer {
+  width: var(--gv-space-14);
+}
+
+/* Today's divider (#E0E0E0) matches border/control. */
+.webMap {
+  /* 36px has no space token; kept as it is today. */
+  margin-bottom: 36px;
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-control);
+}
+
+.webMapRow {
+  margin: 0 0 var(--gv-space-24) var(--gv-space-32);
+}
+
+.layerConfig {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+  /* 60px has no space token; kept as it is today. */
+  margin-bottom: 60px;
+}
+
+.layerConfigActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gv-space-8);
+}

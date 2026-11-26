@@ -7,6 +7,8 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
+import Banner from 'design-system/Banner';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -15,7 +17,9 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import styles from './AnonymousPostingToggle.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface AnonymousPostingToggleProps {
   allow_anonymous_participation: boolean | null | undefined;
@@ -43,7 +47,7 @@ const AnonymousPostingToggle = ({
 
   if (variant === 'panel') {
     return (
-      <Box display="flex" flexDirection="column" gap="8px">
+      <div className={styles.panel}>
         <SettingToggleRow
           title={formatMessage(messages.anonymousParticipation)}
           description={formatMessage(
@@ -57,8 +61,8 @@ const AnonymousPostingToggle = ({
             )
           }
         />
-        {disabledReason && <Warning variant="bo">{disabledReason}</Warning>}
-      </Box>
+        {disabledReason && <Banner tone="info">{disabledReason}</Banner>}
+      </div>
     );
   }
 

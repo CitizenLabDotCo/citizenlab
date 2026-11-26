@@ -216,3 +216,28 @@ export const trackFormPageView = (
     trackVirtualPageView(`${window.location.pathname}/${pageNum}`);
   }
 };
+
+// Number inputs yield strings, and forms that send their raw values (rather
+// than the values cast by the validation schema) need numbers for the API.
+// An emptied answer becomes null, which clears it: a missing key would keep
+// the stored value. Other strings are kept, so the API rejects them instead of
+// silently clearing the answer.
+export const castNumberAnswers = (
+  values: Record<string, unknown>,
+  fields: Pick<IFlatCustomField, 'key' | 'input_type'>[]
+) => {
+  const castValues = { ...values };
+
+  fields.forEach(({ key, input_type }) => {
+    const value = castValues[key];
+    if (input_type !== 'number' || typeof value !== 'string') return;
+
+    if (value.trim() === '') {
+      castValues[key] = null;
+    } else if (!Number.isNaN(Number(value))) {
+      castValues[key] = Number(value);
+    }
+  });
+
+  return castValues;
+};

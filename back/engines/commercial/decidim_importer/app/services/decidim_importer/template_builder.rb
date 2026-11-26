@@ -12,9 +12,12 @@ module DecidimImporter
     # registration order.
     MODEL_ORDER = %w[
       user
+      group
+      membership
       area
       project_folders/folder
       project
+      groups_project
       project_image
       static_page
       event

@@ -39,17 +39,11 @@ describe('SaveChangesButton', () => {
     rerender(renderButton(dirty, save));
 
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: 'Saved' })).toHaveAttribute(
-        'aria-disabled',
-        'true'
-      )
+      expect(screen.getByRole('button', { name: 'Saved' })).toBeDisabled()
     );
 
     rerender(renderButton(true, save));
-    expect(screen.getByRole('button', { name: 'Save' })).not.toHaveAttribute(
-      'aria-disabled',
-      'true'
-    );
+    expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled();
   });
 
   it('keeps the save label when saving fails', async () => {

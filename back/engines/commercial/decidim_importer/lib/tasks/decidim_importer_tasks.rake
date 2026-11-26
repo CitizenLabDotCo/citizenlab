@@ -71,6 +71,8 @@ namespace :decidim_importer do
       creator.skipped_meetings.each { |s| report_warn "  skipped meeting #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_meeting_attachments.each { |s| report_warn "  skipped meeting attachment #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_files.each { |s| report_warn "  skipped file #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_private_space_members.each { |s| report_warn "  skipped member #{s[:uid]}: #{s[:reason]}" }
+      creator.adjusted_records.each { |a| report_warn "  adjusted #{a[:uid]}: #{a[:note]}" }
       write_app_config_json(creator, path)
       write_url_mapping_csv(creator, path)
       # Evaluates the moderator assignments (and so populates `skipped_roles`), hence logged after.

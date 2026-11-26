@@ -47,8 +47,8 @@ export default defineMessages({
     defaultMessage: 'Proposals and participant data',
   },
   addDescription: {
-    id: 'app.containers.Admin.projects.project.addDescription',
-    defaultMessage: 'Add a description',
+    id: 'app.containers.Admin.projects.project.addDescription2',
+    defaultMessage: 'Add a short description',
   },
   attachments: {
     id: 'app.containers.Admin.projects.project.attachments',
@@ -59,8 +59,8 @@ export default defineMessages({
     defaultMessage: 'Options and participant data',
   },
   phaseTitle: {
-    id: 'app.containers.Admin.projects.project.phaseTitle',
-    defaultMessage: 'Phase title',
+    id: 'app.containers.Admin.projects.project.phaseTitle2',
+    defaultMessage: 'Add a title',
   },
   nativeSurveyOptionDescription: {
     id: 'app.containers.Admin.projects.project.nativeSurveyOptionDescription',
