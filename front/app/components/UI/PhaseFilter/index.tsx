@@ -25,7 +25,6 @@ interface Props {
   placementType?: PhasePlacementFilter;
   onPhaseFilter: (filter: IOption) => void;
   customPhaseFilter?: (phases: IPhaseData[]) => IPhaseData[];
-  variant?: 'bo';
 }
 
 const isCorrectPhase =
@@ -42,7 +41,6 @@ const PhaseFilter = ({
   placementType,
   onPhaseFilter,
   customPhaseFilter,
-  variant,
 }: Props) => {
   const { data: phases } = usePhases(projectId, placementType);
   const localize = useLocalize();
@@ -81,7 +79,7 @@ const PhaseFilter = ({
   if (phaseOptions.length === 0) {
     return (
       <Box mb="20px">
-        <Text color="red600" fontSize={variant === 'bo' ? 'xs' : undefined}>
+        <Text color="red600">
           <FormattedMessage {...messages.noAppropriatePhases} />
         </Text>
       </Box>
@@ -96,7 +94,6 @@ const PhaseFilter = ({
         onChange={onPhaseFilter}
         value={phaseId}
         options={phaseOptions}
-        variant={variant}
       />
     </Box>
   );

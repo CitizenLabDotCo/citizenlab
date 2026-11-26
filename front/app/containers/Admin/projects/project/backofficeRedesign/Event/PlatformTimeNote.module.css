@@ -1,0 +1,10 @@
+.note {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}

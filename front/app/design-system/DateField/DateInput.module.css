@@ -1,0 +1,59 @@
+/* The segmented input box shared by Time field and Date picker. */
+
+.field {
+  composes: field from '../Field/Field.module.css';
+}
+
+/* The Text field's box; segments sit flush, so no gap. */
+.frame {
+  composes: input from '../TextField/input.module.css';
+  gap: 0;
+}
+
+/* 8 on the left absorbs the 2 px segment padding. */
+.size36 {
+  composes: size36 from '../TextField/input.module.css';
+  padding: 0 var(--gv-space-10) 0 var(--gv-space-8);
+}
+
+.size32 {
+  composes: size32 from '../TextField/input.module.css';
+  padding: 0 var(--gv-space-10) 0 var(--gv-space-8);
+}
+
+/* The DateInput inside the Date picker's box, rather than being the box. */
+.segments {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.segment {
+  composes: ui from '../typography.module.css';
+  padding: 0 var(--gv-space-2);
+  border-radius: var(--gv-radius-4);
+  color: var(--gv-text-primary);
+  outline: none;
+  white-space: nowrap;
+}
+
+.segment[data-placeholder] {
+  color: var(--gv-text-placeholder);
+}
+
+.segment[data-type='literal'] {
+  padding: 0;
+}
+
+/* Separators read grey until a value is in. */
+.segment.empty {
+  color: var(--gv-text-placeholder);
+}
+
+.segment[data-focused] {
+  background: var(--gv-surface-selected);
+}
+
+.segment[data-disabled] {
+  color: var(--gv-text-disabled);
+}

@@ -1,0 +1,32 @@
+.editor {
+  --gv-rich-text-body-min-height: 74px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-10);
+  background: var(--gv-surface-panel);
+  transition: border-color var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+.editor:has(.body [contenteditable='true']:focus) {
+  border-color: var(--gv-border-focused);
+}
+
+.editor[data-invalid] {
+  border-color: var(--gv-border-danger);
+}
+
+/* Rounds the toolbar into the frame. Not overflow: hidden, which would clip the buttons' focus ring. */
+.editor > :first-child {
+  border-top-left-radius: calc(var(--gv-radius-10) - var(--gv-border-width-1));
+  border-top-right-radius: calc(var(--gv-radius-10) - var(--gv-border-width-1));
+}
+
+/* The body is drawn at a fixed 74 px; kept as the minimum so longer text can grow. */
+.body {
+  box-sizing: border-box;
+  min-height: var(--gv-rich-text-body-min-height);
+  padding: var(--gv-space-8) var(--gv-space-12);
+}

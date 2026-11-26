@@ -9,3 +9,5 @@ lv-LV:
     debate_information_updates: Informācijas atjauninājumi
     debate_instructions: Norādījumi
     documents_to_consult: Konsultāciju dokumenti
+    private_space_members: 'Dalībnieki: %{space}'
+    untitled_folder: Beznosaukuma mape

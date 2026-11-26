@@ -2,42 +2,20 @@ import React, { PureComponent, MouseEvent } from 'react';
 
 import { isEmpty, get } from 'lodash-es';
 import { rgba } from 'polished';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import { bo, colors, fontSizes, isRtl } from '../../utils/styleUtils';
+import { colors, fontSizes, isRtl } from '../../utils/styleUtils';
 import { MultilocFormValues, Locale } from '../../utils/typings';
 import Box from '../Box';
 
-type Variant = 'default' | 'bo';
-
-const Container = styled(Box)<{ variant: Variant }>`
+const Container = styled(Box)`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: ${({ variant }) => (variant === 'bo' ? '4px' : '6px')};
+  gap: 6px;
 `;
 
-const boButtonStyle = css`
-  height: 26px;
-  padding: 0 12px 0 10px;
-  border-radius: ${bo.borderRadius};
-  background: ${colors.grey100};
-  color: ${bo.colors.textHeading};
-  font-size: ${fontSizes.xs}px;
-  font-weight: 400;
-  line-height: 1;
-
-  &:not(.selected):hover {
-    color: ${bo.colors.textHeading};
-    background: ${colors.grey200};
-  }
-
-  &.selected {
-    background: ${colors.teal500};
-  }
-`;
-
-const StyledButton = styled.button<{ variant: Variant }>`
+const StyledButton = styled.button`
   color: ${colors.primary};
   font-size: ${fontSizes.s}px;
   display: flex;
@@ -68,17 +46,9 @@ const StyledButton = styled.button<{ variant: Variant }>`
     color: #fff;
     background: ${colors.primary};
   }
-
-  ${({ variant }) => variant === 'bo' && boButtonStyle}
 `;
 
-const boDotStyle = css`
-  flex: 0 0 6px;
-  width: 6px;
-  height: 6px;
-`;
-
-const Dot = styled.div<{ variant: Variant }>`
+const Dot = styled.div`
   flex: 0 0 9px;
   width: 9px;
   height: 9px;
@@ -94,8 +64,6 @@ const Dot = styled.div<{ variant: Variant }>`
   &.notEmpty {
     background: ${colors.success};
   }
-
-  ${({ variant }) => variant === 'bo' && boDotStyle}
 `;
 
 const isSingleMultilocObjectFilled = (
@@ -124,7 +92,6 @@ interface Props {
   selectedLocale: Locale;
   values?: MultilocFormValues | MultilocFormValues[];
   className?: string;
-  variant?: Variant;
 }
 
 class LocaleSwitcher extends PureComponent<Props> {
@@ -141,26 +108,19 @@ class LocaleSwitcher extends PureComponent<Props> {
     };
 
   render() {
-    const {
-      locales,
-      selectedLocale,
-      values,
-      className,
-      variant = 'default',
-    } = this.props;
+    const { locales, selectedLocale, values, className } = this.props;
 
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (locales && locales.length > 1) {
       return (
-        <Container className={className} variant={variant}>
+        <Container className={className}>
           {locales.map((locale, index) => (
             <StyledButton
               key={locale}
               onMouseDown={this.removeFocus}
               onClick={this.handleOnClick(locale)}
               type="button"
-              variant={variant}
               className={[
                 'e2e-localeswitcher',
                 locale,
@@ -170,7 +130,6 @@ class LocaleSwitcher extends PureComponent<Props> {
             >
               {values && (
                 <Dot
-                  variant={variant}
                   className={
                     isValueForLocaleFilled(locale, values)
                       ? 'notEmpty'

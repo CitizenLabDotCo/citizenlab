@@ -22,6 +22,8 @@ import useUserById from 'api/users/useUserById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import Error from 'components/UI/Error';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { useParams } from 'utils/router';
@@ -53,6 +55,12 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const { formatMessage } = useIntl();
   const [ideaFormDataValid, setIdeaFormDataValid] = useState(false);
   const [loadingUndoApproval, setLoadingUndoApproval] = useState(false);
+  const [failedSaveIdeaId, setFailedSaveIdeaId] = useState<string | null>(null);
+  // Kept apart from autosave failures: a successful draft save doesn't mean
+  // Approve, which runs the publication checks, would now succeed.
+  const [failedApproveIdeaId, setFailedApproveIdeaId] = useState<string | null>(
+    null
+  );
   const setError = useRef<UseFormSetError<FormValues>>();
 
   const { projectId, phaseId } = useParams({
@@ -63,7 +71,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     Record<string, UserFormData>
   >({});
   const [ideaFormStatePerIdea, setIdeaFormStatePerIdea] = useState<
-    Record<string, FormValues>
+    Partial<Record<string, FormValues>>
   >({});
 
   const { data: idea } = useIdeaById(ideaId ?? undefined);
@@ -99,15 +107,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   );
 
   const ideaFormData: FormValues | null =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    ideaId && ideaFormStatePerIdea[ideaId]
-      ? ideaFormStatePerIdea[ideaId]
-      : // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      idea
-      ? idea.data.attributes
-      : null;
+    (ideaId ? ideaFormStatePerIdea[ideaId] : undefined) ??
+    idea?.data.attributes ??
+    null;
 
   const setUserFormData = (
     getUserFormData: (oldData: UserFormData) => UserFormData
@@ -134,19 +136,46 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   // status, so sending it back could race with an Approve for another idea and
   // flip a just-approved idea back to 'draft'. Only Approve/Undo should ever
   // touch publication_status.
+  //
+  // Saves can settle out of order, so only the latest save of an idea may
+  // show or hide its error: an older one would report on outdated answers.
+  const latestAutoSavePerIdea = useRef<Partial<Record<string, number>>>({});
+  // A save can settle after switching to another input: its field errors
+  // must not land on that input's form.
+  const currentIdeaId = useRef(ideaId);
+  currentIdeaId.current = ideaId;
   const autoSave = useCallback(
     (id: string, formData: FormValues) => {
       const { publication_status: _omit, ...rest } = formData;
-      updateIdea({ id, requestBody: rest, skipRefetchCounts: true });
+      const saveNumber = (latestAutoSavePerIdea.current[id] ?? 0) + 1;
+      latestAutoSavePerIdea.current[id] = saveNumber;
+      const isLatestSave = () =>
+        latestAutoSavePerIdea.current[id] === saveNumber;
+
+      updateIdea({ id, requestBody: rest, skipRefetchCounts: true })
+        .then(() => {
+          if (!isLatestSave()) return;
+          setFailedSaveIdeaId((failedId) =>
+            failedId === id ? null : failedId
+          );
+        })
+        .catch((error) => {
+          if (!isLatestSave()) return;
+          setFailedSaveIdeaId(id);
+          if (currentIdeaId.current === id && setError.current) {
+            handleHookFormSubmissionError(error, setError.current);
+          }
+        });
     },
     [updateIdea]
   );
 
   useEffect(() => {
-    if (!ideaId || isApproved || !(ideaId in ideaFormStatePerIdea)) return;
+    const formData = ideaId ? ideaFormStatePerIdea[ideaId] : undefined;
+    if (!ideaId || isApproved || !formData) return;
 
     const timeout = setTimeout(() => {
-      autoSave(ideaId, ideaFormStatePerIdea[ideaId]);
+      autoSave(ideaId, formData);
     }, 500);
 
     return () => clearTimeout(timeout);
@@ -223,9 +252,17 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
         return clone;
       });
 
+      setFailedSaveIdeaId((failedId) =>
+        failedId === ideaId ? null : failedId
+      );
+      setFailedApproveIdeaId((failedId) =>
+        failedId === ideaId ? null : failedId
+      );
+
       const nextIdeaId = getNextIdeaId(ideaId, ideas);
       setIdeaId(nextIdeaId);
     } catch (error) {
+      setFailedApproveIdeaId(ideaId);
       setError.current &&
         handleHookFormSubmissionError(error, setError.current);
     }
@@ -267,6 +304,13 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       >
         {ideaMetadata && (
           <>
+            {!isApproved &&
+              (failedSaveIdeaId === ideaId ||
+                failedApproveIdeaId === ideaId) && (
+                <Box w="90%" mt="12px">
+                  <Error text={formatMessage(messages.saveFailed)} />
+                </Box>
+              )}
             {isApproved && (
               <Box
                 w="90%"

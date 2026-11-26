@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  Tooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import IconButton from 'design-system/IconButton';
+import Text from 'design-system/Text';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -24,8 +19,10 @@ import messages from './messages';
 import PanelDivider from './PanelDivider';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettingsModal from './ProjectSettingsModal';
+import styles from './ProjectSetupPanel.module.css';
 import SaveError from './SaveError';
 import { SetupDraftProvider } from './SetupDraftContext';
+import 'design-system/tokens.css';
 
 interface Props {
   project: IProjectData;
@@ -48,30 +45,17 @@ const ProjectSetupPanel = ({ project }: Props) => {
   return (
     // Discarding changes bumps the revision, which resets the draft.
     <SetupDraftProvider key={pageSave?.revision} project={project}>
-      <Box p="18px" display="flex" flexDirection="column" gap="16px">
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Box as="h2" m="0">
-            <Text as="span" variant="boSection" m="0">
-              {formatMessage(messages.projectSetupPanel)}
-            </Text>
-          </Box>
-          <Tooltip
-            content={formatMessage(messages.projectSettings)}
-            theme="dark"
-            placement="bottom"
-          >
-            <Button
-              buttonStyle="bo-text"
-              icon="settings"
-              width="36px"
-              padding="0"
-              bgHoverColor={colors.grey100}
-              iconHoverColor={colors.textPrimary}
-              ariaLabel={formatMessage(messages.projectSettings)}
-              onClick={openSettings}
-            />
-          </Tooltip>
-        </Box>
+      <div className={styles.panel}>
+        <div className={styles.header}>
+          <Text as="h2" variant="uiStrong" tone="primary">
+            {formatMessage(messages.projectSetupPanel)}
+          </Text>
+          <IconButton
+            icon="settings-16"
+            aria-label={formatMessage(messages.projectSettings)}
+            onPress={openSettings}
+          />
+        </div>
 
         <SaveError />
 
@@ -82,7 +66,7 @@ const ProjectSetupPanel = ({ project }: Props) => {
             onOpenSettings={openSettings}
           />
         ) : (
-          <Box>
+          <div>
             {stage === 'live' && <LivePanel project={project} />}
             {stage === 'archived' && <ArchivedPanel project={project} />}
             <PanelDivider />
@@ -91,7 +75,7 @@ const ProjectSetupPanel = ({ project }: Props) => {
               project={project}
               onOpenSettings={openSettings}
             />
-          </Box>
+          </div>
         )}
 
         <ProjectSettingsModal
@@ -99,7 +83,7 @@ const ProjectSetupPanel = ({ project }: Props) => {
           opened={settingsOpened}
           onClose={() => setSettingsOpened(false)}
         />
-      </Box>
+      </div>
     </SetupDraftProvider>
   );
 };

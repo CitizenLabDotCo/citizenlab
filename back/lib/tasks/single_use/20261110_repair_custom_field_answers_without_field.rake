@@ -8,7 +8,8 @@
 #
 # First pass: re-attach the answers of an input that moved, when exactly one project that existed
 # when the input was created has a question with the answer's key. Second pass: delete the
-# answers that are still without a field.
+# answers that are still without a field, except those the first pass failed on: check the
+# reported errors.
 #
 # There is no dry run: try it on a sandbox copy of the database.
 #
@@ -22,13 +23,14 @@ namespace :single_use do
       args: { execute: 'execute', host: args[:host] },
       description: 'repairing custom field answers without a field'
     ) do |tenant, script|
-      rake_20261110_reattach_answers(tenant, script.reporter)
-      rake_20261110_delete_answers_without_field(tenant, script.reporter)
+      failed_ids = rake_20261110_reattach_answers(tenant, script.reporter)
+      rake_20261110_delete_answers_without_field(tenant, script.reporter, except: failed_ids)
     end
   end
 end
 
 def rake_20261110_reattach_answers(tenant, reporter)
+  failed_ids = []
   CustomFieldAnswer.where(custom_field_id: nil).includes(:answerable).find_each do |answer|
     context = rake_20261110_context(tenant, answer)
     field = rake_20261110_field_for(answer)
@@ -37,15 +39,18 @@ def rake_20261110_reattach_answers(tenant, reporter)
     if answer.update(custom_field: field)
       reporter.add_change(nil, field.id, context: context)
     else
+      failed_ids << answer.id
       reporter.add_error("not re-attached: #{answer.errors.full_messages.to_sentence}", context: context)
     end
   rescue StandardError => e
+    failed_ids << answer.id
     reporter.add_error("#{e.class}: #{e.message}", context: context)
   end
+  failed_ids
 end
 
-def rake_20261110_delete_answers_without_field(tenant, reporter)
-  CustomFieldAnswer.where(custom_field_id: nil).find_each do |answer|
+def rake_20261110_delete_answers_without_field(tenant, reporter, except:)
+  CustomFieldAnswer.where(custom_field_id: nil).where.not(id: except).find_each do |answer|
     context = rake_20261110_context(tenant, answer)
 
     if answer.destroy
@@ -74,12 +79,16 @@ def rake_20261110_moved?(idea)
     Activity.where(item: idea, action: 'changed').where("payload->'change' ? 'project_id'").exists?
 end
 
-# An _other or _follow_up answer belongs to the question of its base key.
+# An _other or _follow_up answer belongs to the question of its base key, unless a
+# question has that exact key.
 def rake_20261110_fields_at_creation(idea, key)
-  base_key = key.delete_suffix('_other').delete_suffix('_follow_up')
   projects = Project.where(created_at: ..idea.created_at)
   forms = CustomForm.where(participation_context_type: 'Project', participation_context_id: projects.select(:id))
-  CustomField.where(resource: forms, key: base_key)
+  fields = CustomField.where(resource: forms)
+  exact = fields.where(key: key)
+  return exact if exact.exists?
+
+  fields.where(key: key.delete_suffix('_other').delete_suffix('_follow_up'))
 end
 
 # Without the value, which can be personal data.

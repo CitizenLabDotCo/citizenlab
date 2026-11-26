@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import {
-  bo,
   Box,
-  ButtonProps,
   Input,
   LocaleSwitcher,
   colors,
@@ -14,6 +12,10 @@ import { forOwn, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 import { Multiloc, SupportedLocale } from 'typings';
 
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import TextField from 'design-system/TextField';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
@@ -22,7 +24,9 @@ import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateI
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
+import PanelLocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
 import { Section } from 'components/admin/Section';
+import { panelTextAreaStyle } from 'components/PostShowComponents/Comments/commentsVariant';
 import { formatEditableCommentContent } from 'components/PostShowComponents/utils';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
@@ -34,7 +38,9 @@ import { isPage, isNilOrError } from 'utils/helperUtils';
 import { weglotTranslateSubmission, WeglotDataOrEmpty } from 'utils/weglot';
 
 import messages from './messages';
+import panelStyles from './OfficialFeedbackPanel.module.css';
 import tracks from './tracks';
+import 'design-system/tokens.css';
 
 const Container = styled.div``;
 
@@ -70,6 +76,10 @@ const SuccessMessage = styled.div`
   margin-left: 14px;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+`;
+
 const SubmitButton = styled(ButtonWithLink)``;
 
 const CancelButton = styled(ButtonWithLink)`
@@ -87,7 +97,7 @@ interface Props {
   feedback?: IIdeaOfficialFeedbackData;
   className?: string;
   onClose?: () => void;
-  variant?: 'default' | 'bo';
+  variant?: 'default' | 'panel';
 }
 
 const OfficialFeedbackForm = ({
@@ -99,7 +109,7 @@ const OfficialFeedbackForm = ({
   variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
-  const isBo = variant === 'bo';
+  const isPanel = variant === 'panel';
   const { data: appConfiguration } = useAppConfiguration();
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
@@ -225,9 +235,7 @@ const OfficialFeedbackForm = ({
     return validated;
   };
 
-  const handleOnSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
+  const submit = async () => {
     if (!processing && validate()) {
       setProcessing(true);
       setError(false);
@@ -306,18 +314,96 @@ const OfficialFeedbackForm = ({
     }
   };
 
-  const submitButtonProps: Partial<ButtonProps> = isBo
-    ? { buttonStyle: 'bo-secondary' }
-    : {
-        bgColor: formType === 'edit' ? colors.primary : colors.error,
-        icon: 'pen',
-        textColor: 'white',
-        fullWidth: formType === 'new',
-      };
+  const handleOnSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    submit();
+  };
+
   const errorMessage = error ? formatMessage(messages.updateButtonError) : null;
   const successMessage = success
     ? formatMessage(messages.updateMessageSuccess)
     : null;
+
+  const submitLabel =
+    formType === 'edit' ? (
+      <FormattedMessage {...messages.updateButtonSaveEditForm} />
+    ) : (
+      <FormattedMessage {...messages.publishButtonText} />
+    );
+
+  if (selectedLocale && !isNilOrError(tenantLocales) && isPanel) {
+    return (
+      <div
+        className={`${panelStyles.form} ${className ?? ''}`}
+        data-testid="official-feedback-form"
+      >
+        <div id="official-feedback-form" className={panelStyles.form}>
+          {tenantLocales.length > 1 && (
+            <div className={panelStyles.localeRow}>
+              <PanelLocaleSwitcher
+                aria-label={formatMessage(messages.officialUpdateBody)}
+                locales={tenantLocales}
+                selectedLocale={selectedLocale}
+                onChange={handleOnLocaleChange}
+                valueMultiloc={formValues.bodyMultiloc}
+              />
+            </div>
+          )}
+
+          <MentionsTextArea
+            name="official-feedback-form-mentions-textarea"
+            locale={selectedLocale}
+            ariaLabel={formatMessage(messages.officialUpdateBody)}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            value={formValues.bodyMultiloc?.[selectedLocale] || ''}
+            onChange={handleBodyOnChange}
+            placeholder={formatMessage(messages.addOfficalUpdate)}
+            rows={3}
+            border="var(--gv-border-width-1) solid var(--gv-border-control)"
+            borderRadius="var(--gv-radius-8)"
+            padding="var(--gv-space-8) var(--gv-space-10)"
+            color={panelTextAreaStyle.color}
+            fontSize={panelTextAreaStyle.fontSize}
+            fontWeight={panelTextAreaStyle.fontWeight}
+            lineHeight={panelTextAreaStyle.lineHeight}
+            background="var(--gv-surface-panel)"
+          />
+
+          <TextField
+            aria-label={formatMessage(messages.officialUpdateAuthor)}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            value={formValues.authorMultiloc?.[selectedLocale] || ''}
+            onChange={(author) => handleAuthorOnChange(author, selectedLocale)}
+            placeholder={formatMessage(messages.officialNamePlaceholder)}
+          />
+        </div>
+
+        {errorMessage && <Banner tone="error">{errorMessage}</Banner>}
+
+        <div className={panelStyles.formActions}>
+          {successMessage && (
+            <p className={panelStyles.success}>{successMessage}</p>
+          )}
+          {onClose && (
+            <Button variant="secondary" size={32} onPress={onClose}>
+              <FormattedMessage {...messages.cancel} />
+            </Button>
+          )}
+          <Button
+            variant="secondary"
+            size={32}
+            onPress={submit}
+            isDisabled={!validate()}
+            isPending={processing}
+          >
+            {submitLabel}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (selectedLocale && !isNilOrError(tenantLocales)) {
     return (
@@ -335,7 +421,7 @@ const OfficialFeedbackForm = ({
               justifyContent="space-between"
             >
               <Box my="auto">
-                {formType === 'new' && !isBo && (
+                {formType === 'new' && (
                   <Title variant="h2" fontSize="m" color="tenantText" m="0">
                     <FormattedMessage {...messages.addOfficalUpdate} />
                   </Title>
@@ -347,7 +433,6 @@ const OfficialFeedbackForm = ({
                   selectedLocale={selectedLocale}
                   onSelectedLocaleChange={handleOnLocaleChange}
                   values={formValues as any}
-                  variant={variant}
                 />
               </Box>
             </Box>
@@ -361,14 +446,10 @@ const OfficialFeedbackForm = ({
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             value={formValues.bodyMultiloc?.[selectedLocale] || ''}
             onChange={handleBodyOnChange}
-            placeholder={formatMessage(
-              isBo ? messages.addOfficalUpdate : messages.textAreaPlaceholder
-            )}
-            rows={isBo ? 3 : 8}
-            border={isBo ? `1px solid ${colors.grey300}` : undefined}
-            borderRadius={isBo ? bo.borderRadius : undefined}
+            placeholder={formatMessage(messages.textAreaPlaceholder)}
+            rows={8}
             padding="12px"
-            fontSize={`${isBo ? fontSizes.xs : fontSizes.base}px`}
+            fontSize={`${fontSizes.base}px`}
             background="#fff"
           />
 
@@ -381,25 +462,23 @@ const OfficialFeedbackForm = ({
             onChange={handleAuthorOnChange}
             placeholder={formatMessage(messages.officialNamePlaceholder)}
             ariaLabel={formatMessage(messages.officialUpdateAuthor)}
-            variant={variant}
           />
         </Section>
 
         <StyledError text={errorMessage} marginTop="0px" />
 
-        <Box display="flex" justifyContent={isBo ? 'flex-end' : undefined}>
+        <ButtonContainer>
           <SubmitButton
             className="e2e-official-feedback-form-submit-button"
-            {...submitButtonProps}
+            bgColor={formType === 'edit' ? colors.primary : colors.error}
+            icon="pen"
+            textColor="white"
+            fullWidth={formType === 'new'}
             onClick={handleOnSubmit}
             disabled={!validate()}
             processing={processing}
           >
-            {formType === 'edit' ? (
-              <FormattedMessage {...messages.updateButtonSaveEditForm} />
-            ) : (
-              <FormattedMessage {...messages.publishButtonText} />
-            )}
+            {submitLabel}
           </SubmitButton>
 
           {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
@@ -413,7 +492,7 @@ const OfficialFeedbackForm = ({
               <FormattedMessage {...messages.cancel} />
             </CancelButton>
           )}
-        </Box>
+        </ButtonContainer>
       </Container>
     );
   }

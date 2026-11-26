@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useState } from 'react';
 
 import {
   TooltipContentWrapper,
@@ -91,28 +91,45 @@ const Tab = ({
   disabledTooltipText,
   className,
   ...props
-}: TabProps) => (
-  <Tooltip
-    placement="bottom"
-    theme={''}
-    disabled={!disabledTooltipText}
-    maxWidth={350}
-    content={
-      <TooltipContentWrapper tippytheme="light">
-        {disabledTooltipText}
-      </TooltipContentWrapper>
-    }
-  >
-    <Container disable={!!disabledTooltipText} {...props}>
-      <Link
-        to={url as LinkProps['to']}
-        onClick={handleClick}
-        className={className ?? ''}
+}: TabProps) => {
+  // The tooltip follows hover and keyboard focus only. Left to itself, the
+  // shared Tooltip also toggles on click, and since a disabled tab is exactly
+  // what people click, it would then stop reacting to hover.
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const showTooltip = () => setTooltipVisible(true);
+  const hideTooltip = () => setTooltipVisible(false);
+
+  return (
+    <Tooltip
+      placement="bottom"
+      theme={''}
+      disabled={!disabledTooltipText}
+      visible={!!disabledTooltipText && tooltipVisible}
+      maxWidth={350}
+      content={
+        <TooltipContentWrapper tippytheme="light">
+          {disabledTooltipText}
+        </TooltipContentWrapper>
+      }
+    >
+      <Container
+        disable={!!disabledTooltipText}
+        onMouseEnter={showTooltip}
+        onMouseLeave={hideTooltip}
+        onFocus={showTooltip}
+        onBlur={hideTooltip}
+        {...props}
       >
-        {label}
-        {badge && <>{badge}</>}
-      </Link>
-    </Container>
-  </Tooltip>
-);
+        <Link
+          to={url as LinkProps['to']}
+          onClick={handleClick}
+          className={className ?? ''}
+        >
+          {label}
+          {badge && <>{badge}</>}
+        </Link>
+      </Container>
+    </Tooltip>
+  );
+};
 export default Tab;

@@ -1,46 +1,21 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import UnstyledButton from 'design-system/UnstyledButton';
+
+import styles from './IdeaTable.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   title: string;
   onOpen: () => void;
 }
 
-const RowTitleButton = ({ title, onOpen }: Props) => {
-  const handleClick = (event: MouseEvent) => {
-    event.stopPropagation();
-    onOpen();
-  };
-
-  return (
-    <Box
-      as="button"
-      type="button"
-      display="block"
-      minWidth="0"
-      maxWidth="100%"
-      p="0"
-      background="transparent"
-      border="none"
-      cursor="pointer"
-      onClick={handleClick}
-    >
-      <Text
-        variant="boLabel"
-        color="textPrimary"
-        as="span"
-        display="block"
-        m="0"
-        textAlign="left"
-        overflow="hidden"
-        whiteSpace="nowrap"
-        textOverflow="ellipsis"
-      >
-        {title}
-      </Text>
-    </Box>
-  );
-};
+// The row's title as a button, for rows that don't open on their own.
+// React Aria stops the press here, so a row action doesn't run twice.
+const RowTitleButton = ({ title, onOpen }: Props) => (
+  <UnstyledButton className={styles.titleButton} onPress={onOpen}>
+    {title}
+  </UnstyledButton>
+);
 
 export default RowTitleButton;

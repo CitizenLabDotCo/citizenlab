@@ -1,0 +1,33 @@
+/* Citizen event page sizes, which have no tokens. */
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--gv-text-body);
+}
+
+.day {
+  composes: text;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.month {
+  composes: text;
+  font-size: var(--gv-font-size-16);
+  /* The citizen grey #767676 has no token; secondary is the text of that role. */
+  color: var(--gv-text-secondary);
+}
+
+.time {
+  composes: text;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}

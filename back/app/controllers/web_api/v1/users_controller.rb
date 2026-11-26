@@ -125,6 +125,12 @@ class WebApi::V1::UsersController < ApplicationController
     render json: raw_json({ token: })
   end
 
+  def userjot_identity
+    authorize :user, :userjot_identity?
+
+    render json: raw_json(UserjotIdentityService.new.identity(current_user))
+  end
+
   def me
     @user = current_user
     skip_authorization

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
-
-import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
+import Button from 'design-system/Button';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
 
@@ -11,9 +9,10 @@ import { useIntl } from 'utils/cl-intl';
 import useReturnToPhaseAfterSave from '../_shared/useReturnToPhaseAfterSave';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
-  label?: string;
+  label: string;
 }
 
 const SaveChangesButton = ({ label }: Props) => {
@@ -36,17 +35,14 @@ const SaveChangesButton = ({ label }: Props) => {
 
   return (
     <Button
-      buttonStyle="bo-primary"
-      boSize="medium"
-      width="auto"
-      icon={showSaved ? 'check' : undefined}
-      disabled={!pageSave.dirty}
-      processing={pageSave.saving}
-      onClick={handleClick}
+      variant="primary"
+      size={32}
+      icon={showSaved ? 'check-14' : undefined}
+      isDisabled={!pageSave.dirty}
+      isPending={pageSave.saving}
+      onPress={handleClick}
     >
-      {showSaved
-        ? formatMessage(messages.savedLabel)
-        : label ?? formatMessage(phaseSetupMessages.saveChangesLabel)}
+      {showSaved ? formatMessage(messages.savedLabel) : label}
     </Button>
   );
 };

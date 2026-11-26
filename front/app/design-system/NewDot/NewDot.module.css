@@ -1,0 +1,8 @@
+.newDot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--gv-radius-4);
+  background: var(--gv-surface-danger-strong);
+}

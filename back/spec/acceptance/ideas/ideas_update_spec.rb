@@ -400,6 +400,13 @@ resource 'Ideas' do
               error = json_response_body.dig(:errors, :custom_field_values, 0, :error)
               expect(error).to include(error: 'Enum', fragment: '#/transport')
             end
+
+            example '[error] A refused answer leaves the rest of the update unapplied', document: false do
+              do_request idea: { phase_ids: [], transport: 'car' }
+
+              assert_status 422
+              expect(input.reload.phase_ids).to eq project.phase_ids
+            end
           end
 
           example 'Edit an idea with a follow-up answer after the follow-up was switched off', document: false do

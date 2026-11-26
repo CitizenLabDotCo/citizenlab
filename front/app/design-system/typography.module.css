@@ -1,0 +1,83 @@
+/* The text styles of Foundations → Typography. Components `composes` one of these. */
+
+.base {
+  font-family: var(--gv-font-family);
+  letter-spacing: var(--gv-font-letter-spacing-0);
+}
+
+/* Zero specificity, so a composing class's own margin wins whatever order the stylesheets load in. */
+:where(.base) {
+  margin: 0;
+}
+
+.stat {
+  composes: base;
+  font-size: var(--gv-font-size-28);
+  line-height: var(--gv-font-line-height-32);
+  font-weight: var(--gv-font-weight-regular);
+}
+
+.title {
+  composes: base;
+  font-size: var(--gv-font-size-16);
+  line-height: var(--gv-font-line-height-24);
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.bodyStrong {
+  composes: base;
+  font-size: var(--gv-font-size-14);
+  line-height: var(--gv-font-line-height-20);
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.bodyLink {
+  composes: base;
+  font-size: var(--gv-font-size-14);
+  line-height: var(--gv-font-line-height-20);
+  font-weight: var(--gv-font-weight-regular);
+  text-decoration: underline;
+}
+
+.body {
+  composes: base;
+  font-size: var(--gv-font-size-14);
+  line-height: var(--gv-font-line-height-20);
+  font-weight: var(--gv-font-weight-regular);
+}
+
+.uiStrong {
+  composes: base;
+  font-size: var(--gv-font-size-13);
+  line-height: var(--gv-font-line-height-20);
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.uiLink {
+  composes: base;
+  font-size: var(--gv-font-size-13);
+  line-height: var(--gv-font-line-height-20);
+  font-weight: var(--gv-font-weight-regular);
+  text-decoration: underline;
+}
+
+.ui {
+  composes: base;
+  font-size: var(--gv-font-size-13);
+  line-height: var(--gv-font-line-height-20);
+  font-weight: var(--gv-font-weight-regular);
+}
+
+.smallStrong {
+  composes: base;
+  font-size: var(--gv-font-size-12);
+  line-height: var(--gv-font-line-height-16);
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.small {
+  composes: base;
+  font-size: var(--gv-font-size-12);
+  line-height: var(--gv-font-line-height-16);
+  font-weight: var(--gv-font-weight-regular);
+}

@@ -274,11 +274,10 @@ class WebApi::V1::IdeasController < ApplicationController
       assign_deferred_relationship_ids(input, phase_ids, cosponsor_ids)
 
       authorize(input)
+      validate_custom_field_values!(input, input.custom_form, changed_values)
       validate_update!(input)
       verify_profanity input
     end
-
-    validate_custom_field_values!(input, input.custom_form, changed_values)
 
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'

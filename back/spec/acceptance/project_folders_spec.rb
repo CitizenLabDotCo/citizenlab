@@ -38,6 +38,16 @@ resource 'ProjectFolder' do
       expect(response_data.size).to eq 1
       expect(response_data.pluck(:id)).to match_array filter_ids
     end
+
+    example 'Does not list a folder whose projects are all hidden from the visitor', document: false do
+      hidden_folder = create(:project_folder, projects: [create(:private_groups_project)])
+
+      do_request
+
+      assert_status 200
+      expect(response_data.pluck(:id)).to match_array @folders.map(&:id)
+      expect(response_data.pluck(:id)).not_to include hidden_folder.id
+    end
   end
 
   get 'web_api/v1/project_folders/:id' do

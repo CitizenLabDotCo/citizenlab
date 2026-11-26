@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Text, bo, colors } from '@citizenlab/cl2-component-library';
 import { format } from 'date-fns';
 
 import { IPhaseData } from 'api/phases/types';
@@ -17,30 +16,37 @@ import {
   METHOD_LABELS,
   PhaseStatus,
   STATUS_LABELS,
-  StepDot,
-  StepLine,
-  StepMeta,
-  StepRow,
-  StepTitle,
   phaseStatus,
   shortDateRange,
 } from '../phaseRowUtils';
 
-const LABEL_COLORS: Record<
+import styles from './PhaseStep.module.css';
+import 'design-system/tokens.css';
+
+const DOT_CLASSES: Record<PhaseStatus, string> = {
+  past: styles.dotPast,
+  present: styles.dotPresent,
+  future: styles.dotFuture,
+};
+
+const LABEL_CLASSES: Record<
   'timeline' | 'spotlight',
-  Record<PhaseStatus, string>
+  Record<PhaseStatus, string | undefined>
 > = {
   timeline: {
-    past: bo.colors.stepDone,
-    present: bo.colors.stepDone,
-    future: colors.coolGrey600,
+    past: styles.timelineDone,
+    present: styles.timelineDone,
+    future: undefined,
   },
   spotlight: {
-    past: colors.green600,
-    present: colors.primary,
-    future: colors.coolGrey600,
+    past: styles.spotlightPast,
+    present: styles.spotlightPresent,
+    future: undefined,
   },
 };
+
+const classNames = (...names: (string | false | undefined)[]) =>
+  names.filter(Boolean).join(' ');
 
 interface Props {
   phase: IPhaseData;
@@ -74,43 +80,43 @@ const PhaseStep = ({
         startDate: format(new Date(start_at), 'd MMM', { locale }),
       });
 
+  const isFuture = status === 'future';
+
   return (
-    <StepRow selected={selected}>
-      {withLine && <StepLine status={status} />}
-      <StepDot status={status} />
-      <Box flexGrow={1} minWidth="0" pr={withOptions ? '24px' : '0'}>
-        <StepTitle
-          style={{
-            color:
-              status === 'future'
-                ? bo.colors.stepUpcomingTitle
-                : bo.colors.textHeadingStrong,
-          }}
-        >
+    <div className={classNames(styles.row, selected && styles.selected)}>
+      {withLine && (
+        <div
+          className={classNames(
+            styles.line,
+            status === 'past' && styles.linePast
+          )}
+        />
+      )}
+      <div className={classNames(styles.dot, DOT_CLASSES[status])} />
+      <div
+        className={classNames(styles.body, withOptions && styles.withOptions)}
+      >
+        <p className={classNames(styles.title, isFuture && styles.titleFuture)}>
           {localize(phase.attributes.title_multiloc)}
-        </StepTitle>
-        <StepMeta
-          m={status === 'future' ? '2px 0 0 0' : '8px 0 0 0'}
-          color="textSecondary"
-        >
-          <Text
-            as="span"
-            m="0"
-            style={{
-              color: LABEL_COLORS[placement][status],
-              fontWeight: status === 'present' ? 500 : 400,
-            }}
+        </p>
+        <p className={classNames(styles.meta, isFuture && styles.metaFuture)}>
+          <span
+            className={classNames(
+              styles.status,
+              LABEL_CLASSES[placement][status],
+              status === 'present' && styles.statusPresent
+            )}
           >
             {formatMessage(STATUS_LABELS[status])}
-          </Text>
+          </span>
           {' · '}
           {dates}
           {' · '}
           {formatMessage(METHOD_LABELS[participation_method])}
           {extraMeta}
-        </StepMeta>
-      </Box>
-    </StepRow>
+        </p>
+      </div>
+    </div>
   );
 };
 

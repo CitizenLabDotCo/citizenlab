@@ -83,12 +83,9 @@ export default defineMessages({
     defaultMessage: 'Close',
   },
   successMessage: {
-    id: 'app.components.ProjectTemplatePreview.successMessage',
-    defaultMessage: 'The project was successfully created!',
-  },
-  findItInProjectsList: {
-    id: 'app.components.ProjectTemplatePreview.findItInProjectsList',
-    defaultMessage: 'You can find it in the projects list.',
+    id: 'app.components.ProjectTemplatePreview.successMessage2',
+    defaultMessage:
+      'Your project is being created. It should appear in the projects list soon.',
   },
   goBackTo: {
     id: 'app.components.ProjectTemplatePreview.goBackTo',

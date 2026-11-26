@@ -31,13 +31,13 @@ const sections: SettingsModalSection[] = [
   {
     name: 'moderation',
     label: messages.moderation,
-    icon: 'eye',
+    icon: 'eye-16',
     content: <div>How ideas are named and reviewed.</div>,
   },
   {
     name: 'notifications',
     label: messages.notifications,
-    icon: 'notification',
+    icon: 'nav-messaging-16',
     content: <div>Emails sent automatically to participants.</div>,
   },
 ];
@@ -54,16 +54,6 @@ const renderModal = (
       {...props}
     />
   );
-
-beforeEach(() => {
-  const portal = document.createElement('div');
-  portal.id = 'modal-portal';
-  document.body.appendChild(portal);
-});
-
-afterEach(() => {
-  document.getElementById('modal-portal')?.remove();
-});
 
 describe('SettingsModal', () => {
   it('shows one tab per section and selects the first by default', () => {
@@ -140,9 +130,9 @@ describe('SettingsModal', () => {
     );
   });
 
-  it('renders a footer only when one is given', () => {
+  it('renders a footer only when an action is given', () => {
     const { unmount } = renderModal({
-      footer: <button>Save changes</button>,
+      primaryAction: { label: 'Save changes' },
     });
 
     expect(
@@ -157,31 +147,7 @@ describe('SettingsModal', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('labels each group once, and arrow keys move across groups', async () => {
-    renderModal({
-      sections: [
-        { ...sections[0], group: messages.phase },
-        { ...sections[1], group: messages.emails },
-      ],
-    });
-
-    expect(screen.getByRole('tablist', { name: 'Phase' })).toContainElement(
-      screen.getByRole('tab', { name: 'Moderation' })
-    );
-    expect(screen.getByRole('tablist', { name: 'Emails' })).toContainElement(
-      screen.getByRole('tab', { name: 'Notifications' })
-    );
-
-    await userEvent.click(screen.getByRole('tab', { name: 'Moderation' }));
-    await userEvent.keyboard('{ArrowDown}');
-
-    expect(screen.getByRole('tab', { name: 'Notifications' })).toHaveAttribute(
-      'aria-selected',
-      'true'
-    );
-  });
-
-  it('pulls sections of the same group together', async () => {
+  it('orders the tabs by group, and arrow keys move across groups', async () => {
     renderModal({
       sections: [
         { ...sections[0], group: messages.phase },
@@ -189,23 +155,30 @@ describe('SettingsModal', () => {
         {
           name: 'voting',
           label: messages.voting,
-          icon: 'vote-ballot',
+          icon: 'status-16',
           content: <div>Voting settings.</div>,
           group: messages.phase,
         },
       ],
     });
 
-    expect(screen.getAllByRole('tablist')).toHaveLength(2);
-    expect(screen.getAllByText('Phase')).toHaveLength(1);
-    expect(screen.getByRole('tablist', { name: 'Phase' })).toContainElement(
-      screen.getByRole('tab', { name: 'Voting' })
-    );
+    expect(screen.getAllByRole('tab').map((tab) => tab.textContent)).toEqual([
+      'Moderation',
+      'Voting',
+      'Notifications',
+    ]);
 
     await userEvent.click(screen.getByRole('tab', { name: 'Moderation' }));
     await userEvent.keyboard('{ArrowDown}');
 
     expect(screen.getByRole('tab', { name: 'Voting' })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+
+    await userEvent.keyboard('{ArrowDown}');
+
+    expect(screen.getByRole('tab', { name: 'Notifications' })).toHaveAttribute(
       'aria-selected',
       'true'
     );

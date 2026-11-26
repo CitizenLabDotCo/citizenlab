@@ -9,3 +9,5 @@ es-ES:
     debate_information_updates: Actualizaciones de información
     debate_instructions: Instrucciones
     documents_to_consult: Documentos de la consulta
+    private_space_members: 'Miembros: %{space}'
+    untitled_folder: Carpeta sin título

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import Spinner from 'design-system/Spinner';
 
 import { IVolunteers, VolunteersSort } from 'api/volunteers/types';
 
@@ -10,7 +10,9 @@ import EmptyState from '../Phase/EmptyState';
 import ListLoadError from '../Phase/ListLoadError';
 
 import messages from './messages';
+import styles from './VolunteerManager.module.css';
 import VolunteerTable from './VolunteerTable';
+import 'design-system/tokens.css';
 
 interface Props {
   volunteers: IVolunteers | undefined;
@@ -43,9 +45,9 @@ const VolunteerList = ({
 
   if (!volunteers) {
     return (
-      <Box display="flex" justifyContent="center" py="80px">
+      <div className={styles.loading}>
         <Spinner />
-      </Box>
+      </div>
     );
   }
 
@@ -69,7 +71,7 @@ const VolunteerList = ({
   }
 
   return (
-    <Box opacity={isChangingList ? 0.4 : 1}>
+    <div className={isChangingList ? styles.dimmed : undefined}>
       <VolunteerTable
         volunteers={volunteers}
         causeTitles={causeTitles}
@@ -78,7 +80,7 @@ const VolunteerList = ({
         currentPage={currentPage}
         onChangePage={onChangePage}
       />
-    </Box>
+    </div>
   );
 };
 

@@ -1,0 +1,15 @@
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.title {
+  composes: ui from '../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.description {
+  composes: small from '../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}

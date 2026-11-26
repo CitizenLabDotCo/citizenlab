@@ -2,6 +2,9 @@
 
 class RemoveUsersFromSegmentJob < ApplicationJob
   queue_as :default
+  # Deleting a platform waits for this job (+MultiTenancy::Tenants::DeleteJob+), so it can't keep
+  # retrying for days.
+  self.max_retry_count = 3
 
   def run(user_ids)
     # We create a 'DELETE' regulation even if the feature is not enabled,
