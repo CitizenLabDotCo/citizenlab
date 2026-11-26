@@ -98,7 +98,7 @@ const NativeSurveyInputs = ({
             expandable
           />
         </div>
-        {surveyPlacement}
+        <div className={styles.placement}>{surveyPlacement}</div>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           reviewKey="participant_actions"
@@ -161,7 +161,6 @@ const NativeSurveyInputs = ({
             <MultilocTextField
               id="native-survey-title"
               label={formatMessage(parentMessages.surveyTitleLabel)}
-              size={32}
               valueMultiloc={formData.native_survey_title_multiloc}
               onChange={handleSurveyTitleChange}
               errorMessage={titleError}
@@ -169,7 +168,6 @@ const NativeSurveyInputs = ({
             <MultilocTextField
               id="native-survey-button"
               label={formatMessage(parentMessages.surveyCTALabel)}
-              size={32}
               valueMultiloc={formData.native_survey_button_multiloc}
               onChange={handleSurveyCTAChange}
               errorMessage={ctaError}
