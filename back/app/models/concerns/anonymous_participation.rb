@@ -25,6 +25,10 @@ module AnonymousParticipation
       anonymous
     end
 
+    def made_anonymous?
+      saved_change_to_anonymous?(to: true)
+    end
+
     private
 
     # Ensure author is always nil if anonymous is set and anonymous is false if author is present

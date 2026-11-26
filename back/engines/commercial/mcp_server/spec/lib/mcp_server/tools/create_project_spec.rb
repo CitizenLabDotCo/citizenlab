@@ -29,6 +29,25 @@ describe McpServer::Tools::CreateProject do
     )
   end
 
+  describe 'participation location tracking' do
+    it 'turns it on when the feature is on' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+
+      response = run(params.merge(track_participation_location: true))
+
+      expect(Project.find(response.structured_content[:id]).track_participation_location).to be true
+    end
+
+    it 'ignores the setting while the feature is off, like the web API' do
+      SettingsService.new.deactivate_feature!('participation_location_tracking')
+
+      response = run(params.merge(track_participation_location: true))
+
+      expect(response).not_to be_error
+      expect(Project.find(response.structured_content[:id]).track_participation_location).to be false
+    end
+  end
+
   it 'creates a project visible to specific groups' do
     group = create(:group)
 

@@ -3,8 +3,11 @@
 class Current < ActiveSupport::CurrentAttributes
   attribute :tenant, :app_configuration
   attribute :location_headers
+  # The signed-in user of the request, read by ParticipationTrackingService.
+  attribute :request_user_id
 
-  # Request origin ('mcp' or 'ai_assistant' during a tool run, else nil). Read by LogActivityJob.
+  # Request origin ('mcp' or 'ai_assistant' during a tool run, else nil). Read by LogActivityJob
+  # and ParticipationTrackingService.
   attribute :activity_channel
 
   # Per-request cache of the global 'visiting' permission, which every inherited
