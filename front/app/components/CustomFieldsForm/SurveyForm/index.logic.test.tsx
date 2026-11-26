@@ -260,7 +260,7 @@ describe('SurveyForm with logic', () => {
     expect(screen.queryByText('Question Two')).not.toBeInTheDocument();
   });
 
-  it('does not follow the any-other-answer rule of a select and goes to the next page (current behaviour)', async () => {
+  it('does not follow the any-other-answer rule of a select and goes to the next page (current behaviour, B2)', async () => {
     mockCustomFields = buildForm({
       rules: [
         { if: 'id-yes', goto_page_id: 'page-end' },
@@ -276,7 +276,7 @@ describe('SurveyForm with logic', () => {
     expect(await screen.findByText('Question Two')).toBeInTheDocument();
   });
 
-  it('goes to the next page, not the page default, when the answer matches no rule (current behaviour)', async () => {
+  it('goes to the next page, not the page default, when the answer matches no rule (current behaviour, B6)', async () => {
     mockCustomFields = buildForm({
       firstPageLogic: { next_page_id: 'page-3' },
       rules: [{ if: 'id-yes', goto_page_id: 'page-end' }],

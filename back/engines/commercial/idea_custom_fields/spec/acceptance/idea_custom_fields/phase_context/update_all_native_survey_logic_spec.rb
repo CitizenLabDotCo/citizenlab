@@ -74,7 +74,7 @@ resource 'Idea Custom Fields' do
       expect(select_field.reload.logic['rules'].pluck('if')).to eq [cat.id, 'any_other_answer', 'no_answer']
     end
 
-    example 'Drops the no_answer rule of a required select without an error (current behaviour)', document: false do
+    example 'Drops the no_answer rule of a required select without an error (current behaviour, N5)', document: false do
       rules = [{ if: cat.id, goto_page_id: page3.id }, { if: 'no_answer', goto_page_id: page2.id }]
       do_request form_params(select_field => { required: true, logic: { rules: } })
 
@@ -82,7 +82,7 @@ resource 'Idea Custom Fields' do
       expect(response_logic(select_field)).to eq({ rules: [{ if: cat.id, goto_page_id: page3.id }] })
     end
 
-    example 'Drops a rule whose option does not exist without an error', document: false do
+    example 'Drops a rule whose option does not exist without an error (current behaviour, B5)', document: false do
       rules = [{ if: 'unknown-option-id', goto_page_id: page3.id }, { if: dog.id, goto_page_id: page3.id }]
       do_request form_params(select_field => { logic: { rules: } })
 
@@ -90,7 +90,7 @@ resource 'Idea Custom Fields' do
       expect(response_logic(select_field)).to eq({ rules: [{ if: dog.id, goto_page_id: page3.id }] })
     end
 
-    example 'Keeps the second of two consecutive rules with unknown options (current behaviour)', document: false do
+    example 'Keeps the second of two consecutive rules with unknown options (current behaviour, B5)', document: false do
       rules = [
         { if: 'unknown-option-1', goto_page_id: page3.id },
         { if: 'unknown-option-2', goto_page_id: page3.id },
@@ -124,7 +124,7 @@ resource 'Idea Custom Fields' do
       expect(response_logic(select_field)).to eq({ rules: [{ if: bird.id, goto_page_id: page3.id }] })
     end
 
-    example 'Stores linear scale rules with integer and string values as sent (current behaviour)', document: false do
+    example 'Stores linear scale rules with integer and string values as sent (current behaviour, B14)', document: false do
       rules = [{ if: 1, goto_page_id: form_end.id }, { if: '2', goto_page_id: form_end.id }, { if: 9, goto_page_id: form_end.id }]
       do_request form_params(scale_field => { logic: { rules: } })
 
@@ -158,7 +158,7 @@ resource 'Idea Custom Fields' do
       expect(response_logic(page1)).to eq({ next_page_id: page2.id })
     end
 
-    example 'Allows a jump to a disabled page', document: false do
+    example 'Allows a jump to a disabled page (current behaviour, N4)', document: false do
       do_request form_params(page3 => { enabled: false }, select_field => { logic: { rules: [{ if: cat.id, goto_page_id: page3.id }] } })
 
       assert_status 200
@@ -207,7 +207,7 @@ resource 'Idea Custom Fields' do
       expect(logic_errors).to eq({ '0': [{ error: 'invalid_structure' }] })
     end
 
-    example '[error] Persists the other changes and the invalid logic when logic is invalid (current behaviour)', document: false do
+    example '[error] Persists the other changes and the invalid logic when logic is invalid (current behaviour, B4)', document: false do
       do_request form_params(
         select_field => { title_multiloc: { en: 'Changed title' }, logic: { rules: [{ if: cat.id, goto_page_id: page3.id }] } },
         scale_field => { logic: { rules: [{ if: 1, goto_page_id: page1.id }] } }
@@ -219,7 +219,7 @@ resource 'Idea Custom Fields' do
       expect(scale_field.reload.logic).to eq({ 'rules' => [{ 'if' => 1, 'goto_page_id' => page1.id }] })
     end
 
-    example '[error] Persists an unresolved temp id when the target page does not exist (current behaviour)', document: false do
+    example '[error] Persists an unresolved temp id when the target page does not exist (current behaviour, B4)', document: false do
       do_request form_params(page1 => { logic: { next_page_id: 'TEMP-ID-MISSING' } })
 
       assert_status 422
@@ -227,7 +227,7 @@ resource 'Idea Custom Fields' do
       expect(page1.reload.logic).to eq({ 'next_page_id' => 'TEMP-ID-MISSING' })
     end
 
-    example 'Drops the rules of a rating question without an error (current behaviour)', document: false do
+    example 'Drops the rules of a rating question without an error (current behaviour, B1)', document: false do
       rating_field = create(:custom_field_rating, resource: custom_form, maximum: 5)
       request = form_params
       request[:custom_fields].insert(4, field_params(rating_field, logic: { rules: [{ if: 1, goto_page_id: form_end.id }] }))
@@ -263,7 +263,7 @@ resource 'Idea Custom Fields' do
       expect(response_data[2].dig(:attributes, :logic)).to eq({})
     end
 
-    example 'Wipes legacy multiselect rules on the first save, even when the request does not send logic (current behaviour)', document: false do
+    example 'Wipes legacy multiselect rules on the first save, even when the request does not send logic (current behaviour, B7)', document: false do
       multiselect_field = create(:custom_field_multiselect, :with_options, resource: custom_form)
       multiselect_field.update_column(:logic, { 'rules' => [{ 'if' => multiselect_field.options.first.id, 'goto_page_id' => page3.id }] })
       request = form_params
@@ -274,7 +274,7 @@ resource 'Idea Custom Fields' do
       expect(multiselect_field.reload.logic).to eq({})
     end
 
-    example 'Keeps the rules of a ranking question', document: false do
+    example 'Keeps the rules of a ranking question (current behaviour, B8)', document: false do
       ranking_field = create(:custom_field_ranking, :with_options, resource: custom_form)
       rules = [{ if: ranking_field.options.first.id, goto_page_id: form_end.id }]
       request = form_params

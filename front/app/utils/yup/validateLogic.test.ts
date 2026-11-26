@@ -152,9 +152,14 @@ describe('validateLogic rules', () => {
   const isValid = (customFields: TestField[]) =>
     schema.isValid({ customFields });
 
-  it.each(['select', 'multiselect', 'multiselect_image', 'rating'])(
-    'rejects a %s rule that targets an earlier page',
-    async (inputType) => {
+  it.each([
+    { inputType: 'select', label: '' },
+    { inputType: 'multiselect', label: '' },
+    { inputType: 'multiselect_image', label: '' },
+    { inputType: 'rating', label: ' (current behaviour, B1)' },
+  ])(
+    'rejects a $inputType rule that targets an earlier page$label',
+    async ({ inputType }) => {
       const question = {
         id: 'q',
         input_type: inputType,

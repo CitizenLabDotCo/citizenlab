@@ -74,7 +74,7 @@ describe('LogicSettings answers', () => {
     expect(screen.getByText('If not answered')).toBeInTheDocument();
   });
 
-  it('does not offer a no-answer rule for a required question', () => {
+  it('does not offer a no-answer rule for a required question (current behaviour, N5)', () => {
     renderLogicSettings(select(true));
 
     expect(screen.getByText('If any other answer')).toBeInTheDocument();
@@ -87,9 +87,12 @@ describe('LogicSettings answers', () => {
     expect(screen.getAllByText('If answer is:')).toHaveLength(2);
   });
 
-  it.each(['linear_scale', 'rating'] as const)(
-    'offers a rule per value from 1 to the maximum for a %s question',
-    (inputType) => {
+  it.each([
+    { inputType: 'linear_scale', label: '' },
+    { inputType: 'rating', label: ' (current behaviour, B1)' },
+  ] as const)(
+    'offers a rule per value from 1 to the maximum for a $inputType question$label',
+    ({ inputType }) => {
       renderLogicSettings(
         baseField({ id: 'q', input_type: inputType, maximum: 3 })
       );

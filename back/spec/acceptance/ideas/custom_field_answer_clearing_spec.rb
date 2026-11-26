@@ -129,14 +129,14 @@ resource 'Ideas' do
         expect(answer_rows(input)).to eq(stored_answers.except('text_field'))
       end
 
-      example 'Keeps all rows when the only custom field key sent is null (current behaviour)', document: false do
+      example 'Keeps all rows when the only custom field key sent is null (current behaviour, N3)', document: false do
         do_request(idea: { text_field: nil, publication_status: 'draft' })
 
         assert_status 200
         expect(answer_rows(input)).to eq stored_answers
       end
 
-      example '[error] Fails when the request only has a null custom field key (current behaviour)', document: false do
+      example '[error] Fails when the request only has a null custom field key (current behaviour, N3)', document: false do
         expect { do_request(idea: { text_field: nil }) }.to raise_error(ActionController::ParameterMissing)
         expect(answer_rows(input)).to eq stored_answers
       end
@@ -286,14 +286,14 @@ resource 'Ideas' do
         }
       end
 
-      example 'Keeps omitted multiselect, ranking and matrix answers (current behaviour)', document: false do
+      example 'Keeps omitted multiselect, ranking and matrix answers (current behaviour, N3)', document: false do
         do_request(idea: { text_field: 'Hello' })
 
         assert_status 200
         expect(answer_rows(input)).to eq stored_answers
       end
 
-      example 'Keeps omitted multiselect, ranking and matrix answers when publishing (current behaviour)', document: false do
+      example 'Keeps omitted multiselect, ranking and matrix answers when publishing (current behaviour, N3)', document: false do
         do_request(idea: { text_field: 'Hello', publication_status: 'published' })
 
         assert_status 200

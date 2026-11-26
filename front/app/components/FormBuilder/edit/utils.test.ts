@@ -481,7 +481,7 @@ describe('detectConflictsByPage combinations', () => {
       (conflict) => conflict.conflictType
     );
 
-  it('reports no conflict when every question target equals the page default', () => {
+  it('reports no conflict when every question target equals the page default (current behaviour, B6)', () => {
     const question = field('q', 'select', {
       rules: [
         { if: 'option-a', goto_page_id: 'page3' },
@@ -509,7 +509,7 @@ describe('detectConflictsByPage combinations', () => {
   });
 
   it.each(['any_other_answer', 'no_answer'])(
-    'counts a %s rule like any other rule',
+    'counts a %s rule like any other rule (current behaviour, N5)',
     (condition) => {
       const question = field('q', 'select', {
         rules: [{ if: condition, goto_page_id: 'page4' }],
@@ -521,7 +521,7 @@ describe('detectConflictsByPage combinations', () => {
     }
   );
 
-  it('reports an inter-question conflict for rating and linear scale questions on one page', () => {
+  it('reports an inter-question conflict for rating and linear scale questions on one page (current behaviour, B1)', () => {
     const rating = field('q1', 'rating', {
       rules: [{ if: 1, goto_page_id: 'page3' }],
     });
@@ -534,7 +534,7 @@ describe('detectConflictsByPage combinations', () => {
     ).toEqual([LogicConflictType.INTER_QUESTION_CONFLICT]);
   });
 
-  it('reports an inter-question conflict even when both questions jump to the same page', () => {
+  it('reports an inter-question conflict even when both questions jump to the same page (current behaviour, N2)', () => {
     const first = field('q1', 'select', {
       rules: [{ if: 'option-a', goto_page_id: 'page3' }],
     });
@@ -576,7 +576,7 @@ describe('detectConflictsByPage combinations', () => {
     ]);
   });
 
-  it('does not count a question with an empty rules list', () => {
+  it('does not count a question with an empty rules list (current behaviour, B6)', () => {
     const empty = field('q1', 'select', { rules: [] });
     const withRule = field('q2', 'select', {
       rules: [{ if: 'option-a', goto_page_id: 'page3' }],

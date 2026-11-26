@@ -34,7 +34,7 @@ describe('Survey logic in the builder', () => {
     }
   });
 
-  it('offers a Logic tab for a rating question but drops its rules on save without an error (current behaviour)', () => {
+  it('offers a Logic tab for a rating question but drops its rules on save without an error (current behaviour, B1)', () => {
     const ratingTitle = 'Rate the service';
     const ratingRow = () =>
       cy.contains('[data-cy="e2e-field-row"]', ratingTitle);

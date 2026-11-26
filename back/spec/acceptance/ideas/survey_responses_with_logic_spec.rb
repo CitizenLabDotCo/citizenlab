@@ -69,21 +69,21 @@ resource 'Ideas' do
         })
       end
 
-      example 'Publishes without the required question of a skipped page', document: false do
+      example 'Publishes without the required question of a skipped page (current behaviour, B11)', document: false do
         do_request(idea: { publication_status: 'published', select_field: 'skip', last_question: 'end' })
 
         assert_status 201
         expect(answer_rows(Idea.find(response_data[:id]))).to eq({ 'select_field' => 'skip', 'last_question' => 'end' })
       end
 
-      example 'Publishes without the required question of a visited page (current behaviour)', document: false do
+      example 'Publishes without the required question of a visited page (current behaviour, B11)', document: false do
         do_request(idea: { publication_status: 'published', select_field: 'stay', last_question: 'end' })
 
         assert_status 201
         expect(response_data.dig(:attributes, :publication_status)).to eq 'published'
       end
 
-      example 'Publishes without any answer to a required select (current behaviour)', document: false do
+      example 'Publishes without any answer to a required select (current behaviour, B11)', document: false do
         do_request(idea: { publication_status: 'published', last_question: 'end' })
 
         assert_status 201
@@ -97,7 +97,7 @@ resource 'Ideas' do
         header_token_for create(:user)
       end
 
-      example 'Stores the draft without enforcing anything about later pages', document: false do
+      example 'Stores the draft without enforcing anything about later pages (current behaviour, B11)', document: false do
         do_request(idea: { publication_status: 'draft', select_field: 'skip' })
 
         assert_status 201
@@ -150,7 +150,7 @@ resource 'Ideas' do
       })
     end
 
-    example 'Deletes the text answer but keeps the multiselect answer of a skipped page the request leaves out (current behaviour)', document: false do
+    example 'Deletes the text answer but keeps the multiselect answer of a skipped page the request leaves out (current behaviour, N3)', document: false do
       do_request(idea: { publication_status: 'published', select_field: 'skip', last_question: 'end' })
 
       assert_status 200

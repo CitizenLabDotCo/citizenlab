@@ -414,7 +414,7 @@ describe UserFieldsInFormService do
           create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
         end
 
-        it 'points the end page targets to the user page in memory only' do
+        it 'points the end page targets to the user page in memory only (current behaviour, B12)' do
           fields = add_user_fields
           user_page = fields.find { |field| field.key == 'user_page' }
 
@@ -425,7 +425,7 @@ describe UserFieldsInFormService do
           expect(page1.reload.logic).to eq('next_page_id' => form_end.id)
         end
 
-        it 'gives the user page a new id every time' do
+        it 'gives the user page a new id every time (current behaviour, B12)' do
           first_id = add_user_fields.find { |field| field.key == 'user_page' }.id
           second_id = add_user_fields.find { |field| field.key == 'user_page' }.id
 

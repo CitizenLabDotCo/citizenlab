@@ -346,7 +346,7 @@ describe FormLogicService do
       expect(question1.reload.logic).to eq('rules' => [{ 'if' => option1.id, 'goto_page_id' => page2.id }])
     end
 
-    it 'keeps the second of two consecutive rules with unknown options (current behaviour)' do
+    it 'keeps the second of two consecutive rules with unknown options (current behaviour, B5)' do
       question1.update!(logic: { 'rules' => [
         { 'if' => 'UNKNOWN_1', 'goto_page_id' => page2.id },
         { 'if' => 'UNKNOWN_2', 'goto_page_id' => page2.id },
@@ -358,7 +358,7 @@ describe FormLogicService do
       expect(question1.reload.logic['rules'].pluck('if')).to eq ['UNKNOWN_2', option1.id]
     end
 
-    it 'keeps no_answer on an optional select and drops it on a required select' do
+    it 'keeps no_answer on an optional select and drops it on a required select (current behaviour, N5)' do
       rules = [{ 'if' => 'no_answer', 'goto_page_id' => page2.id }, { 'if' => 'any_other_answer', 'goto_page_id' => page2.id }]
       question1.update!(required: false, logic: { 'rules' => rules })
       form_logic.replace_temp_ids!({}, {})
@@ -377,7 +377,7 @@ describe FormLogicService do
       expect(question1.reload.logic).to eq('rules' => [{ 'if' => option2.id, 'goto_page_id' => last_page.id }])
     end
 
-    it 'does not check the values of linear scale rules' do
+    it 'does not check the values of linear scale rules (current behaviour, B14)' do
       scale = fields[1]
       scale.update!(logic: { 'rules' => [{ 'if' => 99, 'goto_page_id' => page2.id }, { 'if' => '2', 'goto_page_id' => page2.id }] })
 
