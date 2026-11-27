@@ -53,7 +53,7 @@ const PollOption = ({ phaseId, title, description }: Props) => {
             {formatMessage(methodSectionMessages.addQuestions)}
           </Button>
           <Button
-            variant="secondary"
+            variant="quiet"
             icon="download-16"
             aria-label={formatMessage(methodSectionMessages.downloadForm)}
             isDisabled

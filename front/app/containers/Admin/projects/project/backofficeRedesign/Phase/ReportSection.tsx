@@ -38,6 +38,7 @@ const ReportSection = ({ projectId, phase }: Props) => {
       <>
         <PanelField
           label={formatMessage(messages.report)}
+          hasButtons
           action={
             <div className={styles.actions}>
               <Button variant="secondary" isDisabled>
@@ -70,6 +71,7 @@ const ReportSection = ({ projectId, phase }: Props) => {
   return (
     <PanelField
       label={formatMessage(messages.report)}
+      hasButtons
       action={
         <div className={styles.actions}>
           <Button

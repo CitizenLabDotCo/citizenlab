@@ -2,3 +2,7 @@
   composes: ui from '../../../../../../../../../../design-system/typography.module.css';
   color: var(--gv-text-primary);
 }
+
+.label[data-off] {
+  color: var(--gv-text-tertiary);
+}

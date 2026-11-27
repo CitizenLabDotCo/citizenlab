@@ -284,6 +284,7 @@ const NewPhaseWorkspace = ({
                 // The other forms show the same reason on their own card.
                 participationMethod === 'native_survey' && (
                   <Button
+                    fullWidth
                     variant="secondary"
                     disabledReason={formatMessage(
                       phaseMessages.saveFirstToAddQuestions

@@ -62,6 +62,13 @@ const NativeSurveyOption = ({
       />
       {customFields && (
         <div className={styles.questionActions}>
+          <Button fullWidth variant="secondary" onPress={onAddQuestions}>
+            {formatMessage(
+              hasQuestions
+                ? methodSectionMessages.editSurvey
+                : methodSectionMessages.addQuestions
+            )}
+          </Button>
           <Button
             variant="quiet"
             icon="download-16"
@@ -81,13 +88,6 @@ const NativeSurveyOption = ({
             }
             target="_blank"
           />
-          <Button variant="secondary" onPress={onAddQuestions}>
-            {formatMessage(
-              hasQuestions
-                ? methodSectionMessages.editSurvey
-                : methodSectionMessages.addQuestions
-            )}
-          </Button>
         </div>
       )}
     </div>

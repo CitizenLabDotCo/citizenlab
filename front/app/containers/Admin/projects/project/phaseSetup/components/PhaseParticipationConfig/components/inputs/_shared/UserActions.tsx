@@ -5,9 +5,13 @@ import { CLError, CLErrors } from 'typings';
 
 import { FieldError } from 'design-system/Field';
 
+import { InputTerm, ParticipationMethod } from 'api/phases/types';
+
 import PhaseActionAccessRow, {
   AccessOnlyAction,
 } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
+import phaseActionMessages from 'containers/Admin/projects/_shared/components/phaseActionMessages';
+import useInputsNoun from 'containers/Admin/projects/_shared/components/useInputsNoun';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -41,6 +45,8 @@ const UserActions = ({
   layout = 'page',
   accessOnlyActions = [],
   reactingSettings,
+  participationMethod,
+  inputTerm,
 }: {
   showCommentingToggle?: boolean;
   showReactingToggle?: boolean;
@@ -50,6 +56,9 @@ const UserActions = ({
   accessOnlyActions?: AccessOnlyAction[];
   /** Shown right below the reacting toggle, before the access-only actions. */
   reactingSettings?: ReactNode;
+  /** The panel names the actions after what participants post. */
+  participationMethod?: ParticipationMethod;
+  inputTerm?: InputTerm | null;
   submission_enabled: boolean;
   commenting_enabled: boolean;
   reacting_enabled: boolean;
@@ -72,6 +81,14 @@ const UserActions = ({
   const commentingErrorId = `${errorId}-commenting`;
   const reactingErrorId = `${errorId}-reacting`;
   const panel = layout === 'panel';
+  const inputs = useInputsNoun({ phaseId, participationMethod, inputTerm });
+  const actionLabel = (
+    pageMessage: typeof messages.inputPostingEnabled,
+    panelMessage: typeof phaseActionMessages.submittingInputs
+  ) =>
+    panel
+      ? formatMessage(panelMessage, { inputs })
+      : formatMessage(pageMessage);
 
   // The panel shows errors as plain field error text, linked to the toggle.
   const actionError = (errors: CLError[] | undefined, id: string) => {
@@ -118,7 +135,10 @@ const UserActions = ({
           aria-describedby={postingError.describedBy}
           checked={submission_enabled || false}
           onChange={togglePostingEnabled}
-          label={formatMessage(messages.inputPostingEnabled)}
+          label={actionLabel(
+            messages.inputPostingEnabled,
+            phaseActionMessages.submittingInputs
+          )}
         />
       </ActionToggleRow>
 
@@ -133,7 +153,10 @@ const UserActions = ({
             aria-describedby={commentingError.describedBy}
             checked={commenting_enabled || false}
             onChange={toggleCommentingEnabled}
-            label={formatMessage(messages.inputCommentingEnabled)}
+            label={actionLabel(
+              messages.inputCommentingEnabled,
+              phaseActionMessages.commentingOnInputs
+            )}
           />
         </ActionToggleRow>
       )}
@@ -150,7 +173,10 @@ const UserActions = ({
             aria-describedby={reactingError.describedBy}
             checked={reacting_enabled || false}
             onChange={toggleReactingEnabled}
-            label={formatMessage(messages.inputReactingEnabled)}
+            label={actionLabel(
+              messages.inputReactingEnabled,
+              phaseActionMessages.reactingToInputs
+            )}
           />
         </ActionToggleRow>
       )}

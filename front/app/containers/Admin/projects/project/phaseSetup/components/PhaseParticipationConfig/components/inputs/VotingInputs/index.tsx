@@ -11,15 +11,16 @@ import styled from 'styled-components';
 import { CLErrors, IOption } from 'typings';
 
 import Banner from 'design-system/Banner';
-import Switch from 'design-system/Switch';
 
 import { PresentationMode, VoteTerm, VotingMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
 import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
+import phaseActionMessages from 'containers/Admin/projects/_shared/components/phaseActionMessages';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
+import useInputsNoun from 'containers/Admin/projects/_shared/components/useInputsNoun';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import {
@@ -42,6 +43,7 @@ import configMessages from '../../../messages';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
 import ViewSelector from '../../shared/ViewSelector';
+import ActionToggle from '../_shared/ActionToggle';
 import ActionToggleRow from '../_shared/ActionToggleRow';
 import useParticipantActionsSummary from '../_shared/useParticipantActionsSummary';
 
@@ -146,6 +148,7 @@ const VotingInputs = ({
   });
   const { projectId, phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
+  const inputs = useInputsNoun({ phaseId, participationMethod: 'voting' });
   const [pendingVotingMethod, setPendingVotingMethod] =
     useState<VotingMethod | null>(null);
 
@@ -239,6 +242,7 @@ const VotingInputs = ({
         <SetupCard
           reviewKey="voting_method"
           reviewNeedsChoice={!voting_method}
+          spacedBody
           title={formatMessage(votingMessages.votingMethodSelectorTitle)}
         >
           {methodSelector}
@@ -272,37 +276,41 @@ const VotingInputs = ({
           summary={actionsSummary}
           hasError={!!commentingError}
         >
-          {phaseId && (
-            <PhaseActionAccessRow
+          {/* One block, so the rows sit as close as in the other methods. */}
+          <div>
+            {phaseId && (
+              <PhaseActionAccessRow
+                phaseId={phaseId}
+                action="voting"
+                label={configMessages.votingAction}
+              />
+            )}
+            <ActionToggleRow
               phaseId={phaseId}
-              action="voting"
-              label={configMessages.votingAction}
-            />
-          )}
-          <ActionToggleRow
-            phaseId={phaseId}
-            action="commenting_idea"
-            error={
-              commentingError && <Banner tone="error">{commentingError}</Banner>
-            }
-          >
-            <Switch
-              size={26}
-              isSelected={!!commenting_enabled}
-              onChange={() => toggleCommentingEnabled()}
+              action="commenting_idea"
+              error={
+                commentingError && (
+                  <Banner tone="error">{commentingError}</Banner>
+                )
+              }
             >
-              <span className={styles.switchLabel}>
-                {formatMessage(messages.inputCommentingEnabled)}
-              </span>
-            </Switch>
-          </ActionToggleRow>
-          {phaseId && (
-            <PhaseActionAccessRow
-              phaseId={phaseId}
-              action="attending_event"
-              label={messages.attendingEventAction}
-            />
-          )}
+              <ActionToggle
+                layout="panel"
+                checked={!!commenting_enabled}
+                onChange={toggleCommentingEnabled}
+                label={formatMessage(phaseActionMessages.commentingOnInputs, {
+                  inputs,
+                })}
+              />
+            </ActionToggleRow>
+            {phaseId && (
+              <PhaseActionAccessRow
+                phaseId={phaseId}
+                action="attending_event"
+                label={messages.attendingEventAction}
+              />
+            )}
+          </div>
         </PanelGroup>
         <PanelGroup
           label={formatMessage(configMessages.votingDisplayGroup)}

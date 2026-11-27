@@ -88,9 +88,13 @@
   margin: 0;
 }
 
-/* Under the Survey radio, lined up with its label: the 18 px ring and its 10 px gap. */
+/* The questions button fills the row from the card padding; the download icon sits on its right. */
 .questionActions {
   display: flex;
   gap: var(--gv-space-8);
-  padding-left: calc(var(--gv-size-16) + var(--gv-space-10));
+}
+
+.questionActions > :first-child {
+  flex-grow: 1;
+  min-width: 0;
 }

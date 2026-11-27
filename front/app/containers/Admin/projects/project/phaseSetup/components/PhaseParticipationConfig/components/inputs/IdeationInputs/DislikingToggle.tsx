@@ -69,7 +69,10 @@ const DislikingToggle = ({
             handleReactingDislikeEnabledOnChange(!reacting_dislike_enabled)
           }
         >
-          <span className={styles.label}>
+          <span
+            className={styles.label}
+            data-off={!reacting_dislike_enabled || undefined}
+          >
             {formatMessage(messages.dislikingPosts2)}
           </span>
         </Switch>
@@ -79,6 +82,7 @@ const DislikingToggle = ({
         <div className={styles.settings}>
           <ReactionLimitSettings
             name="dislikingmethod"
+            nested
             title={formatMessage(messages.dislikingMethodTitle)}
             method={reacting_dislike_method}
             max={reacting_dislike_limited_max}

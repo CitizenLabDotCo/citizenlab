@@ -147,6 +147,7 @@ const SurveyMethodSection = ({
                       method === 'native_survey' &&
                       draftQuestionsAction && (
                         <div className={panelStyles.questionActions}>
+                          {draftQuestionsAction}
                           <Button
                             variant="quiet"
                             icon="download-16"
@@ -157,7 +158,6 @@ const SurveyMethodSection = ({
                               methodSectionMessages.addQuestionsToDownload
                             )}
                           />
-                          {draftQuestionsAction}
                         </div>
                       )}
                     {method === selected && method === 'poll' && (

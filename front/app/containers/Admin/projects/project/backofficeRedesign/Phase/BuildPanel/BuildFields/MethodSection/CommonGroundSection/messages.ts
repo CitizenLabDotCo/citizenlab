@@ -21,8 +21,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.importingStatements',
     defaultMessage: 'Importing {done}/{total}',
   },
-  nStatements: {
-    id: 'app.containers.Admin.projects.project.nStatements',
-    defaultMessage: '{count, plural, one {# statement} other {# statements}}',
-  },
 });

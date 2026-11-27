@@ -19,6 +19,8 @@ import 'design-system/tokens.css';
 interface Props {
   title: string;
   spacedBody?: boolean;
+  /** The action holds 32 px Buttons with a label. */
+  hasButtons?: boolean;
   reviewKey?: SetupReviewCard;
   reviewNeedsChoice?: boolean;
   titleTooltip?: JSX.Element;
@@ -33,6 +35,7 @@ interface Props {
 const SetupCard = ({
   title,
   spacedBody,
+  hasButtons,
   reviewKey,
   reviewNeedsChoice = false,
   titleTooltip,
@@ -98,6 +101,7 @@ const SetupCard = ({
     <Disclosure
       header="static"
       spacedBody={spacedBody}
+      hasButtons={hasButtons}
       title={staticTitle}
       status={status}
       actions={summary}

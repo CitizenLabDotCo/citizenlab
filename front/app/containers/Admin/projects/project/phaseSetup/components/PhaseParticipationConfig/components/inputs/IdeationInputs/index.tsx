@@ -181,6 +181,7 @@ const IdeationInputs = ({
   const likes = reacting_enabled && (
     <ReactionLimitSettings
       name="likingmethod"
+      nested
       title={formatMessage(projectMessages.likingMethodTitle)}
       method={reacting_like_method}
       max={reacting_like_limited_max}
@@ -228,6 +229,8 @@ const IdeationInputs = ({
       handleLikingLimitOnChange={handleLikingLimitOnChange}
       phaseId={phaseId}
       layout={layout}
+      participationMethod="ideation"
+      inputTerm={input_term}
       reactingSettings={
         layout === 'panel' && (
           <>

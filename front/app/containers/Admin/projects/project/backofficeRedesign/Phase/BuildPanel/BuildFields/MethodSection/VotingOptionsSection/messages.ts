@@ -43,8 +43,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.createForm',
     defaultMessage: 'Create form',
   },
-  nVotingOptions: {
-    id: 'app.containers.Admin.projects.project.nVotingOptions',
-    defaultMessage: '{count, plural, one {# option} other {# options}}',
-  },
 });

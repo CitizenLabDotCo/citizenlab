@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.causesSection',
     defaultMessage: 'Causes',
   },
-  nCauses: {
-    id: 'app.containers.Admin.projects.project.nCauses',
-    defaultMessage: '{count, plural, one {# cause} other {# causes}}',
-  },
   nSignedUp: {
     id: 'app.containers.Admin.projects.project.nSignedUp',
     defaultMessage: '{count, plural, =0 {No sign-ups yet} other {# signed up}}',
@@ -37,14 +33,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.deleteCauseDescription',
     defaultMessage:
       'The cause and its sign-ups are removed from this phase. This cannot be undone.',
-  },
-  downloadVolunteers: {
-    id: 'app.containers.Admin.projects.project.downloadVolunteers',
-    defaultMessage: 'Download volunteers',
-  },
-  nobodySignedUpYet: {
-    id: 'app.containers.Admin.projects.project.nobodySignedUpYet',
-    defaultMessage: 'Nobody has signed up yet',
   },
   causeCancel: {
     id: 'app.containers.Admin.projects.project.causeCancel',

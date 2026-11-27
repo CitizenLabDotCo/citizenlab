@@ -7,8 +7,6 @@ import Spinner from 'design-system/Spinner';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 
-import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
-
 import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -59,6 +57,7 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
     <>
       <PanelField
         label={formatMessage(messages.votingOptionsSection)}
+        hasButtons={!hasOptions}
         action={
           <div className={styles.actions}>
             <IconButton
@@ -71,28 +70,16 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
               aria-label={importLabel}
               onPress={() => setImporterOpened(true)}
             />
-            {hasOptions &&
-              (hasIdeationBefore ? (
+            {hasOptions ? (
+              <>
                 <IconButton
-                  icon="calendar-16"
-                  aria-label={previousPhaseLabel}
-                  onPress={() => setPreviousPhaseOpened(true)}
-                />
-              ) : (
-                <IconButton
-                  icon="pencil-14"
+                  icon="square-pen-16"
                   aria-label={editFormLabel}
                   isDisabled={!inputForm.ready}
                   onPress={inputForm.open}
                 />
-              ))}
-            {hasOptions ? (
-              <div className={styles.status}>
                 {saving && <Spinner />}
-                <SummaryPill
-                  label={formatMessage(messages.nVotingOptions, { count })}
-                />
-              </div>
+              </>
             ) : (
               <div className={styles.primaryAction}>
                 <Button

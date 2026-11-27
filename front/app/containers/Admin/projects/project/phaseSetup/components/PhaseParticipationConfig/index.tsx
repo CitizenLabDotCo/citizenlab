@@ -24,6 +24,7 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import phaseActionMessages from 'containers/Admin/projects/_shared/components/phaseActionMessages';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import projectMessages from 'containers/Admin/projects/project/general/messages';
@@ -451,10 +452,11 @@ const PhaseParticipationConfig = ({
       showReactingToggle={false}
       phaseId={panelPhaseId}
       layout={layout}
+      participationMethod="common_ground"
       accessOnlyActions={[
         {
           action: 'reacting_idea',
-          label: messages.votingOnInputsAction,
+          label: phaseActionMessages.votingOnInputs,
         },
       ]}
     />

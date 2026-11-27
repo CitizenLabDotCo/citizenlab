@@ -12,11 +12,6 @@
   border-top: var(--gv-border-width-1) solid var(--gv-border-divider);
 }
 
-.switchLabel {
-  composes: ui from '../../../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
 .displaySettings {
   display: flex;
   flex-direction: column;

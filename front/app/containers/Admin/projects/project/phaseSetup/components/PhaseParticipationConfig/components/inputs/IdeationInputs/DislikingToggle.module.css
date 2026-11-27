@@ -9,6 +9,10 @@
   color: var(--gv-text-primary);
 }
 
+.label[data-off] {
+  color: var(--gv-text-tertiary);
+}
+
 /* Lines the settings up with the switch label: the switch width plus its gap. */
 .settings {
   padding-left: calc(var(--gv-size-26) + var(--gv-space-10));

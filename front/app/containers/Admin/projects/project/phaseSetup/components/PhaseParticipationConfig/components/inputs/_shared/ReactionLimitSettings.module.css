@@ -4,3 +4,14 @@
   gap: var(--gv-space-6);
   padding: var(--gv-space-6) 0;
 }
+
+/* Under an action row: the title 2 px below it, the next row 12 px below the choices. */
+.settings[data-nested] {
+  gap: var(--gv-space-8);
+  padding: var(--gv-space-2) 0 var(--gv-space-12);
+}
+
+.nestedTitle {
+  composes: ui from '../../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}

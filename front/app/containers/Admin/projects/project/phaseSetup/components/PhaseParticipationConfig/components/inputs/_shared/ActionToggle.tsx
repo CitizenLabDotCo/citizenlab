@@ -31,7 +31,9 @@ const ActionToggle = ({
         isSelected={checked}
         onChange={() => onChange()}
       >
-        <span className={styles.label}>{label}</span>
+        <span className={styles.label} data-off={!checked || undefined}>
+          {label}
+        </span>
       </Switch>
     );
   }

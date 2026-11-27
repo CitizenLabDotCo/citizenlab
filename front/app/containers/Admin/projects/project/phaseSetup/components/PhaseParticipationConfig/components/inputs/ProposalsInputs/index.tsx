@@ -271,6 +271,7 @@ const ProposalsInputs = ({
   const likes = reacting_enabled && (
     <ReactionLimitSettings
       name="likingmethod"
+      nested
       title={formatMessage(messages.likingMethodTitle)}
       method={reacting_like_method}
       max={reacting_like_limited_max}
@@ -302,6 +303,8 @@ const ProposalsInputs = ({
       handleLikingLimitOnChange={handleLikingLimitOnChange}
       phaseId={phaseId}
       layout={layout}
+      participationMethod="proposals"
+      inputTerm={input_term}
       reactingSettings={
         layout === 'panel' && (
           <div className={styles.reactingSettings}>{likes}</div>

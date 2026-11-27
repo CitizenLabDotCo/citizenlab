@@ -23,7 +23,7 @@ interface Props {
 }
 
 const CommonGroundSection = ({ projectId, phaseId }: Props) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatNumber } = useIntl();
   const [addOpened, setAddOpened] = useState(false);
   const [importOpened, setImportOpened] = useState(false);
   const { count, saving, importProgress, add, addImport } = useStagedInputs(
@@ -38,6 +38,7 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
     <>
       <PanelField
         label={formatMessage(messages.statementsSection)}
+        hasButtons={count === 0 && !importProgress}
         action={
           count > 0 || importProgress ? (
             <div className={styles.actions}>
@@ -61,7 +62,7 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
                           done: importProgress.done,
                           total: importProgress.total,
                         })
-                      : formatMessage(messages.nStatements, { count })
+                      : formatNumber(count)
                   }
                 />
               </div>

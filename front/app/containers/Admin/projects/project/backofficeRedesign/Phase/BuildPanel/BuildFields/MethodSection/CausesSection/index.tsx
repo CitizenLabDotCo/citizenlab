@@ -3,10 +3,6 @@ import React, { useState } from 'react';
 import Button from 'design-system/Button';
 import IconButton from 'design-system/IconButton';
 
-import { exportVolunteers } from 'api/causes/util';
-
-import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
-
 import { useIntl } from 'utils/cl-intl';
 
 import PanelField from '../../../PanelField';
@@ -33,25 +29,11 @@ const CausesSection = ({ phaseId }: Props) => {
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState<ModalState>(null);
   const [toDelete, setToDelete] = useState<StagedCause | null>(null);
-  const [exporting, setExporting] = useState(false);
   const causes = useStagedCauses(phaseId);
 
   const causeList = causes.list;
-  const hasSignUps = causeList.some(
-    ({ saved }) => !!saved && saved.attributes.volunteers_count > 0
-  );
   const label = formatMessage(messages.causesSection);
   const addLabel = formatMessage(messages.addACause);
-  const downloadLabel = formatMessage(messages.downloadVolunteers);
-
-  const download = async () => {
-    setExporting(true);
-    try {
-      await exportVolunteers(phaseId);
-    } finally {
-      setExporting(false);
-    }
-  };
 
   const openAdd = () => setModal({});
 
@@ -75,24 +57,6 @@ const CausesSection = ({ phaseId }: Props) => {
                 aria-label={addLabel}
                 onPress={openAdd}
               />
-              <IconButton
-                icon="download-16"
-                aria-label={downloadLabel}
-                isDisabled={exporting}
-                disabledReason={
-                  hasSignUps
-                    ? undefined
-                    : formatMessage(messages.nobodySignedUpYet)
-                }
-                onPress={download}
-              />
-              {!open && (
-                <SummaryPill
-                  label={formatMessage(messages.nCauses, {
-                    count: causeList.length,
-                  })}
-                />
-              )}
             </div>
           }
         >
@@ -114,9 +78,9 @@ const CausesSection = ({ phaseId }: Props) => {
           )}
         </PanelField>
       ) : (
-        // Nobody can have signed up without a cause, so there is nothing to download yet.
         <PanelField
           label={label}
+          hasButtons
           action={
             <Button variant="primary" icon="plus-16" onPress={openAdd}>
               {addLabel}

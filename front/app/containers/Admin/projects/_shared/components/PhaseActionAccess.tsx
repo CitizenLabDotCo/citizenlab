@@ -7,6 +7,7 @@ import Modal from 'design-system/Modal';
 import { IPhasePermissionAction } from 'api/permissions/types';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
+import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
 import { getPermissionActionSectionSubtitle } from 'containers/Admin/projects/project/permissions/Phase/ActionForms/utils';
@@ -20,12 +21,37 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from './messages';
 import PhaseActionForm from './PhaseActionForm';
+import phaseActionMessages from './phaseActionMessages';
+import useInputsNoun from './useInputsNoun';
 import 'design-system/tokens.css';
 
 interface Props {
   phaseId: string;
   action: IPhasePermissionAction;
 }
+
+// The title names what participants post, as the row that opened it does.
+const inputsTitleMessage = (
+  action: IPhasePermissionAction,
+  participationMethod: ParticipationMethod
+) => {
+  switch (action) {
+    case 'posting_idea':
+      return ['native_survey', 'community_monitor_survey'].includes(
+        participationMethod
+      )
+        ? undefined
+        : phaseActionMessages.whoCanSubmitInputs;
+    case 'commenting_idea':
+      return phaseActionMessages.whoCanCommentOnInputs;
+    case 'reacting_idea':
+      return participationMethod === 'common_ground'
+        ? phaseActionMessages.whoCanVoteOnInputs
+        : phaseActionMessages.whoCanReactToInputs;
+    default:
+      return undefined;
+  }
+};
 
 const PhaseActionAccess = ({ phaseId, action }: Props) => {
   const { formatMessage } = useIntl();
@@ -36,6 +62,7 @@ const PhaseActionAccess = ({ phaseId, action }: Props) => {
   const { data: phase } = usePhase(phaseId);
   const { data: permissions } = usePhasePermissions({ phaseId });
   const { mutateAsync: updatePhasePermission } = useUpdatePhasePermission();
+  const inputs = useInputsNoun({ phaseId });
 
   const permission = permissions?.data.find(
     (permission) => permission.attributes.action === action
@@ -44,12 +71,15 @@ const PhaseActionAccess = ({ phaseId, action }: Props) => {
   if (!permission || !phase) return null;
 
   const participationMethod = phase.data.attributes.participation_method;
-  const title = formatMessage(
-    getPermissionActionSectionSubtitle({
-      permissionAction: action,
-      participationMethod,
-    })
-  );
+  const inputsTitle = inputsTitleMessage(action, participationMethod);
+  const title = inputsTitle
+    ? formatMessage(inputsTitle, { inputs })
+    : formatMessage(
+        getPermissionActionSectionSubtitle({
+          permissionAction: action,
+          participationMethod,
+        })
+      );
   // A phase with an input form has its own Collect demographic data card.
   const formEditor = getMethodConfig(participationMethod).formEditor;
   const hasDemographicsCard =
@@ -94,7 +124,7 @@ const PhaseActionAccess = ({ phaseId, action }: Props) => {
   return (
     <>
       <Button
-        variant="quiet"
+        variant="quietSubtle"
         size={28}
         trailingIcon="chevron-right-16"
         onPress={() => setOpened(true)}

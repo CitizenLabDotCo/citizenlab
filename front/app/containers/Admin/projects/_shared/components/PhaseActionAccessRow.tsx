@@ -8,6 +8,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import styles from './PhaseActionAccessRow.module.css';
 import ToggleActionAccess from './ToggleActionAccess';
+import useInputsNoun from './useInputsNoun';
 import 'design-system/tokens.css';
 
 export interface AccessOnlyAction {
@@ -21,6 +22,7 @@ interface Props extends AccessOnlyAction {
 
 const PhaseActionAccessRow = ({ phaseId, action, label }: Props) => {
   const { formatMessage } = useIntl();
+  const inputs = useInputsNoun({ phaseId });
 
   return (
     <ToggleActionAccess phaseId={phaseId} action={action}>
@@ -29,7 +31,7 @@ const PhaseActionAccessRow = ({ phaseId, action, label }: Props) => {
         <span className={styles.iconBox}>
           <Icon name="check-14" className={styles.icon} />
         </span>
-        <span className={styles.label}>{formatMessage(label)}</span>
+        <span className={styles.label}>{formatMessage(label, { inputs })}</span>
       </span>
     </ToggleActionAccess>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import Banner from 'design-system/Banner';
 import NumberField from 'design-system/NumberField';
@@ -19,6 +19,8 @@ const isMethod = (value: string): value is Method =>
 interface Props {
   name: string;
   title: string;
+  // Under a participant action row: a row-sized title and the choices side by side.
+  nested?: boolean;
   method: Method | null | undefined;
   max: number | null | undefined;
   maxLabel: string;
@@ -32,6 +34,7 @@ interface Props {
 const ReactionLimitSettings = ({
   name,
   title,
+  nested = false,
   method,
   max,
   maxLabel,
@@ -42,22 +45,47 @@ const ReactionLimitSettings = ({
   onMaxChange,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const titleId = useId();
+
+  const radios = (
+    <>
+      <Radio value="unlimited">{formatMessage(messages.unlimited)}</Radio>
+      <Radio value="limited">
+        {limitedLabel ?? formatMessage(messages.limited)}
+      </Radio>
+    </>
+  );
+  const onChange = (value: string) => {
+    if (isMethod(value)) onMethodChange(value);
+  };
 
   return (
-    <div className={styles.settings}>
-      <RadioGroup
-        label={title}
-        name={name}
-        value={method ?? null}
-        onChange={(value) => {
-          if (isMethod(value)) onMethodChange(value);
-        }}
-      >
-        <Radio value="unlimited">{formatMessage(messages.unlimited)}</Radio>
-        <Radio value="limited">
-          {limitedLabel ?? formatMessage(messages.limited)}
-        </Radio>
-      </RadioGroup>
+    <div className={styles.settings} data-nested={nested || undefined}>
+      {nested ? (
+        <>
+          <span id={titleId} className={styles.nestedTitle}>
+            {title}
+          </span>
+          <RadioGroup
+            aria-labelledby={titleId}
+            orientation="horizontal"
+            name={name}
+            value={method ?? null}
+            onChange={onChange}
+          >
+            {radios}
+          </RadioGroup>
+        </>
+      ) : (
+        <RadioGroup
+          label={title}
+          name={name}
+          value={method ?? null}
+          onChange={onChange}
+        >
+          {radios}
+        </RadioGroup>
+      )}
       {method === 'limited' && (
         <NumberField
           id={`${name}-max`}

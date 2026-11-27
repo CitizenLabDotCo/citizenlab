@@ -30,6 +30,7 @@ const DocumentUrlCard = ({ value, errors, onChange }: Props) => {
   return (
     <PanelField
       label={label}
+      spacedBody
       labelTooltip={
         <FormattedMessage
           {...configMessages.konveioSupport}
