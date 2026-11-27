@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, useState } from 'react';
 
+import DesignSystemEmptyState from 'design-system/EmptyState';
 import Spinner from 'design-system/Spinner';
 
 import useIdeas from 'api/ideas/useIdeas';
@@ -30,6 +31,7 @@ import styles from './InputManager.module.css';
 import ListToolbar from './ListToolbar';
 import NoMatches from './NoMatches';
 import SideColumn from './SideColumn';
+import OfflineCollection from './SideColumn/OfflineCollection';
 import SidePanel from './SidePanel';
 import useInputTermLabels from './useInputTermLabels';
 import useManagerParams, { DEFAULT_SORT } from './useManagerParams';
@@ -181,6 +183,24 @@ const InputManager = ({ project, phase }: Props) => {
   const hasFilters =
     categories.some((category) => category.isActive) || !!searchTerm;
   const listBody = getListBody(counts?.total, hasFilters, pageIdeas.length);
+
+  // Nothing in the phase yet: the library drops the stats, the export and the
+  // toolbar. Ideation keeps its ways to add ideas; the others show the notebook.
+  if (counts?.total === 0 && !hasFilters) {
+    return (
+      <ManageLayout
+        side={
+          phase.attributes.participation_method === 'ideation' ? (
+            <OfflineCollection phase={phase} />
+          ) : (
+            <DesignSystemEmptyState context="panel" illustration="small" />
+          )
+        }
+      >
+        <EmptyState />
+      </ManageLayout>
+    );
+  }
 
   return (
     <ManageLayout

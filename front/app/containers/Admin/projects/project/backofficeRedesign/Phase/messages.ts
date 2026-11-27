@@ -26,14 +26,14 @@ export default defineMessages({
     defaultMessage:
       'Participants get an email and a notification when any of these happens.',
   },
-  noActivityInDateRange: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.noActivityInDateRange',
-    defaultMessage: 'No activity in this phase’s date range',
+  manageEmpty: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.manageEmpty',
+    defaultMessage: 'Once the project is live, you can review and manage {terms} here',
   },
-  insightsDateRange: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsDateRange',
+  insightsEmpty: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsEmpty',
     defaultMessage:
-      'These insights include visits and participation recorded during this phase. Activity outside its start and end dates isn’t included.',
+      'Once the project is live, insights will help you turn participation into clear results',
   },
   noParticipationInPhaseDates: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.noParticipationInPhaseDates',
@@ -119,19 +119,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.editAccessDescription',
     defaultMessage:
       'You can specify who can take each action, and ask additional questions to participants to collect more information.',
-  },
-  noTermsYet: {
-    id: 'app.containers.Admin.projects.project.noTermsYet',
-    defaultMessage: 'No {terms} yet',
-  },
-  noTermsYetDescription: {
-    id: 'app.containers.Admin.projects.project.noTermsYetDescription',
-    defaultMessage:
-      '{capitalizedTerms} appear here as participants take part. You can follow each one and add the ones collected offline.',
-  },
-  noInsightsYet: {
-    id: 'app.containers.Admin.projects.project.noInsightsYet',
-    defaultMessage: 'No insights yet',
   },
   editReport: {
     id: 'app.containers.Admin.projects.project.editReport',

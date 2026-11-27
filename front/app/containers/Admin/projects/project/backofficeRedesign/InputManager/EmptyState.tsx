@@ -1,26 +1,21 @@
 import React from 'react';
 
 import DesignSystemEmptyState from 'design-system/EmptyState';
-import Text from 'design-system/Text';
 
 import { useIntl } from 'utils/cl-intl';
 
-import styles from './EmptyState.module.css';
-import messages from './messages';
+import phaseMessages from '../Phase/messages';
+
 import useInputTermLabels from './useInputTermLabels';
 
+// The library's empty Manage view: the notebook and one sentence.
 const EmptyState = () => {
   const { formatMessage } = useIntl();
-  const { terms, capitalizedTerms } = useInputTermLabels();
+  const { terms } = useInputTermLabels();
 
   return (
-    <DesignSystemEmptyState>
-      <span className={styles.content}>
-        <Text as="span" variant="uiStrong" tone="primary">
-          {formatMessage(messages.noTermsTitle, { terms: capitalizedTerms })}
-        </Text>
-        <span>{formatMessage(messages.noTermsDescription, { terms })}</span>
-      </span>
+    <DesignSystemEmptyState context="panel" illustration="large">
+      {formatMessage(phaseMessages.manageEmpty, { terms })}
     </DesignSystemEmptyState>
   );
 };

@@ -22,15 +22,10 @@ import { PhaseViewKey } from './usePhaseViews';
 import styles from './ViewContent.module.css';
 import 'design-system/tokens.css';
 
+// The library's empty views: the notebook and one sentence on what the view is for.
 const EMPTY_COPY = {
-  manage: {
-    title: messages.noTermsYet,
-    description: messages.noTermsYetDescription,
-  },
-  insights: {
-    title: messages.noActivityInDateRange,
-    description: messages.insightsDateRange,
-  },
+  manage: messages.manageEmpty,
+  insights: messages.insightsEmpty,
 };
 
 interface Responses {
@@ -114,7 +109,7 @@ interface Props {
 
 const ViewContent = ({ phase, view, children }: Props) => {
   const { formatMessage } = useIntl();
-  const { terms, capitalizedTerms } = useInputTermLabels();
+  const { terms } = useInputTermLabels();
   const onInsights = view === 'insights';
   const supportsMetrics =
     onInsights &&
@@ -139,12 +134,11 @@ const ViewContent = ({ phase, view, children }: Props) => {
     return <>{children}</>;
   }
 
-  const copy = EMPTY_COPY[view];
   const emptyState = (
     <EmptyState
       size="large"
-      title={formatMessage(copy.title, { terms })}
-      description={formatMessage(copy.description, { capitalizedTerms })}
+      illustrated
+      description={formatMessage(EMPTY_COPY[view], { terms })}
     />
   );
 
@@ -168,6 +162,7 @@ const ViewContent = ({ phase, view, children }: Props) => {
         {lateEndAt ? (
           <EmptyState
             size="large"
+            illustrated
             title={formatMessage(messages.noParticipationInPhaseDates)}
             description={
               <LateParticipationDescription phase={phase} endAt={lateEndAt} />
@@ -178,10 +173,8 @@ const ViewContent = ({ phase, view, children }: Props) => {
         )}
       </div>
       <div className={styles.sidePanel}>
-        <EmptyState
-          size="small"
-          title={lateEndAt ? undefined : formatMessage(messages.noInsightsYet)}
-        />
+        {/* The side column shows only the small notebook. */}
+        <EmptyState size="small" illustrated />
         {phase.attributes.participation_method === 'document_annotation' && (
           <div role="note" className={styles.note}>
             <Banner tone="neutral">

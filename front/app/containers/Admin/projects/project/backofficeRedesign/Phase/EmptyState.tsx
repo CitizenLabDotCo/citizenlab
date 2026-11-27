@@ -10,19 +10,26 @@ interface Props {
   title?: string;
   description?: ReactNode;
   size: 'large' | 'small';
+  // The library's empty views draw the notebook above the sentence.
+  illustrated?: boolean;
 }
 
-const EmptyState = ({ title, description, size }: Props) => (
+const EmptyState = ({ title, description, size, illustrated }: Props) => (
   <div className={styles.fill}>
-    <DesignSystemEmptyState context={size === 'large' ? 'list' : 'card'}>
-      <span className={`${styles.content} ${styles[size]}`}>
-        {title && (
-          <Text as="span" variant="uiStrong" tone="primary">
-            {title}
-          </Text>
-        )}
-        {description && <span>{description}</span>}
-      </span>
+    <DesignSystemEmptyState
+      context={illustrated ? 'panel' : size === 'large' ? 'list' : 'card'}
+      illustration={illustrated ? size : undefined}
+    >
+      {(title || description) && (
+        <span className={`${styles.content} ${styles[size]}`}>
+          {title && (
+            <Text as="span" variant="uiStrong" tone="primary">
+              {title}
+            </Text>
+          )}
+          {description && <span>{description}</span>}
+        </span>
+      )}
     </DesignSystemEmptyState>
   </div>
 );

@@ -738,15 +738,6 @@ export default defineMessages({
     defaultMessage: 'Export',
   },
 
-  noTermsTitle: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noTermsTitle',
-    defaultMessage: '{terms} will appear here',
-  },
-  noTermsDescription: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noTermsDescription',
-    defaultMessage:
-      'Once people take part, you can review and manage their {terms} here.',
-  },
   addInput: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addInput',
     defaultMessage: `{inputTerm, select,
