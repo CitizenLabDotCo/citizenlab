@@ -92,6 +92,31 @@ describe('ProjectMoreActionsMenu', () => {
     });
   });
 
+  it('calls setError with a specific error when another copy is running', async () => {
+    server.use(
+      http.post(copyApiPath, () => {
+        return HttpResponse.json(
+          { errors: { base: [{ error: 'copy_in_progress' }] } },
+          { status: 409 }
+        );
+      })
+    );
+    const setErrorFn = jest.fn();
+    render(<ProjectMoreActionsMenu {...defaultProps} setError={setErrorFn} />);
+    const user = userEvent.setup();
+
+    await user.click(screen.getByTestId('moreOptionsButton'));
+    await user.click(
+      await screen.findByRole('menuitem', { name: 'Copy project' })
+    );
+
+    await waitFor(() => {
+      expect(setErrorFn).toHaveBeenLastCalledWith(
+        'Another copy with the same title is still being made. Please try again in a moment.'
+      );
+    });
+  });
+
   it('starts only one copy when copy is clicked again while copying', async () => {
     let copyRequests = 0;
     server.use(

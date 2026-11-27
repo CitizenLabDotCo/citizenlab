@@ -5,6 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'api/me/useAuthUser';
 import useCopyProject from 'api/projects/useCopyProject';
 import useDeleteProject from 'api/projects/useDeleteProject';
+import { isCopyInProgressError } from 'api/projects/utils';
 
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
@@ -91,8 +92,14 @@ const ProjectMoreActionsMenu = ({
               setError(null);
               setLoadingState('copying', false);
             },
-            onError: () => {
-              setError(formatMessage(messages.copyProjectError));
+            onError: (error) => {
+              setError(
+                formatMessage(
+                  isCopyInProgressError(error)
+                    ? messages.copyProjectInProgressError
+                    : messages.copyProjectError
+                )
+              );
               setLoadingState('copying', false);
             },
           });

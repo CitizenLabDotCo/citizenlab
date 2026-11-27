@@ -9,6 +9,7 @@ import projectsMiniAdminKeys from 'api/projects_mini_admin/keys';
 import spacesKeys from 'api/spaces/keys';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import { isCLErrorsWrapper } from 'utils/errorUtils';
 
 import projectsKeys from './keys';
 
@@ -43,3 +44,11 @@ export const invalidateOnCRUD = () => {
     queryKey: publicationRecipientCountKeys.all(),
   });
 };
+
+// The backend answers 409 while another copy that gets the same URL is still
+// running.
+export const isCopyInProgressError = (error: unknown) =>
+  isCLErrorsWrapper(error) &&
+  'base' in error.errors &&
+  Array.isArray(error.errors.base) &&
+  error.errors.base.some(({ error }) => error === 'copy_in_progress');
