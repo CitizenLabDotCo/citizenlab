@@ -134,13 +134,15 @@ export class RenderPool {
 
   /** `discard` replaces the slot's context, for one whose page may still be running code. */
   async release(slot: Slot, { discard = false } = {}): Promise<void> {
-    this.checkedOut.delete(slot);
     slot.uses += 1;
 
     const usable =
       discard || slot.uses >= RENDERS_PER_CONTEXT
         ? await this.recycle(slot)
         : slot;
+    // Only now: a slot whose context is being replaced is still on its way back, and
+    // counting it as gone would fail the health check of a pool that is fine.
+    this.checkedOut.delete(slot);
     if (!usable) return;
 
     const next = this.waiting.shift();
