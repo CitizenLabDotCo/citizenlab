@@ -53,6 +53,11 @@ interface Slot {
   uses: number;
 }
 
+/** The part of the server's logger the pool uses, so the pool does not depend on Fastify. */
+export interface PoolLogger {
+  warn(details: object, message: string): void;
+}
+
 /** Whether a render could still get a slot: one is free, or one is out but not stuck. */
 export const canStillRender = (
   freeSlots: number,
@@ -73,6 +78,11 @@ export class RenderPool {
   private slots: Slot[] = [];
   private waiting: ((slot: Slot) => void)[] = [];
   private checkedOut = new Map<Slot, number>();
+  private readonly log: PoolLogger;
+
+  constructor(log: PoolLogger) {
+    this.log = log;
+  }
 
   async start(): Promise<void> {
     this.browser = await chromium.launch({
@@ -161,7 +171,13 @@ export class RenderPool {
       CONTEXT_CLOSE_TIMEOUT_MS,
       "The context did not close."
     ).catch(() => undefined);
-    return this.newSlot().catch(() => null);
+    return this.newSlot().catch((error: unknown) => {
+      this.log.warn(
+        { err: error },
+        "A browser context could not be replaced; the render pool is a slot short from now on."
+      );
+      return null;
+    });
   }
 
   private async newSlot(): Promise<Slot> {
