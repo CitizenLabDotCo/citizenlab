@@ -238,17 +238,15 @@ describe('Redesigned phase Insights', () => {
         });
       });
       visitInsights();
-      cy.get('[data-cy="e2e-insights-demographic-tabs"]').within(() => {
-        cy.contains('button', 'Demographic question 8').scrollIntoView();
-        cy.contains('button', 'Demographic question 8')
-          .click()
-          .should('have.attr', 'aria-selected', 'true');
+      cy.get('[data-cy="e2e-insights-demographics"]').within(() => {
+        cy.contains('h3', 'Demographic question 8')
+          .scrollIntoView()
+          .should('be.visible');
       });
-      cy.get('[data-cy="e2e-insights-demographic-tabs"]').then(($tabs) => {
-        const bounds = $tabs[0].getBoundingClientRect();
+      cy.get('[data-cy="e2e-insights-demographics"]').then(($cards) => {
+        const bounds = $cards[0].getBoundingClientRect();
         expect(bounds.left).to.be.at.least(0);
         expect(bounds.right).to.be.at.most(1280);
-        expect($tabs[0].scrollWidth).to.be.greaterThan($tabs[0].clientWidth);
       });
       cy.get('[aria-label="Phase Insights"]').then(($region) => {
         expect($region[0].scrollWidth).to.be.at.most($region[0].clientWidth);

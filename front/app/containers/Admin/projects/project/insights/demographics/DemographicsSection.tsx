@@ -37,7 +37,9 @@ import { useWordSection, type WordSection } from '../word/useWordSection';
 import WordExportableInsight from '../word/WordExportableInsight';
 import { useWordExportContext } from '../word/WordExportContext';
 
+import DemographicFieldCard from './DemographicFieldCard';
 import DemographicFieldContent from './DemographicFieldContent';
+import styles from './DemographicsSection.module.css';
 
 // Styled components reusing NavigationTabs constants and styles
 const TabsContainer = styled.div`
@@ -367,11 +369,15 @@ const DemographicsSection = ({ phase }: Props) => {
   if (redesigned) {
     return (
       <WordExportableInsight exportId="demographics">
-        <DashboardCard
-          title={formatMessage(messages.demographicsAndAudienceCard)}
+        <section
+          className={styles.cards}
+          aria-label={formatMessage(messages.demographicsAndAudience)}
+          data-cy="e2e-insights-demographics"
         >
-          <Box position="relative">{tabs}</Box>
-        </DashboardCard>
+          {fields.map((field) => (
+            <DemographicFieldCard key={field.field_id} field={field} />
+          ))}
+        </section>
       </WordExportableInsight>
     );
   }
