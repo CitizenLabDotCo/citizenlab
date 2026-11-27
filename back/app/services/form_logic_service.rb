@@ -178,13 +178,22 @@ class FormLogicService
       end
     end
 
-    # Remove any select options that do not exist - unless 'any_other_answer' or 'no_answer'
-    if field.supports_options?
-      allowed_if_values = field.options.pluck(:id)
-      allowed_if_values << 'any_other_answer'
-      allowed_if_values << 'no_answer' unless field.required?
-      rules.reject! { |rule| allowed_if_values.exclude?(rule['if']) }
-    end
+    # Remove rules on answers the question can't have, such as deleted options or values above the scale maximum
+    allowed_if_values = allowed_if_values(field)
+    rules.reject! { |rule| allowed_if_values.exclude?(rule['if']) } if allowed_if_values
     field.update! logic: logic
+  end
+
+  def allowed_if_values(field)
+    answer_values = if field.supports_options?
+      field.options.pluck(:id)
+    elsif field.supports_linear_scale?
+      (1..field.maximum).to_a
+    end
+    return unless answer_values
+
+    answer_values << 'any_other_answer'
+    answer_values << 'no_answer' unless field.required?
+    answer_values
   end
 end
