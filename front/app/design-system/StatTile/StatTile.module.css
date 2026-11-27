@@ -18,3 +18,16 @@
   composes: stat from '../typography.module.css';
   color: var(--gv-text-primary);
 }
+
+.hinted {
+  cursor: default;
+  outline: none;
+}
+
+/* Not a React Aria element, so it draws the design-system ring itself instead of the app's. */
+.hinted:focus-visible,
+.hinted:global(.focus-visible) {
+  outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
+  outline-offset: var(--gv-focus-ring-offset);
+  box-shadow: none;
+}

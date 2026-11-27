@@ -20,3 +20,15 @@ export const Default: Story = {
     </div>
   ),
 };
+
+export const WithTooltip: Story = {
+  render: (args) => (
+    <div style={{ width: 183.5 }}>
+      <StatTile
+        label={args.label}
+        value={args.value}
+        tooltip="Unique visitors to the project during the phase dates."
+      />
+    </div>
+  ),
+};
