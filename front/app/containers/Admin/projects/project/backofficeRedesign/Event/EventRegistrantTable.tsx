@@ -1,5 +1,6 @@
 import React from 'react';
 
+import dayFirstLocale from 'design-system/DateField/dayFirstLocale';
 import Pagination from 'design-system/Pagination';
 import Table, {
   Cell,
@@ -11,6 +12,8 @@ import Table, {
 } from 'design-system/Table';
 
 import { AttendanceSort, IEventAttendances } from 'api/event_attendance/types';
+
+import useLocale from 'hooks/useLocale';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -35,7 +38,14 @@ const EventRegistrantTable = ({
   page,
   onPageChange,
 }: Props) => {
-  const { formatMessage, formatDate } = useIntl();
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
+  // The library writes the registration date day first: "19 Nov 2026".
+  const dateFormat = new Intl.DateTimeFormat(dayFirstLocale(locale), {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
   const attendees = new Map(
     attendances.included.map((user) => [user.id, user])
   );
@@ -92,11 +102,9 @@ const EventRegistrantTable = ({
                 <Cell tone="secondary">{user?.attributes.email}</Cell>
                 <Cell tone="secondary">
                   <span className={styles.date}>
-                    {formatDate(attendance.attributes.created_at, {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                    })}
+                    {dateFormat.format(
+                      new Date(attendance.attributes.created_at)
+                    )}
                   </span>
                 </Cell>
               </Row>

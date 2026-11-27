@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import saveAs from 'file-saver';
 
 import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
+import Disclosure from 'design-system/Disclosure';
 import Link from 'design-system/Link';
+import Menu, { MenuItem } from 'design-system/Menu';
 import Spinner from 'design-system/Spinner';
+import StatRow from 'design-system/StatRow';
 import Text from 'design-system/Text';
 
 import { AttendanceSort, InputParameters } from 'api/event_attendance/types';
@@ -114,30 +116,38 @@ const EventManager = ({ event }: Props) => {
       side={
         <div className={styles.side}>
           {event?.attributes.maximum_attendees != null && attendances && (
-            <div className={styles.spots}>
-              <Text as="span" variant="ui" tone="secondary">
-                {formatMessage(messages.spotsLeft)}
-              </Text>
-              <Text as="span" variant="ui" tone="secondary">
-                {formatMessage(messages.remainingSpots, {
-                  remaining: Math.max(
-                    0,
-                    event.attributes.maximum_attendees - unfilteredTotal
-                  ),
-                  total: event.attributes.maximum_attendees,
-                })}
-              </Text>
+            <div className={styles.stats}>
+              <StatRow
+                label={formatMessage(messages.spotsLeft)}
+                value={
+                  <>
+                    {Math.max(
+                      0,
+                      event.attributes.maximum_attendees - unfilteredTotal
+                    )}{' '}
+                    <Text as="span" variant="small" tone="secondary">
+                      {formatMessage(messages.spotsTotal, {
+                        total: event.attributes.maximum_attendees,
+                      })}
+                    </Text>
+                  </>
+                }
+              />
             </div>
           )}
           {event && unfilteredTotal > 0 && (
-            <Button
-              size={32}
-              trailingIcon="download-16"
-              isPending={exporting}
-              onPress={exportRegistrants}
-            >
-              {formatMessage(messages.exportRegistrants)}
-            </Button>
+            <Disclosure
+              header="menu"
+              title={formatMessage(messages.exportRegistrants)}
+              isDisabled={exporting}
+              menu={
+                <Menu aria-label={formatMessage(messages.exportRegistrants)}>
+                  <MenuItem icon="download-16" onAction={exportRegistrants}>
+                    {formatMessage(messages.exportAllRegistrants)}
+                  </MenuItem>
+                </Menu>
+              }
+            />
           )}
           {exportError && (
             <Text variant="small" tone="danger" role="alert">

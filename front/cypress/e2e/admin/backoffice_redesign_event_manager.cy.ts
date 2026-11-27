@@ -123,6 +123,7 @@ describe('Redesigned event Manage view', () => {
       cy.contains('21 registrants').should('be.visible');
       cy.intercept('GET', `**/events/${eventId}/attendees_xlsx*`).as('export');
       cy.contains('button', 'Export registrants').click();
+      cy.contains('[role="menuitem"]', 'All registrants (Excel)').click();
       cy.wait('@export').its('response.statusCode').should('eq', 200);
       cy.readFile(
         `${Cypress.config('downloadsFolder')}/registrants-${eventTitle}.xlsx`,

@@ -39,6 +39,11 @@
   width: 480px;
 }
 
+.phaseSlot[data-wide] {
+  flex-basis: 560px;
+  width: 560px;
+}
+
 .hidden {
   display: none;
 }

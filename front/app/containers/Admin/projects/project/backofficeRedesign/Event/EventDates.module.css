@@ -1,27 +1,22 @@
-.grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--gv-space-12) var(--gv-space-8);
-  align-items: start;
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
 }
 
 .endDate {
   display: flex;
   align-items: flex-start;
   gap: var(--gv-space-4);
-  min-width: 0;
 }
 
-.endDatePicker {
+.endDate > :first-child {
   flex: 1;
-  min-width: 0;
 }
 
-/* Lines the 24 px button up with the 36 px input under the label. */
+/* Centres the 24 px button on the 36 px field. */
 .removeEndDate {
-  margin-top: calc(
-    var(--gv-font-line-height-20) + var(--gv-space-8) + var(--gv-space-6)
-  );
+  margin-top: var(--gv-space-6);
 }
 
 .footer {

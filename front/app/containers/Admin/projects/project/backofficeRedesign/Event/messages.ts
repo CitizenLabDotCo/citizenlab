@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.exportRegistrants',
     defaultMessage: 'Export registrants',
   },
+  exportAllRegistrants: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.exportAllRegistrants',
+    defaultMessage: 'All registrants (Excel)',
+  },
   registrantCount: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.registrantCount',
     defaultMessage: '{count, plural, one {# registrant} other {# registrants}}',
@@ -65,9 +69,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.spotsLeft',
     defaultMessage: 'Spots left',
   },
-  remainingSpots: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.remainingSpots',
-    defaultMessage: '{remaining} of {total}',
+  spotsTotal: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.spotsTotal',
+    defaultMessage: 'of {total}',
   },
   registrantsLoadError: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.registrantsLoadError',
@@ -110,6 +114,10 @@ export default defineMessages({
   addEndDate: {
     id: 'app.containers.Admin.projects.project.event.addEndDate',
     defaultMessage: 'Add end date',
+  },
+  eventTimes: {
+    id: 'app.containers.Admin.projects.project.event.eventTimes',
+    defaultMessage: 'Event times',
   },
   removeEndDate: {
     id: 'app.containers.Admin.projects.project.event.removeEndDate',

@@ -63,6 +63,8 @@ interface Props {
   phasePending?: boolean;
   draft?: Draft;
   sidePanel?: ReactNode;
+  // An event's setup panel is 560 wide; a phase's is 480.
+  wideSidePanel?: boolean;
   withParticipation?: boolean;
   activeView?: PhaseViewKey;
   viewSwitch?: ReactNode;
@@ -75,6 +77,7 @@ const ProjectWorkspace = ({
   phasePending = false,
   draft,
   sidePanel,
+  wideSidePanel = false,
   withParticipation = true,
   activeView: providedActiveView,
   viewSwitch,
@@ -171,7 +174,10 @@ const ProjectWorkspace = ({
   );
   // A phase has a single panel: its build fields, then its settings.
   const phaseSlot = (
-    <div className={`${styles.phaseSlot} ${showPanels ? '' : styles.hidden}`}>
+    <div
+      className={`${styles.phaseSlot} ${showPanels ? '' : styles.hidden}`}
+      data-wide={wideSidePanel || undefined}
+    >
       {phasePending ? (
         <PhasePanelSkeleton />
       ) : (

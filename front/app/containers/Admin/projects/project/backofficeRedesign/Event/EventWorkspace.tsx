@@ -78,6 +78,7 @@ const EventWorkspace = ({ project, eventId, onCreate }: Props) => {
           ),
         }}
         sidePanel={<EventSetup projectId={project.id} form={form} />}
+        wideSidePanel
         withParticipation={false}
         activeView={activeView}
         viewSwitch={

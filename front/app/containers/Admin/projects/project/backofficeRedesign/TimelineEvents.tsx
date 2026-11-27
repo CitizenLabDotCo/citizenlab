@@ -24,6 +24,7 @@ import Link from 'utils/cl-router/Link';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { useParams } from 'utils/router';
 
+import eventMessages from './Event/messages';
 import messages from './messages';
 import styles from './TimelineEvents.module.css';
 
@@ -84,8 +85,17 @@ const TimelineEvents = ({ projectId }: Props) => {
 
       <div className={styles.events}>
         {events.data.map((event) => {
-          const { start_at, end_at, title_multiloc } = event.attributes;
+          const { start_at, end_at, title_multiloc, attendees_count } =
+            event.attributes;
           const status = pastPresentOrFuture([start_at, end_at]);
+          const meta = [
+            formatMessage(STATUS_LABELS[status]),
+            formatEventDate(start_at, end_at, dateLocale),
+            attendees_count > 0 &&
+              formatMessage(eventMessages.registrantCount, {
+                count: attendees_count,
+              }),
+          ].filter(Boolean);
 
           return (
             <Link
@@ -99,8 +109,7 @@ const TimelineEvents = ({ projectId }: Props) => {
                 {localize(title_multiloc)}
               </Text>
               <Text as="span" variant="small" tone="secondary">
-                {formatMessage(STATUS_LABELS[status])} ·{' '}
-                {formatEventDate(start_at, end_at, dateLocale)}
+                {meta.join(' · ')}
               </Text>
             </Link>
           );

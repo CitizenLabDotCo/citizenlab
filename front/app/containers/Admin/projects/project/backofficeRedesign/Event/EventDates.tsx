@@ -4,19 +4,18 @@ import { addMinutes, isSameDay } from 'date-fns';
 import { CLErrors } from 'typings';
 
 import Button from 'design-system/Button';
-import DatePicker from 'design-system/DatePicker';
 import { CalendarDate, Time } from 'design-system/dates';
+import { DateRow, TimeRangeRow } from 'design-system/DateTimeRow';
 import IconButton from 'design-system/IconButton';
-import TimeField from 'design-system/TimeField';
 
 import { IEventProperties } from 'api/events/types';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import useEventDateTimes from 'containers/Admin/projects/_shared/events/useEventDateTimes';
-import dateTimeMessages from 'containers/Admin/projects/project/events/components/DateTimeSelection/messages';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
+import timeMessages from 'components/admin/DatePickers/DatePhasePicker/messages';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
@@ -82,10 +81,10 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
 
   return (
     <SetupCard title={formatMessage(eventMessages.eventDates)}>
-      <div className={styles.grid}>
-        <DatePicker
+      <div className={styles.rows}>
+        <DateRow
           id="event-start-date"
-          label={formatMessage(phaseSetupMessages.startDate)}
+          aria-label={formatMessage(phaseSetupMessages.startDate)}
           value={toCalendarDate(startAtDate)}
           onChange={(day) => {
             if (day) {
@@ -95,22 +94,20 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
           isInvalid={!!startError}
           errorMessage={startError}
         />
-        {multiDay ? (
+        {multiDay && (
           <div className={styles.endDate}>
-            <div className={styles.endDatePicker}>
-              <DatePicker
-                id="event-end-date"
-                label={formatMessage(phaseSetupMessages.endDate)}
-                value={toCalendarDate(endAtDate)}
-                onChange={(day) => {
-                  if (day) {
-                    updateEndAt(withTimeOf(fromCalendarDate(day), endAtDate));
-                  }
-                }}
-                isInvalid={!!endError}
-                errorMessage={endError}
-              />
-            </div>
+            <DateRow
+              id="event-end-date"
+              aria-label={formatMessage(phaseSetupMessages.endDate)}
+              value={toCalendarDate(endAtDate)}
+              onChange={(day) => {
+                if (day) {
+                  updateEndAt(withTimeOf(fromCalendarDate(day), endAtDate));
+                }
+              }}
+              isInvalid={!!endError}
+              errorMessage={endError}
+            />
             <div className={styles.removeEndDate}>
               <IconButton
                 icon="x-14"
@@ -120,24 +117,23 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
               />
             </div>
           </div>
-        ) : (
-          <span />
         )}
-
-        <TimeField
-          label={formatMessage(dateTimeMessages.dateStartLabel)}
-          value={toTime(startAtDate)}
-          onChange={(time) => {
-            if (time) updateStartAt(withPickedTime(startAtDate, time));
+        <TimeRangeRow
+          aria-label={formatMessage(messages.eventTimes)}
+          start={{
+            'aria-label': formatMessage(timeMessages.startTimeLabel),
+            value: toTime(startAtDate),
+            onChange: (time) => {
+              if (time) updateStartAt(withPickedTime(startAtDate, time));
+            },
           }}
-        />
-        <TimeField
-          label={formatMessage(dateTimeMessages.datesEndLabel)}
-          value={toTime(endAtDate)}
-          onChange={(time) => {
-            if (time) updateEndAt(withPickedTime(endAtDate, time));
+          end={{
+            'aria-label': formatMessage(timeMessages.endTimeLabel),
+            value: toTime(endAtDate),
+            onChange: (time) => {
+              if (time) updateEndAt(withPickedTime(endAtDate, time));
+            },
           }}
-          isInvalid={!multiDay && !!endError}
           errorMessage={multiDay ? undefined : endError}
         />
       </div>

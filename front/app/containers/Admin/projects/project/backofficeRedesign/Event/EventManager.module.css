@@ -3,15 +3,14 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  gap: var(--gv-space-16);
-  padding: var(--gv-space-24);
+  gap: var(--gv-space-18);
+  padding: var(--gv-space-24) var(--gv-space-18);
 }
 
-.spots {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--gv-space-8);
+/* The stat tiles sit in a bordered card on the white side panel. */
+.stats {
+  border: var(--gv-border-width-1) solid var(--gv-border-divider);
+  border-radius: var(--gv-radius-8);
 }
 
 .toolbar {

@@ -39,7 +39,7 @@ const DeleteEventButton = ({ projectId, eventId }: Props) => {
 
   return (
     <div className={styles.footer}>
-      <Button variant="danger" size={32} onPress={() => setConfirmOpen(true)}>
+      <Button variant="quietDanger" size={32} onPress={() => setConfirmOpen(true)}>
         {formatMessage(messages.deleteEvent)}
       </Button>
       <AlertDialog
