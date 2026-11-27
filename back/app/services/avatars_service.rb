@@ -13,22 +13,22 @@ class AvatarsService
   # @param limit[Integer] Limit the number of users returned. Does not affect the total count
   # @return [Hash] A hash containing the users with avatars and total count of participants
   def avatars_for_project(project, users: User.registered, limit: 5)
-    Rails.cache.fetch("#{project.cache_key}/user_avatars", expires_in: 1.day) do
+    user_ids_and_count = Rails.cache.fetch("#{project.cache_key}/user_avatar_ids", expires_in: 1.day) do
       participants = @participants_service.project_participants(project)
-      user_ids = fetch_user_ids_and_count(participants, limit)
       participant_count = @participants_service.project_participants_count(project)
-      users_and_count(user_ids, participant_count)
+      fetch_user_ids_and_count(participants, limit).merge(total_count: participant_count)
     end
+    users_and_count(user_ids_and_count)
   end
 
   # Returns a hash containing a list of users with avatars for a folder and the total number of participants.
   def avatars_for_folder(folder, users: User.registered, limit: 5)
-    Rails.cache.fetch("#{folder.cache_key}/user_avatars", expires_in: 1.day) do
+    user_ids_and_count = Rails.cache.fetch("#{folder.cache_key}/user_avatar_ids", expires_in: 1.day) do
       participants = @participants_service.projects_participants(folder.projects)
-      user_ids = fetch_user_ids_and_count(participants, limit)
       participant_count = @participants_service.folder_participants_count(folder)
-      users_and_count(user_ids, participant_count)
+      fetch_user_ids_and_count(participants, limit).merge(total_count: participant_count)
     end
+    users_and_count(user_ids_and_count)
   end
 
   # Returns a hash containing a list of users with avatars for a group and the total member count.
@@ -72,10 +72,10 @@ class AvatarsService
   private
 
   # Given a hash of user ids and count, returns a hash of users and the count.
-  def users_and_count(user_ids_and_count, count = nil)
+  def users_and_count(user_ids_and_count)
     {
       users: User.where(id: [user_ids_and_count.fetch(:user_ids)]),
-      total_count: count || user_ids_and_count.fetch(:total_count)
+      total_count: user_ids_and_count.fetch(:total_count)
     }
   end
 

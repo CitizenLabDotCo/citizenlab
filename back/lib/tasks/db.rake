@@ -37,7 +37,11 @@ namespace :db do
     File.write(structure_file, processed_schema)
   end
 
+  # Re-enabled on every dump: ros-apartment dumps the schema a second time after migrating the
+  # tenants, and a plain invoke would skip post-processing that second dump.
   Rake::Task['db:schema:dump'].enhance do
-    Rake::Task['db:postprocess_structure_sql'].invoke
+    postprocess = Rake::Task['db:postprocess_structure_sql']
+    postprocess.reenable
+    postprocess.invoke
   end
 end

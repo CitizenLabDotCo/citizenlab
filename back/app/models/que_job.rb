@@ -21,9 +21,9 @@
 #
 # Indexes
 #
-#  que_jobs_args_gin_idx    (args) USING gin
-#  que_jobs_data_gin_idx    (data) USING gin
-#  que_jobs_kwargs_gin_idx  (kwargs) USING gin
+#  que_jobs_args_gin_idx    (args jsonb_path_ops) USING gin
+#  que_jobs_data_gin_idx    (data jsonb_path_ops) USING gin
+#  que_jobs_kwargs_gin_idx  (kwargs jsonb_path_ops) USING gin
 #  que_poll_idx             (job_schema_version,queue,priority,run_at,id) WHERE ((finished_at IS NULL) AND (expired_at IS NULL))
 #
 require 'que/active_record/model'

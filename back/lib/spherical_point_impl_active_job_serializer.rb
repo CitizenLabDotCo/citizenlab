@@ -21,8 +21,6 @@ class SphericalPointImplActiveJobSerializer < ActiveJob::Serializers::ObjectSeri
     factory.point(*attrs)
   end
 
-  private
-
   def klass
     RGeo::Geographic::SphericalPointImpl
   end

@@ -15,5 +15,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'mcp', '~> 1.8'
   s.add_dependency 'pg_query', '~> 6.0'
-  s.add_dependency 'rails', '~> 7.2'
+  s.add_dependency 'rails', '>= 7.2', '< 8.2'
 end

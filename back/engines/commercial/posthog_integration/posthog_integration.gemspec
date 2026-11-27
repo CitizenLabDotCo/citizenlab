@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'http', '~> 5.1'
   s.add_dependency 'posthog-ruby', '~> 2.1'
-  s.add_dependency 'rails', '~> 7.2'
+  s.add_dependency 'rails', '>= 7.2', '< 8.2'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'
