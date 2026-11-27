@@ -346,16 +346,40 @@ describe FormLogicService do
       expect(question1.reload.logic).to eq('rules' => [{ 'if' => option1.id, 'goto_page_id' => page2.id }])
     end
 
-    it 'keeps the second of two consecutive rules with unknown options (currently existing bug, B5)' do
+    it 'removes every one of several consecutive rules with unknown options' do
       question1.update!(logic: { 'rules' => [
         { 'if' => 'UNKNOWN_1', 'goto_page_id' => page2.id },
         { 'if' => 'UNKNOWN_2', 'goto_page_id' => page2.id },
+        { 'if' => 'UNKNOWN_3', 'goto_page_id' => page2.id },
         { 'if' => option1.id, 'goto_page_id' => page2.id }
       ] })
 
       form_logic.replace_temp_ids!({}, {})
 
-      expect(question1.reload.logic['rules'].pluck('if')).to eq ['UNKNOWN_2', option1.id]
+      expect(question1.reload.logic['rules'].pluck('if')).to eq [option1.id]
+    end
+
+    it 'keeps the rules of new options next to rules with unknown options' do
+      question1.update!(logic: { 'rules' => [
+        { 'if' => 'UNKNOWN_1', 'goto_page_id' => page2.id },
+        { 'if' => 'TEMP-ID-OPTION', 'goto_page_id' => page2.id },
+        { 'if' => 'UNKNOWN_2', 'goto_page_id' => page2.id }
+      ] })
+
+      form_logic.replace_temp_ids!({}, { 'TEMP-ID-OPTION' => option2.id })
+
+      expect(question1.reload.logic['rules'].pluck('if')).to eq [option2.id]
+    end
+
+    it 'leaves no rules when all of them have unknown options' do
+      question1.update!(logic: { 'rules' => [
+        { 'if' => 'UNKNOWN_1', 'goto_page_id' => page2.id },
+        { 'if' => 'UNKNOWN_2', 'goto_page_id' => page2.id }
+      ] })
+
+      form_logic.replace_temp_ids!({}, {})
+
+      expect(question1.reload.logic).to eq('rules' => [])
     end
 
     it 'keeps no_answer on an optional select and drops it on a required select' do
@@ -377,14 +401,48 @@ describe FormLogicService do
       expect(question1.reload.logic).to eq('rules' => [{ 'if' => option2.id, 'goto_page_id' => last_page.id }])
     end
 
-    it 'does not check the values of linear scale rules (currently existing bug, B14)' do
-      scale = fields[1]
-      scale.update!(logic: { 'rules' => [{ 'if' => 99, 'goto_page_id' => page2.id }, { 'if' => '2', 'goto_page_id' => page2.id }] })
+    describe 'linear scale rules' do
+      let(:scale) { fields[1] }
 
-      form_logic.replace_temp_ids!({}, {})
+      it 'removes the rules on values the scale can not have' do
+        scale.update!(maximum: 5, required: false, logic: { 'rules' => [
+          { 'if' => 0, 'goto_page_id' => page2.id },
+          { 'if' => 1, 'goto_page_id' => page2.id },
+          { 'if' => '2', 'goto_page_id' => page2.id },
+          { 'if' => 5, 'goto_page_id' => page2.id },
+          { 'if' => 6, 'goto_page_id' => page2.id },
+          { 'if' => 99, 'goto_page_id' => page2.id },
+          { 'if' => 'any_other_answer', 'goto_page_id' => page2.id },
+          { 'if' => 'no_answer', 'goto_page_id' => page2.id }
+        ] })
 
-      expect(scale.reload.logic['rules'].pluck('if')).to eq [99, '2']
-      expect(form_logic).to be_valid
+        form_logic.replace_temp_ids!({}, {})
+
+        expect(scale.reload.logic['rules'].pluck('if')).to eq [1, 5, 'any_other_answer', 'no_answer']
+        expect(form_logic).to be_valid
+      end
+
+      it 'removes no_answer from a required scale and keeps any_other_answer' do
+        scale.update!(required: true, logic: { 'rules' => [
+          { 'if' => 'no_answer', 'goto_page_id' => page2.id },
+          { 'if' => 'any_other_answer', 'goto_page_id' => page2.id }
+        ] })
+
+        form_logic.replace_temp_ids!({}, {})
+
+        expect(scale.reload.logic['rules'].pluck('if')).to eq ['any_other_answer']
+      end
+
+      it 'removes the rules above the maximum of the scale' do
+        scale.update!(maximum: 3, logic: { 'rules' => [
+          { 'if' => 3, 'goto_page_id' => page2.id },
+          { 'if' => 4, 'goto_page_id' => page2.id }
+        ] })
+
+        form_logic.replace_temp_ids!({}, {})
+
+        expect(scale.reload.logic['rules'].pluck('if')).to eq [3]
+      end
     end
 
     it 'replaces a temp id in page logic and leaves unknown ids as they are' do

@@ -3,6 +3,50 @@
 require 'rails_helper'
 
 RSpec.describe IdeaCustomFields::UpdateAllService do
+  describe 'stale form data' do
+    let(:phase) { create(:native_survey_phase) }
+    let!(:custom_form) { create(:custom_form, participation_context: phase, fields_last_updated_at: 1.hour.ago) }
+    let!(:page) { create(:custom_field_page, resource: custom_form) }
+    let!(:end_page) { create(:custom_field_form_end_page, resource: custom_form) }
+    let(:user) { create(:admin) }
+
+    let(:custom_fields_params) do
+      [
+        { id: page.id, input_type: 'page', page_layout: 'default', title_multiloc: { 'en' => 'Changed' } },
+        { id: end_page.id, input_type: 'page', page_layout: 'default', key: 'form_end', title_multiloc: end_page.title_multiloc }
+      ]
+    end
+
+    it 'rejects the save when another save committed after the form was loaded' do
+      loaded_form = CustomForm.find(custom_form.id)
+      opened_at = loaded_form.fields_last_updated_at
+      CustomForm.find(custom_form.id).fields_updated!
+
+      result = described_class.new(loaded_form, user, custom_fields: custom_fields_params, fields_last_updated_at: opened_at.iso8601).update_all
+
+      expect(result.errors).to eq({ form: [{ error: 'stale_data' }] })
+      expect(page.reload.title_multiloc).not_to eq({ 'en' => 'Changed' })
+    end
+
+    it 'saves when no other save committed after the form was loaded' do
+      loaded_form = CustomForm.find(custom_form.id)
+
+      result = described_class.new(loaded_form, user, custom_fields: custom_fields_params, fields_last_updated_at: loaded_form.fields_last_updated_at.iso8601).update_all
+
+      expect(result).to be_success
+      expect(page.reload.title_multiloc).to eq({ 'en' => 'Changed' })
+    end
+
+    it 'locks the form row, so concurrent saves of the form run one after the other' do
+      opened_at = custom_form.fields_last_updated_at.iso8601
+      expect(custom_form).to receive(:lock!).and_call_original
+
+      result = described_class.new(custom_form, user, custom_fields: custom_fields_params, fields_last_updated_at: opened_at).update_all
+
+      expect(result).to be_success
+    end
+  end
+
   describe 'performance' do
     let(:phase) { create(:native_survey_phase) }
     let!(:custom_form) { create(:custom_form, participation_context: phase) }

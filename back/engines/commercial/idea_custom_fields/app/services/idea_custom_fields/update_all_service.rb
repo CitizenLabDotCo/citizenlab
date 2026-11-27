@@ -18,16 +18,20 @@ module IdeaCustomFields
     end
 
     def update_all
-      validation_errors = validate
-      return Result.failure(validation_errors) if validation_errors
-
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
 
-      update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
-      @custom_form.reload if @custom_form.persisted?
-      update_logic!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
-      update_form!
+      ActiveRecord::Base.transaction do
+        # Concurrent saves of the same form wait here, so the stale check sees the other save's changes.
+        @custom_form.lock! if @custom_form.persisted?
+        validation_errors = validate
+        raise UpdateAllFailedError, validation_errors if validation_errors
+
+        update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
+        @custom_form.reload if @custom_form.persisted?
+        update_logic!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
+        update_form!
+      end
 
       Result.success(IdeaCustomFieldsService.new(@custom_form).all_fields)
     rescue UpdateAllFailedError => e
@@ -63,40 +67,38 @@ module IdeaCustomFields
       given_fields = @custom_fields_from_params
       given_field_ids = given_fields.pluck(:id)
 
-      ActiveRecord::Base.transaction do
-        delete_fields = []
-        delete_fields = fields.reject { |field| given_field_ids.include?(field.id) } if @custom_form.persisted?
-        delete_fields.each { |field| delete_field!(field) }
+      delete_fields = []
+      delete_fields = fields.reject { |field| given_field_ids.include?(field.id) } if @custom_form.persisted?
+      delete_fields.each { |field| delete_field!(field) }
 
-        processed_field_ids = []
+      processed_field_ids = []
 
-        given_fields.each_with_index do |field_params, index|
-          options_params = field_params.delete(:options)
-          statements_params = field_params.delete(:matrix_statements)
+      given_fields.each_with_index do |field_params, index|
+        options_params = field_params.delete(:options)
+        statements_params = field_params.delete(:matrix_statements)
 
-          if field_params[:id] && fields_by_id.key?(field_params[:id])
-            field = fields_by_id[field_params[:id]]
-            next unless update_field!(field, field_params, index)
-          else
-            field = create_field!(field_params, page_temp_ids_to_ids_mapping, index)
-            next unless field
-          end
-
-          if options_params
-            option_mapping = update_options!(field, options_params, index)
-            option_temp_ids_to_ids_mapping.merge!(option_mapping)
-          end
-
-          update_statements!(field, statements_params, index) if statements_params
-          relate_map_config_to_field(field, field_params, index)
-          processed_field_ids << field.id
-          count_fields(field)
+        if field_params[:id] && fields_by_id.key?(field_params[:id])
+          field = fields_by_id[field_params[:id]]
+          next unless update_field!(field, field_params, index)
+        else
+          field = create_field!(field_params, page_temp_ids_to_ids_mapping, index)
+          next unless field
         end
 
-        raise UpdateAllFailedError, @errors if @errors.present?
+        if options_params
+          option_mapping = update_options!(field, options_params, index)
+          option_temp_ids_to_ids_mapping.merge!(option_mapping)
+        end
 
-        CustomField.where(resource: @custom_form).bulk_reorder!(processed_field_ids)
+        update_statements!(field, statements_params, index) if statements_params
+        relate_map_config_to_field(field, field_params, index)
+        processed_field_ids << field.id
+        count_fields(field)
       end
+
+      raise UpdateAllFailedError, @errors if @errors.present?
+
+      CustomField.where(resource: @custom_form).bulk_reorder!(processed_field_ids)
     end
 
     def create_field!(field_params, page_temp_ids_to_ids_mapping, index)
@@ -199,7 +201,7 @@ module IdeaCustomFields
       return unless image_id
 
       if image_id == ''
-        option.image.destroy!
+        option.image&.destroy!
       else
         begin
           image = CustomFieldOptionImage.find(image_id)

@@ -70,6 +70,20 @@ resource 'Phases' do
       expect(seen_counts).to eq [3, 1, 2]
     end
 
+    example 'Counts a question after a rating question as seen only by the responses whose rating does not skip it' do
+      rating_field = create(:custom_field_rating, resource: custom_form, key: 'rating_field', maximum: 5, required: false)
+      rating_field.insert_at(1)
+      rating_field.update!(logic: { rules: [{ if: 1, goto_page_id: page3.id }, { if: 5, goto_page_id: form_end.id }] })
+      respond(rating_field: 1, page3_question: 'a')
+      respond(rating_field: 5)
+      respond(rating_field: 3, page2_question: 'b', page3_question: 'c')
+
+      do_request
+
+      assert_status 200
+      expect([rating_field, page2_question, page3_question].map { |field| result_for(field)[:totalResponseCount] }).to eq [3, 1, 2]
+    end
+
     example 'Applies the page default when no question rule on the page matches, unlike the respondent form (currently existing bug, B6)', document: false do
       page1.update!(logic: { next_page_id: page3.id })
       select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: form_end.id }] })
@@ -152,17 +166,6 @@ resource 'Phases' do
       assert_status 200
       expect(result_for(select_field)).to be_nil
       expect([page2_question, page3_question].map { |field| result_for(field)[:totalResponseCount] }).to eq [1, 1]
-    end
-
-    example 'Counts no question after a jump to a disabled page as seen (currently existing bug, N4)', document: false do
-      page2.update!(enabled: false)
-      select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: page2.id }] })
-      respond(select_field: 'cat', page2_question: 'b', page3_question: 'c')
-
-      do_request
-
-      assert_status 200
-      expect(seen_counts).to eq [1, 1, 0]
     end
 
     example 'Leaves draft responses out of the counts', document: false do
@@ -248,15 +251,6 @@ resource 'Phases' do
 
       assert_status 200
       expect([page2_question, page3_question].map { |field| result_for(field)[:hidden] }).to eq [true, true]
-    end
-
-    example '[error] Fails when a ranking with logic has ranked options without a rule (currently existing bug, N1)', document: false do
-      ranking_field = create(:custom_field_ranking, :with_options, resource: custom_form, key: 'ranking_field')
-      by_train = ranking_field.options.find_by(key: 'by_train')
-      ranking_field.update!(logic: { rules: [{ if: by_train.id, goto_page_id: form_end.id }] })
-      respond(ranking_field: %w[by_bike by_train])
-
-      expect { do_request }.to raise_error(ArgumentError, /comparison of/)
     end
 
     context 'when user fields are asked in the form' do

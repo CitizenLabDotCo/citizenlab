@@ -118,6 +118,8 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, absence: true, unless: :select_count_enabled_and_supported?
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
+  # Pages cannot be disabled
+  validates :enabled, inclusion: { in: [true] }, if: :page?
   validates :question_category, absence: true, unless: :supports_category?
   validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
   validates :maximum, presence: true, inclusion: LINEAR_SCALE_MAX_RANGE, if: :supports_linear_scale?

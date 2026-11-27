@@ -90,7 +90,7 @@ resource 'Idea Custom Fields' do
       expect(response_logic(select_field)).to eq({ rules: [{ if: dog.id, goto_page_id: page3.id }] })
     end
 
-    example 'Keeps the second of two consecutive rules with unknown options (currently existing bug, B5)', document: false do
+    example 'Drops each of two consecutive rules with unknown options', document: false do
       rules = [
         { if: 'unknown-option-1', goto_page_id: page3.id },
         { if: 'unknown-option-2', goto_page_id: page3.id },
@@ -99,7 +99,7 @@ resource 'Idea Custom Fields' do
       do_request form_params(select_field => { logic: { rules: } })
 
       assert_status 200
-      expect(response_logic(select_field)[:rules].pluck(:if)).to eq ['unknown-option-2', dog.id]
+      expect(response_logic(select_field)[:rules].pluck(:if)).to eq [dog.id]
     end
 
     example 'Drops the rule of an option deleted in the same request', document: false do
@@ -124,30 +124,47 @@ resource 'Idea Custom Fields' do
       expect(response_logic(select_field)).to eq({ rules: [{ if: bird.id, goto_page_id: page3.id }] })
     end
 
-    example 'Stores linear scale rules with integer and string values as sent (currently existing bug, B14)', document: false do
-      rules = [{ if: 1, goto_page_id: form_end.id }, { if: '2', goto_page_id: form_end.id }, { if: 9, goto_page_id: form_end.id }]
+    example 'Keeps linear scale rules on the lowest and highest value of the scale', document: false do
+      rules = [{ if: 1, goto_page_id: page3.id }, { if: 5, goto_page_id: form_end.id }]
       do_request form_params(scale_field => { logic: { rules: } })
 
       assert_status 200
-      expect(scale_field.reload.logic['rules'].pluck('if')).to eq [1, '2', 9]
+      expect(scale_field.reload.logic['rules'].pluck('if')).to eq [1, 5]
     end
 
-    example 'Keeps the no_answer rule of a linear scale that is made required (currently existing bug, N5)', document: false do
-      scale_field.update!(logic: { rules: [{ if: 'no_answer', goto_page_id: page3.id }] })
-      do_request form_params(scale_field => { required: true, logic: { rules: [{ if: 'no_answer', goto_page_id: page3.id }] } })
+    example 'Drops linear scale rules on a string or on a value outside the scale without an error', document: false do
+      rules = [
+        { if: 0, goto_page_id: form_end.id },
+        { if: 1, goto_page_id: form_end.id },
+        { if: '2', goto_page_id: form_end.id },
+        { if: 6, goto_page_id: form_end.id },
+        { if: 99, goto_page_id: form_end.id },
+        { if: 'yes', goto_page_id: form_end.id }
+      ]
+      do_request form_params(scale_field => { logic: { rules: } })
+
+      assert_status 200
+      expect(scale_field.reload.logic['rules'].pluck('if')).to eq [1]
+    end
+
+    example 'Drops the no_answer rule of a linear scale that is made required', document: false do
+      rules = [{ if: 'no_answer', goto_page_id: page3.id }, { if: 2, goto_page_id: form_end.id }, { if: 'any_other_answer', goto_page_id: page3.id }]
+      scale_field.update!(logic: { rules: })
+      do_request form_params(scale_field => { required: true, logic: { rules: } })
 
       assert_status 200
       expect(scale_field.reload.required).to be true
-      expect(scale_field.logic).to eq({ 'rules' => [{ 'if' => 'no_answer', 'goto_page_id' => page3.id }] })
+      expect(scale_field.logic['rules'].pluck('if')).to eq [2, 'any_other_answer']
     end
 
-    example 'Keeps a linear scale rule above a lowered maximum (currently existing bug, N5)', document: false do
-      scale_field.update!(logic: { rules: [{ if: 5, goto_page_id: form_end.id }] })
-      do_request form_params(scale_field => { maximum: 3, logic: { rules: [{ if: 5, goto_page_id: form_end.id }] } })
+    example 'Drops the linear scale rules above a lowered maximum', document: false do
+      rules = [{ if: 3, goto_page_id: page3.id }, { if: 4, goto_page_id: form_end.id }, { if: 5, goto_page_id: form_end.id }]
+      scale_field.update!(logic: { rules: })
+      do_request form_params(scale_field => { maximum: 3, logic: { rules: } })
 
       assert_status 200
       expect(scale_field.reload.maximum).to eq 3
-      expect(scale_field.logic['rules'].pluck('if')).to eq [5]
+      expect(scale_field.logic['rules'].pluck('if')).to eq [3]
     end
 
     example 'Stores any_other_answer and no_answer rules of a linear scale', document: false do
@@ -176,11 +193,49 @@ resource 'Idea Custom Fields' do
       expect(response_logic(page1)).to eq({ next_page_id: page2.id })
     end
 
-    example 'Allows a jump to a disabled page (currently existing bug, N4)', document: false do
-      do_request form_params(page3 => { enabled: false }, select_field => { logic: { rules: [{ if: cat.id, goto_page_id: page3.id }] } })
+    example '[error] Rejects a disabled page and persists nothing', document: false do
+      do_request form_params(
+        page3 => { enabled: false },
+        select_field => { title_multiloc: { en: 'Changed title' }, logic: { rules: [{ if: cat.id, goto_page_id: page3.id }] } }
+      )
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ '4': { enabled: [{ error: 'inclusion', value: false }] } })
+      expect(page3.reload.enabled).to be true
+      expect(select_field.reload.title_multiloc).not_to eq({ 'en' => 'Changed title' })
+      expect(select_field.logic).to eq({})
+    end
+
+    example '[error] Rejects a disabled end page', document: false do
+      do_request form_params(form_end => { enabled: false })
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ '5': { enabled: [{ error: 'inclusion', value: false }] } })
+    end
+
+    example '[error] Rejects a new disabled page', document: false do
+      request = form_params
+      request[:custom_fields].insert(4, { temp_id: 'TEMP-ID-PAGE', input_type: 'page', page_layout: 'default', enabled: false, title_multiloc: { en: 'New page' } })
+
+      expect { do_request request }.not_to change(CustomField, :count)
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ '4': { enabled: [{ error: 'inclusion', value: false }] } })
+    end
+
+    example 'Allows a disabled question', document: false do
+      do_request form_params(scale_field => { enabled: false })
 
       assert_status 200
-      expect(response_logic(select_field)).to eq({ rules: [{ if: cat.id, goto_page_id: page3.id }] })
+      expect(scale_field.reload.enabled).to be false
+    end
+
+    example 'Enables a new page that the request does not say is enabled', document: false do
+      request = form_params
+      request[:custom_fields].insert(4, { temp_id: 'TEMP-ID-PAGE', input_type: 'page', page_layout: 'default', title_multiloc: { en: 'New page' } })
+      do_request request
+
+      assert_status 200
+      expect(CustomField.find_by(resource: custom_form, title_multiloc: { en: 'New page' }).enabled).to be true
     end
 
     example 'Allows page logic that jumps to the end page', document: false do
@@ -225,35 +280,193 @@ resource 'Idea Custom Fields' do
       expect(logic_errors).to eq({ '0': [{ error: 'invalid_structure' }] })
     end
 
-    example '[error] Persists the other changes and the invalid logic when logic is invalid (currently existing bug, B4)', document: false do
+    example '[error] Persists none of the changes when logic is invalid', document: false do
       do_request form_params(
         select_field => { title_multiloc: { en: 'Changed title' }, logic: { rules: [{ if: cat.id, goto_page_id: page3.id }] } },
         scale_field => { logic: { rules: [{ if: 1, goto_page_id: page1.id }] } }
       )
 
       assert_status 422
-      expect(select_field.reload.title_multiloc).to eq({ 'en' => 'Changed title' })
-      expect(select_field.logic).to eq({ 'rules' => [{ 'if' => cat.id, 'goto_page_id' => page3.id }] })
-      expect(scale_field.reload.logic).to eq({ 'rules' => [{ 'if' => 1, 'goto_page_id' => page1.id }] })
+      expect(select_field.reload.title_multiloc).not_to eq({ 'en' => 'Changed title' })
+      expect(select_field.logic).to eq({})
+      expect(scale_field.reload.logic).to eq({})
     end
 
-    example '[error] Persists an unresolved temp id when the target page does not exist (currently existing bug, B4)', document: false do
+    example '[error] Persists no unresolved temp id when the target page does not exist', document: false do
       do_request form_params(page1 => { logic: { next_page_id: 'TEMP-ID-MISSING' } })
 
       assert_status 422
       expect(logic_errors).to eq({ '0': [{ error: 'invalid_next_page_id', value: 'TEMP-ID-MISSING' }] })
-      expect(page1.reload.logic).to eq({ 'next_page_id' => 'TEMP-ID-MISSING' })
+      expect(page1.reload.logic).to eq({})
     end
 
-    example 'Drops the rules of a rating question without an error (currently existing bug, B1)', document: false do
-      rating_field = create(:custom_field_rating, resource: custom_form, maximum: 5)
-      request = form_params
-      request[:custom_fields].insert(4, field_params(rating_field, logic: { rules: [{ if: 1, goto_page_id: form_end.id }] }))
-      do_request request
+    context 'when logic is invalid' do
+      let(:invalid_logic) { { logic: { rules: [{ if: 1, goto_page_id: page1.id }] } } }
 
-      assert_status 200
-      expect(response_logic(rating_field)).to eq({})
-      expect(rating_field.reload.logic).to eq({})
+      example '[error] Keeps a field left out of the request and its answers', document: false do
+        text_field = create(:custom_field_text, resource: custom_form, key: 'text_field')
+        response = create(:idea, project: phase.project, creation_phase: phase, phases: [phase], custom_field_answers: [
+          build(:custom_field_answer, key: 'text_field', value: 'Keep me', custom_field: text_field)
+        ])
+        do_request form_params(scale_field => invalid_logic)
+
+        assert_status 422
+        expect(CustomField.exists?(text_field.id)).to be true
+        expect(CustomFieldAnswer.where(answerable: response).pluck(:key, :value)).to eq [['text_field', 'Keep me']]
+      end
+
+      example '[error] Creates no new field and no new option', document: false do
+        request = form_params(
+          select_field => {
+            options: [
+              { id: cat.id, title_multiloc: cat.title_multiloc },
+              { id: dog.id, title_multiloc: dog.title_multiloc },
+              { temp_id: 'TEMP-ID-OPTION', title_multiloc: { en: 'Bird' } }
+            ]
+          },
+          scale_field => invalid_logic
+        )
+        request[:custom_fields].insert(4, { temp_id: 'TEMP-ID-PAGE', input_type: 'page', page_layout: 'default', title_multiloc: { en: 'New page' } })
+
+        expect { do_request request }.not_to change(CustomField, :count)
+        assert_status 422
+        expect(select_field.options.reload.pluck(:key)).to match_array %w[cat dog]
+      end
+
+      example '[error] Keeps an option left out of the request and the rule that uses it', document: false do
+        select_field.update!(logic: { rules: [{ if: dog.id, goto_page_id: page3.id }] })
+        do_request form_params(
+          select_field => { options: [{ id: cat.id, title_multiloc: cat.title_multiloc }], logic: { rules: [{ if: dog.id, goto_page_id: page3.id }] } },
+          scale_field => invalid_logic
+        )
+
+        assert_status 422
+        expect(select_field.options.reload.pluck(:key)).to match_array %w[cat dog]
+        expect(select_field.reload.logic).to eq({ 'rules' => [{ 'if' => dog.id, 'goto_page_id' => page3.id }] })
+      end
+
+      example '[error] Does not mark the form as updated and logs no activity', document: false do
+        custom_form.update_column(:fields_last_updated_at, 1.day.ago)
+        last_updated_at = custom_form.reload.fields_last_updated_at
+
+        expect { do_request form_params(select_field => { title_multiloc: { en: 'Changed title' } }, scale_field => invalid_logic) }
+          .not_to have_enqueued_job(LogActivityJob)
+        assert_status 422
+        expect(custom_form.reload.fields_last_updated_at).to eq last_updated_at
+      end
+    end
+
+    context 'with a rating question' do
+      let!(:rating_field) { create(:custom_field_rating, resource: custom_form, key: 'rating_field', maximum: 5, required: false) }
+
+      def rating_request(**attributes)
+        form_params.tap do |request|
+          request[:custom_fields].insert(4, field_params(rating_field, **attributes))
+        end
+      end
+
+      example 'Stores rules on every value of the rating and the catch-all rules', document: false do
+        rules = (1..5).map { |value| { if: value, goto_page_id: value.odd? ? page3.id : form_end.id } } +
+                [{ if: 'any_other_answer', goto_page_id: form_end.id }, { if: 'no_answer', goto_page_id: page3.id }]
+        do_request rating_request(logic: { rules: })
+
+        assert_status 200
+        expect(response_logic(rating_field)).to eq({ rules: })
+        expect(rating_field.reload.logic['rules'].pluck('if')).to eq [1, 2, 3, 4, 5, 'any_other_answer', 'no_answer']
+      end
+
+      example 'Keeps the rules of a rating question when another attribute changes', document: false do
+        rating_field.update!(logic: { rules: [{ if: 1, goto_page_id: form_end.id }] })
+        do_request rating_request(title_multiloc: { en: 'Changed title' }, logic: { rules: [{ if: 1, goto_page_id: form_end.id }] })
+
+        assert_status 200
+        expect(rating_field.reload.title_multiloc).to eq({ 'en' => 'Changed title' })
+        expect(rating_field.logic).to eq({ 'rules' => [{ 'if' => 1, 'goto_page_id' => form_end.id }] })
+      end
+
+      example 'Removes the rules of a rating question when the request sends empty logic', document: false do
+        rating_field.update!(logic: { rules: [{ if: 1, goto_page_id: form_end.id }] })
+        do_request rating_request(logic: { rules: [] })
+
+        assert_status 200
+        expect(rating_field.reload.logic).to eq({ 'rules' => [] })
+      end
+
+      example 'Stores the rules of a new rating question', document: false do
+        request = form_params
+        request[:custom_fields].insert(4, {
+          input_type: 'rating',
+          title_multiloc: { en: 'New rating' },
+          maximum: 3,
+          logic: { rules: [{ if: 3, goto_page_id: form_end.id }] }
+        })
+        do_request request
+
+        assert_status 200
+        new_rating = CustomField.find_by(resource: custom_form, title_multiloc: { en: 'New rating' })
+        expect(new_rating.logic).to eq({ 'rules' => [{ 'if' => 3, 'goto_page_id' => form_end.id }] })
+      end
+
+      example 'Replaces the temp id of a new page in a rating rule by the page id', document: false do
+        request = rating_request(logic: { rules: [{ if: 2, goto_page_id: 'TEMP-ID-PAGE' }] })
+        request[:custom_fields].insert(5, { temp_id: 'TEMP-ID-PAGE', input_type: 'page', page_layout: 'default', title_multiloc: { en: 'New page' } })
+        do_request request
+
+        assert_status 200
+        new_page = CustomField.find_by(resource: custom_form, title_multiloc: { en: 'New page' })
+        expect(rating_field.reload.logic).to eq({ 'rules' => [{ 'if' => 2, 'goto_page_id' => new_page.id }] })
+      end
+
+      example 'Drops rating rules on a string or on a value outside the rating without an error', document: false do
+        rules = [0, 1, '2', 6, 'yes'].map { |value| { if: value, goto_page_id: form_end.id } }
+        do_request rating_request(logic: { rules: })
+
+        assert_status 200
+        expect(rating_field.reload.logic['rules'].pluck('if')).to eq [1]
+      end
+
+      example 'Drops the no_answer rule of a rating question that is made required', document: false do
+        rules = [{ if: 'no_answer', goto_page_id: page3.id }, { if: 'any_other_answer', goto_page_id: form_end.id }]
+        do_request rating_request(required: true, logic: { rules: })
+
+        assert_status 200
+        expect(rating_field.reload.logic['rules'].pluck('if')).to eq ['any_other_answer']
+      end
+
+      example 'Drops the rating rules above a lowered maximum', document: false do
+        rules = [{ if: 3, goto_page_id: page3.id }, { if: 4, goto_page_id: form_end.id }]
+        do_request rating_request(maximum: 3, logic: { rules: })
+
+        assert_status 200
+        expect(rating_field.reload.maximum).to eq 3
+        expect(rating_field.logic['rules'].pluck('if')).to eq [3]
+      end
+
+      example '[error] Rejects a rating rule that jumps backwards and persists nothing', document: false do
+        do_request rating_request(title_multiloc: { en: 'Changed title' }, logic: { rules: [{ if: 1, goto_page_id: page1.id }] })
+
+        assert_status 422
+        expect(logic_errors).to eq({ '4': [{ error: 'target_before_source_not_allowed', value: page1.id }] })
+        expect(rating_field.reload.title_multiloc).not_to eq({ 'en' => 'Changed title' })
+        expect(rating_field.logic).to eq({})
+      end
+
+      example '[error] Rejects a rating rule that targets a question', document: false do
+        text_field = create(:custom_field_text, resource: custom_form)
+        request = rating_request(logic: { rules: [{ if: 1, goto_page_id: text_field.id }] })
+        request[:custom_fields].insert(6, field_params(text_field))
+        do_request request
+
+        assert_status 422
+        expect(logic_errors).to eq({ '4': [{ error: 'only_page_allowed_as_target', value: text_field.id }] })
+      end
+
+      example '[error] Rejects a rating rule with an invalid structure', document: false do
+        do_request rating_request(logic: { rules: [{ if: 1, goto_page_id: form_end.id, extra: 'x' }] })
+
+        assert_status 422
+        expect(logic_errors).to eq({ '4': [{ error: 'invalid_structure' }] })
+      end
     end
 
     example 'Drops the rules of a sentiment scale question without an error (current behaviour)', document: false do
@@ -281,7 +494,72 @@ resource 'Idea Custom Fields' do
       expect(response_data[2].dig(:attributes, :logic)).to eq({})
     end
 
-    example 'Wipes legacy multiselect rules on the first save, even when the request does not send logic (currently existing bug, B7)', document: false do
+    context 'with a multiselect question created before multiselect logic was discontinued' do
+      let!(:multiselect_field) { create(:custom_field_multiselect, :with_options, resource: custom_form, created_at: Time.utc(2025, 6, 1)) }
+      let(:first_option) { multiselect_field.options.first }
+      let(:legacy_rules) { [{ 'if' => first_option.id, 'goto_page_id' => page3.id }] }
+
+      before { multiselect_field.update_column(:logic, { 'rules' => legacy_rules }) }
+
+      def multiselect_request(**attributes)
+        form_params.tap do |request|
+          request[:custom_fields].insert(2, field_params(multiselect_field, **attributes))
+        end
+      end
+
+      example 'Keeps its rules on save when the request does not send logic', document: false do
+        do_request multiselect_request
+
+        assert_status 200
+        expect(multiselect_field.reload.logic).to eq({ 'rules' => legacy_rules })
+      end
+
+      example 'Keeps its rules on save when another attribute changes', document: false do
+        do_request multiselect_request(title_multiloc: { en: 'Changed title' }, logic: { rules: legacy_rules })
+
+        assert_status 200
+        expect(multiselect_field.reload.title_multiloc).to eq({ 'en' => 'Changed title' })
+        expect(response_logic(multiselect_field)).to eq({ rules: legacy_rules.map(&:symbolize_keys) })
+      end
+
+      example 'Stores changes to its rules', document: false do
+        rules = [{ if: first_option.id, goto_page_id: form_end.id }, { if: 'any_other_answer', goto_page_id: page3.id }]
+        do_request multiselect_request(logic: { rules: })
+
+        assert_status 200
+        expect(response_logic(multiselect_field)).to eq({ rules: })
+      end
+
+      example 'Removes its logic when the option of its only rule is deleted in the same request', document: false do
+        options = multiselect_field.options.drop(1).map { |option| { id: option.id, title_multiloc: option.title_multiloc } }
+        do_request multiselect_request(options:, logic: { rules: legacy_rules })
+
+        assert_status 200
+        expect(multiselect_field.reload.logic).to eq({})
+      end
+
+      example '[error] Rejects a rule of it that jumps backwards', document: false do
+        do_request multiselect_request(logic: { rules: [{ if: first_option.id, goto_page_id: page1.id }] })
+
+        assert_status 422
+        expect(logic_errors).to eq({ '2': [{ error: 'target_before_source_not_allowed', value: page1.id }] })
+        expect(multiselect_field.reload.logic).to eq({ 'rules' => legacy_rules })
+      end
+    end
+
+    example 'Keeps the rules of a multiselect image question created before multiselect logic was discontinued', document: false do
+      image_field = create(:custom_field_multiselect_image, :with_options, resource: custom_form, created_at: Time.utc(2025, 6, 1))
+      rules = [{ 'if' => image_field.options.first.id, 'goto_page_id' => page3.id }]
+      image_field.update_column(:logic, { 'rules' => rules })
+      request = form_params
+      request[:custom_fields].insert(2, field_params(image_field))
+      do_request request
+
+      assert_status 200
+      expect(image_field.reload.logic).to eq({ 'rules' => rules })
+    end
+
+    example 'Wipes the rules of a multiselect question created after multiselect logic was discontinued', document: false do
       multiselect_field = create(:custom_field_multiselect, :with_options, resource: custom_form)
       multiselect_field.update_column(:logic, { 'rules' => [{ 'if' => multiselect_field.options.first.id, 'goto_page_id' => page3.id }] })
       request = form_params
@@ -292,7 +570,17 @@ resource 'Idea Custom Fields' do
       expect(multiselect_field.reload.logic).to eq({})
     end
 
-    example 'Keeps the rules of a ranking question (currently existing bug, B8)', document: false do
+    example 'Drops new rules of a multiselect question created before multiselect logic was discontinued that had none', document: false do
+      multiselect_field = create(:custom_field_multiselect, :with_options, resource: custom_form, created_at: Time.utc(2025, 6, 1))
+      request = form_params
+      request[:custom_fields].insert(2, field_params(multiselect_field, logic: { rules: [{ if: multiselect_field.options.first.id, goto_page_id: page3.id }] }))
+      do_request request
+
+      assert_status 200
+      expect(multiselect_field.reload.logic).to eq({})
+    end
+
+    example 'Drops the rules of a ranking question without an error', document: false do
       ranking_field = create(:custom_field_ranking, :with_options, resource: custom_form)
       rules = [{ if: ranking_field.options.first.id, goto_page_id: form_end.id }]
       request = form_params
@@ -300,7 +588,8 @@ resource 'Idea Custom Fields' do
       do_request request
 
       assert_status 200
-      expect(response_logic(ranking_field)).to eq({ rules: })
+      expect(response_logic(ranking_field)).to eq({})
+      expect(ranking_field.reload.logic).to eq({})
     end
 
     example 'Drops the rules of a text question without an error', document: false do

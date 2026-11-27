@@ -190,29 +190,78 @@ RSpec.describe CustomField do
       expect(field.logic).to eq({})
     end
 
-    { 'page' => '', 'select' => '', 'linear_scale' => '', 'ranking' => ' (currently existing bug, B8)' }.each do |input_type, label|
-      it "keeps the logic of a #{input_type} field#{label}" do
+    %w[page select linear_scale rating].each do |input_type|
+      it "keeps the logic of a #{input_type} field" do
         field = build(:custom_field, resource: create(:custom_form), input_type: input_type, logic: { 'next_page_id' => 'some_page_id' })
         field.valid?
         expect(field.logic).to eq({ 'next_page_id' => 'some_page_id' })
       end
     end
 
-    { 'rating' => ' (currently existing bug, B1)' }.merge(
-      %w[sentiment_linear_scale multiselect multiselect_image matrix_linear_scale text number select_image].index_with('')
-    ).each do |input_type, label|
-      it "silently clears the logic of a #{input_type} field#{label}" do
+    %w[ranking sentiment_linear_scale multiselect multiselect_image matrix_linear_scale text number select_image].each do |input_type|
+      it "silently clears the logic of a #{input_type} field" do
         field = build(:custom_field, resource: create(:custom_form), input_type: input_type, logic: { 'rules' => [{ 'if' => 1, 'goto_page_id' => 'some_page_id' }] })
         field.valid?
         expect(field.logic).to eq({})
       end
     end
 
-    it 'clears the logic of a legacy multiselect field even when it is saved without changing the logic (currently existing bug, B7)' do
+    it 'stores the logic of a rating field' do
+      field = create(:custom_field_rating, resource: create(:custom_form), maximum: 5)
+      field.update!(logic: { 'rules' => [{ 'if' => 1, 'goto_page_id' => 'some_page_id' }] })
+      field.reload.update!(title_multiloc: { 'en' => 'Changed' })
+
+      expect(field.reload.logic).to eq({ 'rules' => [{ 'if' => 1, 'goto_page_id' => 'some_page_id' }] })
+    end
+
+    %w[multiselect multiselect_image].each do |input_type|
+      it "keeps the logic of a legacy #{input_type} field when it is saved" do
+        field = create(:custom_field, input_type: input_type, resource: create(:custom_form), created_at: Time.utc(2025, 6, 1))
+        field.update_column(:logic, { 'rules' => [{ 'if' => 'option-id', 'goto_page_id' => 'some_page_id' }] })
+        field.reload.update!(title_multiloc: { 'en' => 'Changed' })
+        expect(field.reload.logic).to eq({ 'rules' => [{ 'if' => 'option-id', 'goto_page_id' => 'some_page_id' }] })
+      end
+    end
+
+    it 'clears the logic of a multiselect field created after the cutoff when it is saved' do
       field = create(:custom_field_multiselect, resource: create(:custom_form))
       field.update_column(:logic, { 'rules' => [{ 'if' => 'option-id', 'goto_page_id' => 'some_page_id' }] })
       field.reload.update!(title_multiloc: { 'en' => 'Changed' })
       expect(field.reload.logic).to eq({})
+    end
+
+    it 'does not add logic to a legacy multiselect field that has none' do
+      field = create(:custom_field_multiselect, resource: create(:custom_form), created_at: Time.utc(2025, 6, 1))
+      field.update!(logic: { 'rules' => [{ 'if' => 'option-id', 'goto_page_id' => 'some_page_id' }] })
+      expect(field.reload.logic).to eq({})
+    end
+  end
+
+  describe 'enabled validation' do
+    it 'is invalid for a disabled page' do
+      page = build(:custom_field_page, enabled: false)
+      expect(page).not_to be_valid
+      expect(page.errors.details[:enabled]).to eq [{ error: :inclusion, value: false }]
+    end
+
+    it 'is invalid for a disabled end page' do
+      expect(build(:custom_field_form_end_page, enabled: false)).not_to be_valid
+    end
+
+    it 'enables a page that does not say whether it is enabled' do
+      page = build(:custom_field_page, enabled: nil)
+      expect(page).to be_valid
+      expect(page.enabled).to be true
+    end
+
+    it 'is valid for a disabled question' do
+      expect(build(:custom_field_text, resource: create(:custom_form), enabled: false)).to be_valid
+    end
+
+    it 'does not let an existing page be disabled' do
+      page = create(:custom_field_page)
+      expect { page.update!(enabled: false) }.to raise_error(ActiveRecord::RecordInvalid)
+      expect(page.reload.enabled).to be true
     end
   end
 

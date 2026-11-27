@@ -139,5 +139,15 @@ module InputTypeStrategy
     protected
 
     attr_reader :custom_field
+
+    # Logic on multiselect questions is no longer offered, but questions created
+    # before that keep the rules they already had.
+    LEGACY_MULTISELECT_LOGIC_CUTOFF = Time.utc(2026, 1, 18)
+
+    def legacy_multiselect_logic?
+      custom_field.created_at.present? &&
+        custom_field.created_at < LEGACY_MULTISELECT_LOGIC_CUTOFF &&
+        custom_field.logic_in_database&.dig('rules').present?
+    end
   end
 end

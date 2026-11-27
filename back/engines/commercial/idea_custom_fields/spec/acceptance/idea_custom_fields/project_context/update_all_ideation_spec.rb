@@ -75,6 +75,17 @@ resource 'Idea Custom Fields' do
           expect(context.reload.custom_form.custom_fields[1].description_multiloc).to eq custom_description
           expect(context.custom_form.custom_fields.find_by(code: 'title_multiloc')).to be_answers_visible_to_public
         end
+
+        example '[error] Rejects a disabled built-in page', document: false do
+          params = default_fields_param
+          body_page_index = params.index { |param| param[:code] == 'body_page' }
+          params[body_page_index][:enabled] = false
+          do_request(custom_fields: params << final_page)
+
+          assert_status 422
+          expect(json_response_body[:errors]).to eq({ body_page_index.to_s.to_sym => { enabled: [{ error: 'inclusion', value: false }] } })
+          expect(context.reload.custom_form).to be_nil
+        end
       end
 
       context 'when the form has been persisted before' do

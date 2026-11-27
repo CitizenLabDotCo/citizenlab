@@ -381,7 +381,7 @@ resource 'Ideas' do
               fields = IdeaCustomFieldsService.new(form).all_fields
               # proposed_budget is disabled by default
               enabled_field_keys = %w[title_multiloc body_multiloc proposed_budget]
-              fields.each do |field|
+              fields.reject(&:page?).each do |field|
                 field.enabled = enabled_field_keys.include? field.code
                 field.save!
               end

@@ -79,7 +79,7 @@ resource 'Idea Custom Fields' do
               page_layout: 'default',
               key: 'inserted_page_field',
               required: false,
-              enabled: false
+              enabled: true
             },
             last_page
           ]
@@ -133,7 +133,7 @@ resource 'Idea Custom Fields' do
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: {},
-            enabled: false,
+            enabled: true,
             input_type: 'page',
             key: 'inserted_page_field',
             ordering: 2,

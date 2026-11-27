@@ -61,6 +61,19 @@ resource 'Idea Custom Fields' do
         expect(data_for(page2).dig(:attributes, :logic)).to eq({ next_page_id: form_end.id })
       end
 
+      example 'Returns the logic of a rating question', document: false do
+        rating_field = create(:custom_field_rating, resource: custom_form, key: 'rating_field', maximum: 5)
+        rating_field.insert_at(2)
+        rating_field.update!(logic: { rules: [{ if: 4, goto_page_id: page3.id }, { if: 'any_other_answer', goto_page_id: form_end.id }] })
+        do_request(public_fields: true)
+
+        assert_status 200
+        expect(data_for(rating_field).dig(:attributes, :logic)).to eq({ rules: [
+          { if: 4, goto_page_id: page3.id },
+          { if: 'any_other_answer', goto_page_id: form_end.id }
+        ] })
+      end
+
       context 'when user fields are asked in the form' do
         let!(:user_field) { create(:custom_field_select, :for_registration, :with_options, key: 'user_select_field', enabled: true) }
 
