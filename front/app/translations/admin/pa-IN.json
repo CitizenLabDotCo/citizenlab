@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "ਸੇਵ ਕਰੋ",
   "app.containers.Admin.projects.project.settingsSaveFailed": "ਕੁਝ ਤਬਦੀਲੀਆਂ ਸੇਵ ਨਹੀਂ ਕੀਤੀਆਂ ਜਾ ਸਕੀਆਂ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਨ ਲਈ ਸੇਵ ਕਰੋ 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.containers.Admin.projects.project.settingsTitle": "ਸੈਟਿੰਗਾਂ",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "ਭਾਗੀਦਾਰ ਹੋਮਪੇਜ 'ਤੇ ਖੇਤਰ ਅਨੁਸਾਰ ਪ੍ਰੋਜੈਕਟਾਂ ਨੂੰ ਫਿਲਟਰ ਕਰ ਸਕਦੇ ਹਨ। ਚੁਣੋ ਕਿ ਇਹ ਪ੍ਰੋਜੈਕਟ ਕਿੱਥੇ ਲਾਗੂ ਹੁੰਦਾ ਹੈ।",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "ਪ੍ਰੋਜੈਕਟ ਦਾ ਨਾਮ, ਅਤੇ ਉਹ ਸਪੇਸ ਅਤੇ ਫੋਲਡਰ ਜਿਸ ਨਾਲ ਇਹ ਸੰਬੰਧਿਤ ਹੈ",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "ਜਿੱਥੇ ਵੀ ਪ੍ਰੋਜੈਕਟ ਸੂਚੀਬੱਧ ਹੈ ਉੱਥੇ ਦਿਖਾਇਆ ਗਿਆ ਹੈ: ਹੋਮਪੇਜ, ਫੋਲਡਰ, ਸਪੇਸ ਅਤੇ ਪੰਨੇ",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "ਉਹ ਤਰੀਕੇ ਜਿਨ੍ਹਾਂ ਰਾਹੀਂ ਭਾਗੀਦਾਰ ਹਿੱਸਾ ਲੈਂਦੇ ਹਨ, ਇੱਕ ਤੋਂ ਬਾਅਦ ਇੱਕ",

@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "Salva",
   "app.containers.Admin.projects.project.settingsSaveFailed": "Alcune modifiche non sono state salvate. Clicca su Salva per riprovare.",
   "app.containers.Admin.projects.project.settingsTitle": "Impostazioni",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "I partecipanti possono filtrare i progetti per area nella homepage. Scegli a quale area si riferisce questo progetto.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Il nome del progetto e lo spazio e la cartella a cui appartiene",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Visualizzato ovunque sia elencato il progetto: homepage, cartelle, spazi e pagine",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Le modalità di partecipazione, una dopo l'altra",

@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "Lagre",
   "app.containers.Admin.projects.project.settingsSaveFailed": "Noen endringer kunne ikke lagres. Klikk Lagre for å prøve på nytt.",
   "app.containers.Admin.projects.project.settingsTitle": "Innstillinger",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Deltakere kan filtrere prosjekter etter område på forsiden. Velg hvor dette prosjektet gjelder.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Prosjektnavnet, og området og mappen det tilhører",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Vises overalt hvor prosjektet er oppført: på forsiden, i mapper, områder og sider",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Måtene deltakerne deltar på, etter hverandre",

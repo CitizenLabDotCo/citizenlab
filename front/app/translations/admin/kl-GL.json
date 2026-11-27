@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "Toqqoruk",
   "app.containers.Admin.projects.project.settingsSaveFailed": "Allannguutit ilaat toqqorneqarsinnaanngillat. Toqqoruk toqqarlugu misileqqiguk.",
   "app.containers.Admin.projects.project.settingsTitle": "Inissititernerit",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Peqataasut suliniutit sumiiffii malillugit saqqami immikkoortiterisinnaapput. Suliniutip sumiiffia toqqaruk.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Suliniummi aqqa, inissaa immiusivillu sumut atanera",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Suliniummut nalunaarsuiffinni tamani takuneqarsinnaavoq: saqqaa, immiusiviit, inissat quppernerillu",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Peqataasut qanoq peqataanissaat, tulleriiaarlugit",

@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "محفوظ کریں",
   "app.containers.Admin.projects.project.settingsSaveFailed": "کچھ تبدیلیاں محفوظ نہیں کی جا سکیں۔ دوبارہ کوشش کرنے کے لیے محفوظ کریں پر کلک کریں۔",
   "app.containers.Admin.projects.project.settingsTitle": "ترتیبات",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "شرکاء ہوم پیج پر علاقے کے لحاظ سے پروجیکٹس کو فلٹر کر سکتے ہیں۔ منتخب کریں کہ یہ پروجیکٹ کہاں لاگو ہوتا ہے۔",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "پروجیکٹ کا نام، اور وہ اسپیس اور فولڈر جس سے اس کا تعلق ہے",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "جہاں بھی پروجیکٹ درج ہے وہاں دکھایا جائے گا: ہوم پیج، فولڈرز، اسپیسز اور صفحات",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "وہ طریقے جن سے شرکاء حصہ لیتے ہیں، ایک کے بعد ایک",

@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "Tallenna",
   "app.containers.Admin.projects.project.settingsSaveFailed": "Joitakin muutoksia ei voitu tallentaa. Klikkaa Tallenna yrittääksesi uudelleen.",
   "app.containers.Admin.projects.project.settingsTitle": "Asetukset",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Osallistujat voivat suodattaa hankkeita alueen mukaan etusivulla. Valitse, mitä aluetta tämä hanke koskee.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Hankkeen nimi sekä tila ja kansio, johon se kuuluu",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Näytetään kaikkialla, missä hanke on listattu: etusivulla, kansioissa, tiloissa ja sivuilla",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Tavat, joilla osallistujat osallistuvat, yksi toisensa jälkeen",

@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "Cadw",
   "app.containers.Admin.projects.project.settingsSaveFailed": "Ni ellid cadw rhai newidiadau. Cliciwch Cadw i geisio eto.",
   "app.containers.Admin.projects.project.settingsTitle": "Gosodiadau",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Gall cyfranogwyr hidlo prosiectau yn ôl ardal ar yr hafan. Dewiswch ble mae'r prosiect hwn yn berthnasol.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Enw'r prosiect, a'r gofod a'r ffolder y mae'n perthyn iddynt",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Yn ymddangos lle bynnag y rhestrir y prosiect: yr hafan, ffolderi, gofodau a thudalennau",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Y ffyrdd y mae cyfranogwyr yn cymryd rhan, un ar ôl y llall",

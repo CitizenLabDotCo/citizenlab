@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "Zapisz",
   "app.containers.Admin.projects.project.settingsSaveFailed": "Nie udało się zapisać niektórych zmian. Kliknij Zapisz, aby spróbować ponownie.",
   "app.containers.Admin.projects.project.settingsTitle": "Ustawienia",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Uczestnicy mogą filtrować projekty według obszaru na stronie głównej. Wybierz, którego obszaru dotyczy ten projekt.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Nazwa projektu oraz przestrzeń i folder, do których należy",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Wyświetlane wszędzie tam, gdzie projekt jest wymieniony: na stronie głównej, w folderach, przestrzeniach i na stronach",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Sposoby, w jakie uczestnicy biorą udział, jeden po drugim",

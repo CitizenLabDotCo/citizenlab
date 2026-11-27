@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "Guardar",
   "app.containers.Admin.projects.project.settingsSaveFailed": "Algunos cambios no se han podido guardar. Haz clic en Guardar para volver a intentarlo.",
   "app.containers.Admin.projects.project.settingsTitle": "Configuración",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Los participantes pueden filtrar los proyectos por área en la página de inicio. Elige dónde se aplica este proyecto.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "El nombre del proyecto, y el espacio y la carpeta a los que pertenece",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Se muestra en todos los lugares donde aparece el proyecto: página de inicio, carpetas, espacios y páginas",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Las formas en que los participantes participan, una tras otra",

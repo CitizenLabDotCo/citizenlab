@@ -2615,7 +2615,7 @@
   "app.containers.Admin.projects.project.settingsSaveFailed": "Some changes couldn't be saved. Click Save to try again.",
   "app.containers.Admin.projects.project.settingsTitle": "Settings",
   "app.containers.Admin.projects.project.setupCards.areaTitle": "Set area",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Participants can filter projects by area on the homepage. Choose where this project applies.",
+  "app.containers.Admin.projects.project.setupCards.areaTooltip2": "Participants can find projects by area on the projects page and on pages that list projects by area. Choose where this project applies.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "The project name, and the space and folder it belongs to",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Shown wherever the project is listed: homepage, folders, spaces and pages",
   "app.containers.Admin.projects.project.setupCards.methodsTitle": "Plan participation",

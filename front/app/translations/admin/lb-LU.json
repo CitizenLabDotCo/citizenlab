@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "Späicheren",
   "app.containers.Admin.projects.project.settingsSaveFailed": "E puer Ännerunge konnten net gespäichert ginn. Klickt op Späicheren fir et nach eng Kéier ze probéieren.",
   "app.containers.Admin.projects.project.settingsTitle": "Astellungen",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "D'Participante kënne Projeten op der Homepage no Beräich filteren. Wielt aus, wou dëse Projet gëllt.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Den Numm vum Projet an de Beräich an den Dossier, zu deenen e gehéiert",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Gëtt iwwerall ugewisen, wou de Projet opgelëscht ass: Homepage, Dossieren, Beräicher a Säiten",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "D'Aarten a Weisen, wéi d'Participanten deelhuelen, eng no der aner",

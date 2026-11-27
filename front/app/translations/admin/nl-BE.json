@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "Opslaan",
   "app.containers.Admin.projects.project.settingsSaveFailed": "Sommige wijzigingen konden niet worden opgeslagen. Klik op Opslaan om het opnieuw te proberen.",
   "app.containers.Admin.projects.project.settingsTitle": "Instellingen",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Deelnemers kunnen projecten filteren op gebied op de startpagina. Kies waar dit project van toepassing is.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "De projectnaam en de ruimte en map waartoe het behoort",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Zichtbaar overal waar het project wordt vermeld: startpagina, mappen, ruimtes en pagina's",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "De manieren waarop deelnemers deelnemen, de ene na de andere",

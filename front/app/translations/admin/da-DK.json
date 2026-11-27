@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "Gem",
   "app.containers.Admin.projects.project.settingsSaveFailed": "Nogle ændringer kunne ikke gemmes. Klik på Gem for at prøve igen.",
   "app.containers.Admin.projects.project.settingsTitle": "Indstillinger",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Deltagere kan filtrere projekter efter område på startsiden. Vælg, hvor dette projekt er relevant.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Projektnavnet samt det rum og den mappe, det tilhører",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Vises alle steder, hvor projektet er angivet: startside, mapper, rum og sider",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Måderne, deltagerne deltager på, den ene efter den anden",

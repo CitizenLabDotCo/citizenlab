@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "حفظ",
   "app.containers.Admin.projects.project.settingsSaveFailed": "تعذر حفظ بعض التغييرات. انقر على حفظ للمحاولة مرة أخرى.",
   "app.containers.Admin.projects.project.settingsTitle": "الإعدادات",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "المشاركين يقدروا يصفيو المشاريع حسب المنطقة فالصفحة الرئيسية. اختار فين كينطبق هاد المشروع.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "سمية المشروع، والفضاء والمجلد اللي كينتمي ليهم",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "كتظهر فين ما كان المشروع مدرج: الصفحة الرئيسية، المجلدات، الفضاءات والصفحات",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "الطرق اللي كيشااركو بيها المشاركين، وحدة مورا وحدة",

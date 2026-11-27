@@ -2429,7 +2429,6 @@
   "app.containers.Admin.projects.project.settingsSave": "Mentés",
   "app.containers.Admin.projects.project.settingsSaveFailed": "Néhány módosítást nem sikerült menteni. Kattintson a Mentés gombra az újrapróbálkozáshoz.",
   "app.containers.Admin.projects.project.settingsTitle": "Beállítások",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "A résztvevők terület szerint szűrhetik a projekteket a kezdőlapon. Válassza ki, melyik területre vonatkozik ez a projekt.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "A projekt neve, valamint a tér és a mappa, amelyhez tartozik",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Megjelenik mindenhol, ahol a projekt fel van sorolva: a kezdőlapon, mappákban, terekben és oldalakon",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "A részvételi módok, egymás után",
