@@ -255,8 +255,6 @@ class User < ApplicationRecord
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', foreign_key: :owner_id, dependent: :nullify
   has_many :invites_imports, foreign_key: :importer_id, dependent: :destroy
 
-  self.ignored_columns += %w[custom_field_values] # backup only; the answers are the source of truth
-
   store_accessor :onboarding, :topics_and_areas
 
   validates :locale, presence: true, unless: :invite_pending?
