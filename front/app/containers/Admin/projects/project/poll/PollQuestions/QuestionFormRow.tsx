@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react';
 
-import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
+import {
+  Input,
+  LocaleSwitcher as PageLocaleSwitcher,
+} from '@citizenlab/cl2-component-library';
 import { Multiloc, SupportedLocale } from 'typings';
+
+import Button from 'design-system/Button';
+import TextField from 'design-system/TextField';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
+import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
 import { TextCell, Row } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
-import { usePollStyles } from '../PollVariantContext';
+import { useIsPanelPoll } from '../PollVariantContext';
 
 interface Props {
   titleMultiloc: Multiloc;
@@ -28,7 +35,8 @@ const QuestionFormRow = ({
   onSave,
   onCancel,
 }: Props) => {
-  const { buttonStyle, boSize, inputVariant } = usePollStyles();
+  const isPanel = useIsPanelPoll();
+  const { formatMessage } = useIntl();
 
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
@@ -63,46 +71,73 @@ const QuestionFormRow = ({
   return (
     <Row className="e2e-form-question-row" data-testid="question-form-row">
       <TextCell>
-        {selectedLocale && (
-          <LocaleSwitcher
-            variant={inputVariant}
-            onSelectedLocaleChange={onChangeLocale}
-            locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
-            selectedLocale={selectedLocale}
-            values={{ titleMultiloc }}
-          />
-        )}
+        {selectedLocale &&
+          (isPanel ? (
+            <LocaleSwitcher
+              aria-label={formatMessage(messages.questionTitleLabel)}
+              locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
+              selectedLocale={selectedLocale}
+              onChange={onChangeLocale}
+              valueMultiloc={titleMultiloc}
+            />
+          ) : (
+            <PageLocaleSwitcher
+              onSelectedLocaleChange={onChangeLocale}
+              locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
+              selectedLocale={selectedLocale}
+              values={{ titleMultiloc }}
+            />
+          ))}
       </TextCell>
 
       <TextCell className="expand">
-        {selectedLocale && (
-          <Input
-            variant={inputVariant}
-            autoFocus
-            value={titleMultiloc[selectedLocale]}
-            locale={selectedLocale}
-            type="text"
-            onChange={onChangeTitle}
-          />
-        )}
+        {selectedLocale &&
+          (isPanel ? (
+            <TextField
+              aria-label={formatMessage(messages.questionTitleLabel)}
+              autoFocus
+              size={32}
+              value={titleMultiloc[selectedLocale] ?? ''}
+              onChange={(value) => onChangeTitle(value, selectedLocale)}
+            />
+          ) : (
+            <Input
+              autoFocus
+              value={titleMultiloc[selectedLocale]}
+              locale={selectedLocale}
+              type="text"
+              onChange={onChangeTitle}
+            />
+          ))}
       </TextCell>
 
-      <ButtonWithLink
-        className="e2e-form-question-save"
-        buttonStyle={buttonStyle('admin-dark')}
-        boSize={boSize}
-        onClick={onSave}
-      >
-        <FormattedMessage {...messages.saveQuestion} />
-      </ButtonWithLink>
-      <ButtonWithLink
-        className="e2e-form-question-cancel"
-        buttonStyle={buttonStyle('secondary-outlined')}
-        boSize={boSize}
-        onClick={onCancel}
-      >
-        <FormattedMessage {...messages.cancelFormQuestion} />
-      </ButtonWithLink>
+      {isPanel ? (
+        <>
+          <Button variant="primary" size={28} onPress={onSave}>
+            <FormattedMessage {...messages.saveQuestion} />
+          </Button>
+          <Button size={28} onPress={onCancel}>
+            <FormattedMessage {...messages.cancelFormQuestion} />
+          </Button>
+        </>
+      ) : (
+        <>
+          <ButtonWithLink
+            className="e2e-form-question-save"
+            buttonStyle="admin-dark"
+            onClick={onSave}
+          >
+            <FormattedMessage {...messages.saveQuestion} />
+          </ButtonWithLink>
+          <ButtonWithLink
+            className="e2e-form-question-cancel"
+            buttonStyle="secondary-outlined"
+            onClick={onCancel}
+          >
+            <FormattedMessage {...messages.cancelFormQuestion} />
+          </ButtonWithLink>
+        </>
+      )}
     </Row>
   );
 };

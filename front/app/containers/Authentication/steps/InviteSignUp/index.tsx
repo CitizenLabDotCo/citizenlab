@@ -33,7 +33,7 @@ import {
 import sharedMessages from '../messages';
 import PoliciesMarkup from '../Policies/PoliciesMarkup';
 
-import { DEFAULT_VALUES, getSchema, FormValues } from './form';
+import { DEFAULT_VALUES, getSchema, FormInput, FormValues } from './form';
 
 interface Props {
   state: State;
@@ -53,14 +53,18 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
     appConfigSettings?.password_login?.minimum_length ??
     DEFAULT_MINIMUM_PASSWORD_LENGTH;
   const minimumStrength = appConfigSettings?.password_login?.minimum_strength;
+  // An invitation code carries no email: the invitee picks a password only once
+  // the address they type in is confirmed.
+  const isEmailedInvite = !!state.prefilledBuiltInFields?.email;
 
   const schema = getSchema(
     minimumPasswordLength,
     formatMessage,
+    isEmailedInvite,
     minimumStrength
   );
 
-  const methods = useForm<FormValues>({
+  const methods = useForm<FormInput, unknown, FormValues>({
     mode: 'onSubmit',
     defaultValues: {
       ...DEFAULT_VALUES,
@@ -174,27 +178,30 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
               autocomplete="email"
               label={formatMessage(sharedMessages.email)}
               required
+              readOnly={isEmailedInvite}
             />
           </Box>
-          <Box id="e2e-password-container" mt="16px">
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Label>
-                <span>{formatMessage(sharedMessages.password)}</span>
-              </Label>
-              <StyledPasswordIconTooltip />
+          {isEmailedInvite && (
+            <Box id="e2e-password-container" mt="16px">
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Label>
+                  <span>{formatMessage(sharedMessages.password)}</span>
+                </Label>
+                <StyledPasswordIconTooltip />
+              </Box>
+              <PasswordInput
+                name="password"
+                id="password"
+                autocomplete="new-password"
+                required
+                userInputs={passwordInputs}
+              />
             </Box>
-            <PasswordInput
-              name="password"
-              id="password"
-              autocomplete="new-password"
-              required
-              userInputs={passwordInputs}
-            />
-          </Box>
+          )}
           <Box mt="24px">
             <PoliciesMarkup />
           </Box>

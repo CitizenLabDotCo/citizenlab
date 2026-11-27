@@ -60,8 +60,8 @@ describe Verification::VerificationService do
     it 'updates the user with received custom_field_values from verify_sync' do
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
-      create(:custom_field_answer, answerable: user, key: cf1.key, value: 'original')
-      create(:custom_field_answer, answerable: user, key: cf2.key, value: 'original')
+      create(:custom_field_answer, answerable: user, custom_field: cf1, value: 'original')
+      create(:custom_field_answer, answerable: user, custom_field: cf2, value: 'original')
 
       params = {
         user: user,
@@ -239,6 +239,7 @@ describe Verification::VerificationService do
 
   describe 'locked_custom_fields' do
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config']['id_methods'] << { name: 'bogus' }
       AppConfiguration.instance.save!
     end

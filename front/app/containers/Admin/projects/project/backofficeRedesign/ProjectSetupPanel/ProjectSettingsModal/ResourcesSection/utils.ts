@@ -1,10 +1,8 @@
-import { IconNames } from '@citizenlab/cl2-component-library';
+import { IconName } from 'design-system/Icon';
 
-export const getFileIcon = (mimeType: string): IconNames => {
-  if (mimeType.startsWith('audio/')) return 'audio';
-  if (mimeType.startsWith('video/')) return 'video';
-  if (mimeType.startsWith('image/')) return 'image';
-  return 'page';
+// The design system has no audio icon, so audio falls back to the file icon.
+export const getFileIcon = (mimeType: string): IconName => {
+  if (mimeType.startsWith('video/')) return 'square-play-14';
+  if (mimeType.startsWith('image/')) return 'image-14';
+  return 'file-16';
 };
-
-export const FILE_MODAL_HEIGHT = 'min(640px, 88vh)';

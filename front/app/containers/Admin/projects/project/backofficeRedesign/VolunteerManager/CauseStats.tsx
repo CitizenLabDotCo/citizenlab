@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { bo, Box, colors } from '@citizenlab/cl2-component-library';
+import StatRow from 'design-system/StatRow';
 
 import { ICauseData } from 'api/causes/types';
 
@@ -8,9 +8,9 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import StatRow from '../InputManager/SideColumn/StatRow';
-
 import messages from './messages';
+import styles from './VolunteerManager.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   causes: ICauseData[];
@@ -30,22 +30,27 @@ const CauseStats = ({ causes, selectedCauseIds, onToggleCause }: Props) => {
   const onlySelected = selectedCauseIds.length === 1 && selectedCauseIds[0];
 
   return (
-    <Box p="8px" borderRadius={bo.panelBorderRadius} background={colors.white}>
+    <div className={styles.stats}>
       <StatRow label={formatMessage(messages.volunteers)} value={total} />
       {causes.map((cause) => {
         const count = cause.attributes.volunteers_count;
+        const label = localize(cause.attributes.title_multiloc);
+
+        if (count === 0) {
+          return <StatRow key={cause.id} label={label} value={count} />;
+        }
 
         return (
           <StatRow
             key={cause.id}
-            label={localize(cause.attributes.title_multiloc)}
+            label={label}
             value={count}
-            onClick={count > 0 ? () => onToggleCause(cause.id) : undefined}
-            pressed={onlySelected === cause.id}
+            onPress={() => onToggleCause(cause.id)}
+            isPressed={onlySelected === cause.id}
           />
         );
       })}
-    </Box>
+    </div>
   );
 };
 

@@ -1,26 +1,32 @@
 import React, { useState } from 'react';
 
-import {
-  Text,
-  Box,
-  Button,
-  Label,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
+import { Text, Box, Button, Spinner } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
+import Banner from 'design-system/Banner';
+import { FieldLabel } from 'design-system/Field';
+import { ListBoxOption } from 'design-system/ListBox';
+import DesignSystemModal from 'design-system/Modal';
+import DesignSystemSelect from 'design-system/Select';
+import DesignSystemSpinner from 'design-system/Spinner';
+
 import usePhases from 'api/phases/usePhases';
+
+import useLocalize from 'hooks/useLocalize';
 
 import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
 
 import Modal from 'components/UI/Modal';
 import PhaseFilter from 'components/UI/PhaseFilter';
+import phaseFilterMessages from 'components/UI/PhaseFilter/messages';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import styles from './CopySurveyModal.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 type Props = {
   showCopySurveyModal: boolean;
@@ -28,7 +34,7 @@ type Props = {
   editFormLink: string;
   surveyFormPersisted: boolean;
   surveyFormLoading?: boolean;
-  variant?: 'bo';
+  variant?: 'panel';
 };
 
 const CopySurveyModal = ({
@@ -40,6 +46,7 @@ const CopySurveyModal = ({
   variant,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const [projectId, setProjectId] = useState<string>();
   const [phaseId, setPhaseId] = useState<string>();
@@ -75,6 +82,87 @@ const CopySurveyModal = ({
     setPhaseId(value);
   };
 
+  const duplicate = () => {
+    if (!canDuplicate) return;
+
+    const url = `${editFormLink}?copy_from=${phaseId}`;
+    close();
+    clHistory.push(url);
+  };
+
+  if (variant === 'panel') {
+    const surveyPhases = phases?.data.filter(
+      (phase) => phase.attributes.participation_method === 'native_survey'
+    );
+
+    return (
+      <DesignSystemModal
+        isOpen={showCopySurveyModal}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) close();
+        }}
+        title={formatMessage(messages.copySurveyTitle)}
+        description={formatMessage(messages.copySurveyDescription)}
+        size={560}
+        data-cy="e2e-copy-survey-modal"
+        primaryAction={{
+          label: formatMessage(messages.duplicate),
+          isDisabled: !canDuplicate,
+          onPress: duplicate,
+          'data-cy': 'e2e-copy-survey-modal-duplicate',
+        }}
+        secondaryAction={{
+          label: formatMessage(messages.cancel),
+          onPress: close,
+        }}
+      >
+        <div className={styles.body}>
+          {surveyFormLoading && <DesignSystemSpinner />}
+          {!surveyFormLoading && surveyFormPersisted && (
+            <Banner tone="warning">
+              {formatMessage(messages.surveyFormPersistedWarning)}
+            </Banner>
+          )}
+          {/* ProjectFilter is kept: it searches and loads the projects itself. */}
+          <div className={styles.field}>
+            <FieldLabel>{formatMessage(messages.project)}</FieldLabel>
+            <ProjectFilter
+              projectId={projectId}
+              participationMethods={['native_survey']}
+              placeholder={formatMessage(messages.selectSurveyProject)}
+              emptyOptionMessage={messages.noProject}
+              onProjectFilter={handleProjectFilter}
+            />
+          </div>
+          {projectId !== undefined &&
+            (!surveyPhases ? (
+              <DesignSystemSpinner />
+            ) : surveyPhases.length === 0 ? (
+              <Banner tone="error">
+                {formatMessage(phaseFilterMessages.noAppropriatePhases)}
+              </Banner>
+            ) : (
+              <DesignSystemSelect
+                id="e2e-phase-filter"
+                label={formatMessage(messages.survey)}
+                size={32}
+                value={phaseId ?? null}
+                onChange={(key) =>
+                  setPhaseId(typeof key === 'string' ? key : undefined)
+                }
+              >
+                {surveyPhases.map((phase) => (
+                  <ListBoxOption key={phase.id} id={phase.id}>
+                    {localize(phase.attributes.title_multiloc)}
+                  </ListBoxOption>
+                ))}
+              </DesignSystemSelect>
+            ))}
+        </div>
+      </DesignSystemModal>
+    );
+  }
+
   return (
     <Modal
       width={520}
@@ -95,17 +183,8 @@ const CopySurveyModal = ({
           {formatMessage(messages.copySurveyDescription)}
         </Text>
         <Box py="5px" mt="0px" alignItems="center">
-          {variant === 'bo' && <Label>{formatMessage(messages.project)}</Label>}
           <ProjectFilter
             projectId={projectId}
-            participationMethods={
-              variant === 'bo' ? ['native_survey'] : undefined
-            }
-            placeholder={
-              variant === 'bo'
-                ? formatMessage(messages.selectSurveyProject)
-                : undefined
-            }
             emptyOptionMessage={messages.noProject}
             onProjectFilter={handleProjectFilter}
           />
@@ -128,13 +207,7 @@ const CopySurveyModal = ({
           <Button
             buttonStyle="admin-dark"
             disabled={!canDuplicate}
-            onClick={() => {
-              if (!canDuplicate) return;
-
-              const url = `${editFormLink}?copy_from=${phaseId}`;
-              close();
-              clHistory.push(url);
-            }}
+            onClick={duplicate}
             data-cy="e2e-copy-survey-modal-duplicate"
           >
             {formatMessage(messages.duplicate)}

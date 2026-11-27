@@ -146,7 +146,8 @@ context 'criipto verification' do
   end
 
   it 'successfully verifies a user' do
-    get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/criipto?verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
     follow_redirect!
 
     expect_user_to_be_verified(@user)
@@ -155,7 +156,8 @@ context 'criipto verification' do
   end
 
   it 'successfully authenticates a user that was previously verified' do
-    get "/auth/criipto?token=#{@token}"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/criipto?verification=true'
     follow_redirect!
 
     expect(User.count).to eq(1)
@@ -176,15 +178,15 @@ context 'criipto verification' do
       auth_hash['extra']['raw_info']['address_details']['municipality_code'] = '0666'
       auth_hash['extra']['raw_info']['address']['postal_code'] = '3500'
       OmniAuth.config.mock_auth[:criipto] = OmniAuth::AuthHash.new(auth_hash)
-      @user.custom_field_answers.build(key: 'birthdate', value: '1902-12-25')
-      @user.custom_field_answers.build(key: 'birthyear', value: 1902)
-      @user.custom_field_answers.build(key: 'municipality_code', value: '0123')
-      @user.custom_field_answers.build(key: 'postal_code', value: '1234')
+      { 'birthdate' => '1902-12-25', 'birthyear' => 1902, 'municipality_code' => '0123', 'postal_code' => '1234' }.each do |key, value|
+        create(:custom_field_answer, answerable: @user, custom_field: CustomField.find_by!(key: key), value: value)
+      end
       @user.update!(verified: true)
     end
 
     it 'updates custom fields when reverifying' do
-      get "/auth/criipto?token=#{@token}"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/criipto?verification=true'
       follow_redirect!
 
       expect(User.count).to eq(1)
@@ -207,7 +209,8 @@ context 'criipto verification' do
   end
 
   it 'successfully verifies another user with another MitID account' do
-    get "/auth/criipto?token=#{@token}"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/criipto?verification=true'
     follow_redirect!
     expect(@user.reload).to have_attributes({
       verified: true
@@ -218,7 +221,8 @@ context 'criipto verification' do
     auth_hash['extra']['raw_info']['uuid'] = '12345'
     OmniAuth.config.mock_auth[:criipto] = OmniAuth::AuthHash.new(auth_hash)
 
-    get "/auth/criipto?token=#{token2}"
+    cookies[AuthToken::Cookie::NAME] = token2
+    get '/auth/criipto?verification=true'
     follow_redirect!
     expect(user2.reload).to have_attributes(verified: true)
   end
@@ -231,7 +235,8 @@ context 'criipto verification' do
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'DK MitID')
     )
 
-    get "/auth/criipto?token=#{@token}"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/criipto?verification=true'
     follow_redirect!
 
     expect(@user.reload).to have_attributes(verified: false)
@@ -254,6 +259,17 @@ context 'criipto verification' do
     })
 
     expect(response).to redirect_to('/en/?param=some-param&sso_flow=signup&sso_success=true')
+  end
+
+  # E.g. the auth cookie expired while the page was open: verifying must not sign the
+  # user in to (or create) another account instead.
+  it 'fails the verification when the user is not signed in' do
+    get '/auth/criipto?verification=true&verification_pathname=/some-page'
+    follow_redirect!
+
+    expect(User.count).to eq(1)
+    expect(@user.reload.verified).to be(false)
+    expect(response).to redirect_to('/some-page?verification_error=true&error_code=no_token_passed')
   end
 
   it 'does not send email to empty address (when just registered)' do
@@ -280,7 +296,8 @@ context 'criipto verification' do
       before { new_user.update!(email: Faker::Internet.email) }
 
       it 'does not verify another user and does not delete previously verified new user' do
-        get "/auth/criipto?token=#{@token}&verification_pathname=/some-page"
+        cookies[AuthToken::Cookie::NAME] = @token
+        get '/auth/criipto?verification=true&verification_pathname=/some-page'
         follow_redirect!
 
         expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -296,7 +313,8 @@ context 'criipto verification' do
 
     context 'when verified registration is not completed by new user' do
       it 'successfully verifies another user and deletes previously verified blank new user' do
-        get "/auth/criipto?token=#{@token}&verification_pathname=/some-page"
+        cookies[AuthToken::Cookie::NAME] = @token
+        get '/auth/criipto?verification=true&verification_pathname=/some-page'
         follow_redirect!
 
         expect(response).to redirect_to('/en/some-page?verification_success=true')
@@ -328,7 +346,7 @@ context 'criipto verification' do
       expect(user.confirmation_required?).to be(true)
       expect(ActionMailer::Base.deliveries.count).to eq(0)
 
-      headers = { 'Authorization' => authorization_header(user) }
+      headers = { 'Cookie' => auth_cookie(user) }
 
       post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
       expect(response).to have_http_status(:ok)
@@ -370,7 +388,8 @@ context 'criipto verification' do
     end
 
     it 'successfully verifies a user like auth0' do
-      get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/criipto?verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
       follow_redirect!
 
       expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')

@@ -73,6 +73,84 @@ RSpec.describe AppConfiguration do
     end
   end
 
+  describe 'helper text sanitization' do
+    using RSpec::Parameterized::TableSyntax
+
+    let(:config) { described_class.instance }
+    let(:payload) do
+      <<~HTML.squish
+        <b>bold</b><img src="x" onerror="alert(1)"><script>alert(1)</script><style>body{display:none}</style>
+        <a href="javascript:alert(1)">js</a><h1 class="title">Title</h1>
+        <iframe src="https://maps.example.org/m" style="border:0;" allow="geolocation"></iframe>
+      HTML
+    end
+    let(:sanitized) do
+      <<~HTML.squish
+        <b>bold</b> <a rel="nofollow">js</a><h1 class="title">Title</h1>
+        <iframe src="https://maps.example.org/m" style="border:0;"></iframe>
+      HTML
+    end
+
+    where(:setting) { described_class::HELPER_TEXT_SETTINGS }
+
+    with_them do
+      it 'sanitizes the helper text on save' do
+        config.settings['core'][setting] = { 'en' => payload, 'fr-FR' => '<b>gras</b><style>b{}</style>' }
+        config.save!
+
+        expect(config.reload.settings('core', setting)).to eq('en' => sanitized, 'fr-FR' => '<b>gras</b>')
+      end
+    end
+
+    describe 'ampersands' do
+      where(:case_name, :input, :output) do
+        'typed in text'           | 'Terms & conditions'                         | 'Terms & conditions'
+        'next to markup'          | 'AT&T <b>bold</b>'                           | 'AT&T <b>bold</b>'
+        'in a link'               | '<a href="https://x.org/?a=1&b=2">x</a>'     | '<a href="https://x.org/?a=1&b=2" rel="nofollow">x</a>'
+        'escaped tag stays text'  | '&amp;lt;img src=x onerror=alert(1)&amp;gt;' | '&lt;img src=x onerror=alert(1)&gt;'
+        'before a dropped tag'    | '&<img src=x onerror=alert(1)>'              | '&'
+      end
+
+      with_them do
+        it 'keeps them unescaped' do
+          config.settings['core']['enter_email_helper_text'] = { 'en' => input }
+          config.save!
+
+          expect(config.reload.settings('core', 'enter_email_helper_text', 'en')).to eq output
+        end
+      end
+
+      it 'does not let an escaped quote break out of an attribute' do
+        input = '<iframe src="https://maps.example.org/m" title="&amp;quot; onload=alert(1) x=&amp;quot;"></iframe>'
+        2.times do
+          config.settings['core']['enter_email_helper_text'] = { 'en' => input }
+          config.save!
+          input = config.reload.settings('core', 'enter_email_helper_text', 'en')
+        end
+
+        iframe = Nokogiri::HTML.fragment(input).at('iframe')
+        expect(iframe.attributes.keys).to contain_exactly('src', 'title')
+      end
+    end
+
+    it 'leaves other core settings as they are' do
+      config.settings['core']['organization_name'] = { 'en' => 'Name <b>bold</b>' }
+      config.save!
+
+      expect(config.reload.settings('core', 'organization_name')).to eq('en' => 'Name <b>bold</b>')
+    end
+
+    # As when a tenant is created: the configuration being saved is not the current one.
+    it "checks iframes against the configuration's own host" do
+      settings = config.settings.deep_dup
+      settings['core']['enter_email_helper_text'] = { 'en' => '<iframe src="https://ville.example.com/m"></iframe>' }
+      other = described_class.send(:new, host: 'ville.example.com', settings: settings)
+      other.valid?
+
+      expect(other.settings('core', 'enter_email_helper_text', 'en')).to eq ''
+    end
+  end
+
   describe 'sms allowed_country_codes validation' do
     let(:config) { described_class.instance }
 

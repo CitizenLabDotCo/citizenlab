@@ -7,9 +7,7 @@ import { useTheme } from 'styled-components';
 
 import { IUserData } from 'api/users/types';
 
-import selectStyles, {
-  boSelectSettings,
-} from 'components/UI/MultipleSelect/styles';
+import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import { Option } from './typings';
 import { getOptionId } from './utils';
@@ -28,7 +26,6 @@ interface Props {
   onInputChange: (searchTerm: string) => void;
   onMenuScrollToBottom: () => void;
   onChange: (option?: Option) => void;
-  variant?: 'bo';
 }
 
 const BaseUserSelect = ({
@@ -44,7 +41,6 @@ const BaseUserSelect = ({
   onInputChange,
   onMenuScrollToBottom,
   onChange,
-  variant,
 }: Props) => {
   const theme = useTheme();
   const handleInputChange = useMemo(() => {
@@ -88,12 +84,7 @@ const BaseUserSelect = ({
         getOptionValue={getOptionId}
         getOptionLabel={getOptionLabel}
         menuPlacement="auto"
-        // Lets the menu overflow the scrolling body of a back-office modal.
-        menuPosition={variant === 'bo' ? 'fixed' : undefined}
-        styles={selectStyles(
-          theme,
-          variant === 'bo' ? boSelectSettings : undefined
-        )}
+        styles={selectStyles(theme)}
         filterOption={() => true}
         components={components}
         onMenuOpen={onMenuOpen}

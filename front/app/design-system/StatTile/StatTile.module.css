@@ -1,0 +1,20 @@
+.tile {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  padding: var(--gv-space-16);
+  border: var(--gv-border-width-1) solid var(--gv-border-subtle);
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-panel);
+}
+
+.label {
+  composes: body from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.value {
+  composes: stat from '../typography.module.css';
+  color: var(--gv-text-primary);
+}

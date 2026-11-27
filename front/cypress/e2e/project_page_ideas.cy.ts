@@ -266,6 +266,8 @@ describe('timeline project with no active ideation phase', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
+  let projectSlug: string;
+  let phaseId: string;
 
   before(() => {
     return cy
@@ -276,6 +278,7 @@ describe('timeline project with no active ideation phase', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
         return cy.apiCreatePhase({
           projectId,
           title: 'phaseTitle',
@@ -287,7 +290,8 @@ describe('timeline project with no active ideation phase', () => {
           canReact: true,
         });
       })
-      .then(() => {
+      .then((phase) => {
+        phaseId = phase.body.data.id;
         cy.setAdminLoginCookie();
         cy.visit(`/projects/${projectTitle}`);
         cy.wait(1000);
@@ -309,9 +313,11 @@ describe('timeline project with no active ideation phase', () => {
     cy.get('#e2e-ideas-map').click('center');
     // Add idea button should appear, click it
     cy.get('#e2e-idea-from-map-button').click();
-    // Shold redirect to new idea page with phase id in URL
-    cy.url().should('include', `/projects/${projectTitle}/ideas/new`);
-    cy.url().should('include', 'phase_id');
+    // Should open the new idea form for the clicked phase
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${projectSlug}/ideas/new/${phaseId}`
+    );
     // Confirm that idea form is shown
     cy.get('#idea-form').should('exist');
   });

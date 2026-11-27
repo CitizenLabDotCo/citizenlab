@@ -58,7 +58,7 @@ describe Ideas::CopyService do
   end
 
   it 'discards the custom field values' do
-    idea = create(:idea, custom_field_answers: [build(:custom_field_answer, key: 'foo', value: 'bar')])
+    idea = create(:idea, custom_field_answers: [build(:custom_field_answer, value: 'bar')])
     service.copy([idea], dest_phase, nil)
     expect(dest_phase.ideas.sole.custom_field_answers).to be_empty
   end

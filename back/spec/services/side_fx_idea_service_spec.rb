@@ -500,6 +500,7 @@ describe SideFxIdeaService do
 
     context 'user fields in survey form' do
       let(:phase) { create(:native_survey_phase, with_permissions: true) }
+      let(:gender_field) { create(:custom_field_gender) }
       let(:idea) do
         create(
           :native_survey_response,
@@ -508,13 +509,16 @@ describe SideFxIdeaService do
           publication_status: 'draft',
           author: user,
           custom_field_answers: [
-            build(:custom_field_answer, key: 'field', value: 'test'),
-            build(:custom_field_answer, key: 'u_gender', value: 'female')
+            build(:custom_field_answer, value: 'test'),
+            build(:custom_field_answer, key: 'u_gender', custom_field: gender_field, value: 'female')
           ]
         )
       end
 
-      before { create(:idea_status_proposed) }
+      before do
+        create(:idea_status_proposed)
+        gender_field
+      end
 
       it "updates the user profile from the survey input fields when 'user_fields_in_form' is turned on" do
         phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)

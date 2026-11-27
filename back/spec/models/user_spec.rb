@@ -676,24 +676,20 @@ RSpec.describe User do
   end
 
   describe 'demographic fields' do
-    before do
-      create(:custom_field_birthyear)
-      create(:custom_field_gender, :with_options)
-      create(:custom_field_domicile)
-    end
+    let(:gender_field) { create(:custom_field_gender, :with_options) }
 
-    def user_with_answer(key, value)
-      build(:user, custom_field_answers: [build(:custom_field_answer, key: key, value: value)])
+    def user_with_answer(field, value)
+      build(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: value)])
     end
 
     it 'is valid with valid built-in answers' do
-      expect(user_with_answer('gender', 'male')).to be_valid
-      expect(user_with_answer('birthyear', Time.now.year - 13)).to be_valid
-      expect(user_with_answer('domicile', 'outside')).to be_valid
+      expect(user_with_answer(gender_field, 'male')).to be_valid
+      expect(user_with_answer(create(:custom_field_birthyear), Time.now.year - 13)).to be_valid
+      expect(user_with_answer(create(:custom_field_domicile), 'outside')).to be_valid
     end
 
     it 'is invalid with an invalid built-in answer' do
-      user = user_with_answer('gender', 'somethingelse')
+      user = user_with_answer(gender_field, 'somethingelse')
       expect { user.valid? }.to(change { user.errors[:'custom_field_answers.value'] })
     end
   end
@@ -890,7 +886,9 @@ RSpec.describe User do
         build_stubbed(:admin, email: 'breek.nou.mijn.klomp@govocal.NL'),
         build_stubbed(:admin, email: 'bigger@govocal.us'),
         build_stubbed(:admin, email: 'magdalena@govocal.cl'),
-        build_stubbed(:admin, email: 'hello+admin@GOVOCAL.UK')
+        build_stubbed(:admin, email: 'hello+admin@GOVOCAL.UK'),
+        build_stubbed(:admin, email: 'hello@demo.govocal.com'),
+        build_stubbed(:admin, email: 'hello@Demo.CitizenLab.EU')
       ]
 
       expect(users).to all be_super_admin
@@ -901,6 +899,11 @@ RSpec.describe User do
         build_stubbed(:admin, email: 'hello@citizenlab.com'),
         build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
         build_stubbed(:admin, email: 'govocal.com@gmail.com'),
+        build_stubbed(:admin, email: 'hello@evilgovocal.com'),
+        build_stubbed(:admin, email: 'hello@evil-govocal.com'),
+        build_stubbed(:admin, email: 'hello@demo.evilgovocal.com'),
+        build_stubbed(:admin, email: 'hello@govocal.com.evil.io'),
+        build_stubbed(:admin, email: 'hello@notcitizenlab.co'),
         build_stubbed(:admin)
       ]
       expect(strangers).not_to include(be_super_admin)
@@ -1246,6 +1249,19 @@ RSpec.describe User do
     it 'is set when an invited user accepts the invite' do
       u = create(:invited_user)
       u.update!(invite_status: 'accepted')
+      expect(u.registration_completed_at).not_to be_nil
+    end
+
+    it 'is not set when an invited user accepts the invite with another email' do
+      u = create(:invited_user)
+      u.update!(invite_status: 'accepted', email: 'someone.else@example.com')
+      expect(u.registration_completed_at).to be_nil
+      expect(u.email_confirmed_at).to be_nil
+    end
+
+    it 'is set when an invited user accepts the invite with a different-case email' do
+      u = create(:invited_user)
+      u.update!(invite_status: 'accepted', email: u.email.upcase)
       expect(u.registration_completed_at).not_to be_nil
     end
 

@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import styles from './MovePhase.module.css';
 import MovePhaseDateRow from './MovePhaseDateRow';
 import { PhasePlacementMove } from './usePhasePlacementMove';
 import { getPhaseDateErrors } from './utils';
@@ -20,9 +21,9 @@ const MovePhaseDates = ({ placementMove }: Props) => {
 
   return (
     <Box as="fieldset" disabled={isPending} border="none" p="0" m="16px 0 0">
-      <Text variant="boHelper">
+      <p className={styles.helper}>
         {formatMessage(messages.editTimelineDates)}
-      </Text>
+      </p>
       {proposedTimeline.map((phase) => (
         <MovePhaseDateRow
           key={phase.id}

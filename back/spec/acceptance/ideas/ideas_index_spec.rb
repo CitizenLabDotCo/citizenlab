@@ -234,8 +234,8 @@ resource 'Ideas' do
         i1, i2 = @ideas.first(2)
         form = create(:custom_form, participation_context: i1.project)
         field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public')
-        create(:custom_field_answer, answerable: i1, key: field.key, value: 'option1')
-        create(:custom_field_answer, answerable: i2, key: field.key, value: 'option2')
+        create(:custom_field_answer, answerable: i1, custom_field: field, value: 'option1')
+        create(:custom_field_answer, answerable: i2, custom_field: field, value: 'option2')
 
         do_request custom_field_answers: { field.id => ['option1'] }
         json_response = json_parse(response_body)

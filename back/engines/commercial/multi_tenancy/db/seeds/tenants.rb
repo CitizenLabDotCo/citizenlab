@@ -448,6 +448,10 @@ module MultiTenancy
             ai_assistant: {
               enabled: true,
               allowed: true
+            },
+            userjot: {
+              enabled: true,
+              allowed: true
             }
           })
         )

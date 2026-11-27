@@ -1,18 +1,18 @@
 import React from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import Disclosure from 'design-system/Disclosure';
 
 import { CommonGroundResultsData } from 'api/common_ground/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { actionRowProps } from '../InputManager/SideColumn/actionRowProps';
 import Card from '../InputManager/SideColumn/Card';
 import ExportRow from '../InputManager/SideColumn/ExportRow';
 
 import messages from './messages';
 import StatementStats from './StatementStats';
 import { totalReactions } from './utils';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;
@@ -43,12 +43,18 @@ const StatementSideColumn = ({
         />
       )}
       <Card fillHeight>
-        <Button {...actionRowProps} icon="plus" onClick={onAdd}>
-          {formatMessage(messages.addStatement)}
-        </Button>
-        <Button {...actionRowProps} icon="upload-file" onClick={onImport}>
-          {formatMessage(messages.importInputs)}
-        </Button>
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.addStatement)}
+          actionIcon="plus-16"
+          onPress={onAdd}
+        />
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.importInputs)}
+          actionIcon="upload-16"
+          onPress={onImport}
+        />
         <ExportRow
           type="ProjectProposals"
           projectId={projectId}

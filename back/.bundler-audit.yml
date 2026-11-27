@@ -66,3 +66,12 @@ ignore:
   - GHSA-68p9-83h6-5wpj
   - GHSA-v6rj-xm57-3p59
   - GHSA-8474-xrp6-wh69
+
+  # rack-protection 3.2.0: fixed only in 4.2.2, which requires Rack 3 (we are on
+  # Rack 2.2). It is only present as a dependency of omniauth, whose sole use is
+  # subclassing Rack::Protection::AuthenticityToken for its default request
+  # validation — and omniauth-rails_csrf_protection replaces that default with the
+  # Rails token verifier. The affected middlewares are separate, autoloaded
+  # classes that nothing in our stack mounts. Revisit with the Rack 3 bump.
+  - GHSA-pf75-2v58-7mxg # CookieTossing: one request poisons later requests
+  - GHSA-vvhm-j6m8-64cw # JsonCsrf / RemoteToken / RemoteReferrer: missing Referer bypass

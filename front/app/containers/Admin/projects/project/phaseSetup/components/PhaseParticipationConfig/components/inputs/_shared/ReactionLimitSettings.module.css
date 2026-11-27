@@ -1,0 +1,6 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-6);
+  padding: var(--gv-space-6) 0;
+}

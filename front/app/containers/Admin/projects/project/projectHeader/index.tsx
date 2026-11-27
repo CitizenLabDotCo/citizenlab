@@ -27,6 +27,7 @@ import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
 import FolderProjectDropdown from './FolderProjectDropdown';
+import GenerateReportButton from './GenerateReportButton';
 import messages from './messages';
 import PublicationButtons from './PublicationButtons';
 import PublicationStatus from './PublicationStatus';
@@ -125,6 +126,10 @@ const ProjectHeader = ({ projectId }: Props) => {
               padding="4px 8px"
               id="e2e-view-project"
               className="intercom-product-tour-project-view-link"
+            />
+            <GenerateReportButton
+              projectId={project.data.id}
+              reportId={project.data.relationships.report?.data?.id}
             />
             <ShareLink
               projectId={project.data.id}

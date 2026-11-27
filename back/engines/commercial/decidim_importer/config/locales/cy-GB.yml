@@ -9,3 +9,5 @@ cy-GB:
     debate_information_updates: Diweddariadau gwybodaeth
     debate_instructions: Cyfarwyddiadau
     documents_to_consult: Dogfennau Ymgynghori
+    private_space_members: 'Aelodau: %{space}'
+    untitled_folder: Ffolder heb deitl

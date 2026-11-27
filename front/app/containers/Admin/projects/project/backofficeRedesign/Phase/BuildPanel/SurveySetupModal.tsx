@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Spinner, Text } from '@citizenlab/cl2-component-library';
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import Modal from 'design-system/Modal';
+import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -16,13 +20,12 @@ import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
 import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';
 import { transformFieldForSubmission } from 'components/FormBuilder/edit/utils';
-import Error from 'components/UI/Error';
-import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import methodSectionMessages from './BuildFields/MethodSection/messages';
+import styles from './BuildPanel.module.css';
 import messages from './messages';
 import NavCard from './NavCard';
 
@@ -156,31 +159,33 @@ const SurveySetupModal = ({
   return (
     <>
       <Modal
-        opened={opened}
-        close={() => {
-          if (!draft?.saving) onClose();
+        isOpen={opened}
+        onOpenChange={(isOpen) => {
+          if (!isOpen && !draft?.saving) onClose();
         }}
-        hideCloseButton={draft?.saving}
-        width="720px"
-        header={formatMessage(
+        showClose={!draft?.saving}
+        size={866}
+        title={formatMessage(
           !draft && hasQuestions !== false
             ? methodSectionMessages.editSurvey
             : methodSectionMessages.addQuestions
         )}
       >
-        <Box p="24px" display="flex" flexDirection="column" gap="10px">
+        <div className={styles.setupBody}>
           {draft?.saving ? (
-            <Box role="status" display="flex" alignItems="center" gap="12px">
+            <div role="status" className={styles.setupStatus}>
               <Spinner />
-              <Text m="0">{formatMessage(messages.savingAndOpening)}</Text>
-            </Box>
+              <Text variant="ui" tone="primary">
+                {formatMessage(messages.savingAndOpening)}
+              </Text>
+            </div>
           ) : draft?.uploading ? (
-            <Text role="status" m="0">
+            <Text role="status" variant="ui" tone="primary">
               {formatMessage(messages.waitingForAttachment)}
             </Text>
           ) : (
             <>
-              <Text variant="boHelper" m="0 0 6px">
+              <Text variant="ui" tone="secondary" className={styles.setupLead}>
                 {formatMessage(messages.surveySetupLead)}
               </Text>
               {!draft && questionsPending ? (
@@ -196,45 +201,36 @@ const SurveySetupModal = ({
                 />
               )}
               {hasSavedQuestions && (
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  gap="12px"
-                >
-                  <Text variant="boHelper" m="0">
+                <div className={styles.setupRow}>
+                  <Text variant="ui" tone="secondary">
                     {formatMessage(messages.savedSurveyQuestions)}
                   </Text>
                   <Button
-                    buttonStyle="bo-text"
-                    icon="delete"
-                    ariaLabel={formatMessage(messages.deleteSurveyQuestions)}
-                    disabled={!canDelete || updatingQuestions}
-                    processing={updatingQuestions}
-                    onClick={clearQuestions}
+                    variant="quiet"
+                    size={28}
+                    icon="trash-2-16"
+                    isDisabled={!canDelete || updatingQuestions}
+                    isPending={updatingQuestions}
+                    onPress={clearQuestions}
                   >
                     {formatMessage(messages.deleteSurveyQuestions)}
                   </Button>
-                </Box>
+                </div>
               )}
               {deletedQuestions && !hasSavedQuestions && (
-                <Box
-                  role="status"
-                  display="flex"
-                  alignItems="center"
-                  gap="12px"
-                >
-                  <Text variant="boHelper" m="0">
+                <div role="status" className={styles.setupUndo}>
+                  <Text variant="ui" tone="secondary">
                     {formatMessage(messages.surveyQuestionsDeleted)}
                   </Text>
                   <Button
-                    buttonStyle="bo-text"
-                    onClick={undoDelete}
-                    disabled={!noResponses || updatingQuestions}
+                    variant="quiet"
+                    size={28}
+                    isDisabled={!noResponses || updatingQuestions}
+                    onPress={undoDelete}
                   >
                     {formatMessage(messages.undoDeleteQuestions)}
                   </Button>
-                </Box>
+                </div>
               )}
               <NavCard
                 label={formatMessage(messages.usePreviousSurvey)}
@@ -247,7 +243,9 @@ const SurveySetupModal = ({
                 onClick={() => choose('copy')}
               />
               {questionsFailed && (
-                <Error text={formatMessage(messages.questionsUpdateFailed)} />
+                <Banner tone="error">
+                  {formatMessage(messages.questionsUpdateFailed)}
+                </Banner>
               )}
               <PanelGroup label={formatMessage(messages.importResponses)}>
                 <ImportInputsSection
@@ -259,7 +257,7 @@ const SurveySetupModal = ({
               </PanelGroup>
             </>
           )}
-        </Box>
+        </div>
       </Modal>
       {phaseId && (
         <>
@@ -271,7 +269,7 @@ const SurveySetupModal = ({
             }}
             surveyFormPersisted={hasSavedQuestions}
             surveyFormLoading={!phase || phaseFetching || phasePlaceholder}
-            variant="bo"
+            variant="panel"
           />
           <ImportPdfModal
             projectId={projectId}

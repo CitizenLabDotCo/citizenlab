@@ -8499,6 +8499,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.EventsShow.metaTitle1": {
+    "state": "verified",
+    "verified_at": "2026-11-19T15:16:42.165931Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.EventsShow.online2": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -10559,6 +10564,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.IdeasShow.metaTitle1": {
+    "state": "verified",
+    "verified_at": "2026-11-19T15:16:42.165931Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeasShow.moreFromThisSubmission": {
     "state": "verified",
     "verified_at": "2026-10-14T11:50:15.848719Z",
@@ -11889,6 +11899,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.ProjectFolderShowPage.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T15:16:42.165931Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.ProjectFolderShowPage.projectFolderTwitterMessage": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -12168,6 +12183,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Projects.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T15:16:42.165931Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Projects.minBudgetRequired": {
     "state": "verified",

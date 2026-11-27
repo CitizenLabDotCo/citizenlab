@@ -1,0 +1,54 @@
+.questionTitleRow {
+  display: flex;
+  align-items: center;
+}
+
+.questionTitle {
+  composes: ui from '../../../../../../design-system/typography.module.css';
+  display: flex;
+  margin-right: var(--gv-space-12);
+  color: var(--gv-text-primary);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+}
+
+.typeSelect {
+  min-width: 200px;
+}
+
+.maxAnswers {
+  /* Room for the value and both step buttons; 5px has no space token, kept as it is today. */
+  width: 120px;
+  margin-left: 5px;
+}
+
+/* Today's red (#E52516) has no text token; text/danger is the matching role. */
+.indicator {
+  composes: ui from '../../../../../../design-system/typography.module.css';
+  display: flex;
+  align-items: center;
+  /* 5px has no space token; kept as it is today. */
+  gap: 5px;
+  color: var(--gv-text-danger);
+}
+
+/* Today's orange (#FF672F) has no token; text/warning is the matching role. */
+.warning {
+  color: var(--gv-text-warning);
+}
+
+.maxChoiceIndicator {
+  /* 15px has no space token; kept as it is today. */
+  margin-right: 15px;
+}

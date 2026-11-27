@@ -8,7 +8,7 @@ export const fakeSSOGlobalSignup = (
   cy.visit('/');
 
   // Sanity check: no session cookie before the SSO flow starts.
-  cy.getCookie('cl2_jwt').should('be.null');
+  cy.getCookie('cl2_auth_token').should('be.null');
 
   cy.get('#e2e-navbar-login-menu-item').click();
 

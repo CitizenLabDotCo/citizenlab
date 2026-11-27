@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import Text from 'design-system/Text';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -20,7 +20,7 @@ const BatchFailureAlert = ({ failure }: Props) => {
   const { action, failed, total } = failure;
 
   return (
-    <Text as="span" variant="boHelper" color="red600" m="0" role="alert">
+    <Text as="span" variant="small" tone="danger" role="alert">
       {formatMessage(
         action === 'delete'
           ? messages.batchDeleteFailed

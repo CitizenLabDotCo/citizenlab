@@ -227,4 +227,85 @@ describe SettingsService do
       expect(ss.format_for_front_end(settings, schema)).to eq expected_settings
     end
   end
+
+  describe 'admin_writable_settings' do
+    it 'returns the annotated settings' do
+      schema = {
+        'properties' => {
+          'a' => {
+            'type' => 'object',
+            'properties' => {
+              'enabled' => { 'type' => 'boolean', 'admin_writable' => true },
+              'setting1' => { 'type' => 'string' }
+            }
+          }
+        }
+      }
+      expect(ss.admin_writable_settings(schema)).to eq [%w[a enabled]]
+    end
+
+    # Each setting added to (or removed from) this list widens (or narrows) what admins
+    # who are not super admins can change.
+    it 'lists exactly the settings admins may change in the app configuration schema' do
+      expect(ss.admin_writable_settings(AppConfiguration::Settings.json_schema)).to contain_exactly(
+        %w[blocking_profanity enabled],
+        %w[core anonymous_name_scheme],
+        %w[core area_term],
+        %w[core areas_term],
+        %w[core color_main],
+        %w[core color_secondary],
+        %w[core color_text],
+        %w[core complete_your_profile_helper_text],
+        %w[core country_code],
+        %w[core currency],
+        %w[core custom_fields_signup_helper_text],
+        %w[core enter_email_helper_text],
+        %w[core enter_password_helper_text],
+        %w[core exclude_admins_and_moderators_from_statistics],
+        %w[core locales],
+        %w[core onboarding],
+        %w[core organization_name],
+        %w[core organization_site],
+        %w[core population],
+        %w[core timezone],
+        %w[core topic_term],
+        %w[core topics_term],
+        %w[esri_integration api_key],
+        %w[flag_inappropriate_content enabled]
+      )
+    end
+  end
+
+  describe 'changed_settings' do
+    let(:before) do
+      {
+        'a' => { 'enabled' => true, 'name' => { 'en' => 'A', 'fr-FR' => 'A' } },
+        'b' => { 'enabled' => false }
+      }
+    end
+
+    it 'ignores settings whose value is unchanged' do
+      expect(ss.changed_settings(before, before.deep_dup)).to be_empty
+    end
+
+    it 'returns a multiloc setting as one setting when one of its locales changes' do
+      after = before.deep_merge('a' => { 'name' => { 'en' => 'B' } })
+      expect(ss.changed_settings(before, after)).to eq [%w[a name]]
+    end
+
+    it 'returns new features and settings' do
+      after = before.deep_merge('a' => { 'new_setting' => 1 }, 'c' => { 'enabled' => true })
+      expect(ss.changed_settings(before, after)).to contain_exactly(%w[a new_setting], %w[c enabled])
+    end
+
+    it 'returns removed features and settings' do
+      after = { 'a' => before['a'].except('name') }
+      expect(ss.changed_settings(before, after)).to contain_exactly(%w[a name], %w[b enabled])
+    end
+
+    it 'returns a feature whose value is not a hash as a whole' do
+      after = before.merge('b' => 'not a hash')
+      expect(ss.changed_settings(before, after)).to eq [['b', nil]]
+    end
+  end
 end

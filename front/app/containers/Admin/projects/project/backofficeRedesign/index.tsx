@@ -7,8 +7,7 @@ import React, {
   useState,
 } from 'react';
 
-import { Box, Spinner, bo, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import Spinner from 'design-system/Spinner';
 
 import { IPhaseData, InputTerm } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
@@ -25,11 +24,14 @@ import WorkspaceHeader from './Header';
 import { HeaderDropdownName } from './Header/HeaderDropdown';
 import PanelToggleButton from './PanelToggleButton';
 import { useParticipationPanel } from './ParticipationPanelContext';
+import GoesLiveNote from './Phase/GoesLiveNote';
 import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname, PhaseViewKey } from './Phase/usePhaseViews';
 import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
 import ProjectTimeline from './ProjectTimeline';
+import styles from './ProjectWorkspace.module.css';
+import 'design-system/tokens.css';
 
 const InputTags = lazy(() => import('./InputTags'));
 
@@ -37,57 +39,6 @@ const InputTags = lazy(() => import('./InputTags'));
 const CustomMapConfigPage = lazy(
   () => import('containers/Admin/CustomMapConfigPage')
 );
-
-const PROJECT_PANEL_WIDTH = '332px';
-const SIDE_PANEL_WIDTH = '300px';
-const RAIL_WIDTH = '48px';
-const PHASE_PANEL_WIDTH = '560px';
-const PANEL_GAP = '8px';
-const COLLAPSE_DURATION = '0.48s';
-const COLLAPSE_EASING = 'cubic-bezier(0.65, 0, 0.35, 1)';
-
-const collapsedWidth = (rail: boolean) => (rail ? RAIL_WIDTH : '0px');
-const visibilityDelay = (collapsed: boolean) =>
-  collapsed ? COLLAPSE_DURATION : '0s';
-
-interface PanelStyleProps {
-  collapsed: boolean;
-  rail: boolean;
-  animate: boolean;
-}
-
-const panelWidth = ({ collapsed, rail }: PanelStyleProps) =>
-  collapsed ? collapsedWidth(rail) : SIDE_PANEL_WIDTH;
-
-const CollapsiblePanel = styled(Box)<PanelStyleProps>`
-  flex: 0 0 ${panelWidth};
-  width: ${panelWidth};
-  margin-right: ${({ collapsed, rail }) =>
-    collapsed && !rail ? `-${PANEL_GAP}` : '0'};
-  transition: ${({ animate }) =>
-    animate
-      ? `flex-basis ${COLLAPSE_DURATION} ${COLLAPSE_EASING}, width ${COLLAPSE_DURATION} ${COLLAPSE_EASING}, margin-right ${COLLAPSE_DURATION} ${COLLAPSE_EASING}`
-      : 'none'};
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-`;
-
-// Visibility flips once the panel has finished shrinking, so hidden content
-// can't be tabbed into.
-const PanelContent = styled(Box)<{ collapsed: boolean; animate: boolean }>`
-  opacity: ${({ collapsed }) => (collapsed ? 0 : 1)};
-  visibility: ${({ collapsed }) => (collapsed ? 'hidden' : 'visible')};
-  transition: ${({ collapsed, animate }) =>
-    animate
-      ? `opacity 0.32s, visibility 0s linear ${visibilityDelay(collapsed)}`
-      : 'none'};
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-`;
 
 interface Draft {
   inputTerm?: InputTerm;
@@ -140,9 +91,10 @@ const ProjectWorkspace = ({
     if (!finishedSaving || !inPhase) return;
 
     // Wait for field errors to mount after every save attempt, including retries.
+    // Design-system fields render their error in the errorMessage slot.
     const frame = requestAnimationFrame(() => {
       const error = workspaceRef.current?.querySelector<HTMLElement>(
-        '.e2e-error-message:not(.error-exit):not(.error-exit-active)'
+        '[slot="errorMessage"], .e2e-error-message:not(.error-exit):not(.error-exit-active)'
       );
       error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
@@ -176,72 +128,45 @@ const ProjectWorkspace = ({
     <ProjectSetupPanel project={project} />
   );
 
-  // Each column is positioned so the visually hidden inputs of toggles and
-  // radios inside it are placed, and scrolled, within the column. Otherwise
-  // they hang below the page, and focusing one scrolls the whole workspace.
   const setupSlot = !section && (
-    <Box
-      flex={`0 0 ${PROJECT_PANEL_WIDTH}`}
-      width={PROJECT_PANEL_WIDTH}
-      minHeight="0"
-      overflowY="auto"
-      position="relative"
-      borderRadius={bo.panelBorderRadius}
-      background={colors.white}
-    >
-      {settingsPanel}
-    </Box>
+    <div className={styles.setupSlot}>{settingsPanel}</div>
   );
   const showParticipation =
     withParticipation &&
     !pending &&
     (!inPhase || (!editingEmail && !editingMap));
   const participationSlot = showParticipation && (
-    <CollapsiblePanel
-      collapsed={collapsed}
-      rail={inPhase}
-      animate={animate}
-      minHeight="0"
-      overflowX="hidden"
-      overflowY={collapsed ? 'hidden' : 'auto'}
-      position="relative"
-      borderRadius={bo.panelBorderRadius}
-      background={colors.white}
+    <div
+      className={styles.participationSlot}
+      data-collapsed={collapsed || undefined}
+      data-rail={inPhase || undefined}
+      data-animate={animate || undefined}
     >
-      {/* Keeps the content at full width while the panel animates. */}
-      <PanelContent
-        collapsed={collapsed}
-        animate={animate}
+      <div
+        className={styles.panelContent}
+        data-collapsed={collapsed || undefined}
+        data-animate={animate || undefined}
         aria-hidden={collapsed}
-        width={SIDE_PANEL_WIDTH}
       >
         <ProjectTimeline projectId={project.id} withNewMethod={!draft} />
-      </PanelContent>
+      </div>
       {inPhase && collapsed && (
-        <Box position="absolute" top="18px" left="8px">
-          <PanelToggleButton buttonStyle="bo-text" />
-        </Box>
+        <div className={styles.railToggle}>
+          <PanelToggleButton variant="ghost" />
+        </div>
       )}
-    </CollapsiblePanel>
+    </div>
   );
   // A phase has a single panel: its build fields, then its settings.
   const phaseSlot = (
-    <Box
-      display={showPanels ? 'block' : 'none'}
-      flex={`0 0 ${PHASE_PANEL_WIDTH}`}
-      width={PHASE_PANEL_WIDTH}
-      minHeight="0"
-      overflowY="auto"
-      position="relative"
-      borderRadius={bo.panelBorderRadius}
-      background={colors.white}
-    >
-      <Box display={editingTags ? 'none' : 'block'}>
+    <div className={`${styles.phaseSlot} ${showPanels ? '' : styles.hidden}`}>
+      <div className={editingTags ? styles.hidden : undefined}>
         {sidePanel}
         {settingsPanel}
-      </Box>
+        <GoesLiveNote project={project} />
+      </div>
       {tagsOpened && (
-        <Box display={editingTags ? 'block' : 'none'}>
+        <div className={editingTags ? undefined : styles.hidden}>
           <Suspense fallback={<Spinner />}>
             <InputTags
               key={`${project.id}-${phase?.id}-${pageSave?.revision}`}
@@ -252,51 +177,35 @@ const ProjectWorkspace = ({
               }
             />
           </Suspense>
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 
   const mainSlot = (
-    <Box
-      flexGrow={1}
-      minWidth="0"
-      minHeight="0"
-      overflowY="auto"
-      position="relative"
-      display="flex"
-      flexDirection="column"
-      borderRadius={bo.panelBorderRadius}
+    <div
+      className={styles.mainSlot}
       // Manage and Insights bring their own white panels.
-      background={activeView !== 'build' ? undefined : colors.grey100}
+      data-bare={activeView !== 'build' || undefined}
     >
       {mapOpened && (
-        <Box display={editingMap ? 'block' : 'none'} h="100%">
+        <div className={`${styles.mapSlot} ${editingMap ? '' : styles.hidden}`}>
           <Suspense fallback={<Spinner />}>
             <CustomMapConfigPage
               // Discarding the changes drops its staged edits too.
               key={pageSave?.revision}
-              variant="bo"
+              variant="panel"
               onBack={() => removeSearchParams(['map_config'])}
             />
           </Suspense>
-        </Box>
+        </div>
       )}
       {!editingMap && children}
-    </Box>
+    </div>
   );
 
   return (
-    <Box
-      ref={workspaceRef}
-      display="flex"
-      flexDirection="column"
-      gap={PANEL_GAP}
-      p={PANEL_GAP}
-      height="100vh"
-      overflow="hidden"
-      background={colors.background}
-    >
+    <div ref={workspaceRef} className={styles.workspace}>
       <FeedbackNotice />
       <WorkspaceHeader
         project={project}
@@ -312,17 +221,11 @@ const ProjectWorkspace = ({
         onOpenDropdown={setOpenDropdown}
       />
 
-      <Box
-        display="flex"
-        gap={PANEL_GAP}
-        flexGrow={1}
-        minHeight="0"
-        overflow="hidden"
-      >
+      <div className={styles.columns}>
         {!inPhase && setupSlot}
 
         {/* Always in this slot, so moving between the project and a phase
-            keeps the same panel instead of mounting a new one. */}
+              keeps the same panel instead of mounting a new one. */}
         {participationSlot}
 
         {inPhase && phaseSlot}
@@ -332,23 +235,17 @@ const ProjectWorkspace = ({
             {mainSlot}
           </ViewContent>
         ) : (
-          <Box
-            position="relative"
-            display="flex"
-            flexGrow={1}
-            minWidth="0"
-            minHeight="0"
-          >
+          <div className={styles.mainColumn}>
             {mainSlot}
             {showParticipation && !inPhase && collapsed && (
-              <Box position="absolute" top="8px" left="8px" zIndex="1">
-                <PanelToggleButton buttonStyle="bo-secondary" />
-              </Box>
+              <div className={styles.floatingToggle}>
+                <PanelToggleButton variant="bordered" />
+              </div>
             )}
-          </Box>
+          </div>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

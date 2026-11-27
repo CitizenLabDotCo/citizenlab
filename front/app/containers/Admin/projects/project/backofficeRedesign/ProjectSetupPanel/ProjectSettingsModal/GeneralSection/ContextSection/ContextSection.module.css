@@ -1,0 +1,9 @@
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+.error {
+  margin-top: var(--gv-space-8);
+}

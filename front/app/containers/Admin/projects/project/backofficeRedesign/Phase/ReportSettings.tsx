@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  Toggle,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import Disclosure from 'design-system/Disclosure';
+import Switch from 'design-system/Switch';
+import Text from 'design-system/Text';
 
 import { IPhaseData } from 'api/phases/types';
 import useReport from 'api/reports/useReport';
@@ -19,8 +16,9 @@ import useConfirmDeleteReport from 'containers/Admin/reporting/components/Report
 
 import { useIntl } from 'utils/cl-intl';
 
-import PanelField from './BuildPanel/PanelField';
 import messages from './messages';
+import styles from './ReportSettings.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   phase: IPhaseData;
@@ -28,7 +26,6 @@ interface Props {
 
 const ReportSettings = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
-  const [open, setOpen] = useState(false);
   const reportId = phase.relationships.report?.data?.id;
   const { data: report } = useReport(reportId);
   const { mutate: updateReport } = useUpdateReport();
@@ -37,73 +34,47 @@ const ReportSettings = ({ phase }: Props) => {
 
   if (!reportBuilderEnabled || !report) return null;
 
-  const label = formatMessage(messages.reportVisibility);
   const visible = report.data.attributes.visible;
   const canEdit =
     report.data.attributes.action_descriptors.editing_report.enabled;
 
   return (
-    <PanelField
-      label={label}
-      action={
-        <Box display="flex" alignItems="center" gap="4px">
-          {!open && (
-            <SummaryPill
-              label={formatMessage(
-                visible ? messages.reportVisible : messages.reportNotVisible
-              )}
-            />
+    <Disclosure
+      title={formatMessage(messages.reportVisibility)}
+      summary={
+        <SummaryPill
+          label={formatMessage(
+            visible ? messages.reportVisible : messages.reportNotVisible
           )}
-          <Button
-            buttonStyle="bo-text"
-            icon={open ? 'chevron-up' : 'chevron-down'}
-            iconSize="16px"
-            width="28px"
-            height="28px"
-            padding="0"
-            ariaLabel={label}
-            ariaExpanded={open}
-            onClick={() => setOpen((open) => !open)}
-          />
-        </Box>
+        />
       }
     >
-      {open && (
-        <>
-          <Toggle
-            variant="bo"
-            checked={visible}
-            onChange={() =>
-              updateReport({ id: report.data.id, visible: !visible })
-            }
-            label={
-              <Box>
-                <Text as="span" display="block" variant="boControl" m="0">
-                  {formatMessage(messages.reportVisibleToParticipants)}
-                </Text>
-                <Text as="span" display="block" variant="boHelper" m="0">
-                  {formatMessage(visibilityWarning(report, phase))}
-                </Text>
-              </Box>
-            }
-          />
-          <Box display="flex">
-            <Button
-              buttonStyle="bo-text"
-              padding="0"
-              height="auto"
-              textColor={colors.red600}
-              textHoverColor={colors.red800}
-              processing={isDeleting}
-              disabled={!canEdit}
-              onClick={() => confirmDelete(report)}
-            >
-              {formatMessage(messages.deleteReport)}
-            </Button>
-          </Box>
-        </>
-      )}
-    </PanelField>
+      <Switch
+        size={26}
+        isSelected={visible}
+        onChange={() => updateReport({ id: report.data.id, visible: !visible })}
+      >
+        <span className={styles.switchLabel}>
+          <Text as="span" variant="ui" tone="primary">
+            {formatMessage(messages.reportVisibleToParticipants)}
+          </Text>
+          <Text as="span" variant="ui" tone="secondary">
+            {formatMessage(visibilityWarning(report, phase))}
+          </Text>
+        </span>
+      </Switch>
+      <div>
+        <Button
+          variant="danger"
+          size={28}
+          isPending={isDeleting}
+          isDisabled={!canEdit}
+          onPress={() => confirmDelete(report)}
+        >
+          {formatMessage(messages.deleteReport)}
+        </Button>
+      </div>
+    </Disclosure>
   );
 };
 

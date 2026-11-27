@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import Text from 'design-system/Text';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -23,8 +23,8 @@ const ArchivedPanel = ({ project }: Props) => {
   const [restoreOpened, setRestoreOpened] = useState(false);
 
   return (
-    <Box>
-      <Text variant="boHelper" m="0">
+    <div>
+      <Text variant="ui" tone="secondary">
         {formatMessage(messages.archivedExplanation)}
       </Text>
       <FinalRecordCard project={project} />
@@ -33,7 +33,7 @@ const ArchivedPanel = ({ project }: Props) => {
         title={formatMessage(backofficeRedesignMessages.publishRestoreToDraft)}
         behaviour={{
           kind: 'action',
-          icon: 'chevron-right',
+          icon: 'chevron-right-16',
           onClick: () => setRestoreOpened(true),
         }}
       />
@@ -44,7 +44,7 @@ const ArchivedPanel = ({ project }: Props) => {
         project={project}
         onClose={() => setRestoreOpened(false)}
       />
-    </Box>
+    </div>
   );
 };
 

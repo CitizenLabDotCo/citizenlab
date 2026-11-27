@@ -64,13 +64,6 @@ const submit = async () => {
 beforeEach(() => {
   jest.clearAllMocks();
   mockFailingGroupIds = [];
-  const portal = document.createElement('div');
-  portal.id = 'modal-portal';
-  document.body.appendChild(portal);
-});
-
-afterEach(() => {
-  document.getElementById('modal-portal')?.remove();
 });
 
 describe('NewProjectModal', () => {

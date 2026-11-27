@@ -1,6 +1,6 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { isNilOrError } from '../../utils/helperUtils';
 import { Locale, Multiloc } from '../../utils/typings';
@@ -9,37 +9,18 @@ import IconTooltip from '../IconTooltip';
 import Label from '../Label';
 import LocaleSwitcher from '../LocaleSwitcher';
 
-import Input, { InputProps, boLabelStyle } from '.';
+import Input, { InputProps } from '.';
 
-export const stackedLabelStyle = css`
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-
-  > label {
-    align-self: flex-start;
-  }
-`;
-
-const LabelContainer = styled.div<{ stacked: boolean }>`
+const LabelContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-
-  ${({ stacked }) => stacked && stackedLabelStyle}
 `;
 
-const StyledLabel = styled(Label)<{ variant: InputProps['variant'] }>`
+const StyledLabel = styled(Label)`
   flex: 1;
   padding-bottom: 0px;
-
-  ${({ variant }) =>
-    variant === 'bo' &&
-    css`
-      ${boLabelStyle}
-      margin-bottom: 0;
-    `}
 `;
 
 const Spacer = styled.div`
@@ -58,7 +39,6 @@ export interface Props extends Omit<InputProps, 'value' | 'onChange'> {
   errorMultiloc?: Multiloc | null;
   initiallySelectedLocale?: Locale;
   hideLocaleSwitcher?: boolean;
-  stackedLabel?: boolean;
 }
 
 const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -72,7 +52,6 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
     errorMultiloc,
     initiallySelectedLocale,
     hideLocaleSwitcher,
-    stackedLabel = false,
     ...inputProps
   } = props;
   const { id, className } = props;
@@ -131,10 +110,10 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
   if (selectedLocale) {
     return (
       <Box className={className}>
-        <Box mb={props.variant === 'bo' ? '4px' : '10px'}>
-          <LabelContainer stacked={stackedLabel}>
+        <Box mb="10px">
+          <LabelContainer>
             {label ? (
-              <StyledLabel htmlFor={id} variant={props.variant}>
+              <StyledLabel htmlFor={id}>
                 <span>{label}</span>
                 {labelTooltipText && <IconTooltip content={labelTooltipText} />}
               </StyledLabel>
@@ -145,7 +124,6 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
               <StyledLocaleSwitcher
                 onSelectedLocaleChange={handleOnSelectedLocaleChange}
                 locales={!isNilOrError(locales) ? locales : []}
-                variant={props.variant}
                 selectedLocale={selectedLocale}
                 values={{
                   input_field: valueMultiloc as Multiloc,

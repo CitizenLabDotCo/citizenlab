@@ -10,8 +10,8 @@ jest.mock('utils/cl-router/history', () => ({
 const mockReplace = clHistory.replace as jest.Mock;
 
 const SURVEY_PATH_WITH_QUERY =
-  '/en/projects/my-project/surveys/new?phase_id=phase-1';
-const CURRENT_PATHNAME = '/en/projects/my-project/surveys/new';
+  '/en/projects/my-project/surveys/new/phase-1?go_back=true';
+const CURRENT_PATHNAME = '/en/projects/my-project/surveys/new/phase-1';
 
 describe('restoreLocationAfterAuthReturn (SSO/verification return navigation)', () => {
   beforeEach(() => {
@@ -25,7 +25,7 @@ describe('restoreLocationAfterAuthReturn (SSO/verification return navigation)', 
 
     restoreLocationAfterAuthReturn(CURRENT_PATHNAME);
 
-    // phase_id is restored; the auth params the back-end appended are dropped.
+    // go_back is restored; the auth params the back-end appended are dropped.
     expect(mockReplace).toHaveBeenCalledWith(SURVEY_PATH_WITH_QUERY);
   });
 

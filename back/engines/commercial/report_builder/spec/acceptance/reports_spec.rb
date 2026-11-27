@@ -162,6 +162,28 @@ resource 'Reports' do
 
     include_examples 'not authorized to visitors'
     include_examples 'not authorized to normal users'
+
+    describe 'when the report is about a project' do
+      let(:project) { create(:project) }
+      let(:id) { create(:report, project: project, owner: create(:admin)).id }
+
+      example 'Get an admin\'s project report as a moderator of the project', document: false do
+        header_token_for create(:project_moderator, projects: [project])
+
+        do_request
+
+        assert_status 200
+        expect(response_data.dig(:attributes, :action_descriptors, :editing_report, :enabled)).to be true
+      end
+
+      example '[error] Get it as a moderator of another project', document: false do
+        header_token_for create(:project_moderator, projects: [create(:project)])
+
+        do_request
+
+        assert_status 401
+      end
+    end
   end
 
   post 'web_api/v1/reports/:id/copy' do
@@ -192,6 +214,17 @@ resource 'Reports' do
         expect(clone.phase_id).to be_nil
         expect(clone.visible).to be(false)
         expect(clone.layout.craftjs_json).to eq(report.layout.craftjs_json)
+      end
+
+      context 'when the report is about a whole project' do
+        let!(:report) { create(:report, project: create(:project)) }
+
+        example 'Copy the report without the project association', document: false do
+          do_request
+          assert_status 201
+
+          expect(ReportBuilder::Report.find(response_data[:id]).project_id).to be_nil
+        end
       end
 
       context 'when the report is a phase report with graph data units' do
@@ -506,6 +539,40 @@ resource 'Reports' do
 
     include_examples 'not authorized to visitors'
     include_examples 'not authorized to normal users'
+
+    describe 'when the report is about a project' do
+      let(:project) { create(:project) }
+      let(:report) { create(:report, project: project, owner: create(:admin)) }
+      let(:id) { report.id }
+
+      example 'Rename an admin\'s project report as a moderator of the project', document: false do
+        header_token_for create(:project_moderator, projects: [project])
+
+        do_request(report: { name: 'by-the-moderator' })
+
+        assert_status 200
+        expect(report.reload.name).to eq 'by-the-moderator'
+      end
+    end
+
+    # A report's project is what its reporting queries read, so it is set when the
+    # report is created and never moved. Moving one to another project's phase would
+    # show answers read from the first project to the second project's moderators.
+    describe 'when the update names another phase' do
+      let(:phase) { create(:phase) }
+      let(:report) { create(:report, phase: phase) }
+      let(:id) { report.id }
+
+      example 'Keep a report in its phase', document: false do
+        other_phase = create(:phase)
+        header_token_for create(:project_moderator, projects: [phase.project, other_phase.project])
+
+        do_request(report: { phase_id: other_phase.id })
+
+        assert_status 200
+        expect(report.reload.phase_id).to eq phase.id
+      end
+    end
   end
 
   delete 'web_api/v1/reports/:id' do
@@ -551,6 +618,236 @@ resource 'Reports' do
     example '[error] Delete a report that do not exist' do
       do_request(id: 'do-not-exist')
       assert_status 404
+    end
+
+    include_examples 'not authorized to visitors'
+    include_examples 'not authorized to normal users'
+  end
+
+  post 'web_api/v1/reports/:id/generate' do
+    route_description <<~DESC
+      Compose the whole report with an LLM, in the background. Returns the job tracker
+      to poll for progress; the composed layout replaces whatever the report contains.
+
+      Only for reports of a phase: the report is about the project behind that phase.
+    DESC
+
+    let_it_be(:phase) { create(:phase) }
+    let_it_be(:report) { create(:report, phase: phase) }
+    let(:id) { report.id }
+
+    before { SettingsService.new.activate_feature!('llm_reporting') }
+
+    describe 'when authorized' do
+      let(:current_user) { create(:admin) }
+
+      before { header_token_for current_user }
+
+      example 'Generate a report', :active_job_que_adapter do
+        expect { do_request }
+          .to change { QueJob.by_job_class(ReportBuilder::GenerateReportJob).count }.by(1)
+
+        assert_status 202
+        expect(response_data).to include(
+          type: 'job',
+          attributes: hash_including(
+            job_type: 'ReportBuilder::GenerateReportJob',
+            progress: 0,
+            total: 1,
+            completed_at: nil
+          ),
+          relationships: hash_including(
+            owner: { data: { id: current_user.id, type: 'user' } },
+            project: { data: { id: phase.project_id, type: 'project' } },
+            context: { data: { id: phase.id, type: 'phase' } }
+          )
+        )
+      end
+
+      example '[error] Generate a report while a run is already in progress', :active_job_que_adapter do
+        create(
+          :jobs_tracker,
+          context: phase,
+          root_job_type: ReportBuilder::GenerateReportJob.name,
+          project: phase.project
+        )
+
+        expect { do_request }
+          .not_to change { QueJob.by_job_class(ReportBuilder::GenerateReportJob).count }
+
+        assert_status 409
+        expect(json_response_body.dig(:errors, :base).first[:error]).to eq 'generation_in_progress'
+      end
+
+      example 'Generate the report of a whole project', :active_job_que_adapter do
+        project_report = create(:report, project: create(:project))
+
+        do_request(id: project_report.id)
+
+        assert_status 202
+        expect(response_data.dig(:relationships, :context, :data, :type)).to eq 'project'
+      end
+
+      example '[error] Generate a report about neither a phase nor a project' do
+        do_request(id: create(:report).id)
+        assert_status 401
+      end
+
+      example '[error] Generate a report with the feature deactivated', document: false do
+        SettingsService.new.deactivate_feature!('llm_reporting')
+
+        do_request
+        assert_status 401
+      end
+    end
+
+    include_examples 'not authorized to visitors'
+    include_examples 'not authorized to normal users'
+  end
+
+  post 'web_api/v1/reports/:id/cancel_generation' do
+    route_description <<~DESC
+      Ask the run in progress — a generation or a chat turn — to stop. The loop reads
+      the flag between rounds, so the round under way finishes first; what was written
+      up to then is saved.
+    DESC
+
+    let_it_be(:phase) { create(:phase) }
+    let_it_be(:report) { create(:report, phase: phase) }
+    let(:id) { report.id }
+
+    before { SettingsService.new.activate_feature!('llm_reporting') }
+
+    describe 'when authorized' do
+      let(:current_user) { create(:admin) }
+
+      before { header_token_for current_user }
+
+      example 'Stop the run in progress' do
+        run = create(:generation_transcript, report: report, stopped_because: nil)
+
+        do_request
+
+        assert_status 202
+        expect(response_data).to include(id: run.id, type: 'generation_cancel')
+        expect(run.reload.cancel_requested_at).to be_present
+      end
+
+      example 'Asking twice changes nothing', document: false do
+        run = create(:generation_transcript, report: report, stopped_because: nil, cancel_requested_at: 1.minute.ago)
+
+        expect { do_request }.not_to change { run.reload.cancel_requested_at }
+        assert_status 202
+      end
+
+      example '[error] Nothing is running' do
+        create(:generation_transcript, report: report, stopped_because: 'done')
+
+        do_request
+
+        assert_status 404
+        expect(json_response_body.dig(:errors, :base).first[:error]).to eq 'not_running'
+      end
+    end
+
+    include_examples 'not authorized to visitors'
+    include_examples 'not authorized to normal users'
+  end
+
+  get 'web_api/v1/reports/:id/chat' do
+    route_description 'The conversation in which an admin asks for changes to the report.'
+
+    let_it_be(:report) { create(:report, phase: create(:phase)) }
+    let(:id) { report.id }
+
+    before { SettingsService.new.activate_feature!('llm_reporting') }
+
+    describe 'when authorized' do
+      before { admin_header_token }
+
+      example_request 'Read the report chat before anything was said' do
+        assert_status 200
+        expect(response_data[:attributes]).to include(turns: [], pending: false)
+      end
+
+      example 'Read the report chat' do
+        create(:report_chat, report: report, transcript: [
+          { 'role' => 'user', 'text' => 'shorter please', 'at' => Time.current.iso8601 },
+          { 'role' => 'assistant', 'text' => 'Done.', 'at' => Time.current.iso8601 }
+        ])
+
+        do_request
+        assert_status 200
+        expect(response_data[:attributes][:turns].map { |turn| turn[:role] }).to eq %w[user assistant]
+        expect(response_data[:attributes][:pending]).to be false
+      end
+
+      example 'A turn the model still owes an answer to is pending', document: false do
+        create(:report_chat, report: report, transcript: [
+          { 'role' => 'user', 'text' => 'shorter please', 'at' => Time.current.iso8601 }
+        ])
+
+        do_request
+        expect(response_data[:attributes][:pending]).to be true
+      end
+    end
+
+    include_examples 'not authorized to visitors'
+    include_examples 'not authorized to normal users'
+  end
+
+  post 'web_api/v1/reports/:id/chat' do
+    route_description <<~DESC
+      Ask for a change to the report. The turn runs in the background; poll the chat
+      to see the answer and the report it wrote.
+    DESC
+
+    parameter :message, 'What to change about the report.', required: true
+    parameter :craftjs_json, 'The layout as it stands in the editor, unsaved edits included.', required: false
+
+    let_it_be(:report) { create(:report, phase: create(:phase)) }
+    let(:id) { report.id }
+    let(:message) { 'Make the summary shorter.' }
+
+    before { SettingsService.new.activate_feature!('llm_reporting') }
+
+    describe 'when authorized' do
+      before { admin_header_token }
+
+      example 'Ask for a change', :active_job_que_adapter do
+        expect { do_request }
+          .to change { QueJob.by_job_class(ReportBuilder::ReviseReportJob).count }.by(1)
+
+        assert_status 201
+        expect(response_data[:attributes][:turns].last).to include(role: 'user', text: message)
+        expect(response_data[:attributes][:pending]).to be true
+      end
+
+      example 'The unsaved editor layout is what gets revised', :active_job_que_adapter, document: false do
+        editor_layout = {
+          'ROOT' => { 'type' => 'div', 'nodes' => [], 'props' => { 'id' => 'only-in-the-editor' } }
+        }
+
+        do_request(craftjs_json: editor_layout)
+        assert_status 201
+
+        enqueued = QueJob.by_job_class(ReportBuilder::ReviseReportJob).last
+        expect(enqueued.args.to_json).to include 'only-in-the-editor'
+      end
+
+      example '[error] Ask for nothing', :active_job_que_adapter do
+        expect { do_request(message: '  ') }
+          .not_to change { QueJob.by_job_class(ReportBuilder::ReviseReportJob).count }
+
+        assert_status 422
+      end
+
+      example '[error] Ask for a change with the feature deactivated', document: false do
+        SettingsService.new.deactivate_feature!('llm_reporting')
+
+        do_request
+        assert_status 401
+      end
     end
 
     include_examples 'not authorized to visitors'

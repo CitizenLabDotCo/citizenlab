@@ -7,6 +7,7 @@ import useUserCustomFieldsForPermission from 'api/user_custom_fields_for_permiss
 
 import CustomFields from 'components/CustomFieldsForm/CustomFields';
 import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
+import { castNumberAnswers } from 'components/CustomFieldsForm/util';
 
 interface Props {
   onChange: (formData: Record<string, any>) => void;
@@ -47,24 +48,7 @@ const UserCustomFieldsForm = ({
 
   useEffect(() => {
     const subscription = methods.watch((values) => {
-      const valueKeys = Object.keys(values);
-
-      const transformedValues = {};
-      valueKeys.forEach((key) => {
-        const question = customFields?.find((q) => q.key === key);
-        const value = values[key];
-
-        if (question?.input_type !== 'number' || value === undefined) {
-          transformedValues[key] = value;
-          return;
-        }
-
-        // Send null for a cleared input (instead of Number('') === 0),
-        // so the API removes the stored value.
-        transformedValues[key] =
-          value === '' || value === null ? null : Number(value);
-      });
-      onChange(transformedValues);
+      onChange(castNumberAnswers(values, customFields ?? []));
     });
     return () => subscription.unsubscribe();
   }, [methods, onChange, customFields]);

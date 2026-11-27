@@ -11,9 +11,9 @@ describe Analysis::AutoInsightsService do
       let!(:custom_form) { create(:custom_form, participation_context: project) }
       let!(:custom_field1) { create(:custom_field_select, :with_options, resource: custom_form) }
       let!(:custom_field2) { create(:custom_field_linear_scale, resource: custom_form, maximum: 3) }
-      let!(:author1) { create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field_gender.key, value: custom_field_gender.options[0].key)]) }
-      let!(:input1) { create(:idea, author: author1, project:, custom_field_answers: [build(:custom_field_answer, key: custom_field2.key, value: 2)]) }
-      let!(:input2) { create(:idea, project:, custom_field_answers: [build(:custom_field_answer, key: custom_field1.key, value: custom_field1.options[1].key)]) }
+      let!(:author1) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field_gender, value: custom_field_gender.options[0].key)]) }
+      let!(:input1) { create(:idea, author: author1, project:, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field2, value: 2)]) }
+      let!(:input2) { create(:idea, project:, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field1, value: custom_field1.options[1].key)]) }
       let!(:analysis) { create(:ideation_analysis, project:, additional_custom_fields: custom_form.custom_fields) }
       let!(:tag1) { create(:tag, analysis:) }
       let!(:tag2) { create(:tag, analysis:) }
@@ -135,8 +135,8 @@ describe Analysis::AutoInsightsService do
       it 'returns a heatmap for participants' do
         male, female, _unspecified = custom_field_gender.options
         create(:reaction, user: author1, reactable: input2)
-        create(:reaction, reactable: input1, user: create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field_gender.key, value: female.key)]))
-        create(:comment, idea: input2, author: create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field_gender.key, value: male.key)]))
+        create(:reaction, reactable: input1, user: create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field_gender, value: female.key)]))
+        create(:comment, idea: input2, author: create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field_gender, value: male.key)]))
 
         service = described_class.new(analysis)
         expect { service.generate(unit: 'participants') }.to change { analysis.heatmap_cells.count }.from(0).to(37)
@@ -185,8 +185,8 @@ describe Analysis::AutoInsightsService do
       it 'reads the participant answers without querying per participant' do
         male, female, _unspecified = custom_field_gender.options
         4.times do |i|
-          participant = create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field_gender.key, value: (i.even? ? male : female).key)])
-          create(:idea, author: participant, project:, custom_field_answers: [build(:custom_field_answer, key: custom_field2.key, value: 1)])
+          participant = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field_gender, value: (i.even? ? male : female).key)])
+          create(:idea, author: participant, project:, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field2, value: 1)])
         end
 
         service = described_class.new(analysis)
@@ -201,7 +201,7 @@ describe Analysis::AutoInsightsService do
       let!(:areas) { create_list(:area, 2) }
       let!(:project) { create(:project_with_active_ideation_phase) }
       let!(:phase) { project.phases.first }
-      let!(:author1) { create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field_domicile.key, value: areas[0].id)]) }
+      let!(:author1) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field_domicile, value: areas[0].id)]) }
       let!(:input1) { create(:idea, project:, author: author1) }
       let!(:input2) { create(:idea, project:) }
       let!(:analysis) { create(:ideation_analysis, project:) }
@@ -230,7 +230,7 @@ describe Analysis::AutoInsightsService do
       let!(:areas) { create_list(:area, 2) }
       let!(:project) { create(:project_with_active_ideation_phase) }
       let!(:phase) { project.phases.first }
-      let!(:author1) { create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field_birthyear.key, value: 2003)]) }
+      let!(:author1) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field_birthyear, value: 2003)]) }
       let!(:input1) { create(:idea, project:, author: author1) }
       let!(:input2) { create(:idea, project:) }
       let!(:analysis) { create(:ideation_analysis, project:) }

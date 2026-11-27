@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  bo,
-  Box,
-  colors,
-  Image,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import Text from 'design-system/Text';
 
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -22,6 +16,8 @@ import FileAttachments from 'components/UI/FileAttachments';
 import { useIntl } from 'utils/cl-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import { getAddressOrFallbackDMS } from 'utils/map';
+
+import styles from './SidePanel.module.css';
 
 interface Props {
   idea: IIdeaData;
@@ -41,25 +37,17 @@ const IdeaContent = ({ idea }: Props) => {
   );
 
   return (
-    <Box display="flex" flexDirection="column" gap="16px">
-      {image && (
-        <Image
-          src={image}
-          alt=""
-          width="100%"
-          borderRadius={bo.borderRadius}
-          border={`1px solid ${colors.divider}`}
-        />
-      )}
+    <div className={styles.ideaContent}>
+      {image && <img src={image} alt="" className={styles.image} />}
       {attributes.proposed_budget && (
-        <Box>
-          <Text variant="boHelper" m="0">
+        <div>
+          <Text variant="ui" tone="secondary">
             {formatMessage(previewMessages.proposedBudgetTitle)}
           </Text>
-          <Text m="0" fontWeight="bold">
+          <Text variant="uiStrong" tone="primary">
             <FormattedBudget value={attributes.proposed_budget} />
           </Text>
-        </Box>
+        </div>
       )}
       <Body
         postId={idea.id}
@@ -74,7 +62,7 @@ const IdeaContent = ({ idea }: Props) => {
         />
       )}
       {files && files.data.length > 0 && <FileAttachments files={files.data} />}
-    </Box>
+    </div>
   );
 };
 

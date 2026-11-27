@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Spinner,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import Banner from 'design-system/Banner';
+import IconButton from 'design-system/IconButton';
+import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import { IPhaseData, InputTerm } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -16,18 +13,19 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import inputTermMessages from 'containers/Admin/projects/project/inputTermMessages';
+
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
-import ErrorMessage from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
-import inputTermMessages from '../InputManager/inputTermMessages';
-
+import styles from './InputTags.module.css';
 import messages from './messages';
 import PerspectivesSection from './PerspectivesSection';
 import TagsEditor from './TagsEditor';
 import useTagsDraft from './TagsEditor/useTagsDraft';
+import 'design-system/tokens.css';
 
 interface Props {
   project: IProjectData;
@@ -75,32 +73,32 @@ const InputTags = ({ project, phase, inputTerm }: Props) => {
     save,
   });
   return (
-    <Box p="18px" display="flex" flexDirection="column" gap="16px">
-      <Button
-        buttonStyle="bo-text"
-        icon="arrow-left"
-        onClick={() => removeSearchParams(['input_tags'])}
-      >
-        {formatMessage(messages.back)}
-      </Button>
-      <Text variant="boSection" m="0">
-        {formatMessage(messages.tagsTitle, {
-          term: formatMessage(inputTermMessages.capitalizedSingular, {
-            term: inputTerm,
-          }),
-        })}
-      </Text>
+    <div className={styles.inputTags}>
+      <div className={styles.header}>
+        <IconButton
+          icon="arrow-left-16"
+          aria-label={formatMessage(messages.back)}
+          onPress={() => removeSearchParams(['input_tags'])}
+        />
+        <Text as="h2" variant="uiStrong" tone="primary">
+          {formatMessage(messages.tagsTitle, {
+            term: formatMessage(inputTermMessages.capitalizedSingular, {
+              term: inputTerm,
+            }),
+          })}
+        </Text>
+      </div>
       {others.length > 0 && (
-        <Box background={colors.grey100} p="12px" role="note">
-          <Text variant="boHelper" m="0">
+        <div role="note">
+          <Banner tone="neutral">
             {formatMessage(messages.sharedTags, {
               methods: others
                 .map((other) => localize(other.attributes.title_multiloc))
                 .join(', '),
               count: others.length,
             })}
-          </Text>
-        </Box>
+          </Banner>
+        </div>
       )}
       {perspectivesActive && (
         <PerspectivesSection
@@ -108,9 +106,14 @@ const InputTags = ({ project, phase, inputTerm }: Props) => {
           onChange={setPerspectives}
         />
       )}
-      {failed && <ErrorMessage text={formatMessage(messages.saveFailed)} />}
+      {failed && (
+        // The workspace scrolls to this class after a failed save.
+        <div className="e2e-error-message">
+          <Banner tone="error">{formatMessage(messages.saveFailed)}</Banner>
+        </div>
+      )}
       {draft.tags ? <TagsEditor draft={draft} /> : <Spinner />}
-    </Box>
+    </div>
   );
 };
 export default InputTags;

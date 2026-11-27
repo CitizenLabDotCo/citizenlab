@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import { bo, Box, colors } from '@citizenlab/cl2-component-library';
+import styles from './SideColumn.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   fillHeight?: boolean;
@@ -8,17 +9,11 @@ interface Props {
 }
 
 const Card = ({ fillHeight = false, children }: Props) => (
-  <Box
-    display="flex"
-    flexDirection="column"
-    flexGrow={fillHeight ? 1 : undefined}
-    gap="12px"
-    p="16px"
-    borderRadius={bo.panelBorderRadius}
-    background={colors.white}
+  <div
+    className={fillHeight ? `${styles.card} ${styles.fillHeight}` : styles.card}
   >
     {children}
-  </Box>
+  </div>
 );
 
 export default Card;

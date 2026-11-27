@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import Disclosure from 'design-system/Disclosure';
 
 import useAddIdea from 'api/ideas/useAddIdea';
 import { IPhaseData } from 'api/phases/types';
@@ -17,9 +17,9 @@ import { useLocation } from 'utils/router';
 import messages from '../messages';
 import useInputTermLabels from '../useInputTermLabels';
 
-import { actionRowProps } from './actionRowProps';
 import Card from './Card';
 import OfflineFormsButton from './OfflineFormsButton';
+import 'design-system/tokens.css';
 
 interface Props {
   phase: IPhaseData;
@@ -39,22 +39,21 @@ const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
 
   return (
     <Card fillHeight={fillHeight}>
-      <Button
-        {...actionRowProps}
-        icon="plus"
-        onClick={() => {
+      <Disclosure
+        header="button"
+        title={addLabel}
+        actionIcon="plus-16"
+        onPress={() => {
           trackEventByName(tracks.clickNewIdea.name, {
             pathnameFrom: pathname,
           });
           setAddOpened(true);
         }}
-      >
-        {addLabel}
-      </Button>
+      />
       <OfflineFormsButton
         participationMethod={phase.attributes.participation_method}
         label={formatMessage(messages.importPaperTerms, { terms })}
-        buttonProps={{ ...actionRowProps, icon: 'upload-file' }}
+        cardIcon="upload-16"
       />
       {children}
       {addOpened && (
@@ -65,9 +64,11 @@ const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
           fullFormLink={
             project && (
               <FullFormLink
-                to="/projects/$slug/ideas/new"
-                params={{ slug: project.data.attributes.slug }}
-                search={{ phase_id: phase.id }}
+                to="/projects/$slug/ideas/new/$phaseId"
+                params={{
+                  slug: project.data.attributes.slug,
+                  phaseId: phase.id,
+                }}
               />
             )
           }

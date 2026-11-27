@@ -9,3 +9,5 @@ nb-NO:
     debate_information_updates: Informasjonsoppdateringer
     debate_instructions: Instruksjoner
     documents_to_consult: Høringsdokumenter
+    private_space_members: 'Medlemmer: %{space}'
+    untitled_folder: Navnløs mappe

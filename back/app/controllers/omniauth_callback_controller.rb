@@ -5,7 +5,10 @@ class OmniauthCallbackController < ApplicationController
   skip_after_action :verify_authorized
 
   def create
-    if auth_method && verification_method
+    # Verification was asked for, but the user wasn't signed in (see OmniauthVerificationToken).
+    if omniauth_params&.dig('verification') == 'true' && omniauth_params['token'].blank?
+      verification_failure_redirect('no_token_passed')
+    elsif auth_method && verification_method
       # If token is present, the user is already logged in, which means they try to verify not authenticate.
       if omniauth_params['token'].present?
         # We need it only for providers that support both auth and ver except FC.
@@ -23,53 +26,15 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
+  # Failures are reported by OmniauthFailureService before OmniAuth redirects here.
   def failure
-    omniauth_error = request.env['omniauth.error']
-    if omniauth_error
-      ErrorReporter.report(omniauth_error, extra: omniauth_failure_extra(omniauth_error))
-    else
-      ErrorReporter.report_msg(
-        "OmniAuth failure: #{request.env['omniauth.error.type'] || 'unknown'}",
-        extra: { strategy: request.env['omniauth.error.strategy']&.name }
-      )
-    end
     signin_failure_redirect
-  end
-
-  def logout_data
-    provider = params[:provider]
-    user_id = params[:user_id]
-    user = User.find_by(id: user_id)
-    url = user ? authentication_service.logout_url(provider, user) : Frontend::UrlService.new.home_url
-    render json: { url: url }
   end
 
   private
 
   def omniauth_params
     request.env['omniauth.params']
-  end
-
-  # When omniauth fails inside an HTTP exchange (e.g. Rack::OAuth2::Client::Error
-  # when the IDP/WAF returns HTML instead of JSON for the token request), the
-  # exception's #message is often just "Unknown :: <html>…</html>". Surface the
-  # status, response body and underlying cause so Sentry shows what actually
-  # came back from the IDP.
-  def omniauth_failure_extra(error)
-    extra = {
-      error_type: request.env['omniauth.error.type'],
-      strategy: request.env['omniauth.error.strategy']&.name
-    }
-    extra[:http_status] = error.status if error.respond_to?(:status)
-    if error.respond_to?(:response) && error.response.is_a?(Hash)
-      response_body = error.response[:error_description] || error.response[:body]
-      extra[:response_body] = response_body.to_s.first(2000) if response_body.present?
-    end
-    if error.cause
-      extra[:cause_class] = error.cause.class.name
-      extra[:cause_message] = error.cause.message
-    end
-    extra
   end
 
   def find_existing_user(authver_method, auth, user_attrs, verify:)
@@ -141,7 +106,7 @@ class OmniauthCallbackController < ApplicationController
           SideFxInviteService.new.after_accept(@invite, claim_tokens:)
           verify_and_sign_in(auth, @user, verify, sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
-          ErrorReporter.report(e)
+          OmniauthFailureService.new.report_invalid_record(e, authver_method.name, request.remote_ip)
           signin_failure_redirect
         end
 
@@ -152,7 +117,7 @@ class OmniauthCallbackController < ApplicationController
           SideFxUserService.new.after_update(@user, nil)
           ClaimTokenService.claim(@user, claim_tokens)
         rescue ActiveRecord::RecordInvalid => e
-          ErrorReporter.report(e)
+          OmniauthFailureService.new.report_invalid_record(e, authver_method.name, request.remote_ip)
           signin_failure_redirect
           return
         end
@@ -169,8 +134,7 @@ class OmniauthCallbackController < ApplicationController
         SideFxUserService.new.after_create(@user, nil, claim_tokens:)
         verify_and_sign_in(auth, @user, verify, sign_up: true, user_created: true)
       rescue ActiveRecord::RecordInvalid => e
-        Rails.logger.info "Social signup failed: #{e.message}"
-        ErrorReporter.report(e)
+        OmniauthFailureService.new.report_invalid_record(e, authver_method.name, request.remote_ip)
         signin_failure_redirect
       end
     end
@@ -237,7 +201,7 @@ class OmniauthCallbackController < ApplicationController
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
   def filter_omniauth_params
-    omniauth_params&.except('token', 'verification_pathname', 'sso_pathname', 'RelayState') || {}
+    omniauth_params&.except('token', 'verification', 'verification_pathname', 'sso_pathname', 'RelayState') || {}
   end
 
   def add_uri_params(uri, params = {})
@@ -264,12 +228,7 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def set_auth_cookie(provider: nil)
-    cookies[:cl2_jwt] = {
-      value: auth_token(@user, provider).token,
-      expires: 1.month.from_now,
-      secure: false, # Unfortunately, we can't use secure cookies in production yet (probably some HTTP steps somewhere)
-      same_site: 'Lax' # Strict won't work due to SSO redirect, so we explicitly document use of Lax
-    }
+    AuthToken::Cookie.write(response, auth_token(@user, provider).token, expires: 1.month.from_now)
   end
 
   # Updates the auth_hash in a users identity to ensure tokens are up to date for logout (mainly for FranceConnect)
@@ -306,10 +265,8 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def auth_method
-    @auth_method ||= begin
-      method = IdMethodService.new.method_by_name(auth_provider)
-      method if method&.authentication?
-    end
+    @auth_method ||= authentication_service.active_methods(AppConfiguration.instance)
+      .find { |method| method.name == auth_provider }
   end
 
   def handle_verification(auth, user)

@@ -1,4 +1,4 @@
-import { ResultGrouped } from 'api/survey_results/types';
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 import { EMPTY_COLOR } from '../legendColors';
 import { DEFAULT_CATEGORICAL_COLORS } from '../styling';
@@ -296,5 +296,103 @@ describe('parseQuestionResult', () => {
         'No answer'
       )
     ).toEqual(expected);
+  });
+});
+
+describe('parseQuestionResult logic', () => {
+  const localize = (multiloc: Record<string, string | undefined> | undefined) =>
+    multiloc?.en ?? '';
+
+  const result = (
+    logic: ResultUngrouped['logic'],
+    answers: ResultUngrouped['answers']
+  ): ResultUngrouped => ({
+    inputType: 'linear_scale',
+    question: { en: 'Scale' },
+    description: {},
+    customFieldId: 'field-1',
+    required: false,
+    hidden: false,
+    grouped: false,
+    totalResponseCount: 3,
+    totalPickCount: 3,
+    questionResponseCount: 2,
+    questionNumber: 1,
+    pageNumber: 1,
+    logic,
+    answers,
+    multilocs: {
+      answer: {
+        1: { title_multiloc: { en: 'One' } },
+        2: { title_multiloc: { en: 'Two' } },
+      },
+    },
+  });
+
+  it('attaches the logic of each answer, using no_answer for the empty answer', () => {
+    const parsed = parseQuestionResult(
+      result(
+        {
+          answer: {
+            1: { id: 'rule-1', nextPageNumber: 3, numQuestionsSkipped: 2 },
+            no_answer: { id: 'rule-none', nextPageNumber: 4 },
+          },
+        },
+        [
+          { answer: 1, count: 1 },
+          { answer: 2, count: 1 },
+          { answer: null, count: 1 },
+        ]
+      ),
+      ['#000'],
+      localize,
+      'No answer'
+    );
+
+    expect(
+      parsed.map(({ label, logicFilterId, logic }) => ({
+        label,
+        logicFilterId,
+        logic,
+      }))
+    ).toEqual([
+      {
+        label: 'One',
+        logicFilterId: 'rule-1',
+        logic: { id: 'rule-1', nextPageNumber: 3, numQuestionsSkipped: 2 },
+      },
+      { label: 'Two', logicFilterId: null, logic: undefined },
+      {
+        label: 'No answer',
+        logicFilterId: 'rule-none',
+        logic: { id: 'rule-none', nextPageNumber: 4 },
+      },
+    ]);
+  });
+
+  it('leaves out the no-answer row, and its logic, when everyone answered', () => {
+    const parsed = parseQuestionResult(
+      result({ answer: { no_answer: { id: 'rule-none' } } }, [
+        { answer: 1, count: 3 },
+        { answer: null, count: 0 },
+      ]),
+      ['#000'],
+      localize,
+      'No answer'
+    );
+
+    expect(parsed.map(({ logicFilterId }) => logicFilterId)).toEqual([null]);
+  });
+
+  it('has no logic when the result has none', () => {
+    const parsed = parseQuestionResult(
+      result(undefined, [{ answer: 1, count: 3 }]),
+      ['#000'],
+      localize,
+      'No answer'
+    );
+
+    expect(parsed[0].logicFilterId).toBeNull();
+    expect(parsed[0].logic).toBeUndefined();
   });
 });

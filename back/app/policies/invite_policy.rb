@@ -50,4 +50,10 @@ class InvitePolicy < ApplicationPolicy
   def resend?
     true
   end
+
+  # An emailed invite reaches its invitee by mail, so admins have no use for its
+  # token. Email-less invites are invitation codes that admins hand out themselves.
+  def view_token?
+    record.invitee.email.blank? || !!user&.super_admin?
+  end
 end

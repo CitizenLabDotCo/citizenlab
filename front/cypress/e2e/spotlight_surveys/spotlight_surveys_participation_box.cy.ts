@@ -45,8 +45,10 @@ describe('Project page participation box with extra surveys', () => {
 
       clickSpotlightSurveyButton();
 
-      cy.url().should('include', `/projects/${projectSlug}/surveys/new`);
-      cy.url().should('include', `phase_id=${surveyPhaseId}`);
+      cy.location('pathname').should(
+        'eq',
+        `/en/projects/${projectSlug}/surveys/new/${surveyPhaseId}`
+      );
     });
   });
 
@@ -121,8 +123,10 @@ describe('Project page participation box with extra surveys', () => {
         .first()
         .click({ force: true });
 
-      cy.url().should('include', `/projects/${projectSlug}/surveys/new`);
-      cy.url().should('include', 'phase_id=');
+      cy.location('pathname').should(
+        'match',
+        new RegExp(`^/en/projects/${projectSlug}/surveys/new/[^/]+$`)
+      );
     });
   });
 

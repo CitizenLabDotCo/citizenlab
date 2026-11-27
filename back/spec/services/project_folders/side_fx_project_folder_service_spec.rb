@@ -78,6 +78,51 @@ describe ProjectFolders::SideFxProjectFolderService do
       expect { service.after_update(project_folder, user) }
         .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
     end
+
+    context 'when the folder moves to another space' do
+      let(:space) { create(:space) }
+      let!(:project) { create(:project, folder: project_folder) }
+
+      it 'moves its projects to the new space, even an invalid project' do
+        project.update_column(:title_multiloc, {})
+        project_folder.update!(space: space)
+
+        service.after_update(project_folder, user)
+
+        expect(project.reload.space_id).to eq space.id
+      end
+
+      it "logs a 'changed' action for the moved project" do
+        project_folder.update!(space: space)
+
+        expect { service.after_update(project_folder, user) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(
+            project,
+            'changed',
+            user,
+            anything,
+            project_id: project.id,
+            payload: hash_including(change: { 'space_id' => [nil, space.id] })
+          )
+      end
+
+      it 'does not log projects that are already in the new space' do
+        project.update_column(:space_id, space.id)
+        project_folder.update!(space: space)
+
+        expect { service.after_update(project_folder, user) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, any_args)
+      end
+
+      it "logs the folder's own space change for the folder" do
+        project_folder.update!(space: space)
+
+        expect { service.after_update(project_folder, user) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(project_folder, 'changed', user, anything, payload: hash_including(change: { 'space_id' => [nil, space.id] }))
+      end
+    end
   end
 
   describe 'after_destroy' do

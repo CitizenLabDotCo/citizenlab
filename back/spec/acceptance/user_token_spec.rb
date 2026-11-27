@@ -57,7 +57,7 @@ resource 'User Token' do
       example_request 'Create JWT token creates expected payload' do
         assert_status 201
 
-        jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+        jwt = JWT.decode(auth_token_from_response_cookie, nil, false).first
 
         expect(jwt['sub']).to eq(user.id)
         expect(jwt['highest_role']).to eq('user')
@@ -72,7 +72,7 @@ resource 'User Token' do
         example_request 'Create JWT token for admin' do
           assert_status 201
 
-          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+          jwt = JWT.decode(auth_token_from_response_cookie, nil, false).first
 
           expect(jwt['sub']).to eq(user.id)
           expect(jwt['highest_role']).to eq('admin')
@@ -85,7 +85,7 @@ resource 'User Token' do
         example_request 'Create JWT token for project moderator' do
           assert_status 201
 
-          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+          jwt = JWT.decode(auth_token_from_response_cookie, nil, false).first
 
           expect(jwt['sub']).to eq(user.id)
           expect(jwt['highest_role']).to eq('project_moderator')
@@ -98,7 +98,7 @@ resource 'User Token' do
         example_request 'Create JWT token for project folder moderator' do
           assert_status 201
 
-          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+          jwt = JWT.decode(auth_token_from_response_cookie, nil, false).first
 
           expect(jwt['sub']).to eq(user.id)
           expect(jwt['highest_role']).to eq('project_folder_moderator')
@@ -108,9 +108,28 @@ resource 'User Token' do
       example_request 'Create JWT token with 1 day expiration' do
         assert_status 201
 
-        jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+        jwt = JWT.decode(auth_token_from_response_cookie, nil, false).first
 
         expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
+      end
+
+      # Users are told not to tick remember_me on a public computer.
+      example_request 'Sets the token in an HttpOnly session cookie only, dropped when the browser closes', document: false do
+        assert_status 201
+
+        expect(response_body).to be_blank
+        cookie = auth_cookie_header
+        expect(cookie).to match(/httponly/i)
+        expect(cookie).not_to match(/expires=/i)
+      end
+
+      example_request 'Sets a signed-in session cookie the front-end can read', document: false do
+        assert_status 201
+
+        cookie = signed_in_cookie_header
+        expect(cookie).to start_with("#{AuthToken::Cookie::SIGNED_IN_NAME}=true;")
+        expect(cookie).not_to match(/httponly/i)
+        expect(cookie).not_to match(/expires=/i)
       end
 
       context 'when remember_me is sent' do
@@ -119,8 +138,15 @@ resource 'User Token' do
         example_request 'create JWT token with default expiration' do
           assert_status 201
 
-          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+          jwt = JWT.decode(auth_token_from_response_cookie, nil, false).first
           expect(jwt['exp']).to eq((Time.now + 30.days).to_i)
+        end
+
+        example_request 'Sets a cookie that expires with the longer-lived token', document: false do
+          assert_status 201
+
+          expect(Time.zone.parse(auth_cookie_header[/expires=([^;]+)/i, 1]).to_i).to eq((Time.now + 30.days).to_i)
+          expect(signed_in_cookie_header[/expires=([^;]+)/i, 1]).to eq(auth_cookie_header[/expires=([^;]+)/i, 1])
         end
 
         context 'when authentication_token_lifetime_in_days is configured' do
@@ -135,7 +161,7 @@ resource 'User Token' do
           example_request 'create JWT token with expiration from settings' do
             assert_status 201
 
-            jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+            jwt = JWT.decode(auth_token_from_response_cookie, nil, false).first
             expect(jwt['exp']).to eq((Time.now + token_lifetime.days).to_i)
           end
         end
@@ -309,7 +335,7 @@ resource 'User Token' do
         example_request 'does allow a super admin to log in with a password' do
           assert_status 201
 
-          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+          jwt = JWT.decode(auth_token_from_response_cookie, nil, false).first
           expect(jwt['sub']).to eq(user.id)
         end
       end
@@ -370,7 +396,7 @@ resource 'User Token' do
       example_request 'Creates a JWT token' do
         assert_status 201
 
-        jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+        jwt = JWT.decode(auth_token_from_response_cookie, nil, false).first
         expect(jwt['sub']).to eq(user.id)
       end
 
@@ -379,7 +405,7 @@ resource 'User Token' do
 
         example_request 'Creates a JWT token', document: false do
           assert_status 201
-          expect(JWT.decode(json_response_body[:jwt], nil, false).first['sub']).to eq(user.id)
+          expect(JWT.decode(auth_token_from_response_cookie, nil, false).first['sub']).to eq(user.id)
         end
       end
 
@@ -391,7 +417,7 @@ resource 'User Token' do
         example_request 'Creates a JWT token with default expiration', document: false do
           assert_status 201
 
-          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+          jwt = JWT.decode(auth_token_from_response_cookie, nil, false).first
           expect(jwt['exp']).to eq((Time.now + 30.days).to_i)
         end
       end
@@ -459,7 +485,7 @@ resource 'User Token' do
         expect(user.reload.confirmation_required?).to be true
 
         assert_status 201
-        expect(JWT.decode(json_response_body[:jwt], nil, false).first['sub']).to eq(user.id)
+        expect(JWT.decode(auth_token_from_response_cookie, nil, false).first['sub']).to eq(user.id)
       end
     end
 
@@ -516,6 +542,47 @@ resource 'User Token' do
       example '[error] no JWT token is returned', document: false do
         do_request(auth: { email: user.email, password: password })
         assert_status 404
+      end
+    end
+  end
+
+  delete 'web_api/v1/user_token' do
+    example_request 'Signs out by clearing the auth cookie' do
+      assert_status 204
+
+      expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
+      expect(signed_in_cookie_header).to match(/\A#{AuthToken::Cookie::SIGNED_IN_NAME}=;/o)
+    end
+
+    context 'when signed in through an SSO provider that supports logout' do
+      let(:user) { create(:user) }
+      let(:logout_url) { 'https://sso.example.com/logout' }
+
+      before do
+        token = AuthToken::AuthToken.new(
+          payload: user.to_token_payload.merge(provider: 'franceconnect', logout_supported: true)
+        ).token
+        header 'Cookie', "#{AuthToken::Cookie::NAME}=#{token}"
+
+        allow_any_instance_of(AuthenticationService)
+          .to receive(:logout_url).with('franceconnect', user).and_return(logout_url)
+      end
+
+      example_request 'Returns the URL to sign out at the SSO provider' do
+        assert_status 200
+
+        expect(json_response_body[:logout_url]).to eq(logout_url)
+        expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
+      end
+
+      example 'Still signs out when the logout URL cannot be built' do
+        allow_any_instance_of(AuthenticationService).to receive(:logout_url).and_raise(NoMethodError)
+        expect(ErrorReporter).to receive(:report).with(an_instance_of(NoMethodError))
+
+        do_request
+
+        assert_status 204
+        expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
       end
     end
   end

@@ -1,0 +1,18 @@
+/* The panel look of the official feedback modal (variant 'panel'). */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+}
+
+.localeRow {
+  display: flex;
+  justify-content: flex-end;
+}

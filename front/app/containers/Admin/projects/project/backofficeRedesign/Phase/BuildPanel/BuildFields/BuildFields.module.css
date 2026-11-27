@@ -1,0 +1,53 @@
+.fields {
+  display: flex;
+  flex-direction: column;
+  padding: var(--gv-space-16) var(--gv-space-18) var(--gv-space-10);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  min-height: var(--gv-size-32);
+  margin-bottom: var(--gv-space-16);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-32);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-14);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-10);
+}
+
+.descriptionField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+.draftDescription {
+  margin-top: var(--gv-space-8);
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: var(--gv-space-20);
+}
+
+.choice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+}
