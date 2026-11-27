@@ -9,4 +9,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.collectDemographicData',
     defaultMessage: 'Collect demographic data',
   },
+  collectDemographicDataTooltip: {
+    id: 'app.containers.Admin.projects.project.collectDemographicDataTooltip',
+    defaultMessage:
+      'Questions that tell you who takes part, stored with what they send.',
+  },
 });

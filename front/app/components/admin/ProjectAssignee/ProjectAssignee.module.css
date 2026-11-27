@@ -5,6 +5,14 @@
   gap: var(--gv-space-12);
 }
 
+.panelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-12);
+  padding-top: var(--gv-space-8);
+}
+
 .text {
   display: flex;
   flex-direction: column;
@@ -15,6 +23,7 @@
 .tooltipLabel {
   composes: ui from '../../../design-system/typography.module.css';
   composes: ringOutside from '../../../design-system/focus.module.css';
+  align-self: flex-start;
   border-radius: var(--gv-radius-4);
   color: var(--gv-text-primary);
   cursor: default;

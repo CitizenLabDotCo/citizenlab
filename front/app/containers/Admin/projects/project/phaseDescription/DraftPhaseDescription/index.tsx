@@ -13,11 +13,10 @@ import { debounce } from 'lodash-es';
 import { Controller, useForm, FormProvider } from 'react-hook-form';
 import { Multiloc } from 'typings';
 
-import Banner from 'design-system/Banner';
 import DSButton from 'design-system/Button';
 import DSIcon from 'design-system/Icon';
-import IconButton from 'design-system/IconButton';
 import DSSpinner from 'design-system/Spinner';
+import Tooltip, { TooltipTarget } from 'design-system/Tooltip';
 
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
@@ -166,13 +165,6 @@ const DraftPhaseDescription = ({
     return (
       <FormProvider {...methods}>
         <div>
-          {showEmptyWarning && (
-            <div className={styles.warning}>
-              <Banner tone="info">
-                {formatMessage(messages.emptyDescriptionWarning)}
-              </Banner>
-            </div>
-          )}
           <Controller
             name="draft_description_multiloc"
             control={methods.control}
@@ -180,14 +172,11 @@ const DraftPhaseDescription = ({
               <MultilocRichTextField
                 id="draft_description_multiloc"
                 label={
-                  <span className={styles.badges}>
-                    <StatusBadges isEditing={!!isEditing} isPanel />
-                    <IconButton
-                      icon="info-16"
-                      size={24}
-                      aria-label={statusTooltip}
-                    />
-                  </span>
+                  <Tooltip content={statusTooltip}>
+                    <TooltipTarget className={styles.badgesTarget}>
+                      <StatusBadges isEditing={!!isEditing} isPanel />
+                    </TooltipTarget>
+                  </Tooltip>
                 }
                 aria-label={formatMessage(messages.descriptionLabel)}
                 placeholder={placeholder}

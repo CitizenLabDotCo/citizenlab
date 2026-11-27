@@ -16,10 +16,17 @@ interface Props {
   phaseId: string;
   action: IPhasePermissionAction;
   label: string;
+  labelTooltip?: JSX.Element;
   onOpen: () => void;
 }
 
-const DemographicsSummary = ({ phaseId, action, label, onOpen }: Props) => {
+const DemographicsSummary = ({
+  phaseId,
+  action,
+  label,
+  labelTooltip,
+  onOpen,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { data: customFields } = usePermissionsPhaseCustomFields({
     phaseId,
@@ -32,6 +39,7 @@ const DemographicsSummary = ({ phaseId, action, label, onOpen }: Props) => {
     <PanelField
       reviewKey={nQuestions ? 'demographics' : undefined}
       label={label}
+      labelTooltip={labelTooltip}
       action={
         nQuestions === 0 ? (
           <ReviewStatus status="toSet" />

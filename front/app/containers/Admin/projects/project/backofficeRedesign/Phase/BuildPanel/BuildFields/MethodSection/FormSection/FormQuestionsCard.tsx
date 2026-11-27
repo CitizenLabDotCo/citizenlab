@@ -29,10 +29,17 @@ interface Props {
   projectId: string;
   phaseId: string;
   title: string;
+  titleTooltip?: JSX.Element;
   survey: boolean;
 }
 
-const FormQuestionsCard = ({ projectId, phaseId, title, survey }: Props) => {
+const FormQuestionsCard = ({
+  projectId,
+  phaseId,
+  title,
+  titleTooltip,
+  survey,
+}: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const localize = useLocalize();
@@ -51,6 +58,7 @@ const FormQuestionsCard = ({ projectId, phaseId, title, survey }: Props) => {
       <PanelField
         reviewKey={nQuestions > 0 ? 'form' : undefined}
         label={title}
+        labelTooltip={titleTooltip}
         action={
           customFields &&
           !open && (

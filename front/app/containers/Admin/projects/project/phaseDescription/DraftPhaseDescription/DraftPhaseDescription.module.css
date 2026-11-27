@@ -1,7 +1,3 @@
-.warning {
-  margin-bottom: var(--gv-space-8);
-}
-
 .footer {
   display: flex;
   flex-wrap: wrap;
@@ -37,4 +33,11 @@
   display: inline-flex;
   align-items: center;
   gap: var(--gv-space-8);
+}
+
+.badgesTarget {
+  composes: ringOutside from '../../../../../../design-system/focus.module.css';
+  display: inline-flex;
+  border-radius: var(--gv-radius-4);
+  cursor: default;
 }

@@ -4,7 +4,7 @@ import useEvents from 'api/events/useEvents';
 import { Action, IPhasePermissionAction } from 'api/permissions/types';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import DemographicsModal from './DemographicsModal';
 import DemographicsSummary from './DemographicsSummary';
@@ -64,6 +64,11 @@ const DemographicsCard = ({
         phaseId={phaseId}
         action={actions[0]}
         label={label}
+        labelTooltip={
+          surveyForm ? undefined : (
+            <FormattedMessage {...messages.collectDemographicDataTooltip} />
+          )
+        }
         onOpen={() => setOpened(true)}
       />
       <DemographicsModal

@@ -2,6 +2,7 @@ import React, { useId } from 'react';
 
 import Button from 'design-system/Button';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+import PillButton from 'design-system/PillButton';
 import Tooltip, { TooltipTarget } from 'design-system/Tooltip';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
@@ -44,57 +45,74 @@ const ProjectAssignee = ({
     (assignee === undefined ? savedAssignee : assignee) ?? UNASSIGNED;
   const selectedLabel = options.find(({ value }) => value === selected)?.label;
 
-  return (
-    <div className={styles.row}>
-      {redesign ? (
-        // The label itself explains the setting; there is no separate info mark.
-        <Tooltip content={description}>
-          <TooltipTarget className={styles.tooltipLabel}>
-            <span id={labelId}>{title}</span>
-          </TooltipTarget>
-        </Tooltip>
-      ) : (
+  const menu = (
+    <Menu
+      aria-label={title}
+      placement="bottom end"
+      selectionMode="single"
+      selectedKeys={new Set([selected])}
+      onAction={(key) =>
+        onAssigneeChange(
+          typeof key === 'string' && key !== UNASSIGNED ? key : null
+        )
+      }
+    >
+      {options.map(({ value, label }) => (
+        <MenuItem key={value} id={value} icon="user-16">
+          {label}
+        </MenuItem>
+      ))}
+    </Menu>
+  );
+  const onOpenChange = (isOpen: boolean) => {
+    if (!isOpen) onClose?.();
+  };
+
+  if (redesign) {
+    return (
+      <div className={styles.panelRow}>
         <div className={styles.text}>
-          <span id={labelId} className={styles.label}>
-            {title}
-          </span>
+          {/* The label itself explains the setting; there is no separate info mark. */}
+          <Tooltip content={formatMessage(messages.assigneeTooltip)}>
+            <TooltipTarget className={styles.tooltipLabel}>
+              <span id={labelId}>{title}</span>
+            </TooltipTarget>
+          </Tooltip>
           <span id={descriptionId} className={styles.description}>
             {description}
           </span>
         </div>
-      )}
-      <MenuTrigger
-        defaultOpen={defaultOpen}
-        onOpenChange={(isOpen) => {
-          if (!isOpen) onClose?.();
-        }}
-      >
+        <MenuTrigger defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
+          <PillButton aria-describedby={`${labelId} ${descriptionId}`}>
+            {selectedLabel}
+          </PillButton>
+          {menu}
+        </MenuTrigger>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.row}>
+      <div className={styles.text}>
+        <span id={labelId} className={styles.label}>
+          {title}
+        </span>
+        <span id={descriptionId} className={styles.description}>
+          {description}
+        </span>
+      </div>
+      <MenuTrigger defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
         <Button
           variant="secondary"
           size={28}
           icon="user-16"
           hasMenu
-          aria-describedby={redesign ? labelId : `${labelId} ${descriptionId}`}
+          aria-describedby={`${labelId} ${descriptionId}`}
         >
           {selectedLabel}
         </Button>
-        <Menu
-          aria-label={title}
-          placement="bottom end"
-          selectionMode="single"
-          selectedKeys={new Set([selected])}
-          onAction={(key) =>
-            onAssigneeChange(
-              typeof key === 'string' && key !== UNASSIGNED ? key : null
-            )
-          }
-        >
-          {options.map(({ value, label }) => (
-            <MenuItem key={value} id={value} icon="user-16">
-              {label}
-            </MenuItem>
-          ))}
-        </Menu>
+        {menu}
       </MenuTrigger>
     </div>
   );

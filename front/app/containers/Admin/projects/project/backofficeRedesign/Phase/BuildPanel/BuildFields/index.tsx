@@ -32,6 +32,7 @@ import SurveySetupModal from '../SurveySetupModal';
 import styles from './BuildFields.module.css';
 import DescriptionField from './DescriptionField';
 import DocumentUrlCard from './DocumentUrlCard';
+import EmptyDescriptionBanner from './EmptyDescriptionBanner';
 import InputTermCard from './InputTermCard';
 import messages from './messages';
 import MethodSection from './MethodSection';
@@ -138,7 +139,6 @@ const BuildFields = ({
               </div>
 
               <DescriptionField
-                projectId={projectId}
                 phaseId={phaseId}
                 locale={group.selectedLocale}
                 placeholder={group.placeholder(
@@ -158,6 +158,11 @@ const BuildFields = ({
             title={formatMessage(messages.attachments)}
             files={files}
             errors={errors}
+          />
+          <EmptyDescriptionBanner
+            projectId={projectId}
+            phaseId={phaseId}
+            value={formData.description_multiloc}
           />
         </div>
 

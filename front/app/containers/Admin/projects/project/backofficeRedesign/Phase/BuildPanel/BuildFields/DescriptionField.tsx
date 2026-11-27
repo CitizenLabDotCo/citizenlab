@@ -2,10 +2,7 @@ import React from 'react';
 
 import { CLErrors, Multiloc, SupportedLocale } from 'typings';
 
-import Banner from 'design-system/Banner';
-
 import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -16,13 +13,11 @@ import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichT
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
-import { isEmptyMultiloc } from 'utils/helperUtils';
 
 import styles from './BuildFields.module.css';
 import messages from './messages';
 
 interface Props {
-  projectId: string;
   phaseId?: string;
   locale?: SupportedLocale;
   placeholder: string;
@@ -32,7 +27,6 @@ interface Props {
 }
 
 const DescriptionField = ({
-  projectId,
   phaseId,
   locale,
   placeholder,
@@ -42,7 +36,6 @@ const DescriptionField = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const apiErrorText = useApiErrorText();
-  const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);
   const draftDescriptionEnabled = useFeatureFlag({
     name: 'draft_phase_description',
@@ -72,13 +65,6 @@ const DescriptionField = ({
 
   return (
     <div className={styles.descriptionField}>
-      {phases &&
-        phases.data.length < 2 &&
-        (!value || isEmptyMultiloc(value)) && (
-          <Banner tone="info">
-            {formatMessage(descriptionMessages.emptyDescriptionWarning)}
-          </Banner>
-        )}
       <MultilocRichTextField
         id="phase-description"
         locale={locale}

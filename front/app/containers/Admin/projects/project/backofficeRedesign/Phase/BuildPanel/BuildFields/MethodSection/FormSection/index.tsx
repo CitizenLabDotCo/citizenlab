@@ -7,7 +7,7 @@ import OfflineFormsButton from 'containers/Admin/projects/project/backofficeRede
 import InputTagsCard from 'containers/Admin/projects/project/backofficeRedesign/InputTags/InputTagsCard';
 import inputFormMessages from 'containers/Admin/projects/project/inputForm/messages';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import phaseMessages from '../../../../messages';
@@ -62,6 +62,14 @@ const FormSection = ({
           projectId={projectId}
           phaseId={phaseId}
           title={title}
+          titleTooltip={
+            survey ? undefined : (
+              <FormattedMessage
+                {...messages.inputFormTooltip}
+                values={{ term: inputTerm ?? 'other' }}
+              />
+            )
+          }
           survey={survey}
         />
       ) : (
@@ -82,6 +90,9 @@ const FormSection = ({
       {phaseId && survey && (
         <PanelField
           label={formatMessage(inputManagerMessages.offlineCollection)}
+          labelTooltip={
+            <FormattedMessage {...messages.offlineCollectionTooltip} />
+          }
         >
           <OfflineFormsButton participationMethod={participationMethod} />
         </PanelField>

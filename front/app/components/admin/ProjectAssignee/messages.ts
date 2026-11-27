@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.modules.commercial.idea_assignment.admin.components.assigneeDescription',
     defaultMessage: 'Moderates new ideas',
   },
+  assigneeTooltip: {
+    id: 'app.components.admin.ProjectAssignee.assigneeTooltip',
+    defaultMessage: 'Reviews every new input, in all methods with a form',
+  },
 });

@@ -1,6 +1,16 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  inputFormTooltip: {
+    id: 'app.containers.Admin.projects.project.inputFormTooltip',
+    defaultMessage:
+      'What participants fill in when they submit {term, select, idea {an idea} option {an option} project {a project} question {a question} issue {an issue} contribution {a contribution} proposal {a proposal} initiative {an initiative} petition {a petition} comment {a comment} response {a response} suggestion {a suggestion} topic {a topic} post {a post} story {a story} observation {an observation} other {an input}}',
+  },
+  offlineCollectionTooltip: {
+    id: 'app.containers.Admin.projects.project.offlineCollectionTooltip',
+    defaultMessage:
+      'Print the form, collect answers on paper, then import them in Manage',
+  },
   surveyForm: {
     id: 'app.containers.Admin.projects.project.surveyForm',
     defaultMessage: 'Survey form',
