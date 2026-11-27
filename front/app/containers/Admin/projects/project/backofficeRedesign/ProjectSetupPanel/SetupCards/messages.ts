@@ -34,10 +34,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.setupCards.projectPageTooltip',
     defaultMessage: 'The page participants see when they open the project',
   },
-  areaTooltip: {
-    id: 'app.containers.Admin.projects.project.setupCards.areaTooltip',
+  areaTooltip2: {
+    id: 'app.containers.Admin.projects.project.setupCards.areaTooltip2',
     defaultMessage:
-      'Participants can filter projects by area on the homepage. Choose where this project applies.',
+      'Participants can find projects by area on the projects page and on pages that list projects by area. Choose where this project applies.',
   },
   methodsTooltip: {
     id: 'app.containers.Admin.projects.project.setupCards.methodsTooltip',
