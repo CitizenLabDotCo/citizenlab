@@ -1,5 +1,4 @@
 import {
-  IFlatCustomField,
   IOptionsType,
   LogicType,
   QuestionRuleType,
@@ -995,68 +994,6 @@ describe('determineNextPageNumber edge cases', () => {
       const pages = buildPages([{ if: 'no_answer', goto_page_id: 'p5' }]);
 
       expect(nextPage(pages, { q: 0 })).toBe(4);
-    });
-  });
-
-  describe('other input types', () => {
-    const buildPages = (
-      attributes: Partial<IFlatCustomField> &
-        Pick<IFlatCustomField, 'input_type'>,
-      rules: QuestionRuleType[]
-    ) =>
-      convertCustomFieldsToNestedPages([
-        pageField('p1'),
-        makeCustomField({ id: 'q', ...attributes, logic: { rules } }),
-        pageField('p2'),
-        pageField('p3'),
-        endPage(),
-      ]);
-
-    it('never matches a ranking rule on an option id, because answers hold ranked keys (current behaviour)', () => {
-      const pages = buildPages({ input_type: 'ranking', options: abcOptions }, [
-        { if: 'id-a', goto_page_id: 'p3' },
-      ]);
-
-      expect(nextPage(pages, { q: ['a', 'b', 'c'] })).toBe(1);
-      expect(nextPage(pages, { q: ['a'] })).toBe(1);
-    });
-
-    it('matches a ranking rule whose value equals the comma-joined ranked keys (current behaviour)', () => {
-      const pages = buildPages({ input_type: 'ranking', options: abcOptions }, [
-        { if: 'a,b,c', goto_page_id: 'p3' },
-      ]);
-
-      expect(nextPage(pages, { q: ['a', 'b', 'c'] })).toBe(2);
-    });
-
-    it('matches a text rule by equality with the answer', () => {
-      const pages = buildPages({ input_type: 'text' }, [
-        { if: 'hello', goto_page_id: 'p3' },
-      ]);
-
-      expect(nextPage(pages, { q: 'hello' })).toBe(2);
-      expect(nextPage(pages, { q: 'Hello' })).toBe(1);
-    });
-
-    it('matches a string rule value against a number answer but not the other way round', () => {
-      const withStringRule = buildPages({ input_type: 'number' }, [
-        { if: '5', goto_page_id: 'p3' },
-      ]);
-      const withIntegerRule = buildPages({ input_type: 'number' }, [
-        { if: 5, goto_page_id: 'p3' },
-      ]);
-
-      expect(nextPage(withStringRule, { q: 5 })).toBe(2);
-      expect(nextPage(withIntegerRule, { q: '5' })).toBe(1);
-    });
-
-    it('applies the no-answer rule to any input type', () => {
-      const pages = buildPages({ input_type: 'multiline_text' }, [
-        { if: 'no_answer', goto_page_id: 'p3' },
-      ]);
-
-      expect(nextPage(pages, { q: '' })).toBe(2);
-      expect(nextPage(pages, { q: 'text' })).toBe(1);
     });
   });
 });

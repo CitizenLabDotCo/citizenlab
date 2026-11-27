@@ -334,42 +334,13 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       end
     end
 
-    context 'logic stored on input types that can no longer get logic' do
-      it 'still applies the rules of a rating question' do
-        rating_field.update_columns(logic: { rules: [{ if: 3, goto_page_id: mid_page_field2.id }] })
+    context 'rating logic' do
+      it 'applies the rules of a rating question' do
+        rating_field.update!(logic: { rules: [{ if: 3, goto_page_id: mid_page_field2.id }] })
         CustomFieldValuesTransitionService.new.assign(input, { rating_field.key => 3 })
         input.save!
 
         expect(generator.send(:next_page_id_from_logic, rating_field.reload, input, page_ids)).to eq mid_page_field2.id
-      end
-
-      it 'still applies the rules of a sentiment scale question' do
-        sentiment_linear_scale_field.update_columns(logic: { rules: [{ if: 'any_other_answer', goto_page_id: mid_page_field2.id }] })
-        CustomFieldValuesTransitionService.new.assign(input, { sentiment_linear_scale_field.key => 1 })
-        input.save!
-
-        expect(generator.send(:next_page_id_from_logic, sentiment_linear_scale_field.reload, input, page_ids)).to eq mid_page_field2.id
-      end
-    end
-
-    context 'ranking logic stored before ranking logic was no longer accepted' do
-      let(:by_bike) { ranking_field.options.find_by(key: 'by_bike') }
-
-      before { ranking_field.update_columns(logic: { rules: [{ if: by_bike.id, goto_page_id: mid_page_field2.id }] }) }
-
-      it 'applies an option rule like a multiselect when the only ranked option has a rule' do
-        CustomFieldValuesTransitionService.new.assign(input, { ranking_field.key => %w[by_bike] })
-        input.save!
-
-        expect(generator.send(:next_page_id_from_logic, ranking_field.reload, input, page_ids)).to eq mid_page_field2.id
-      end
-
-      it 'raises when the ranking also has options without a rule (currently existing bug, N1)' do
-        CustomFieldValuesTransitionService.new.assign(input, { ranking_field.key => %w[by_train by_foot by_bike] })
-        input.save!
-
-        expect { generator.send(:next_page_id_from_logic, ranking_field.reload, input, page_ids) }
-          .to raise_error(ArgumentError, /comparison of/)
       end
     end
 

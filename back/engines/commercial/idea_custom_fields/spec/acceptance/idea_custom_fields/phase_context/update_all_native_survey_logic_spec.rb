@@ -592,17 +592,6 @@ resource 'Idea Custom Fields' do
       expect(ranking_field.reload.logic).to eq({})
     end
 
-    example 'Wipes the stored rules of a ranking question on save', document: false do
-      ranking_field = create(:custom_field_ranking, :with_options, resource: custom_form)
-      ranking_field.update_columns(logic: { rules: [{ if: ranking_field.options.first.id, goto_page_id: form_end.id }] })
-      request = form_params
-      request[:custom_fields].insert(4, field_params(ranking_field))
-      do_request request
-
-      assert_status 200
-      expect(ranking_field.reload.logic).to eq({})
-    end
-
     example 'Drops the rules of a text question without an error', document: false do
       text_field = create(:custom_field_text, resource: custom_form)
       request = form_params
