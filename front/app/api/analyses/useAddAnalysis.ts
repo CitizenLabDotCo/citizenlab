@@ -21,9 +21,12 @@ const addAnalysis = async (requestBody: IAddAnalysis) =>
     },
   });
 
+export const addAnalysisMutationKey = [{ type: 'analysis', operation: 'add' }];
+
 const useAddAnalysis = () => {
   const queryClient = useQueryClient();
   return useMutation<IAnalysis, CLErrors, IAddAnalysis>({
+    mutationKey: addAnalysisMutationKey,
     mutationFn: addAnalysis,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: analysesKeys.lists() });

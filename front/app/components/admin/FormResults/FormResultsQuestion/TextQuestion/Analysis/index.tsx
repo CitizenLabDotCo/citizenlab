@@ -8,9 +8,13 @@ import {
   DropdownListItem,
   Spinner,
 } from '@citizenlab/cl2-component-library';
+import { useQueryClient } from '@tanstack/react-query';
 import { stringify } from 'qs';
 
-import useAddAnalysis from 'api/analyses/useAddAnalysis';
+import { IAddAnalysis } from 'api/analyses/types';
+import useAddAnalysis, {
+  addAnalysisMutationKey,
+} from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
@@ -60,6 +64,7 @@ const Analysis = ({
   const { data: appConfig } = useAppConfiguration();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const { formatMessage } = useIntl();
+  const queryClient = useQueryClient();
   const { mutate: addAnalysis, isPending: isAddAnalysisLoading } =
     useAddAnalysis();
   const { mutate: updateAnalysis, isPending } = useUpdateAnalysis();
@@ -152,16 +157,42 @@ const Analysis = ({
   // Create an analysis if there are no analyses yet
   useEffect(() => {
     if (
-      analyses &&
-      customFieldId &&
-      !relevantAnalysis &&
-      textResponsesCount > AUTO_ANALYSIS_MIN_RESPONSES
+      !analyses ||
+      !customFieldId ||
+      relevantAnalysis ||
+      textResponsesCount <= AUTO_ANALYSIS_MIN_RESPONSES
     ) {
-      addAnalysis({
-        projectId: phaseId ? undefined : projectId,
-        phaseId,
-        mainCustomField: customFieldId,
-      });
+      return;
+    }
+
+    const params: IAddAnalysis = {
+      projectId: phaseId ? undefined : projectId,
+      phaseId,
+      mainCustomField: customFieldId,
+    };
+
+    // The effect can run again before the first request answers (StrictMode
+    // re-runs it, and another box can show the same question), so check the
+    // mutation cache rather than this component's state.
+    const alreadyCreating =
+      queryClient.isMutating({
+        mutationKey: addAnalysisMutationKey,
+        predicate: (mutation) => {
+          const variables = mutation.state.variables as
+            | IAddAnalysis
+            | undefined;
+          if (!variables) return false;
+
+          return (
+            variables.mainCustomField === params.mainCustomField &&
+            variables.phaseId === params.phaseId &&
+            variables.projectId === params.projectId
+          );
+        },
+      }) > 0;
+
+    if (!alreadyCreating) {
+      addAnalysis(params);
     }
   }, [
     customFieldId,
@@ -170,6 +201,7 @@ const Analysis = ({
     projectId,
     phaseId,
     addAnalysis,
+    queryClient,
     textResponsesCount,
   ]);
 
