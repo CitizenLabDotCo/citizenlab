@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Réidh le haghaidh athbhreithnithe",
   "app.containers.Admin.projects.project.readyToPublish": "Réidh le foilsiú",
   "app.containers.Admin.projects.project.removeFile": "Bain {fileName}",
-  "app.containers.Admin.projects.project.reorderTag": "Tarraing chun {tagName} a athordú",
   "app.containers.Admin.projects.project.reportNotVisible": "Níl sé le feiceáil",
   "app.containers.Admin.projects.project.reportVisibility": "Infheictheacht na tuairisce",
   "app.containers.Admin.projects.project.reportVisible": "Infheicthe",

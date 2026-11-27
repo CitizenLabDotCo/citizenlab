@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Klaar voor beoordeling",
   "app.containers.Admin.projects.project.readyToPublish": "Klaar om te publiceren",
   "app.containers.Admin.projects.project.removeFile": "{fileName} verwijderen",
-  "app.containers.Admin.projects.project.reorderTag": "Sleep om {tagName} te herordenen",
   "app.containers.Admin.projects.project.reportNotVisible": "Niet zichtbaar",
   "app.containers.Admin.projects.project.reportVisibility": "Zichtbaarheid van het rapport",
   "app.containers.Admin.projects.project.reportVisible": "Zichtbaar",

@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Bereit zur Freigabe",
   "app.containers.Admin.projects.project.readyToPublish": "Bereit zur Veröffentlichung",
   "app.containers.Admin.projects.project.removeFile": "{fileName} entfernen",
-  "app.containers.Admin.projects.project.reorderTag": "Ziehen, um {tagName} neu anzuordnen",
   "app.containers.Admin.projects.project.reportNotVisible": "Nicht sichtbar",
   "app.containers.Admin.projects.project.reportVisibility": "Sichtbarkeit des Berichts",
   "app.containers.Admin.projects.project.reportVisible": "Sichtbar",

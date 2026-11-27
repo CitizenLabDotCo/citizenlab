@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Gatavs izskatīšanai",
   "app.containers.Admin.projects.project.readyToPublish": "Gatavs publicēšanai",
   "app.containers.Admin.projects.project.removeFile": "Noņemt {fileName}",
-  "app.containers.Admin.projects.project.reorderTag": "Velciet, lai pārkārtotu {tagName}",
   "app.containers.Admin.projects.project.reportNotVisible": "Nav redzams",
   "app.containers.Admin.projects.project.reportVisibility": "Atskaites redzamība",
   "app.containers.Admin.projects.project.reportVisible": "Redzams",

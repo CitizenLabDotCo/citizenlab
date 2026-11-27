@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "İncelemeye hazır",
   "app.containers.Admin.projects.project.readyToPublish": "Yayınlanmaya hazır",
   "app.containers.Admin.projects.project.removeFile": "{fileName} dosyasını kaldır",
-  "app.containers.Admin.projects.project.reorderTag": "{tagName} öğesini yeniden sıralamak için sürükleyin",
   "app.containers.Admin.projects.project.reportNotVisible": "Görünür değil",
   "app.containers.Admin.projects.project.reportVisibility": "Rapor görünürlüğü",
   "app.containers.Admin.projects.project.reportVisible": "Görünür",

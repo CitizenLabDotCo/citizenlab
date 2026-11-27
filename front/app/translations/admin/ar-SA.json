@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "جاهز للمراجعة",
   "app.containers.Admin.projects.project.readyToPublish": "جاهز للنشر",
   "app.containers.Admin.projects.project.removeFile": "إزالة {fileName}",
-  "app.containers.Admin.projects.project.reorderTag": "اسحب لإعادة ترتيب {tagName}",
   "app.containers.Admin.projects.project.reportNotVisible": "غير مرئي",
   "app.containers.Admin.projects.project.reportVisibility": "ظهور التقرير",
   "app.containers.Admin.projects.project.reportVisible": "مرئي",

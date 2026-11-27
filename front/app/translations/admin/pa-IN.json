@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "ਸਮੀਖਿਆ ਲਈ ਤਿਆਰ",
   "app.containers.Admin.projects.project.readyToPublish": "ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਨ ਲਈ ਤਿਆਰ",
   "app.containers.Admin.projects.project.removeFile": "{fileName} ਨੂੰ ਹਟਾਓ",
-  "app.containers.Admin.projects.project.reorderTag": "{tagName} ਨੂੰ ਮੁੜ-ਕ੍ਰਮਬੱਧ ਕਰਨ ਲਈ ਡਰੈਗ ਕਰੋ",
   "app.containers.Admin.projects.project.reportNotVisible": "ਦਿਖਾਈ ਨਹੀਂ ਦਿੰਦਾ",
   "app.containers.Admin.projects.project.reportVisibility": "ਰਿਪੋਰਟ ਦੀ ਦਿੱਖ",
   "app.containers.Admin.projects.project.reportVisible": "ਦਿਖਾਈ ਦੇਣ ਯੋਗ",

@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Misissorneqarnissaanut piareerpoq",
   "app.containers.Admin.projects.project.readyToPublish": "Saqqummiunneqarnissaanut piareerpoq",
   "app.containers.Admin.projects.project.removeFile": "{fileName} piiaruk",
-  "app.containers.Admin.projects.project.reorderTag": "{tagName} tulleriiaarniarlugu kaliguk",
   "app.containers.Admin.projects.project.reportNotVisible": "Takuneqarsinnaanngilaq",
   "app.containers.Admin.projects.project.reportVisibility": "Nalunaarusiap takuneqarsinnaanera",
   "app.containers.Admin.projects.project.reportVisible": "Takuneqarsinnaasoq",

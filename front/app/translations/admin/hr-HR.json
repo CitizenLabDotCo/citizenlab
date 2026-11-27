@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Spremno za pregled",
   "app.containers.Admin.projects.project.readyToPublish": "Spremno za objavu",
   "app.containers.Admin.projects.project.removeFile": "Ukloni {fileName}",
-  "app.containers.Admin.projects.project.reorderTag": "Povucite za promjenu redoslijeda {tagName}",
   "app.containers.Admin.projects.project.reportNotVisible": "Nije vidljivo",
   "app.containers.Admin.projects.project.reportVisibility": "Vidljivost izvještaja",
   "app.containers.Admin.projects.project.reportVisible": "Vidljivo",

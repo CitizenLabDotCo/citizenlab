@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "A punt per a revisió",
   "app.containers.Admin.projects.project.readyToPublish": "A punt per publicar",
   "app.containers.Admin.projects.project.removeFile": "Elimina {fileName}",
-  "app.containers.Admin.projects.project.reorderTag": "Arrossegueu per reordenar {tagName}",
   "app.containers.Admin.projects.project.reportNotVisible": "No visible",
   "app.containers.Admin.projects.project.reportVisibility": "Visibilitat de l'informe",
   "app.containers.Admin.projects.project.reportVisible": "Visible",

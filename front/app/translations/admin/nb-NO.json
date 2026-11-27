@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Klar til vurdering",
   "app.containers.Admin.projects.project.readyToPublish": "Klar til å publiseres",
   "app.containers.Admin.projects.project.removeFile": "Fjern {fileName}",
-  "app.containers.Admin.projects.project.reorderTag": "Dra for å endre rekkefølge på {tagName}",
   "app.containers.Admin.projects.project.reportNotVisible": "Ikke synlig",
   "app.containers.Admin.projects.project.reportVisibility": "Rapportens synlighet",
   "app.containers.Admin.projects.project.reportVisible": "Synlig",

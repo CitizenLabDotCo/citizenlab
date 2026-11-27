@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "جائزے کے لیے تیار",
   "app.containers.Admin.projects.project.readyToPublish": "شائع کرنے کے لیے تیار",
   "app.containers.Admin.projects.project.removeFile": "{fileName} کو ہٹائیں",
-  "app.containers.Admin.projects.project.reorderTag": "{tagName} کی ترتیب نو کے لیے ڈریگ کریں",
   "app.containers.Admin.projects.project.reportNotVisible": "نمایاں نہیں",
   "app.containers.Admin.projects.project.reportVisibility": "رپورٹ کی نمائش",
   "app.containers.Admin.projects.project.reportVisible": "ظاہر",

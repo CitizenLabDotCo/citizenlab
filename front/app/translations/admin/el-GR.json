@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Έτοιμο για έλεγχο",
   "app.containers.Admin.projects.project.readyToPublish": "Έτοιμο για δημοσίευση",
   "app.containers.Admin.projects.project.removeFile": "Αφαίρεση {fileName}",
-  "app.containers.Admin.projects.project.reorderTag": "Σύρετε για αναδιάταξη του {tagName}",
   "app.containers.Admin.projects.project.reportNotVisible": "Μη ορατό",
   "app.containers.Admin.projects.project.reportVisibility": "Ορατότητα αναφοράς",
   "app.containers.Admin.projects.project.reportVisible": "Ορατό",

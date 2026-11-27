@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Bereet fir d'Iwwerpréiwung",
   "app.containers.Admin.projects.project.readyToPublish": "Bereet fir ze publizéieren",
   "app.containers.Admin.projects.project.removeFile": "{fileName} ewechhuelen",
-  "app.containers.Admin.projects.project.reorderTag": "Zéie fir {tagName} nei ze ordnéieren",
   "app.containers.Admin.projects.project.reportNotVisible": "Net siichtbar",
   "app.containers.Admin.projects.project.reportVisibility": "Sichtbarkeet vum Rapport",
   "app.containers.Admin.projects.project.reportVisible": "Sichtbar",

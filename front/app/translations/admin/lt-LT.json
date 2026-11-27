@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Paruošta peržiūrai",
   "app.containers.Admin.projects.project.readyToPublish": "Paruošta publikuoti",
   "app.containers.Admin.projects.project.removeFile": "Pašalinti {fileName}",
-  "app.containers.Admin.projects.project.reorderTag": "Vilkite, kad pakeistumėte {tagName} tvarką",
   "app.containers.Admin.projects.project.reportNotVisible": "Nematoma",
   "app.containers.Admin.projects.project.reportVisibility": "Ataskaitos matomumas",
   "app.containers.Admin.projects.project.reportVisible": "Matoma",

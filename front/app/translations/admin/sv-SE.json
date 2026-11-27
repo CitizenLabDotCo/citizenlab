@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Redo för granskning",
   "app.containers.Admin.projects.project.readyToPublish": "Redo att publiceras",
   "app.containers.Admin.projects.project.removeFile": "Ta bort {fileName}",
-  "app.containers.Admin.projects.project.reorderTag": "Dra för att ändra ordning på {tagName}",
   "app.containers.Admin.projects.project.reportNotVisible": "Inte synlig",
   "app.containers.Admin.projects.project.reportVisibility": "Rapportens synlighet",
   "app.containers.Admin.projects.project.reportVisible": "Synlig",

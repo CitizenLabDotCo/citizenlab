@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Valmis tarkistettavaksi",
   "app.containers.Admin.projects.project.readyToPublish": "Valmis julkaistavaksi",
   "app.containers.Admin.projects.project.removeFile": "Poista {fileName}",
-  "app.containers.Admin.projects.project.reorderTag": "Vedä muuttaaksesi tunnisteen {tagName} järjestystä",
   "app.containers.Admin.projects.project.reportNotVisible": "Ei näkyvissä",
   "app.containers.Admin.projects.project.reportVisibility": "Raportin näkyvyys",
   "app.containers.Admin.projects.project.reportVisible": "Näkyvissä",

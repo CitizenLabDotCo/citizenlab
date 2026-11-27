@@ -2418,7 +2418,6 @@
   "app.containers.Admin.projects.project.readyForReview": "Ellenőrzésre kész",
   "app.containers.Admin.projects.project.readyToPublish": "Közzétételre kész",
   "app.containers.Admin.projects.project.removeFile": "{fileName} eltávolítása",
-  "app.containers.Admin.projects.project.reorderTag": "Húzza a(z) {tagName} átrendezéséhez",
   "app.containers.Admin.projects.project.reportNotVisible": "Nem látható",
   "app.containers.Admin.projects.project.reportVisibility": "Jelentés láthatósága",
   "app.containers.Admin.projects.project.reportVisible": "Látható",
