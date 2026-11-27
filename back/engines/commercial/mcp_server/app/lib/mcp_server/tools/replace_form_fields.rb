@@ -103,9 +103,9 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
         custom_form = CustomForm.find_or_initialize_by(participation_context: container)
         custom_form.save! if custom_form.new_record?
 
-        if pmethod.form_editable_after_responses?
-          guard_error = guard_live_form(pmethod, custom_form, responses_count)
-        end
+        persisted_fields = ensure_persisted_fields!(pmethod, custom_form)
+        guard_error = align_payload_with(persisted_fields)
+        guard_error ||= answers_at_risk_error(persisted_fields, responses_count) if responses_count.positive?
 
         result = update_all_fields(custom_form) unless guard_error
         raise ActiveRecord::Rollback unless result&.success?
@@ -148,18 +148,17 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       ).update_all
     end
 
-    # A live form's fields carry submitted answers, and UpdateAllService hard-deletes the
-    # answers of any persisted field whose id is missing from the payload. Persist the
-    # default fields first (a never-saved form serves virtual fields whose ids change on
-    # every read, so an echoed payload could never match them by id), re-attach payload
-    # entries to persisted fields by key, then refuse edits that would destroy data.
-    # Returns an error response, or nil when the payload is safe.
-    def guard_live_form(pmethod, custom_form, responses_count)
-      materialize_default_fields!(pmethod, custom_form)
+    # A never-saved form serves default fields whose ids change on every read, so an
+    # echoed payload could never match them by id: save them first.
+    def ensure_persisted_fields!(pmethod, custom_form)
+      pmethod.default_fields(custom_form).each(&:save!) if !custom_form.custom_fields.exists?
+      custom_form.custom_fields.reload.to_a
+    end
 
-      persisted_fields = custom_form.custom_fields.to_a
+    # Makes the payload refer to the persisted fields. Returns an error response, or nil.
+    def align_payload_with(persisted_fields)
       persisted_by_id = persisted_fields.index_by(&:id)
-      remap_fields_by_key!(persisted_fields, persisted_by_id)
+      resolve_field_ids!(persisted_fields, persisted_by_id)
 
       duplicate_ids = normalized_fields.filter_map { |field| field['id'] }
         .tally.filter_map { |id, count| id if count > 1 }
@@ -172,9 +171,21 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       end
 
       strip_noop_question_categories!(persisted_by_id)
+      merge_persisted_multilocs!(persisted_by_id)
+      nil
+    end
 
-      return nil unless responses_count.positive?
+    # Like the update tools: a locale that is not in the payload keeps its stored value.
+    def merge_persisted_multilocs!(persisted_by_id)
+      normalized_fields.each do |field|
+        persisted = persisted_by_id[field['id']]
+        field.replace(merge_multilocs(persisted, field)) if persisted
+      end
+    end
 
+    # UpdateAllService hard-deletes the answers of any persisted field whose id is missing
+    # from the payload. Returns an error response, or nil when the payload is safe.
+    def answers_at_risk_error(persisted_fields, responses_count)
       # Page breaks carry no answers, so removing or re-keying one is data-safe.
       removed = removed_persisted_fields(persisted_fields).reject(&:page?)
       if removed.any?
@@ -185,7 +196,7 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
         MSG
       end
 
-      rekeyed = rekeyed_persisted_fields(persisted_by_id)
+      rekeyed = rekeyed_persisted_fields(persisted_fields.index_by(&:id))
       if rekeyed.any?
         return error(<<~MSG.squish)
           Cannot change the key of field(s) #{rekeyed.join(', ')}: #{responses_count}
@@ -196,22 +207,16 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       nil
     end
 
-    def materialize_default_fields!(pmethod, custom_form)
-      return if custom_form.custom_fields.exists?
-
-      ActiveRecord::Base.transaction do
-        pmethod.default_fields(custom_form).each(&:save!)
-      end
-      custom_form.custom_fields.reload
-    end
-
-    def remap_fields_by_key!(persisted_fields, persisted_by_id)
+    # TODO: Match by code only, once the community monitor questions and the end page have one.
+    def resolve_field_ids!(persisted_fields, persisted_by_id)
+      persisted_by_code = persisted_fields.index_by(&:code)
       persisted_by_key = persisted_fields.index_by(&:key)
 
       normalized_fields.each do |field|
         next if persisted_by_id.key?(field['id'])
 
-        match = field['key'] && persisted_by_key[field['key']]
+        match = field['code'] && persisted_by_code[field['code']]
+        match ||= field['key'] && persisted_by_key[field['key']]
         # Same key but another input_type is a different question, not a stale echo:
         # treat it as remove-and-create so the removal guard gets to judge it.
         field['id'] = match.id if match && match.input_type == field['input_type']

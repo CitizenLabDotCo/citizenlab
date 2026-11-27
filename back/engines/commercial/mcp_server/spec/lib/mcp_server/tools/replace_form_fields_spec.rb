@@ -313,6 +313,64 @@ describe McpServer::Tools::ReplaceFormFields do
     end
   end
 
+  context 'with an ideation project' do
+    let(:ideation_project) do
+      create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'draft' })
+    end
+
+    def fetch_ideation_fields
+      run_mcp_tool(
+        McpServer::Tools::GetFormFields,
+        params: { container_type: 'project', container_id: ideation_project.id },
+        current_user:
+      ).structured_content[:fields]
+    end
+
+    def replace_ideation(fields)
+      run(container_type: 'project', container_id: ideation_project.id, fields:)
+    end
+
+    it 'adds a question to a form that was never saved' do
+      fields = fetch_ideation_fields
+      fields.insert(-2, { input_type: 'text', title_multiloc: { 'en' => 'Added question' }, required: false, enabled: true })
+
+      response = replace_ideation(fields)
+
+      expect(response).not_to be_error
+      stored = CustomForm.find_by(participation_context: ideation_project).custom_fields
+      expect(stored.pluck(:title_multiloc)).to include('en' => 'Added question')
+      built_in_titles = stored.where(code: %w[title_multiloc body_page]).pluck(:title_multiloc)
+      expect(built_in_titles.map(&:keys)).to all(match_array(CL2_SUPPORTED_LOCALES.map(&:to_s)))
+    end
+
+    it 'edits a question of a saved form, keeping its title in a locale that is not active' do
+      form = ideation_project.pmethod.create_default_form!
+      question = create(:custom_field, resource: form, title_multiloc: { 'en' => 'Old question', 'es-ES' => 'Pregunta' })
+      ids_before = form.custom_fields.pluck(:id)
+      fields = fetch_ideation_fields
+      # The question was added after the end page: move it in front.
+      edited = fields.delete(fields.find { |field| field[:id] == question.id })
+      edited[:title_multiloc] = { 'en' => 'New question' }
+      fields.insert(-2, edited)
+
+      response = replace_ideation(fields)
+
+      expect(response).not_to be_error
+      expect(question.reload.title_multiloc).to eq('en' => 'New question', 'es-ES' => 'Pregunta')
+      expect(form.custom_fields.reload.pluck(:id)).to match_array(ids_before)
+    end
+
+    it 'refuses to change the title of a built-in field' do
+      fields = fetch_ideation_fields
+      fields.find { |field| field[:code] == 'title_multiloc' }[:title_multiloc] = { 'en' => 'Renamed' }
+
+      response = replace_ideation(fields)
+
+      expect(response).to be_error
+      expect(response.structured_content[:errors]).to eq(form: [{ error: 'locked_attribute' }])
+    end
+  end
+
   it 'creates fields from scratch on an empty form' do
     response = run(
       container_type: 'phase',
@@ -327,7 +385,9 @@ describe McpServer::Tools::ReplaceFormFields do
 
     expect(response).not_to be_error
     titles = custom_form.reload.custom_fields.order(:ordering).pluck(:title_multiloc)
-    expect(titles).to eq([{}, { 'en' => 'First question' }, { 'en' => 'Second question' }, {}])
+    default_end_title = MultilocService.new.i18n_to_multiloc('form_builder.form_end_page.title_text_3')
+    # The end page in the payload is the default one, which keeps its title.
+    expect(titles).to eq([{}, { 'en' => 'First question' }, { 'en' => 'Second question' }, default_end_title])
   end
 
   it 'refuses to drop a locked built-in field on an ideation form' do
