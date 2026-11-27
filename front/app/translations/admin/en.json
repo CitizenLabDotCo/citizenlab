@@ -1580,6 +1580,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
   "app.containers.Admin.projects.all.copyProjectButton": "Copy project",
   "app.containers.Admin.projects.all.copyProjectError": "There was an error copying this project, please try again later.",
+  "app.containers.Admin.projects.all.copyProjectInProgressError": "Another copy with the same title is still being made. Please try again in a moment.",
   "app.containers.Admin.projects.all.copyingProject": "Copying project…",
   "app.containers.Admin.projects.all.customiseEnd": "Customise the end of the form.",
   "app.containers.Admin.projects.all.customiseStart": "Customise the start of the form.",
