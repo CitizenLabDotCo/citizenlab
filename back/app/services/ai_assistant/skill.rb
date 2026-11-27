@@ -12,36 +12,43 @@ module AIAssistant
       ROOT.directory?
     end
 
-    # Outside development, a skill missing from the folder means the build didn't bring it.
-    def self.find(name)
+    # +paths+ are the files of the skill that go into the prompt, from the skill's folder, as
+    # SKILL.md refers to them. Outside development, a skill missing from the folder means the
+    # build didn't bring it.
+    def self.find(name, paths)
       return unless available?
 
       skill_file = ROOT.glob("*/skills/#{name}/SKILL.md").first
-      return new(skill_file.dirname) if skill_file
+      return new(skill_file.dirname, paths) if skill_file
 
-      ErrorReporter.report_msg('LLM skill not found', extra: { name: }) unless Rails.env.development?
+      ErrorReporter.report_msg('LLM skill not found', extra: { name: }) unless Rails.env.local?
       nil
     end
 
-    def initialize(dir)
+    def initialize(dir, paths)
       @dir = dir
+      @paths = paths
+    end
+
+    def prompt
+      ::Analysis::LLM::Prompt.new.fetch('ai_assistant_skill', skill: self)
     end
 
     def name
       @dir.basename.to_s
     end
 
-    # The text of each file, by its path from the skill's folder, as SKILL.md refers to them.
-    # SKILL.md comes first, without its front matter, which is only for Claude to find it.
-    # Skills also refer to the shared files of their plugin.
+    # The text of each listed file, by its path. SKILL.md loses its front matter, which is only
+    # for Claude to find the skill.
     def files
-      skill_file = @dir.join('SKILL.md')
-      other_files = (@dir.glob('**/*.md') - [skill_file]).sort + @dir.parent.parent.glob('shared/**/*.md').sort
-
-      {
-        'SKILL.md' => skill_file.read.sub(FRONT_MATTER, ''),
-        **other_files.to_h { |path| [path.relative_path_from(@dir).to_s, path.read] }
-      }
+      @files ||= @paths.each_with_object({}) do |path, files|
+        file = @dir.join(path)
+        if file.file?
+          files[path] = path == 'SKILL.md' ? file.read.sub(FRONT_MATTER, '') : file.read
+        else
+          ErrorReporter.report_msg('LLM skill file not found', extra: { name:, path: }) unless Rails.env.local?
+        end
+      end
     end
   end
 end

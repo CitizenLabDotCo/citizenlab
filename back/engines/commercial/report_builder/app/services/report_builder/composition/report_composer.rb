@@ -500,7 +500,7 @@ module ReportBuilder
       def converse(messages)
         client.converse(
           model_id: model_id,
-          # System prompt and tool list are the same ~38KB on every round, so they are
+          # System prompt and tool list are the same on every round, so they are
           # marked once and read from the provider's cache after the first call.
           system: [{ text: system_prompt }, CACHE_POINT],
           messages: Messages.to_provider(cached(messages)),

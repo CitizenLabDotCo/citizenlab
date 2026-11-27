@@ -31,6 +31,11 @@ module AIAssistant
       nil
     end
 
+    # The files of that skill that go into the instructions.
+    def self.skill_files
+      []
+    end
+
     attr_reader :subject
 
     def initialize(subject)
@@ -79,11 +84,11 @@ module AIAssistant
     def skill
       return @skill if defined?(@skill)
 
-      @skill = (Skill.find(self.class.skill_name) if self.class.skill_name)
+      @skill = (Skill.find(self.class.skill_name, self.class.skill_files) if self.class.skill_name)
     end
 
     def skill_prompt
-      ::Analysis::LLM::Prompt.new.fetch('ai_assistant_skill', skill:) if skill
+      skill&.prompt
     end
 
     def surface_prompt(locale:)

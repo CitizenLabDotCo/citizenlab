@@ -16,6 +16,11 @@ module AIAssistant
         'govocal-project-setup'
       end
 
+      # Only its survey design guidance: the rest of the skill sets up whole projects.
+      def self.skill_files
+        %w[references/survey-design.md]
+      end
+
       def available?
         subject.participation_method == 'native_survey'
       end
@@ -64,9 +69,7 @@ module AIAssistant
           project_title: multiloc_service.t(subject.project.title_multiloc, locale),
           responses_count: subject.ideas_count.to_i,
           writable: writable?,
-          platform_locales: AppConfiguration.instance.settings('core', 'locales'),
-          # The skill gives its own design advice, which ours would contradict.
-          with_skill: skill.present?
+          platform_locales: AppConfiguration.instance.settings('core', 'locales')
         )
       end
 
