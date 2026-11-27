@@ -112,6 +112,20 @@
   "embedded": {
     "nl-NL": "ingesloten"
   },
+  "petition (input term)": {
+    "da-DK": "underskrift",
+    "es-ES": "petición",
+    "fr-FR": "pétition",
+    "it-IT": "petizione",
+    "nl-NL": "petitie"
+  },
+  "suggestion (input term)": {
+    "da-DK": "udspil",
+    "es-ES": "sugerencia",
+    "fr-FR": "suggestion",
+    "it-IT": "suggerimento",
+    "nl-NL": "suggestie"
+  },
   "response (input term)": {
     "da-DK": "svar",
     "es-ES": "respuesta",
@@ -296,6 +310,13 @@
   "phone": {
     "de-DE": "Handy"
   },
+  "proposal (input term)": {
+    "da-DK": "forslag",
+    "es-ES": "propuesta",
+    "fr-FR": "proposition",
+    "it-IT": "proposta",
+    "nl-NL": "voorstel"
+  },
   "community monitor": {
     "nl-NL": "gemeenschapsmonitor"
   },
@@ -304,6 +325,20 @@
   },
   "proposals": {
     "nl-NL": "voorstellen"
+  },
+  "contribution (input term)": {
+    "da-DK": "bidrag",
+    "es-ES": "propuesta",
+    "fr-FR": "contribution",
+    "it-IT": "contributo",
+    "nl-NL": "bijdrage"
+  },
+  "project (input term)": {
+    "da-DK": "projekt",
+    "es-ES": "proyecto",
+    "fr-FR": "projet",
+    "it-IT": "progetto",
+    "nl-NL": "project"
   },
   "attendees (events)": {
     "de-DE": "Teilnehmende",
@@ -447,40 +482,5 @@
   },
   "petition": {
     "nl-NL": "petitie"
-  },
-  "contribution (input term)": {
-    "da-DK": "bidrag",
-    "es-ES": "propuesta",
-    "fr-FR": "contribution",
-    "it-IT": "contributo",
-    "nl-NL": "bijdrage"
-  },
-  "project (input term)": {
-    "da-DK": "projekt",
-    "es-ES": "proyecto",
-    "fr-FR": "projet",
-    "it-IT": "progetto",
-    "nl-NL": "project"
-  },
-  "proposal (input term)": {
-    "da-DK": "forslag",
-    "es-ES": "propuesta",
-    "fr-FR": "proposition",
-    "it-IT": "proposta",
-    "nl-NL": "voorstel"
-  },
-  "petition (input term)": {
-    "da-DK": "underskrift",
-    "es-ES": "petición",
-    "fr-FR": "pétition",
-    "it-IT": "petizione",
-    "nl-NL": "petitie"
-  },
-  "suggestion (input term)": {
-    "da-DK": "udspil",
-    "es-ES": "sugerencia",
-    "fr-FR": "suggestion",
-    "it-IT": "suggerimento",
-    "nl-NL": "suggestie"
   }
 }
