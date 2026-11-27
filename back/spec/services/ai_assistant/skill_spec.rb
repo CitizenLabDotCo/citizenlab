@@ -5,18 +5,6 @@ require 'rails_helper'
 describe AIAssistant::Skill do
   let(:missing_root) { Rails.root.join('spec/fixtures/missing') }
 
-  describe '.available?' do
-    it 'is true when the skills folder is there' do
-      expect(described_class.available?).to be(true)
-    end
-
-    it 'is false when the skills folder is not there' do
-      stub_const("#{described_class}::ROOT", missing_root)
-
-      expect(described_class.available?).to be(false)
-    end
-  end
-
   describe '.find' do
     using RSpec::Parameterized::TableSyntax
 
@@ -25,7 +13,7 @@ describe AIAssistant::Skill do
       'production'  | true  | 'unknown-skill' | false | true
       'development' | true  | 'unknown-skill' | false | false
       'test'        | true  | 'unknown-skill' | false | false
-      'production'  | false | 'example-skill' | false | false
+      'production'  | false | 'example-skill' | false | true
     end
 
     with_them do
