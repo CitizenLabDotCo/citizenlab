@@ -39,15 +39,33 @@
     var(--gv-space-12);
 }
 
+/* The title line starts 15 px below the card's top edge, with the status or
+   marker on the same line; the body starts 56 px below it. */
 .card[data-spaced-body] > .header {
+  align-items: flex-start;
   padding-top: var(--gv-space-14);
   padding-bottom: 0;
 }
 
-/* 24 px from the title to the first option. */
+.card[data-spaced-body] > .header > .actions,
+.card[data-spaced-body] > .header > .iconBox {
+  min-height: 0;
+  height: auto;
+}
+
 .card[data-spaced-body] > .body {
-  padding-top: var(--gv-space-18);
-  padding-bottom: var(--gv-space-14);
+  /* 25 has no token: the spacing step plus a border's width. */
+  padding-top: calc(var(--gv-space-24) + var(--gv-border-width-1));
+}
+
+/* A header with 32 px Buttons: 58 px card, buttons padded 14 px. */
+.card[data-has-buttons] > .header {
+  padding-top: var(--gv-space-12);
+  padding-bottom: var(--gv-space-12);
+}
+
+.card[data-has-buttons] > .header > .actions {
+  --button-padding-inline: var(--gv-space-14);
 }
 
 .trigger {

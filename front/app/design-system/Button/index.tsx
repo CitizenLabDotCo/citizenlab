@@ -18,6 +18,8 @@ export type ButtonVariant =
   | 'primary'
   | 'secondary'
   | 'quiet'
+  // Tertiary text with no fill: a secondary control at the end of a row.
+  | 'quietSubtle'
   | 'danger'
   // Red text with no fill: a destructive action that is not the main one.
   | 'quietDanger'

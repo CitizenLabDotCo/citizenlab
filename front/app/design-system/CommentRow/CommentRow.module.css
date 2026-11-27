@@ -1,0 +1,60 @@
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gv-space-12);
+}
+
+/* Lines the reply up with its parent's text: the avatar and the gap. */
+.reply {
+  margin-top: var(--gv-space-16);
+  margin-left: calc(var(--gv-size-24) + var(--gv-space-12));
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+  min-width: 0;
+}
+
+.header {
+  composes: ui from '../typography.module.css';
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--gv-space-8);
+}
+
+.name {
+  color: var(--gv-text-primary);
+}
+
+.time {
+  color: var(--gv-text-secondary);
+}
+
+.body {
+  composes: ui from '../typography.module.css';
+  color: var(--gv-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gv-space-16);
+}
+
+.action {
+  composes: ui from '../typography.module.css';
+  composes: ringOutside from '../focus.module.css';
+  border-radius: var(--gv-radius-4);
+  color: var(--gv-text-secondary);
+  cursor: pointer;
+}
+
+.action[data-hovered] {
+  color: var(--gv-text-primary);
+}

@@ -5,6 +5,13 @@
   gap: var(--gv-space-12);
 }
 
+.options[data-orientation='horizontal'] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gv-space-8) var(--gv-space-24);
+}
+
 .radio {
   composes: body from '../typography.module.css';
   display: inline-flex;

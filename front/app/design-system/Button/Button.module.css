@@ -24,7 +24,8 @@
 
 .size32 {
   height: var(--gv-size-32);
-  padding: 0 var(--gv-space-16);
+  /* A container can tighten it (a setting card header with Buttons: 14). */
+  padding: 0 var(--button-padding-inline, var(--gv-space-16));
   gap: var(--gv-space-8);
 }
 
@@ -124,6 +125,26 @@
 }
 
 .quiet[data-pressed] {
+  background: var(--gv-surface-pressed);
+  color: var(--gv-text-primary);
+}
+
+/* Quiet subtle: tertiary text, for a secondary control at the end of a row. */
+.quietSubtle {
+  color: var(--gv-text-tertiary);
+}
+
+.quietSubtle .icon,
+.quietSubtle .chevron {
+  color: var(--gv-icon-tertiary);
+}
+
+.quietSubtle[data-hovered]:not([aria-disabled='true']) {
+  background: var(--gv-surface-hovered);
+  color: var(--gv-text-primary);
+}
+
+.quietSubtle[data-pressed] {
   background: var(--gv-surface-pressed);
   color: var(--gv-text-primary);
 }

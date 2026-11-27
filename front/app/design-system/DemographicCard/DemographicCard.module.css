@@ -1,0 +1,67 @@
+.card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--gv-space-16);
+  border: var(--gv-border-width-1) solid var(--gv-border-subtle);
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-panel);
+}
+
+.title {
+  composes: ui from '../typography.module.css';
+  margin: 0;
+  color: var(--gv-text-secondary);
+}
+
+.bar {
+  display: flex;
+  height: var(--gv-space-6);
+  margin-top: var(--gv-space-8);
+  overflow: hidden;
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-track);
+}
+
+.segment {
+  height: 100%;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+  margin: var(--gv-space-12) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  composes: ui from '../typography.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+}
+
+.swatch {
+  flex-shrink: 0;
+  width: var(--gv-space-8);
+  height: var(--gv-space-8);
+  border-radius: var(--gv-radius-4);
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--gv-text-body);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.value {
+  flex-shrink: 0;
+  color: var(--gv-text-secondary);
+  font-variant-numeric: tabular-nums;
+}

@@ -56,6 +56,8 @@ type MenuHeaderProps = SharedProps & {
 type StaticHeaderProps = SharedProps & {
   header: 'static';
   spacedBody?: boolean;
+  // The actions hold 32 px Buttons with a label: the header gets more room.
+  hasButtons?: boolean;
   actions?: ReactNode;
   // An always-visible body.
   children?: ReactNode;
@@ -173,9 +175,14 @@ const StaticCard = ({
   actions,
   children,
   spacedBody,
+  hasButtons,
   ...content
 }: StaticHeaderProps) => (
-  <div className={styles.card} data-spaced-body={spacedBody || undefined}>
+  <div
+    className={styles.card}
+    data-spaced-body={spacedBody || undefined}
+    data-has-buttons={hasButtons || undefined}
+  >
     <div className={styles.header}>
       <HeaderContent {...content} />
       {actions ? (

@@ -37,6 +37,10 @@
   outline: none;
 }
 
+.preset {
+  cursor: default;
+}
+
 .label {
   max-width: 240px;
   overflow: hidden;

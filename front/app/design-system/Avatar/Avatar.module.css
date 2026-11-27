@@ -34,6 +34,11 @@
   background: var(--gv-surface-brand-strong);
 }
 
+.muted {
+  background: var(--gv-surface-muted-hovered);
+  color: var(--gv-text-body-subtle);
+}
+
 .image {
   background: var(--gv-surface-muted-hovered);
 }

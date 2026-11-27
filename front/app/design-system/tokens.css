@@ -144,6 +144,20 @@
   --gv-chart-pass: var(--gv-slate-300);
   --gv-chart-line-primary: var(--gv-navy-650);
   --gv-chart-bar: var(--gv-blue-450);
+  /* Demographic splits: series for unordered categories, sequential for ordered ones. */
+  --gv-chart-series-1: var(--gv-green-500);
+  --gv-chart-series-2: var(--gv-blue-450);
+  --gv-chart-series-3: var(--gv-amber-600);
+  --gv-chart-series-4: var(--gv-red-450);
+  --gv-chart-series-5: var(--gv-teal-500);
+  --gv-chart-series-6: var(--gv-navy-650);
+  --gv-chart-series-7: var(--gv-green-300);
+  --gv-chart-series-8: var(--gv-slate-400);
+  --gv-chart-sequential-1: var(--gv-blue-150);
+  --gv-chart-sequential-2: var(--gv-blue-450);
+  --gv-chart-sequential-3: var(--gv-blue-900);
+  --gv-chart-sequential-4: var(--gv-navy-650);
+  --gv-chart-sequential-5: var(--gv-navy-950);
 
   /* component */
   --gv-component-avatar-border-empty: var(--gv-neutral-400);
