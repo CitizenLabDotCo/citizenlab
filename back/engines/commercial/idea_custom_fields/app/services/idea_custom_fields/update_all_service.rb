@@ -18,13 +18,15 @@ module IdeaCustomFields
     end
 
     def update_all
-      validation_errors = validate
-      return Result.failure(validation_errors) if validation_errors
-
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
 
       ActiveRecord::Base.transaction do
+        # Concurrent saves of the same form wait here, so the stale check sees the other save's changes.
+        @custom_form.lock! if @custom_form.persisted?
+        validation_errors = validate
+        raise UpdateAllFailedError, validation_errors if validation_errors
+
         update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
         @custom_form.reload if @custom_form.persisted?
         update_logic!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
