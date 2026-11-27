@@ -15,12 +15,20 @@ const useTagsDraft = (projectId: string) => {
   const saveDraft = useSaveTagsDraft(projectId);
 
   const [draft, setDraft] = useState<IInputTopicData[] | null>(null);
+  // The last deletion, until something else changes: how many tags, and the
+  // draft from before it, so Undo can put them back.
+  const [deleted, setDeleted] = useState<{
+    count: number;
+    before: IInputTopicData[] | null;
+  } | null>(null);
   const nextDraftId = useRef(0);
 
   const tags = draft ?? inputTopics?.data;
 
-  const change = (update: (current: IInputTopicData[]) => IInputTopicData[]) =>
+  const change = (update: (current: IInputTopicData[]) => IInputTopicData[]) => {
+    setDeleted(null);
     setDraft((current) => update(current ?? inputTopics?.data ?? []));
+  };
 
   const addTag = (values: InputTopicFormValues, parentId?: string) => {
     const tag: IInputTopicData = {
@@ -65,11 +73,24 @@ const useTagsDraft = (projectId: string) => {
       )
     );
 
-  // Deleting a tag also deletes its subtags, as the API does.
-  const removeTag = (id: string) =>
+  // Deleting a tag also deletes its subtags, as the API does. There is no
+  // dialog: the deletion can be undone until the next change or Save.
+  const removeTags = (ids: string[]) => {
+    const removed = new Set(ids);
+    const before = draft;
     change((current) =>
-      current.filter((tag) => tag.id !== id && getParentId(tag) !== id)
+      current.filter(
+        (tag) => !removed.has(tag.id) && !removed.has(getParentId(tag) ?? '')
+      )
     );
+    setDeleted({ count: ids.length, before });
+  };
+
+  const undoDelete = () => {
+    if (!deleted) return;
+    setDraft(deleted.before);
+    setDeleted(null);
+  };
 
   // `siblings` is one group (the root tags, or one tag's subtags) in its new
   // order. The other tags keep their place.
@@ -89,6 +110,7 @@ const useTagsDraft = (projectId: string) => {
 
     const { saved, nextDraft } = await saveDraft(draft, inputTopics.data);
     setDraft(saved ? null : nextDraft);
+    setDeleted(null);
     return saved;
   };
 
@@ -97,10 +119,15 @@ const useTagsDraft = (projectId: string) => {
     dirty: draft !== null,
     addTag,
     updateTag,
-    removeTag,
+    removeTags,
+    deletedCount: deleted?.count ?? 0,
+    undoDelete,
     reorder,
     save,
-    reset: () => setDraft(null),
+    reset: () => {
+      setDraft(null);
+      setDeleted(null);
+    },
   };
 };
 

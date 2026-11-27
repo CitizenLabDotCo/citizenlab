@@ -1,13 +1,9 @@
 import React, { useMemo, useState } from 'react';
 
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-
-import AlertDialog from 'design-system/AlertDialog';
 import Button from 'design-system/Button';
-import Icon from 'design-system/Icon';
+import Divider from 'design-system/Divider';
 import SearchField from 'design-system/SearchField';
-import Text from 'design-system/Text';
+import { TagListBar } from 'design-system/TagList';
 import TextField from 'design-system/TextField';
 
 import { IInputTopicData } from 'api/input_topics/types';
@@ -21,13 +17,11 @@ import InputTopicModal, {
 } from 'containers/Admin/projects/project/topics/InputTopicModal';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import SortableTag, { ROOT_TAG_TYPE } from './SortableTag';
 import TagGroup from './TagGroup';
 import styles from './TagsSection.module.css';
-import useSortableTags from './useSortableTags';
 import { TagsDraft } from './useTagsDraft';
 import { getSiblings } from './utils';
 import 'design-system/tokens.css';
@@ -42,8 +36,20 @@ type Editing = { topic: IInputTopicData } | { topic: null; parentId?: string };
 const TagsSection = ({ draft }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
+  const localize = useLocalize();
   const [search, setSearch] = useState('');
   const [name, setName] = useState('');
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [editing, setEditing] = useState<Editing | null>(null);
+  const nestedInputTopicsActive = useFeatureFlag({
+    name: 'nested_input_topics',
+  });
+
+  const { tags } = draft;
+  const rootTopics = useMemo(() => getSiblings(tags ?? []), [tags]);
+
+  if (!tags) return null;
+
   const add = () => {
     if (!name.trim()) return;
     draft.addTag({
@@ -52,27 +58,31 @@ const TagsSection = ({ draft }: Props) => {
     });
     setName('');
   };
-  const nestedInputTopicsActive = useFeatureFlag({
-    name: 'nested_input_topics',
-  });
-  const localize = useLocalize();
-  const [editing, setEditing] = useState<Editing | null>(null);
-  const [topicToDelete, setTopicToDelete] = useState<IInputTopicData | null>(
-    null
-  );
 
-  const { tags } = draft;
-  const rootTopics = useMemo(() => getSiblings(tags ?? []), [tags]);
-  const { ordered, moveRow, dropRow, cancelDrag } = useSortableTags(
-    rootTopics,
-    draft.reorder
-  );
+  const matchesSearch = (topic: IInputTopicData) =>
+    [topic, ...getSiblings(tags, topic.id)].some((tag) =>
+      localize(tag.attributes.title_multiloc)
+        .toLocaleLowerCase()
+        .includes(search.toLocaleLowerCase())
+    );
+  const shown = rootTopics.filter(matchesSearch);
+  const shownSelected = shown.filter(({ id }) => selected.has(id));
+  const allSelected = shown.length > 0 && shownSelected.length === shown.length;
+  // At least one tag must stay.
+  const deletesEverything = shownSelected.length >= rootTopics.length;
 
-  if (!tags) return null;
+  const select = (id: string, isSelected: boolean) =>
+    setSelected((current) => {
+      const next = new Set(current);
+      if (isSelected) next.add(id);
+      else next.delete(id);
+      return next;
+    });
 
-  const isLastRootTopic = rootTopics.length === 1;
-  const deleteHasSubtags =
-    !!topicToDelete && getSiblings(tags, topicToDelete.id).length > 0;
+  const remove = (ids: string[]) => {
+    draft.removeTags(ids);
+    setSelected(new Set());
+  };
 
   const saveTopic = (values: InputTopicFormValues) => {
     if (!editing) return;
@@ -84,10 +94,32 @@ const TagsSection = ({ draft }: Props) => {
     }
   };
 
-  const confirmDelete = () => {
-    if (topicToDelete) draft.removeTag(topicToDelete.id);
-    setTopicToDelete(null);
-  };
+  const barText =
+    shownSelected.length > 0
+      ? formatMessage(messages.selectedCount, { count: shownSelected.length })
+      : draft.deletedCount > 0
+      ? formatMessage(messages.deletedCount, { count: draft.deletedCount })
+      : formatMessage(messages.tagCount, { count: rootTopics.length });
+
+  const barAction =
+    shownSelected.length > 0 ? (
+      <Button
+        variant="quiet"
+        size={28}
+        disabledReason={
+          deletesEverything
+            ? formatMessage(messages.tagsRequiredInfo)
+            : undefined
+        }
+        onPress={() => remove(shownSelected.map(({ id }) => id))}
+      >
+        {formatMessage(topicsMessages.delete)}
+      </Button>
+    ) : draft.deletedCount > 0 ? (
+      <Button variant="quiet" size={28} onPress={draft.undoDelete}>
+        {formatMessage(messages.undo)}
+      </Button>
+    ) : undefined;
 
   return (
     <>
@@ -95,12 +127,7 @@ const TagsSection = ({ draft }: Props) => {
         className={styles.section}
         aria-label={formatMessage(messages.settingsCreateAndManageTags)}
       >
-        <div className={styles.info}>
-          <Icon name="info-16" className={styles.infoIcon} />
-          <Text variant="small" tone="secondary">
-            {formatMessage(messages.tagsRequiredInfo)}
-          </Text>
-        </div>
+        <Divider />
         <div className={styles.search}>
           <SearchField
             size={36}
@@ -111,93 +138,72 @@ const TagsSection = ({ draft }: Props) => {
             onChange={setSearch}
           />
         </div>
-        <Text variant="smallStrong" tone="secondary">
-          {formatMessage(messages.tagCount, { count: rootTopics.length })}
-        </Text>
-        <DndProvider backend={HTML5Backend}>
-          {ordered.map((topic, index) => {
-            const matches = [topic, ...getSiblings(tags, topic.id)].some(
-              (tag) =>
-                localize(tag.attributes.title_multiloc)
-                  .toLocaleLowerCase()
-                  .includes(search.toLocaleLowerCase())
-            );
-            if (!matches) return null;
-            return (
-              <SortableTag
-                key={topic.id}
-                id={topic.id}
-                index={index}
-                type={ROOT_TAG_TYPE}
-                dragLabel={formatMessage(messages.reorderTag, {
-                  tagName: localize(topic.attributes.title_multiloc),
-                })}
-                moveRow={moveRow}
-                dropRow={dropRow}
-                cancelDrag={cancelDrag}
-              >
-                {(drag) => (
-                  <TagGroup
-                    topic={topic}
-                    allTopics={tags}
-                    drag={drag}
-                    canAddSubtopics={nestedInputTopicsActive}
-                    deleteDisabled={isLastRootTopic}
-                    onAddSubtopic={() =>
-                      setEditing({ topic: null, parentId: topic.id })
-                    }
-                    onEdit={(topic) => setEditing({ topic })}
-                    onDelete={setTopicToDelete}
-                    onReorder={draft.reorder}
-                  />
-                )}
-              </SortableTag>
-            );
-          })}
-        </DndProvider>
-        {/* A form, so Enter in the name field adds the tag. */}
-        <form
-          className={styles.addRow}
-          onSubmit={(event) => {
-            event.preventDefault();
-            add();
-          }}
+        <TagListBar
+          isSelected={allSelected}
+          isIndeterminate={shownSelected.length > 0 && !allSelected}
+          onSelectAll={(isSelected) =>
+            setSelected(new Set(isSelected ? shown.map(({ id }) => id) : []))
+          }
+          selectAllLabel={formatMessage(messages.selectAllTags)}
+          action={barAction}
         >
-          <div className={styles.addField}>
-            <TextField
-              id="phase-add-input-tag"
-              aria-label={formatMessage(messages.addTagPlaceholder)}
-              placeholder={formatMessage(messages.addTagPlaceholder)}
-              value={name}
-              onChange={setName}
+          {barText}
+        </TagListBar>
+        <div className={styles.list}>
+          {shown.map((topic) => (
+            <TagGroup
+              key={topic.id}
+              topic={topic}
+              allTopics={tags}
+              isSelected={selected.has(topic.id)}
+              onSelectionChange={(isSelected) =>
+                select(topic.id, isSelected)
+              }
+              showsSelection={selected.size > 0}
+              canAddSubtopics={nestedInputTopicsActive}
+              deleteDisabledReason={
+                rootTopics.length === 1
+                  ? formatMessage(messages.tagsRequiredInfo)
+                  : undefined
+              }
+              onAddSubtopic={() =>
+                setEditing({ topic: null, parentId: topic.id })
+              }
+              onEdit={(topic) => setEditing({ topic })}
+              onDelete={(topic) => remove([topic.id])}
             />
-          </div>
-          <Button
-            type="submit"
-            variant="secondary"
-            size={32}
-            icon="plus-14"
-            aria-label={formatMessage(messages.settingsAddTag)}
-            isDisabled={!name.trim()}
-          />
-        </form>
+          ))}
+        </div>
+        <div className={styles.footer}>
+          <Divider />
+          {/* A form, so Enter in the name field adds the tag. */}
+          <form
+            className={styles.addRow}
+            onSubmit={(event) => {
+              event.preventDefault();
+              add();
+            }}
+          >
+            <div className={styles.addField}>
+              <TextField
+                id="phase-add-input-tag"
+                aria-label={formatMessage(messages.addTagPlaceholder)}
+                placeholder={formatMessage(messages.addTagPlaceholder)}
+                value={name}
+                onChange={setName}
+              />
+            </div>
+            <Button
+              type="submit"
+              variant="secondary"
+              size={28}
+              icon="plus-14"
+              aria-label={formatMessage(messages.settingsAddTag)}
+              isDisabled={!name.trim()}
+            />
+          </form>
+        </div>
       </section>
-      <AlertDialog
-        isOpen={!!topicToDelete}
-        onOpenChange={(isOpen) => {
-          if (!isOpen) setTopicToDelete(null);
-        }}
-        title={<FormattedMessage {...topicsMessages.confirmHeader} />}
-        confirmLabel={<FormattedMessage {...topicsMessages.delete} />}
-        onConfirm={confirmDelete}
-        confirmId="e2e-input-topic-delete-confirmation-button"
-      >
-        <FormattedMessage
-          {...(deleteHasSubtags
-            ? topicsMessages.deleteInputTopicWithChildrenConfirmation
-            : topicsMessages.deleteInputTopicConfirmation)}
-        />
-      </AlertDialog>
       <InputTopicModal
         topic={editing?.topic ?? null}
         parentId={editing && !editing.topic ? editing.parentId : undefined}

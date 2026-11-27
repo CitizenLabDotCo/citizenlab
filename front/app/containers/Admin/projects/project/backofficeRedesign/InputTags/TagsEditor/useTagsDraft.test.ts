@@ -79,7 +79,7 @@ describe('useTagsDraft', () => {
     const { result } = renderHook(() => useTagsDraft('project'));
 
     act(() => result.current.addTag(values('c')));
-    act(() => result.current.removeTag('b'));
+    act(() => result.current.removeTags(['b']));
 
     expect(result.current.dirty).toBe(true);
     expect(
@@ -92,15 +92,27 @@ describe('useTagsDraft', () => {
   it('removes subtags together with their tag', () => {
     const { result } = renderHook(() => useTagsDraft('project'));
 
-    act(() => result.current.removeTag('a'));
+    act(() => result.current.removeTags(['a']));
 
     expect(ids(result.current.tags)).toEqual(['b']);
+  });
+
+  it('puts deleted tags back on Undo, until the next change', () => {
+    const { result } = renderHook(() => useTagsDraft('project'));
+
+    act(() => result.current.removeTags(['a', 'b']));
+    expect(ids(result.current.tags)).toEqual([]);
+    expect(result.current.deletedCount).toBe(2);
+
+    act(() => result.current.undoDelete());
+    expect(ids(result.current.tags)).toEqual(['a', 'a1', 'b']);
+    expect(result.current.deletedCount).toBe(0);
   });
 
   it('deletes a tag once on save, leaving its subtags to the API', async () => {
     const { result } = renderHook(() => useTagsDraft('project'));
 
-    act(() => result.current.removeTag('a'));
+    act(() => result.current.removeTags(['a']));
 
     expect(await save(result)).toBe(true);
     expect(mockDelete).toHaveBeenCalledTimes(1);
@@ -157,7 +169,7 @@ describe('useTagsDraft', () => {
     mockDelete.mockRejectedValueOnce(new Error('failed'));
     const { result } = renderHook(() => useTagsDraft('project'));
 
-    act(() => result.current.removeTag('b'));
+    act(() => result.current.removeTags(['b']));
     act(() => result.current.addTag(values('c')));
 
     expect(await save(result)).toBe(false);

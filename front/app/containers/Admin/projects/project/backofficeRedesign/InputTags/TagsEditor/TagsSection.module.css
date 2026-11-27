@@ -3,29 +3,41 @@
   flex-direction: column;
 }
 
-.info {
-  display: flex;
-  align-items: center;
-  gap: var(--gv-space-8);
-  margin-bottom: var(--gv-space-8);
-}
-
-.infoIcon {
-  flex-shrink: 0;
-  color: var(--gv-icon-tertiary);
-}
-
+/* The library's dividers: 16 above the search, 12 above "Add a tag". */
 .search {
-  margin-bottom: var(--gv-space-12);
+  margin: var(--gv-space-16) 0 var(--gv-space-12);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Selected tags next to each other read as one tinted block. */
+.list
+  > div:has(> [data-selected]):has(+ div > [data-selected])
+  > [data-selected] {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.list > div:has(> [data-selected]) + div > [data-selected] {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.footer {
+  position: sticky;
+  bottom: 0;
+  padding-top: var(--gv-space-12);
+  background: var(--gv-surface-panel);
 }
 
 .addRow {
-  position: sticky;
-  bottom: 0;
   display: flex;
+  align-items: center;
   gap: var(--gv-space-8);
   padding: var(--gv-space-12) 0 var(--gv-space-8);
-  background: var(--gv-surface-panel);
 }
 
 .addField {

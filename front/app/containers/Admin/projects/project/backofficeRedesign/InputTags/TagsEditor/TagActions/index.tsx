@@ -6,21 +6,19 @@ import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import styles from './TagActions.module.css';
 import 'design-system/tokens.css';
 
 interface Props {
-  className: string;
-  deleteDisabled?: boolean;
+  deleteDisabledReason?: string;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const TagActions = ({ className, deleteDisabled, onEdit, onDelete }: Props) => {
+const TagActions = ({ deleteDisabledReason, onEdit, onDelete }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <div className={`${styles.actions} ${className}`}>
+    <>
       <IconButton
         size={24}
         icon="square-pen-16"
@@ -31,10 +29,10 @@ const TagActions = ({ className, deleteDisabled, onEdit, onDelete }: Props) => {
         size={24}
         icon="trash-2-16"
         aria-label={formatMessage(topicsMessages.delete)}
-        isDisabled={deleteDisabled}
+        disabledReason={deleteDisabledReason}
         onPress={onDelete}
       />
-    </div>
+    </>
   );
 };
 

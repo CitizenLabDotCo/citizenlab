@@ -1,10 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
-import { useDragLayer } from 'react-dnd';
-
 import Button from 'design-system/Button';
-import IconButton from 'design-system/IconButton';
-import Text from 'design-system/Text';
+import { TagListRow } from 'design-system/TagList';
 
 import { IInputTopicData } from 'api/input_topics/types';
 
@@ -17,12 +14,7 @@ import T from 'components/T';
 import { useIntl } from 'utils/cl-intl';
 
 import tagsSectionMessages from '../messages';
-import SortableTag, {
-  ROOT_TAG_TYPE,
-  SortableTagRenderProps,
-} from '../SortableTag';
 import TagActions from '../TagActions';
-import useSortableTags from '../useSortableTags';
 import { getSiblings } from '../utils';
 
 import messages from './messages';
@@ -32,112 +24,86 @@ import 'design-system/tokens.css';
 interface Props {
   topic: IInputTopicData;
   allTopics: IInputTopicData[];
-  drag: SortableTagRenderProps;
+  isSelected: boolean;
+  onSelectionChange: (isSelected: boolean) => void;
+  showsSelection: boolean;
   canAddSubtopics: boolean;
-  deleteDisabled: boolean;
+  deleteDisabledReason?: string;
   onAddSubtopic: () => void;
   onEdit: (topic: IInputTopicData) => void;
   onDelete: (topic: IInputTopicData) => void;
-  onReorder: (subtopics: IInputTopicData[]) => void;
 }
 
 const TagGroup = ({
   topic,
   allTopics,
-  drag,
+  isSelected,
+  onSelectionChange,
+  showsSelection,
   canAddSubtopics,
-  deleteDisabled,
+  deleteDisabledReason,
   onAddSubtopic,
   onEdit,
   onDelete,
-  onReorder,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const [opened, setOpened] = useState(false);
-  const rootDragging = useDragLayer(
-    (monitor) => monitor.isDragging() && monitor.getItemType() === ROOT_TAG_TYPE
-  );
 
   const subtopics = useMemo(
     () => getSiblings(allTopics, topic.id),
     [allTopics, topic.id]
   );
-  const { ordered, moveRow, dropRow, cancelDrag } = useSortableTags(
-    subtopics,
-    onReorder
-  );
 
+  const tagName = localize(topic.attributes.title_multiloc);
   const collapsible = canAddSubtopics || subtopics.length > 0;
   const subtopicsId = `tag-subtopics-${topic.id}`;
 
   return (
     <div>
-      <div ref={drag.rowRef} className={styles.row}>
-        {drag.handle}
-        {collapsible && (
-          <IconButton
-            size={24}
-            icon={opened ? 'chevron-down-16' : 'chevron-right-16'}
-            aria-label={formatMessage(messages.toggleSubtags, {
-              tagName: localize(topic.attributes.title_multiloc),
-            })}
-            aria-expanded={opened}
-            aria-controls={subtopicsId}
-            onPress={() => setOpened(!opened)}
+      <TagListRow
+        title={<T value={topic.attributes.title_multiloc} />}
+        meta={
+          subtopics.length > 0
+            ? formatMessage(messages.subtagCount, { count: subtopics.length })
+            : undefined
+        }
+        isSelected={isSelected}
+        onSelectionChange={onSelectionChange}
+        selectLabel={formatMessage(tagsSectionMessages.selectTag, { tagName })}
+        showsSelection={showsSelection}
+        expand={
+          collapsible
+            ? {
+                isExpanded: opened,
+                onToggle: () => setOpened(!opened),
+                label: formatMessage(messages.toggleSubtags, { tagName }),
+                controls: subtopicsId,
+              }
+            : undefined
+        }
+        actions={
+          <TagActions
+            deleteDisabledReason={deleteDisabledReason}
+            onEdit={() => onEdit(topic)}
+            onDelete={() => onDelete(topic)}
           />
-        )}
-        <div className={styles.title}>
-          <Text as="span" variant="ui" tone="primary">
-            <T value={topic.attributes.title_multiloc} />
-          </Text>
-          {subtopics.length > 0 && (
-            <Text as="span" variant="small" tone="tertiary">
-              {formatMessage(messages.subtagCount, { count: subtopics.length })}
-            </Text>
-          )}
-        </div>
-        <TagActions
-          className={styles.actions}
-          deleteDisabled={deleteDisabled}
-          onEdit={() => onEdit(topic)}
-          onDelete={() => onDelete(topic)}
-        />
-      </div>
-      {collapsible && opened && !rootDragging && (
-        <div id={subtopicsId} className={styles.subtopics}>
-          {ordered.map((subtopic, index) => (
-            <SortableTag
+        }
+      />
+      {collapsible && opened && (
+        <div id={subtopicsId}>
+          {subtopics.map((subtopic) => (
+            <TagListRow
               key={subtopic.id}
-              id={subtopic.id}
-              index={index}
-              type={`tag-${topic.id}`}
-              dragLabel={formatMessage(tagsSectionMessages.reorderTag, {
-                tagName: localize(subtopic.attributes.title_multiloc),
-              })}
-              moveRow={moveRow}
-              dropRow={dropRow}
-              cancelDrag={cancelDrag}
-            >
-              {({ rowRef, handle }) => (
-                <div ref={rowRef} className={styles.row}>
-                  {handle}
-                  <Text
-                    as="span"
-                    variant="ui"
-                    tone="primary"
-                    className={styles.title}
-                  >
-                    <T value={subtopic.attributes.title_multiloc} />
-                  </Text>
-                  <TagActions
-                    className={styles.actions}
-                    onEdit={() => onEdit(subtopic)}
-                    onDelete={() => onDelete(subtopic)}
-                  />
-                </div>
-              )}
-            </SortableTag>
+              isNested
+              title={<T value={subtopic.attributes.title_multiloc} />}
+              actions={
+                <TagActions
+                  onEdit={() => onEdit(subtopic)}
+                  onDelete={() => onDelete(subtopic)}
+                />
+              }
+            />
           ))}
           {canAddSubtopics && (
             <div className={styles.addSubtopic}>

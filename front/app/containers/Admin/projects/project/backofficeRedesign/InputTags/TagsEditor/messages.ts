@@ -18,9 +18,26 @@ export default defineMessages({
     defaultMessage:
       "At least one tag is required. To skip tags, remove the 'Tags' item from any phase's form.",
   },
-  reorderTag: {
-    id: 'app.containers.Admin.projects.project.reorderTag',
-    defaultMessage: 'Drag to reorder {tagName}',
+  selectAllTags: {
+    id: 'app.containers.Admin.projects.project.selectAllTags',
+    defaultMessage: 'Select all tags',
+  },
+  selectTag: {
+    id: 'app.containers.Admin.projects.project.selectTag',
+    defaultMessage: 'Select {tagName}',
+  },
+  selectedCount: {
+    id: 'app.containers.Admin.projects.project.selectedTagCount',
+    defaultMessage: '{count} selected',
+  },
+  deletedCount: {
+    id: 'app.containers.Admin.projects.project.deletedTagCount',
+    defaultMessage:
+      '{count, plural, one {# tag deleted} other {# tags deleted}}',
+  },
+  undo: {
+    id: 'app.containers.Admin.projects.project.undoTagDelete',
+    defaultMessage: 'Undo',
   },
   settingsCreateAndManageTags: {
     id: 'app.containers.Admin.projects.project.settingsCreateAndManageTags',
