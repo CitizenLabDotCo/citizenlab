@@ -51,13 +51,20 @@ describe 'single_use:remove_hidden_policy_page_attachments' do
     expect(Files::FileAttachment.exists?(shown.id)).to be true
   end
 
-  # Builder pages show their files through file widgets, whatever the flag says.
-  it 'leaves other pages alone' do
-    custom = attachment_on(code: 'custom', files_section_enabled: false)
+  # Builder pages show their files through file widgets, whatever the flag says, and the cookie
+  # policy is not edited in Settings → Policies.
+  describe 'other pages' do
+    where(code: %w[custom about faq cookie-policy])
 
-    task.invoke('execute')
+    with_them do
+      it 'keeps their attachments' do
+        attachment = attachment_on(code: code, files_section_enabled: false)
 
-    expect(Files::FileAttachment.exists?(custom.id)).to be true
+        task.invoke('execute')
+
+        expect(Files::FileAttachment.exists?(attachment.id)).to be true
+      end
+    end
   end
 end
 # rubocop:enable RSpec/DescribeClass
