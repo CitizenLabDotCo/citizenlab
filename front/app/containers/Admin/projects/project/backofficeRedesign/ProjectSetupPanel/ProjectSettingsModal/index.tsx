@@ -176,7 +176,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
           projectInRoot={projectInRoot}
           contextError={projectContextError}
           slug={slug}
-          currentSlug={project.attributes.slug}
           showSlugErrorMessage={showSlugErrorMessage}
           apiErrors={apiErrors}
           onTitleChange={(title_multiloc) => applyDiff({ title_multiloc })}

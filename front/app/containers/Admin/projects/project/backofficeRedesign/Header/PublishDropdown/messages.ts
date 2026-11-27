@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.publishButtonLive',
     defaultMessage: 'Live',
   },
-  publishStateDraft: {
-    id: 'app.containers.Admin.projects.project.publishStateDraft',
-    defaultMessage: 'Not published yet',
-  },
   publishStateScheduled: {
     id: 'app.containers.Admin.projects.project.publishStateScheduled',
     defaultMessage: 'Scheduled',
@@ -21,13 +17,17 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.publishStateScheduledAt',
     defaultMessage: 'Scheduled for {date} at {time}',
   },
-  publishStatePublished: {
-    id: 'app.containers.Admin.projects.project.publishStatePublished',
-    defaultMessage: 'Published',
-  },
   publishStateArchived: {
     id: 'app.containers.Admin.projects.project.publishStateArchived',
     defaultMessage: 'Archived',
+  },
+  publishWhoCanOpen: {
+    id: 'app.containers.Admin.projects.project.publishWhoCanOpen',
+    defaultMessage: 'Who can open it',
+  },
+  publishOpenEveryoneDescription: {
+    id: 'app.containers.Admin.projects.project.publishOpenEveryoneDescription3',
+    defaultMessage: 'Any resident can open it and take part.',
   },
   publishSendEmail: {
     id: 'app.containers.Admin.projects.project.publishSendEmail',

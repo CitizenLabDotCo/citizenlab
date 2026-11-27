@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Avatar from 'design-system/Avatar';
-import Text from 'design-system/Text';
 
 import { IUserData } from 'api/users/types';
 
@@ -16,7 +15,7 @@ const getRoleMessage = (user: IUserData, isInvitePending: boolean) => {
   if (isInvitePending) return messages.shareRolePending;
 
   return isAdmin({ data: user })
-    ? messages.shareRoleOwner
+    ? messages.shareRoleAdmin
     : messages.shareRoleManager;
 };
 
@@ -51,15 +50,18 @@ const AccessPeopleRow = ({ user, isAuthUser }: Props) => {
             .toUpperCase()}
         />
       )}
-      <p className={styles.personName}>
-        {shownName}
-        {isAuthUser && (
-          <span className={styles.you}>{formatMessage(messages.shareYou)}</span>
-        )}
-      </p>
-      <Text as="span" variant="ui" tone="secondary">
-        {formatMessage(roleMessage)}
-      </Text>
+      <div className={styles.personText}>
+        <p className={styles.personName}>
+          {shownName}
+          {isAuthUser && (
+            <span className={styles.you}>
+              {formatMessage(messages.shareYou)}
+            </span>
+          )}
+        </p>
+        {!isInvitePending && email && <p className={styles.personEmail}>{email}</p>}
+      </div>
+      <span className={styles.role}>{formatMessage(roleMessage)}</span>
     </div>
   );
 };

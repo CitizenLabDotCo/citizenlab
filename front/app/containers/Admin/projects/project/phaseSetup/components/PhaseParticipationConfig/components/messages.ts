@@ -149,6 +149,10 @@ export default defineMessages({
     defaultMessage:
       'Lacks in-platform reporting and data visualisation and processing',
   },
+  runsAlongsideOtherPhases: {
+    id: 'app.containers.AdminPage.phase.methodPicker.runsAlongsideOtherPhases',
+    defaultMessage: 'Runs alongside other phases',
+  },
   addOn: {
     id: 'app.containers.AdminPage.phase.methodPicker.addOn1',
     defaultMessage: 'Add on',

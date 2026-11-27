@@ -30,7 +30,6 @@ interface Props {
   projectInRoot: boolean;
   contextError: boolean;
   slug: string;
-  currentSlug: string;
   showSlugErrorMessage: boolean;
   apiErrors: CLErrors;
   onTitleChange: (titleMultiloc: Multiloc) => void;
@@ -47,7 +46,6 @@ const GeneralSection = ({
   projectInRoot,
   contextError,
   slug,
-  currentSlug,
   showSlugErrorMessage,
   apiErrors,
   onTitleChange,
@@ -100,7 +98,6 @@ const GeneralSection = ({
           apiErrors={apiErrors}
           showSlugErrorMessage={showSlugErrorMessage}
           onSlugChange={onSlugChange}
-          showSlugChangedWarning={slug !== currentSlug}
         />
       </SettingsSection>
       <ContextSection

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import StatusChip from 'design-system/StatusChip';
+
 import { IProjectData } from 'api/projects/types';
 
 import usePublishAccess from 'containers/Admin/projects/_shared/usePublishAccess';
@@ -29,12 +31,6 @@ const TRIGGER_MESSAGES: Record<PublicationState, MessageDescriptor> = {
   draft: messages.publishButton,
 };
 
-// A dot marks the states where the project has settled somewhere: live, or put
-// away. Draft and scheduled are still on their way, so they carry none.
-const TRIGGER_DOT_CLASSES: Partial<Record<PublicationState, string>> = {
-  published: styles.dotPublished,
-  archived: styles.dotArchived,
-};
 
 interface Props {
   project: IProjectData;
@@ -56,14 +52,19 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
   const close = () => onOpenChange(false);
 
   const publicationState = getPublicationState(project);
-  const dotClass = TRIGGER_DOT_CLASSES[publicationState];
+  const isLive = publicationState === 'published';
   const triggerLabel = formatMessage(TRIGGER_MESSAGES[publicationState]);
 
   // The modals stay mounted when the trigger hides, so one that is open
   // survives the project leaving the published state.
   return (
     <>
-      {showPublish && (
+      {/* Archived opens nothing: the project panel restores it. */}
+      {showPublish && publicationState === 'archived' && (
+        <StatusChip>{triggerLabel}</StatusChip>
+      )}
+
+      {showPublish && publicationState !== 'archived' && (
         <HeaderDropdown
           opened={opened}
           onOpenChange={onOpenChange}
@@ -72,15 +73,13 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
             publicationButtonsMessages.onlyAdminsAndFolderManagersCanPublish,
             { inFolder: !!project.attributes.folder_id }
           )}
-          variant={publicationState === 'published' ? 'secondary' : 'primary'}
+          variant={isLive ? 'live' : 'primary'}
           id="e2e-publish-dropdown-toggle"
-          panelWidth="publish"
+          panel="publish"
           panelLabel={triggerLabel}
           label={
             <>
-              {dotClass && (
-                <span className={`${styles.dot} ${dotClass}`} aria-hidden />
-              )}
+              {isLive && <span className={styles.dot} aria-hidden />}
               {triggerLabel}
             </>
           }

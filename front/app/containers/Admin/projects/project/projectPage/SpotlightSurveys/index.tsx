@@ -41,12 +41,15 @@ interface Props {
   projectId: string;
   withPhaseOptions?: boolean;
   variant?: 'sidebar' | 'panel';
+  // Panel only: keeps the label without surveys, so the rail shows its groups.
+  showWhenEmpty?: boolean;
 }
 
 const SpotlightSurveys = ({
   projectId,
   withPhaseOptions = false,
   variant = 'sidebar',
+  showWhenEmpty = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -75,7 +78,7 @@ const SpotlightSurveys = ({
       ? formatDateRange(startAt, endAt, dateLocale)
       : formatMessage(messages.ongoing);
 
-  if (redesign && sortedPhases.length === 0) return null;
+  if (redesign && sortedPhases.length === 0 && !showWhenEmpty) return null;
 
   const rows = sortedPhases.map((phase) => {
     const status = phaseStatus(phase);

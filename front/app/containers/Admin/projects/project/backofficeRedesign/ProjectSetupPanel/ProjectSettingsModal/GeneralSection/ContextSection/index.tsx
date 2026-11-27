@@ -36,7 +36,7 @@ const ContextSection = ({
     folderId,
     projectInRoot,
     onChange,
-    size: 'compact',
+    layout: 'inline',
   });
 
   if (!canEditProjectContext || !pickers) return null;

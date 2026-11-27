@@ -66,7 +66,7 @@ const RequestApprovalDropdown = ({
       variant="primary"
       hasMenu={!pending}
       id={pending ? 'e2e-request-approval-pending' : 'e2e-request-approval'}
-      panelWidth="publish"
+      panel="approval"
       content={
         <div className={styles.panel}>
           <Text variant="ui" tone="secondary">

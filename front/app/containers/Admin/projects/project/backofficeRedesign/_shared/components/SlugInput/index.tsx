@@ -3,7 +3,6 @@ import React from 'react';
 import { CLErrors } from 'typings';
 
 import AffixField from 'design-system/AffixField';
-import Banner from 'design-system/Banner';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -15,7 +14,6 @@ import slugInputMessages from 'components/HookForm/SlugInput/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import styles from './SlugInput.module.css';
 import 'design-system/tokens.css';
 
 interface Props {
@@ -23,7 +21,6 @@ interface Props {
   apiErrors: CLErrors | null;
   showSlugErrorMessage: boolean;
   onSlugChange: (slug: string) => void;
-  showSlugChangedWarning: boolean;
 }
 
 const SlugInput = ({
@@ -31,7 +28,6 @@ const SlugInput = ({
   apiErrors,
   showSlugErrorMessage,
   onSlugChange,
-  showSlugChangedWarning,
 }: Props) => {
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
@@ -46,22 +42,17 @@ const SlugInput = ({
     : getApiErrorMessage(apiErrors?.slug, 'slug');
 
   return (
-    <div className={styles.slugInput}>
-      <AffixField
-        label={formatMessage(slugInputMessages.urlSlugLabel)}
-        prefix={`${hostName}/${locale}/projects/`}
-        value={slug}
-        onChange={onSlugChange}
-        labelTooltip={formatMessage(slugInputMessages.slugTooltip)}
-        isInvalid={!!errorMessage}
-        errorMessage={errorMessage}
-      />
-      {showSlugChangedWarning && (
-        <Banner tone="warning">
-          {formatMessage(slugInputMessages.urlSlugBrokenLinkWarning)}
-        </Banner>
-      )}
-    </div>
+    <AffixField
+      label={formatMessage(slugInputMessages.urlSlugLabel)}
+      prefix={`${hostName}/${locale}/projects/`}
+      prefixPlacement="outside"
+      value={slug}
+      onChange={onSlugChange}
+      labelTooltip={formatMessage(slugInputMessages.slugTooltip)}
+      description={formatMessage(slugInputMessages.urlSlugBrokenLinkWarning)}
+      isInvalid={!!errorMessage}
+      errorMessage={errorMessage}
+    />
   );
 };
 

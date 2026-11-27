@@ -1,15 +1,28 @@
-/* The tabs run edge to edge, so the frame cancels the modal body's padding. */
 .frame {
   display: flex;
   flex: 1;
   flex-direction: column;
   min-height: 0;
+}
+
+/* Rail: the tabs run edge to edge, so the frame cancels the modal body's padding. */
+.flush {
   margin: calc(-1 * var(--gv-space-24));
+}
+
+/* Settings: the tab column sits inside the body's padding, 8 px under the header. */
+.inset {
+  margin-top: calc(-1 * var(--gv-space-16));
 }
 
 .notice {
   padding: var(--gv-space-12) var(--gv-space-24);
   border-bottom: var(--gv-border-width-1) solid var(--gv-border-row);
+}
+
+.inset .notice {
+  padding: 0 0 var(--gv-space-8);
+  border-bottom: none;
 }
 
 .layout {

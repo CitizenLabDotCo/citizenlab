@@ -1,17 +1,10 @@
-/* 7 px is off the size scale; kept as drawn today. */
+/* 7 px is off the size scale; the library draws the status dot at 7. */
 .dot {
   flex-shrink: 0;
   width: 7px;
   height: 7px;
   border-radius: var(--gv-radius-full);
-}
-
-.dotPublished {
   background: var(--gv-surface-success-strong);
-}
-
-.dotArchived {
-  background: var(--gv-icon-tertiary);
 }
 
 .panel {
@@ -19,41 +12,37 @@
   flex-direction: column;
 }
 
+/* The selection lists sit 6 px in, as in a menu; the footer runs edge to edge. */
+.lists {
+  display: flex;
+  flex-direction: column;
+  padding: var(--gv-space-6);
+}
+
 .header {
   composes: uiStrong from '../../../../../../../design-system/typography.module.css';
-  margin: 0 0 var(--gv-space-12);
+  margin: 0;
+  padding: var(--gv-space-6) var(--gv-space-8);
   color: var(--gv-text-primary);
 }
 
-.radioGroups {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-12);
+.groupLabel {
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  margin: 0;
+  padding: var(--gv-space-6) var(--gv-space-8);
+  color: var(--gv-text-tertiary);
 }
 
-.option {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-2);
-}
-
-.divider {
-  margin: var(--gv-space-16) 0;
-}
-
-.emailRow {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-4);
+.email {
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-panel-subtle);
 }
 
 .footer {
   display: flex;
-  justify-content: flex-end;
   gap: var(--gv-space-8);
-  margin-top: var(--gv-space-16);
-  padding-top: var(--gv-space-16);
-  border-top: var(--gv-border-width-1) solid var(--gv-border-divider);
+  padding: var(--gv-space-12);
+  border-top: var(--gv-border-width-1) solid var(--gv-border-subtle);
 }
 
 /* Each action takes an equal share of the row. */

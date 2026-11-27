@@ -17,17 +17,13 @@ import useProjectContext, {
 import messages from './messages';
 import 'design-system/tokens.css';
 
-const SELECT_SIZES: Record<'medium' | 'compact', 36 | 32> = {
-  medium: 36,
-  compact: 32,
-};
-
 interface Params {
   spaceId?: string | null;
   folderId?: string | null;
   projectInRoot: boolean;
   onChange: (spaceAndFolderId: SpaceAndFolderId) => void;
-  size?: keyof typeof SELECT_SIZES;
+  // Inline puts each label beside a compact select.
+  layout?: 'stacked' | 'inline';
 }
 
 const useContextPickers = ({
@@ -35,7 +31,7 @@ const useContextPickers = ({
   folderId,
   projectInRoot,
   onChange,
-  size = 'medium',
+  layout = 'stacked',
 }: Params) => {
   const { formatMessage } = useIntl();
   const projectContext = useProjectContext({
@@ -59,7 +55,7 @@ const useContextPickers = ({
   const spacePicker = showSpaceSelect ? (
     <Select
       label={formatMessage(contextMessages.spaceLabel)}
-      size={SELECT_SIZES[size]}
+      layout={layout}
       items={[
         { value: NONE, label: formatMessage(messages.contextNoSpace) },
         ...spaceOptions,
@@ -80,7 +76,7 @@ const useContextPickers = ({
   const folderPicker = (
     <Select
       label={formatMessage(contextMessages.folderLabel)}
-      size={SELECT_SIZES[size]}
+      layout={layout}
       items={[
         { value: NONE, label: formatMessage(messages.contextNoFolder) },
         ...folderOptions,

@@ -21,9 +21,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.shareYou',
     defaultMessage: 'you',
   },
-  shareRoleOwner: {
-    id: 'app.containers.Admin.projects.project.shareRoleOwner',
-    defaultMessage: 'Owner',
+  shareRoleAdmin: {
+    id: 'app.containers.Admin.projects.project.shareRoleAdmin',
+    defaultMessage: 'Admin',
   },
   shareRoleManager: {
     id: 'app.containers.Admin.projects.project.shareRoleManager',
@@ -43,15 +43,14 @@ export default defineMessages({
     defaultMessage:
       'Share a preview link so colleagues can see the project before it goes live.',
   },
-  sharePublishedPreviewExplanation: {
-    id: 'app.containers.Admin.projects.project.sharePublishedPreviewExplanation',
-    defaultMessage:
-      'Share a preview link so colleagues can see what residents see.',
-  },
   shareArchivedPreviewExplanation: {
     id: 'app.containers.Admin.projects.project.shareArchivedPreviewExplanation',
     defaultMessage:
       'Residents can no longer take part. Share a preview link so colleagues can still see the project.',
+  },
+  shareCopyLink: {
+    id: 'app.containers.Admin.projects.project.shareCopyLink',
+    defaultMessage: 'Copy link',
   },
   sharePreviewLink: {
     id: 'app.containers.Admin.projects.project.sharePreviewLink',

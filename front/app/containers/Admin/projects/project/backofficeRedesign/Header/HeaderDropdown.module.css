@@ -1,11 +1,15 @@
 /*
- * No token for these. With the popover's 16 px padding on each side the
- * panels stay 380 px and 420 px wide overall.
+ * No token for these widths. The library draws the publish and share
+ * popovers 328 and 352 px wide overall; the approval panel stays 380.
  */
 .publish {
-  width: 348px;
+  width: 326px;
 }
 
 .share {
-  width: 388px;
+  width: 326px;
+}
+
+.approval {
+  width: 348px;
 }

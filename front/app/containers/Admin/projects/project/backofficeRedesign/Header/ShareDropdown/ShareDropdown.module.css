@@ -3,12 +3,6 @@
   flex-direction: column;
 }
 
-.title {
-  composes: uiStrong from '../../../../../../../design-system/typography.module.css';
-  margin: 0 0 var(--gv-space-16);
-  color: var(--gv-text-primary);
-}
-
 .inviteRow {
   display: flex;
   align-items: flex-end;
@@ -21,9 +15,9 @@
 }
 
 .sectionTitle {
-  composes: uiStrong from '../../../../../../../design-system/typography.module.css';
-  margin: var(--gv-space-16) 0 0;
-  color: var(--gv-text-primary);
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  margin: var(--gv-space-16) 0 var(--gv-space-4);
+  color: var(--gv-text-secondary);
 }
 
 /* 300 px has no token; it keeps today's list height. */
@@ -31,7 +25,6 @@
   display: flex;
   flex-direction: column;
   max-height: 300px;
-  padding-right: var(--gv-space-12);
   overflow-y: auto;
 }
 
@@ -42,24 +35,57 @@
   padding: var(--gv-space-8) 0;
 }
 
+.personText {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .personName {
   composes: ui from '../../../../../../../design-system/typography.module.css';
-  flex: 1 1 auto;
-  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-6);
   margin: 0;
+  color: var(--gv-text-primary);
+}
+
+.personEmail {
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  margin: 0;
+  overflow: hidden;
   color: var(--gv-text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .you {
-  margin-left: var(--gv-space-4);
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  padding: 0 var(--gv-space-6);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-muted);
+  color: var(--gv-text-tertiary);
 }
 
-.divider {
-  margin: var(--gv-space-16) 0;
+.role {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  flex-shrink: 0;
+  color: var(--gv-text-tertiary);
+}
+
+/* The link part runs under a full-width divider. */
+.linkSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+  margin: var(--gv-space-12) calc(-1 * var(--gv-space-12)) 0;
+  padding: var(--gv-space-12) var(--gv-space-12) 0;
+  border-top: var(--gv-border-width-1) solid var(--gv-border-subtle);
 }
 
 .helper {
-  composes: ui from '../../../../../../../design-system/typography.module.css';
-  margin: 0 0 var(--gv-space-12);
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  margin: 0;
   color: var(--gv-text-secondary);
 }

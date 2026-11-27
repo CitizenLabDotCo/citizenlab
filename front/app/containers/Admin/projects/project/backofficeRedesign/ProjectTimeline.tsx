@@ -76,6 +76,7 @@ const ProjectTimeline = ({ projectId, withNewMethod }: Props) => {
         projectId={projectId}
         variant="panel"
         withPhaseOptions
+        showWhenEmpty={hasPhases}
       />
       <div className={styles.divider}>
         <Divider />

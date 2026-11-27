@@ -6,6 +6,13 @@ import Popover, { DialogTrigger } from 'design-system/Popover';
 import styles from './HeaderDropdown.module.css';
 import 'design-system/tokens.css';
 
+// The publish body pads its own list and footer.
+const PANEL_PADDING = {
+  publish: 'none',
+  share: 12,
+  approval: 16,
+} as const;
+
 export type HeaderDropdownName = 'publish' | 'share' | 'review';
 
 interface Props {
@@ -17,7 +24,7 @@ interface Props {
   variant: ButtonVariant;
   hasMenu?: boolean;
   id: string;
-  panelWidth: 'publish' | 'share';
+  panel: 'publish' | 'share' | 'approval';
   content: JSX.Element;
   disabled?: boolean;
   disabledReason?: ReactNode;
@@ -31,7 +38,7 @@ const HeaderDropdown = ({
   variant,
   hasMenu = true,
   id,
-  panelWidth,
+  panel,
   content,
   disabled,
   disabledReason,
@@ -55,8 +62,8 @@ const HeaderDropdown = ({
     >
       {label}
     </Button>
-    <Popover aria-label={panelLabel} width="hug">
-      <div className={styles[panelWidth]}>{content}</div>
+    <Popover aria-label={panelLabel} width="hug" padding={PANEL_PADDING[panel]}>
+      <div className={styles[panel]}>{content}</div>
     </Popover>
   </DialogTrigger>
 );

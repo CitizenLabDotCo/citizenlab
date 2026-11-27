@@ -107,6 +107,11 @@ const ParticipationMethodChoices = ({
             onPress={(event) => onSelect(event, 'native_survey')}
             image={surveyImage}
             participation_method="native_survey"
+            notes={
+              <DsBadge use="note">
+                {formatMessage(messages2.runsAlongsideOtherPhases)}
+              </DsBadge>
+            }
           />
         )}
         {shows('voting') && (

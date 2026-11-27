@@ -91,7 +91,11 @@ const SettingsModal = ({
       size={size}
       primaryAction={primaryAction}
     >
-      <div className={styles.frame}>
+      <div
+        className={`${styles.frame} ${
+          tabStyle === 'rail' ? styles.flush : styles.inset
+        }`}
+      >
         {notice && <div className={styles.notice}>{notice}</div>}
         <VerticalTabs
           className={styles.layout}
