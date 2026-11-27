@@ -5,6 +5,8 @@ import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
 
+import DesignSystemAvatar from 'design-system/Avatar';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -222,7 +224,9 @@ const ParentCommentForm = ({
     textareaElement.current = element;
   };
 
-  const placeholderMessage: MessageDescriptor = isAdminPage
+  const placeholderMessage: MessageDescriptor = isPanel
+    ? messages.replyAsProjectTeam
+    : isAdminPage
     ? messages.visibleToUsersPlaceholder
     : messages.ideaCommentBodyPlaceholder;
   const placeholder = formatMessage(placeholderMessage);
@@ -231,16 +235,34 @@ const ParentCommentForm = ({
     : false;
 
   return (
-    <Box display="flex" className={className || ''} my="12px">
+    <Box
+      display="flex"
+      gap={isPanel ? 'var(--gv-space-12)' : undefined}
+      className={className || ''}
+      my="12px"
+    >
       <ScreenReaderOnly aria-live="polite" role="status">
         {commentCancelledMessage}
       </ScreenReaderOnly>
-      <StyledAvatar
-        userId={authUser.data.id}
-        size={30}
-        isLinkToProfile={!!authUser.data.id}
-        showModeratorStyles={userCanModerate}
-      />
+      {isPanel ? (
+        <span className={panelStyles.formAvatar}>
+          <DesignSystemAvatar
+            size={24}
+            tone="muted"
+            initials={
+              authUser.data.attributes.first_name?.charAt(0).toUpperCase() ??
+              ''
+            }
+          />
+        </span>
+      ) : (
+        <StyledAvatar
+          userId={authUser.data.id}
+          size={30}
+          isLinkToProfile={!!authUser.data.id}
+          showModeratorStyles={userCanModerate}
+        />
+      )}
       <FormContainer
         className="ideaCommentForm"
         onClickOutside={close}

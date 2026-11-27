@@ -52,3 +52,23 @@
   gap: var(--gv-space-8);
   margin-top: var(--gv-space-8);
 }
+
+/* "No comments yet", above the reply box. */
+.empty {
+  composes: ui from '../../../design-system/typography.module.css';
+  margin: var(--gv-space-12) 0;
+  color: var(--gv-text-secondary);
+}
+
+/* The reply box's avatar, centred on its one-line text area. */
+.formAvatar {
+  display: flex;
+  padding-top: var(--gv-space-6);
+}
+
+/* A comment's text in the panel row: the UI text style, over the rich text's own size. */
+.text.text,
+.text.text * {
+  font-size: var(--gv-font-size-13);
+  line-height: var(--gv-font-line-height-20);
+}

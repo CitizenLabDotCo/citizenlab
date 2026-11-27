@@ -285,7 +285,10 @@ const CommentBody = ({
         <CommentWrapper className={`e2e-comment-body ${commentType}`}>
           <QuillEditedContent
             fontWeight={400}
-            textColor={theme.colors.tenantText}
+            textColor={
+              isPanel ? panelTextAreaStyle.color : theme.colors.tenantText
+            }
+            className={isPanel ? panelStyles.text : undefined}
           >
             <div aria-live="polite">
               <Outlet

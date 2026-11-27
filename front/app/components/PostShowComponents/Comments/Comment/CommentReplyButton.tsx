@@ -3,6 +3,8 @@ import React from 'react';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { CommentAction } from 'design-system/CommentRow';
+
 import { ICommentData } from 'api/comments/types';
 import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
@@ -15,6 +17,7 @@ import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import { useIsPanelComments } from '../commentsVariant';
 import { commentReplyButtonClicked } from '../events';
 import messages from '../messages';
 import tracks from '../tracks';
@@ -60,6 +63,7 @@ const CommentReplyButton = ({
   className,
 }: Props) => {
   const { data: authUser } = useAuthUser();
+  const isPanel = useIsPanelComments();
   const commentId = comment.id;
   const parentCommentId = comment.relationships.parent.data?.id ?? null;
   const { data: author } = useUserById(authorId);
@@ -130,6 +134,14 @@ const CommentReplyButton = ({
   const disabled =
     ideaCommentingDisabledReason &&
     !isFixableByAuthentication(ideaCommentingDisabledReason);
+
+  if (!isCommentDeleted && !disabled && isPanel) {
+    return (
+      <CommentAction onPress={onReply} className="e2e-comment-reply-button">
+        <FormattedMessage {...messages.commentReplyButton} />
+      </CommentAction>
+    );
+  }
 
   if (!isCommentDeleted && !disabled) {
     return (

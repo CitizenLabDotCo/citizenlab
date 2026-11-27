@@ -3,6 +3,8 @@ import React, { FormEvent, useState, useRef } from 'react';
 import { isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { CommentAction } from 'design-system/CommentRow';
+
 import { DeleteReason, ICommentData } from 'api/comments/types';
 import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
 
@@ -15,6 +17,7 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
+import { useIsPanelComments } from '../commentsVariant';
 import { deleteCommentModalClosed } from '../events';
 import messages from '../messages';
 
@@ -69,6 +72,7 @@ const CommentsMoreActions = ({
   ideaId,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isPanel = useIsPanelComments();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -175,14 +179,31 @@ const CommentsMoreActions = ({
 
   return (
     <>
-      <Container className={className || ''}>
-        <MoreActionsMenu
-          showLabel={false}
-          actions={actions}
-          ref={moreActionsButtonRef}
-          ideaTitle={formatMessage(messages.actionsMenuTitle)}
-        />
-      </Container>
+      {isPanel ? (
+        // The panel lists a moderator's actions as links; reporting is left
+        // out, since a moderator deletes instead.
+        <>
+          {canEdit && (
+            <CommentAction onPress={onCommentEdit}>
+              <FormattedMessage {...messages.editComment} />
+            </CommentAction>
+          )}
+          {canDelete && (
+            <CommentAction onPress={openDeleteModal}>
+              <FormattedMessage {...messages.deleteComment} />
+            </CommentAction>
+          )}
+        </>
+      ) : (
+        <Container className={className || ''}>
+          <MoreActionsMenu
+            showLabel={false}
+            actions={actions}
+            ref={moreActionsButtonRef}
+            ideaTitle={formatMessage(messages.actionsMenuTitle)}
+          />
+        </Container>
+      )}
 
       <Modal
         opened={modalVisible_delete}

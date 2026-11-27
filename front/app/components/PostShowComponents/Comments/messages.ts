@@ -258,4 +258,12 @@ export default defineMessages({
     id: 'app.components.UI.MoreActionsMenu.actionsMenuTitle',
     defaultMessage: 'for this comment',
   },
+  noCommentsYet: {
+    id: 'app.containers.Comments.noCommentsYet',
+    defaultMessage: 'No comments yet',
+  },
+  replyAsProjectTeam: {
+    id: 'app.containers.Comments.replyAsProjectTeam',
+    defaultMessage: 'Reply as the project team',
+  },
 });

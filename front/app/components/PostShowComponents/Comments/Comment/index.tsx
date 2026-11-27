@@ -4,17 +4,20 @@ import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useComment from 'api/comments/useComment';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
+import { useIsPanelComments } from '../commentsVariant';
 import messages from '../messages';
 
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
 import CommentHeader from './CommentHeader';
+import PanelComment from './PanelComment';
 
 const Container = styled.div``;
 
@@ -76,6 +79,8 @@ const Comment = ({
     comment?.data.relationships?.author?.data?.id
   );
   const { data: project } = useProjectById(projectId);
+  const isPanel = useIsPanelComments();
+  const { data: idea } = useIdeaById(isPanel ? ideaId : undefined);
 
   const [editing, setEditing] = useState(false);
 
@@ -112,12 +117,28 @@ const Comment = ({
         } e2e-comment`}
       >
         <ContainerInner
-          className={`${commentType} ${lastComment ? 'lastComment' : ''}`}
+          // The panel row lays out a reply itself.
+          className={
+            isPanel ? '' : `${commentType} ${lastComment ? 'lastComment' : ''}`
+          }
         >
           {
             // Don't show deleted comments. Better to have a filter in the BE.
           }
-          {comment.data.attributes.publication_status === 'published' && (
+          {comment.data.attributes.publication_status === 'published' &&
+            isPanel && (
+              <PanelComment
+                comment={comment.data}
+                commentType={commentType}
+                author={author}
+                ideaId={ideaId}
+                projectId={projectId}
+                authorCanModerate={authorCanModerate}
+                idea={idea?.data}
+              />
+            )}
+          {comment.data.attributes.publication_status === 'published' &&
+            !isPanel && (
             <>
               <CommentHeader
                 commentAttributes={comment.data.attributes}

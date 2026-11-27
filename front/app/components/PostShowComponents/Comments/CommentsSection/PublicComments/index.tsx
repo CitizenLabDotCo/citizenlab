@@ -21,6 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';
 import { useLocation } from 'utils/router';
 
+import panelStyles from '../../commentsPanel.module.css';
 import { useIsPanelComments } from '../../commentsVariant';
 import messages from '../../messages';
 import tracks from '../../tracks';
@@ -164,7 +165,7 @@ const PublicComments = ({
           )}
         </Header>
       )}
-      {canComment && (
+      {canComment && !isPanel && (
         <Box mb="24px">
           <ParentCommentForm
             ideaId={postId}
@@ -172,6 +173,11 @@ const PublicComments = ({
             allowAnonymousParticipation={allowAnonymousParticipation}
           />
         </Box>
+      )}
+      {isPanel && !hasComments && (
+        <p className={panelStyles.empty}>
+          <FormattedMessage {...messages.noCommentsYet} />
+        </p>
       )}
       <Comments
         ideaId={postId}
@@ -196,6 +202,14 @@ const PublicComments = ({
             <FormattedMessage {...messages.loadingMoreComments} />
           </LoadingMoreMessage>
         </Box>
+      )}
+      {/* The panel ends on the reply box, under the thread. */}
+      {canComment && isPanel && (
+        <ParentCommentForm
+          ideaId={postId}
+          postingComment={handleCommentPosting}
+          allowAnonymousParticipation={allowAnonymousParticipation}
+        />
       )}
     </Box>
   );
