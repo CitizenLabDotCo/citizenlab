@@ -201,7 +201,7 @@ module IdeaCustomFields
       return unless image_id
 
       if image_id == ''
-        option.image.destroy!
+        option.image&.destroy!
       else
         begin
           image = CustomFieldOptionImage.find(image_id)

@@ -964,6 +964,60 @@ resource 'Idea Custom Fields' do
           )
         end
 
+        example 'Add an option without an image', document: false do
+          request = {
+            custom_fields: [
+              { id: page.id, input_type: 'page', page_layout: 'default' },
+              {
+                id: field.id,
+                input_type: 'multiselect_image',
+                title_multiloc: { en: 'Inserted field' },
+                required: false,
+                enabled: true,
+                options: [
+                  { id: option1.id, title_multiloc: { en: 'Option 1' } },
+                  { id: option2.id, title_multiloc: { en: 'Option 2' } },
+                  { temp_id: 'TEMP-ID-OPTION', title_multiloc: { en: 'Option 3' }, image_id: '' }
+                ]
+              },
+              final_page
+            ]
+          }
+          do_request request
+
+          assert_status 200
+          option3 = field.options.reload.find_by(title_multiloc: { en: 'Option 3' })
+          expect(option3.image).to be_nil
+          expect(CustomFieldOptionImage.count).to eq 2
+        end
+
+        example 'Remove the image of an option that has none', document: false do
+          option3 = create(:custom_field_option, key: 'option3', custom_field: field)
+          request = {
+            custom_fields: [
+              { id: page.id, input_type: 'page', page_layout: 'default' },
+              {
+                id: field.id,
+                input_type: 'multiselect_image',
+                title_multiloc: { en: 'Inserted field' },
+                required: false,
+                enabled: true,
+                options: [
+                  { id: option1.id, title_multiloc: { en: 'Option 1' } },
+                  { id: option2.id, title_multiloc: { en: 'Option 2' } },
+                  { id: option3.id, title_multiloc: { en: 'Option 3' }, image_id: '' }
+                ]
+              },
+              final_page
+            ]
+          }
+          do_request request
+
+          assert_status 200
+          expect(option3.reload.image).to be_nil
+          expect(CustomFieldOptionImage.count).to eq 2
+        end
+
         example 'Update an image on a custom field option' do
           new_image = create(:custom_field_option_image, custom_field_option: nil)
           request = {
