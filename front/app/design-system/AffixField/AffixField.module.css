@@ -13,3 +13,25 @@
 .input {
   composes: innerInput from '../TextField/input.module.css';
 }
+
+.outsideRow {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  min-width: 0;
+}
+
+/* Long prefixes give way to the box, which keeps at least half the row. */
+.outsideAffix {
+  composes: small from '../typography.module.css';
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--gv-text-tertiary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.outsideInput {
+  flex: 1 0 50%;
+}

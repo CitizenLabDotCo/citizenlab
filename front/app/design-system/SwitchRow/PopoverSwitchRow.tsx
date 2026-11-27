@@ -11,6 +11,8 @@ import '../tokens.css';
 
 type PopoverSwitchRowProps = {
   children: ReactNode;
+  // A line under the label, e.g. who an email goes to.
+  description?: ReactNode;
   isSelected?: boolean;
   onChange?: (isSelected: boolean) => void;
   // Looks disabled but stays focusable so the tooltip can say why; it can't be toggled.
@@ -20,6 +22,7 @@ type PopoverSwitchRowProps = {
 // A label and a switch in one row, for a Popover + Dialog that holds other controls too.
 const PopoverSwitchRow = ({
   children,
+  description,
   isSelected,
   onChange,
   disabledReason,
@@ -34,7 +37,13 @@ const PopoverSwitchRow = ({
     <AriaSwitch
       ref={rowRef}
       inputRef={inputRef}
-      className={`${styles.row} ${hasReason ? styles.withReason : ''}`}
+      className={[
+        styles.row,
+        description ? styles.described : undefined,
+        hasReason ? styles.withReason : undefined,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       isSelected={isSelected}
       onChange={onChange}
       // Read-only keeps the row focusable and hoverable but ignores toggling.
@@ -43,7 +52,14 @@ const PopoverSwitchRow = ({
     >
       {({ isSelected, isHovered, isFocusVisible }) => (
         <>
-          <span className={styles.label}>{children}</span>
+          {description ? (
+            <span className={styles.text}>
+              <span>{children}</span>
+              <span className={styles.description}>{description}</span>
+            </span>
+          ) : (
+            <span className={styles.label}>{children}</span>
+          )}
           <SwitchTrack
             size={28}
             isSelected={isSelected}

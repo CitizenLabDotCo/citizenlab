@@ -572,6 +572,34 @@ export const icons = defineIcons({
       </>
     ),
   },
+  'lock-16': {
+    size: 16,
+    height: 16,
+    viewBox: '0 0 24 24',
+    paths: (
+      <>
+        <rect
+          x="3"
+          y="11"
+          width="18"
+          height="11"
+          rx="2"
+          fill="none"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          stroke="currentColor"
+        />
+        <path
+          d="M7 11V7a5 5 0 0 1 10 0v4"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          stroke="currentColor"
+        />
+      </>
+    ),
+  },
   'map-pin-14': {
     size: 14,
     height: 14,
@@ -980,6 +1008,32 @@ export const icons = defineIcons({
         <path
           d="M13.3334 14C13.3334 12.5855 12.7715 11.229 11.7713 10.2288C10.7711 9.22857 9.41451 8.66667 8.00002 8.66667C6.58553 8.66667 5.22898 9.22857 4.22878 10.2288C3.22859 11.229 2.66669 12.5855 2.66669 14M10.6667 4.66667C10.6667 6.13943 9.47278 7.33333 8.00002 7.33333C6.52726 7.33333 5.33335 6.13943 5.33335 4.66667C5.33335 3.19391 6.52726 2 8.00002 2C9.47278 2 10.6667 3.19391 10.6667 4.66667Z"
           strokeWidth="1.33333"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          stroke="currentColor"
+        />
+      </>
+    ),
+  },
+  'users-16': {
+    size: 16,
+    height: 16,
+    viewBox: '0 0 24 24',
+    paths: (
+      <>
+        <path
+          d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          stroke="currentColor"
+        />
+        <circle
+          cx="9"
+          cy="7"
+          r="4"
+          fill="none"
+          strokeWidth="1.75"
           strokeLinecap="round"
           strokeLinejoin="round"
           stroke="currentColor"

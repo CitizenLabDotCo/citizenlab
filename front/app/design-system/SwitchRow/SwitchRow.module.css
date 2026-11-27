@@ -29,3 +29,26 @@
   flex: 1;
   min-width: 0;
 }
+
+/* With a description the row grows to hold both lines. */
+.described {
+  height: auto;
+  padding: var(--gv-space-10) var(--gv-space-12);
+}
+
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--gv-space-2);
+  min-width: 0;
+}
+
+.description {
+  composes: small from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.withReason .description {
+  color: var(--gv-text-disabled);
+}

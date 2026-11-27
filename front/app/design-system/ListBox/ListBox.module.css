@@ -33,10 +33,20 @@
   composes: label from '../collection.module.css';
 }
 
-/* Check mark: the selected option turns UI strong, which differs from UI only in weight. */
+.described .icon {
+  color: var(--gv-icon-secondary);
+}
+
+.description {
+  composes: small from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+/* Check mark: the selected option turns UI strong, which differs from UI only in weight.
+   An option with a description keeps its weight, as the library draws it. */
 .option[data-selection-mode='single'][data-selected]:not([data-disabled]):not(
     [aria-disabled='true']
-  )
+  ):not(.described)
   .label {
   font-weight: var(--gv-font-weight-medium);
 }

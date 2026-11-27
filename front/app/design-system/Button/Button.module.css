@@ -147,6 +147,53 @@
   background: var(--gv-surface-danger-strong-pressed);
 }
 
+/* Quiet danger */
+.quietDanger {
+  color: var(--gv-text-danger);
+}
+
+.quietDanger .icon,
+.quietDanger .chevron {
+  color: var(--gv-text-danger);
+}
+
+.quietDanger[data-hovered]:not([aria-disabled='true']) {
+  background: var(--gv-surface-danger-hovered);
+}
+
+.quietDanger[data-pressed] {
+  background: var(--gv-surface-danger);
+}
+
+/* Live: the green tint has no hovered or pressed token; the tint is laid twice and three times. */
+.live {
+  background: var(--gv-surface-success);
+  color: var(--gv-component-status-text-live);
+}
+
+.live .icon,
+.live .chevron {
+  color: var(--gv-icon-tertiary);
+  opacity: 1;
+}
+
+.live[data-hovered]:not([aria-disabled='true']) {
+  background: linear-gradient(
+      var(--gv-surface-success),
+      var(--gv-surface-success)
+    ),
+    var(--gv-surface-success);
+}
+
+.live[data-pressed] {
+  background: linear-gradient(
+      var(--gv-surface-success),
+      var(--gv-surface-success)
+    ),
+    linear-gradient(var(--gv-surface-success), var(--gv-surface-success)),
+    var(--gv-surface-success);
+}
+
 /* Shrinks to share a row with a button beside it. */
 .fullWidth {
   flex-shrink: 1;

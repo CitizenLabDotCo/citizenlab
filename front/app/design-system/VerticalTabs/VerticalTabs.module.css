@@ -2,16 +2,23 @@
   display: flex;
 }
 
+/*
+ * Settings: the library draws a 167 px column plus its border. Our font sets
+ * "General information" wider than Figma does, so the column grows to fit its
+ * labels, up to 240 px. No token for these.
+ */
 .tabList {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  width: 210px;
-  padding: var(--gv-space-16) var(--gv-space-12);
+  width: max-content;
+  min-width: 168px;
+  max-width: 240px;
+  padding: var(--gv-space-16) var(--gv-space-8);
   gap: var(--gv-space-4);
-  border-right: var(--gv-border-width-1) solid var(--gv-border-default);
-  background: var(--gv-surface-sunken);
+  border-right: var(--gv-border-width-1) solid var(--gv-border-divider);
+  background: var(--gv-surface-panel-subtle);
 }
 
 .tab {
@@ -20,7 +27,7 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  padding: var(--gv-space-8) var(--gv-space-12);
+  padding: var(--gv-space-6) var(--gv-space-12);
   gap: var(--gv-space-10);
   border-radius: var(--gv-radius-8);
   color: var(--gv-text-body-subtle);
@@ -44,6 +51,16 @@
   white-space: nowrap;
 }
 
+/* Holds the width of the selected weight, so a column that fits its labels keeps its width when the selection moves. */
+.label::after {
+  content: attr(data-text);
+  display: block;
+  height: 0;
+  overflow: hidden;
+  font-weight: var(--gv-font-weight-medium);
+  visibility: hidden;
+}
+
 .tab[data-hovered]:not([data-selected]) {
   background: var(--gv-surface-hovered);
   color: var(--gv-text-primary);
@@ -61,7 +78,7 @@
 }
 
 .tab[data-selected] {
-  background: var(--gv-surface-selected-tab);
+  background: var(--gv-surface-control-subtle);
   color: var(--gv-text-primary);
   font-weight: var(--gv-font-weight-medium);
 }
@@ -70,9 +87,8 @@
   width: 203px;
   padding: var(--gv-space-8) var(--gv-space-20) var(--gv-space-18)
     var(--gv-space-8);
-  background: var(--gv-surface-panel-subtle);
 }
 
-.rail .tab[data-selected] {
-  background: var(--gv-surface-control-subtle);
+.rail .tab {
+  padding: var(--gv-space-8) var(--gv-space-12);
 }

@@ -17,7 +17,12 @@ type Props = {
 const VerticalTab = ({ id, children, icon }: Props) => (
   <AriaTab id={id} className={styles.tab}>
     {icon && <Icon name={icon} className={styles.icon} />}
-    <span className={styles.label}>{children}</span>
+    <span
+      className={styles.label}
+      data-text={typeof children === 'string' ? children : undefined}
+    >
+      {children}
+    </span>
   </AriaTab>
 );
 

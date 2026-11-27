@@ -55,3 +55,51 @@
 .field[data-invalid] .button {
   border-color: var(--gv-border-danger);
 }
+
+/* Inline: the label and the select share a row. Doubled to win over the composed field. */
+.field.inline {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-16);
+}
+
+.inlineLabel {
+  composes: ui from '../typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+/* The compact select: a grey 24 px pill, the chevron right after the value. 205 px has no token. */
+.compact {
+  composes: button from '../reset.module.css';
+  composes: small from '../typography.module.css';
+  composes: ringOutside from '../focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+  width: 205px;
+  height: var(--gv-size-24);
+  padding: 0 var(--gv-space-10);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-control-subtle);
+  color: var(--gv-text-secondary);
+  cursor: pointer;
+  text-align: start;
+  transition: background-color var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+.compact .value {
+  flex: 0 1 auto;
+  color: inherit;
+}
+
+.compact .chevron {
+  color: var(--gv-icon-tertiary);
+}
+
+.compact[data-hovered],
+.field[data-open] .compact {
+  background: var(--gv-surface-muted-hovered);
+}

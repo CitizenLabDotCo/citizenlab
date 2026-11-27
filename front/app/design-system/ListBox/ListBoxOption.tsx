@@ -17,6 +17,8 @@ type LabelProps =
 type ListBoxOptionProps = LabelProps & {
   id?: Key;
   icon?: IconName;
+  // A line under the label, e.g. what a visibility option means.
+  description?: ReactNode;
   // Looks disabled but stays focusable so the tooltip can say why; it can't be
   // selected. Give the option an id.
   disabledReason?: ReactNode;
@@ -29,6 +31,7 @@ const ListBoxOption = ({
   textValue,
   id,
   icon,
+  description,
   disabledReason,
   'data-cy': dataCy,
 }: ListBoxOptionProps) => {
@@ -58,7 +61,7 @@ const ListBoxOption = ({
             )
           : undefined
       }
-      className={styles.option}
+      className={`${styles.option} ${description ? styles.described : ''}`}
       data-cy={dataCy}
     >
       {({ selectionMode, isSelected, isHovered, isFocusVisible }) => (
@@ -75,6 +78,11 @@ const ListBoxOption = ({
             <Text slot="label" className={styles.label}>
               {children}
             </Text>
+            {description && (
+              <Text slot="description" className={styles.description}>
+                {description}
+              </Text>
+            )}
           </span>
           {selectionMode === 'single' && isSelected && (
             <Icon name="check-14" className={styles.check} />

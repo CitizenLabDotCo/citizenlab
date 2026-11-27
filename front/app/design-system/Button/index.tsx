@@ -13,7 +13,15 @@ import Tooltip from '../Tooltip';
 import styles from './Button.module.css';
 import '../tokens.css';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'quiet' | 'danger';
+// Live is the project status control of a published project.
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'quiet'
+  | 'danger'
+  // Red text with no fill: a destructive action that is not the main one.
+  | 'quietDanger'
+  | 'live';
 
 type LabelProps =
   | { children: ReactNode; 'aria-label'?: string }

@@ -20,6 +20,8 @@ type ListBoxProps<T extends object> = {
   children: ReactNode | ((item: T) => ReactNode);
   items?: Iterable<T>;
   'aria-label'?: string;
+  // For a list named by a visible heading.
+  'aria-labelledby'?: string;
   // Single draws the check on the selected option, multiple the checkbox.
   selectionMode?: 'single' | 'multiple';
   selectedKeys?: Selection;
@@ -33,6 +35,7 @@ const ListBox = <T extends object>({
   children,
   items,
   'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
   selectionMode,
   selectedKeys,
   onSelectionChange,
@@ -61,6 +64,7 @@ const ListBox = <T extends object>({
       <AriaListBox
         items={items}
         aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
         selectionMode={selectionMode}
         selectedKeys={ownsSelection ? currentKeys : undefined}
         onSelectionChange={ownsSelection ? handleSelectionChange : undefined}

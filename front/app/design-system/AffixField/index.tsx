@@ -13,8 +13,10 @@ import styles from './AffixField.module.css';
 import '../tokens.css';
 
 type AffixFieldProps = {
-  // The fixed text inside the box. It is not part of the value.
+  // The fixed text before the value. It is not part of the value.
   prefix: string;
+  // Outside: the prefix stands before the box, as the project URL in settings.
+  prefixPlacement?: 'inside' | 'outside';
   label: ReactNode;
   value?: string;
   onChange?: (value: string) => void;
@@ -26,6 +28,7 @@ type AffixFieldProps = {
 
 const AffixField = ({
   prefix,
+  prefixPlacement = 'inside',
   label,
   value,
   onChange,
@@ -42,10 +45,19 @@ const AffixField = ({
   >
     <FieldLabel tooltip={labelTooltip}>{label}</FieldLabel>
     <div className={fieldStyles.control}>
-      <Group className={`${styles.prefixGroup} ${inputStyles.size36}`}>
-        <span className={styles.affix}>{prefix}</span>
-        <Input className={styles.input} />
-      </Group>
+      {prefixPlacement === 'inside' ? (
+        <Group className={`${styles.prefixGroup} ${inputStyles.size36}`}>
+          <span className={styles.affix}>{prefix}</span>
+          <Input className={styles.input} />
+        </Group>
+      ) : (
+        <div className={styles.outsideRow}>
+          <span className={styles.outsideAffix}>{prefix}</span>
+          <Input
+            className={`${inputStyles.input} ${inputStyles.size36} ${styles.outsideInput}`}
+          />
+        </div>
+      )}
       <FieldHelp description={description} errorMessage={errorMessage} />
     </div>
   </AriaTextField>
