@@ -21,7 +21,7 @@ interface Props {
   navigation: PanelNavigation;
 }
 
-// The panel's head holds the context and the close button, so the stepper sits on top of the body.
+// The "1 of 124" stepper in the panel's head, before the close chevron.
 const PanelHeader = ({ navigation }: Props) => {
   const { formatMessage } = useIntl();
   const { term } = useInputTermLabels();
@@ -30,6 +30,7 @@ const PanelHeader = ({ navigation }: Props) => {
     <div className={styles.navigation}>
       <IconButton
         icon="chevron-left-16"
+        size={24}
         aria-label={formatMessage(messages.previousTerm, { term })}
         onPress={() => navigation.onPrevious?.()}
         isDisabled={!navigation.onPrevious}
@@ -42,6 +43,7 @@ const PanelHeader = ({ navigation }: Props) => {
       </Text>
       <IconButton
         icon="chevron-right-16"
+        size={24}
         aria-label={formatMessage(messages.nextTerm, { term })}
         onPress={() => navigation.onNext?.()}
         isDisabled={!navigation.onNext}

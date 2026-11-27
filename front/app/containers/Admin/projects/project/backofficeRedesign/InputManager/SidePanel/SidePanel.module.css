@@ -14,8 +14,7 @@
 .navigation {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: var(--gv-space-8);
+  gap: var(--gv-space-4);
 }
 
 .overview {
@@ -184,4 +183,37 @@
   flex: 0 0 42px;
   color: var(--gv-text-secondary);
   text-align: right;
+}
+
+/* The library's Phase row: the phase as text, then "Copy to phase" as a link. */
+.phases {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gv-space-4);
+  min-height: var(--gv-size-28);
+}
+
+.linkTrigger {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  composes: ringOutside from '../../../../../../../design-system/focus.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+  border-radius: var(--gv-radius-4);
+  color: var(--gv-text-link);
+  cursor: pointer;
+}
+
+.linkTrigger[data-disabled] {
+  color: var(--gv-text-disabled);
+  cursor: default;
+}
+
+/* The idea's text in the library body style (14/20, primary), over the shared
+   rich-text styles. */
+.ideaContent.ideaContent :is(p, li, h1, h2, h3) {
+  font-size: var(--gv-font-size-14);
+  line-height: var(--gv-font-line-height-20);
+  color: var(--gv-text-primary);
 }

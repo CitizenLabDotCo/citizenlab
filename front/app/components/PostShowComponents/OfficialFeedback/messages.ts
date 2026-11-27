@@ -77,4 +77,8 @@ export default defineMessages({
     id: 'app.components.PostComponents.OfficialFeedback.officialUpdateAuthor',
     defaultMessage: 'Official update author name',
   },
+  panelPostHead: {
+    id: 'app.components.PostShowComponents.OfficialFeedback.panelPostHead',
+    defaultMessage: 'Official update · {author}',
+  },
 });

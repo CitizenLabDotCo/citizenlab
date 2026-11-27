@@ -4,6 +4,8 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 import { ITab } from 'typings';
 
+import Tabs, { Tab as PanelTab, TabList } from 'design-system/Tabs';
+
 import useIdeaById from 'api/ideas/useIdeaById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -15,6 +17,7 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { useIsPanelComments } from '../commentsVariant';
 import messages from '../messages';
 
 import PublicComments from './PublicComments';
@@ -57,7 +60,11 @@ const CommentsSection = ({
   const isInternalCommentingAllowedAndDisabled =
     isInternalCommentingAllowed && !isInternalCommentingEnabled;
 
-  const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
+  const isPanel = useIsPanelComments();
+  // The back-office panel opens on the participants' comments, as the library does.
+  const [selectedTab, setSelectedTab] = useState<CommentType>(
+    isPanel ? 'public' : 'internal'
+  );
   const { data: idea } = useIdeaById(postId);
 
   if (!idea) return null;
@@ -87,6 +94,56 @@ const CommentsSection = ({
       url: '',
     },
   ];
+
+  const publicComments = (
+    <PublicComments
+      postId={postId}
+      allowAnonymousParticipation={allowAnonymousParticipation}
+      className={className}
+      onUnauthenticatedCommentClick={onUnauthenticatedCommentClick}
+    />
+  );
+  const internalComments = (
+    <>
+      {!isInternalCommentingAllowed && (
+        <Box mt="16px">
+          <Warning>
+            {formatMessage(messages.internalCommentingNudgeMessage)}
+          </Warning>
+        </Box>
+      )}
+      {isInternalCommentingEnabled && (
+        <InternalComments postId={postId} className={className} />
+      )}
+    </>
+  );
+
+  if (
+    isPanel &&
+    showInternalComments &&
+    !isInternalCommentingAllowedAndDisabled
+  ) {
+    return (
+      <Tabs
+        selectedKey={selectedTab}
+        onSelectionChange={(key) =>
+          setSelectedTab(key === 'internal' ? 'internal' : 'public')
+        }
+      >
+        <TabList aria-label={formatMessage(messages.commentsTab)}>
+          <PanelTab id="public" data-cy="e2e-comments-tab-public">
+            {`${formatMessage(messages.commentsTab)} (${publicCommentCount})`}
+          </PanelTab>
+          <PanelTab id="internal" data-cy="e2e-comments-tab-internal">
+            {`${formatMessage(
+              messages.internalConversation
+            )} (${internalCommentCount})`}
+          </PanelTab>
+        </TabList>
+        {selectedTab === 'public' ? publicComments : internalComments}
+      </Tabs>
+    );
+  }
 
   if (showInternalComments && !isInternalCommentingAllowedAndDisabled) {
     return (

@@ -217,6 +217,10 @@ export default defineMessages({
     id: 'app.containers.Comments.guidelinesLinkText',
     defaultMessage: 'our guidelines',
   },
+  commentsTab: {
+    id: 'app.containers.Comments.commentsTab',
+    defaultMessage: 'Comments',
+  },
   publicDiscussion: {
     id: 'app.containers.Comments.publicDiscussion',
     defaultMessage: 'Public discussion',

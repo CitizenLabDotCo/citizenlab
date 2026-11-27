@@ -1,9 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import Button from 'design-system/Button';
 import { MenuTrigger } from 'design-system/Menu';
-
-import styles from './SidePanel.module.css';
+import PillButton from 'design-system/PillButton';
 
 interface Props {
   label?: string;
@@ -15,9 +13,7 @@ interface Props {
 
 const PropertyMenu = ({ label, isPending = false, children }: Props) => (
   <MenuTrigger>
-    <Button size={28} hasMenu isPending={isPending}>
-      <span className={styles.menuLabel}>{label}</span>
-    </Button>
+    <PillButton isPending={isPending}>{label}</PillButton>
     {children}
   </MenuTrigger>
 );

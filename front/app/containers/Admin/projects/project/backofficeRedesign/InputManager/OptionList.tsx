@@ -22,6 +22,8 @@ interface Props {
   selected: string[];
   onToggle: (value: string) => void;
   selectionMode?: 'single' | 'multiple';
+  // The status menu in the idea panel leaves the colours out, as the library does.
+  showColors?: boolean;
 }
 
 // The menu of a MenuTrigger, SubmenuTrigger or FilterChip.
@@ -31,6 +33,7 @@ const OptionList = ({
   selected,
   onToggle,
   selectionMode = 'multiple',
+  showColors = true,
 }: Props) => (
   <Menu
     aria-label={ariaLabel}
@@ -51,7 +54,7 @@ const OptionList = ({
         disabledReason={option.disabled ? option.disabledReason : undefined}
       >
         <span className={styles.label}>
-          {option.color && <ColorDot color={option.color} />}
+          {showColors && option.color && <ColorDot color={option.color} />}
           {option.label}
         </span>
       </MenuItem>

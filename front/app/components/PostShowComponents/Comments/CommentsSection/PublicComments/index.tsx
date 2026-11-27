@@ -21,6 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';
 import { useLocation } from 'utils/router';
 
+import { useIsPanelComments } from '../../commentsVariant';
 import messages from '../../messages';
 import tracks from '../../tracks';
 
@@ -66,6 +67,7 @@ const PublicComments = ({
 
   const { data: idea } = useIdeaById(postId);
   const { pathname } = useLocation();
+  const isPanel = useIsPanelComments();
   const [sortOrder, setSortOrder] = useState<CommentsSort>('new');
   const {
     data: comments,
@@ -113,7 +115,8 @@ const PublicComments = ({
   const hasComments = commentCount > 0;
   const isAdminPage = isPage('admin', pathname);
   const showCommentCount = !isAdminPage && hasComments;
-  const showHeader = !isAdminPage || hasComments;
+  // The back-office panel's tab already names the comments and counts them.
+  const showHeader = !isPanel && (!isAdminPage || hasComments);
   const canComment =
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -121,6 +124,13 @@ const PublicComments = ({
 
   return (
     <Box className={className || ''}>
+      {isPanel && (
+        <CommentingIdeaDisabled
+          idea={idea}
+          phaseId={phaseId}
+          onUnauthenticatedClick={onUnauthenticatedCommentClick}
+        />
+      )}
       {showHeader && (
         <Header
           display="flex"

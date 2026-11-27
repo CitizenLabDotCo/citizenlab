@@ -79,6 +79,7 @@ const SidePanel = ({
         if (!isOpen && !isEditing) onClose();
       }}
       title={context}
+      headActions={navigation && <PanelHeader navigation={navigation} />}
     >
       <div
         id="e2e-side-modal-content"
@@ -93,7 +94,6 @@ const SidePanel = ({
         )}
         {idea && isLoaded && (
           <>
-            {navigation && <PanelHeader navigation={navigation} />}
             <IdeaOverview
               idea={idea.data}
               type={type}

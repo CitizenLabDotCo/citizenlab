@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { FormattedDate } from 'react-intl';
-
+import dayFirstLocale from 'design-system/DateField/dayFirstLocale';
 import Divider from 'design-system/Divider';
 import Icon from 'design-system/Icon';
 import Text from 'design-system/Text';
@@ -9,6 +8,7 @@ import Text from 'design-system/Text';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import { ManagerType } from 'components/admin/PostManager';
@@ -22,6 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
+
 import AssigneeProperty from './AssigneeProperty';
 import CommonGroundReactions from './CommonGroundReactions';
 import IdeaContent from './IdeaContent';
@@ -31,6 +32,14 @@ import styles from './SidePanel.module.css';
 import StatusProperty from './StatusProperty';
 import TagsProperty from './TagsProperty';
 import VotingDetails from './VotingDetails';
+
+// The library writes the posted date day first: "18 November 2026".
+const dayFirstDate = (date: string, locale: string) =>
+  new Intl.DateTimeFormat(dayFirstLocale(locale), {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(date));
 
 interface Props {
   idea: IIdeaData;
@@ -49,6 +58,7 @@ const IdeaOverview = ({
   onDeleted,
 }: Props) => {
   const localize = useLocalize();
+  const locale = useLocale();
   const { attributes, relationships } = idea;
   const isProposals = type === 'ProjectProposals';
   // Statements can't move into other phases, which only list idea phases.
@@ -59,7 +69,7 @@ const IdeaOverview = ({
   return (
     <div className={styles.overview}>
       <div className={styles.summary}>
-        <Text as="h2" variant="bodyStrong" tone="primary">
+        <Text as="h2" variant="body" tone="primary">
           {localize(attributes.title_multiloc)}
         </Text>
         <IdeaContent idea={idea} />
@@ -82,24 +92,19 @@ const IdeaOverview = ({
           </span>
           {attributes.published_at && (
             <span>
-              <FormattedDate
-                value={attributes.published_at}
-                year="numeric"
-                month="long"
-                day="numeric"
-              />
+              {dayFirstDate(attributes.published_at, locale)}
             </span>
           )}
         </div>
         <div className={styles.reactionsRow}>
           <div className={styles.reactions}>
             <span className={styles.reaction}>
-              <Icon name="arrow-up-16" className={styles.reactionIcon} />
+              <Icon name="thumbs-up-16" className={styles.reactionIcon} />
               {attributes.likes_count}
             </span>
             {!isProposals && (
               <span className={styles.reaction}>
-                <Icon name="arrow-down-16" className={styles.reactionIcon} />
+                <Icon name="thumbs-down-16" className={styles.reactionIcon} />
                 {attributes.dislikes_count}
               </span>
             )}

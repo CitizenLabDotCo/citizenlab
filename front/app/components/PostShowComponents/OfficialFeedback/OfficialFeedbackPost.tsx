@@ -166,7 +166,7 @@ const OfficialFeedbackPost = ({
   a11y_pronounceLatestOfficialFeedbackPost,
   variant = 'default',
 }: Props) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatDate } = useIntl();
   const isPanel = variant === 'panel';
   const localize = useLocalize();
   const { mutate: deleteOfficialFeedbackFromIdea } =
@@ -257,23 +257,17 @@ const OfficialFeedbackPost = ({
   );
 
   if (isPanel) {
-    const datesPostedEdited = (
-      <>
-        <FormattedMessage
-          {...messages.postedOn}
-          values={{ date: formattedPostedOnDate }}
-        />
-        {updated_at && updated_at !== created_at && (
-          <>
-            {' - '}
-            <FormattedMessage
-              {...messages.lastEdition}
-              values={{ date: formattedUpdatedAtDate }}
-            />
-          </>
-        )}
-      </>
-    );
+    // The dates stay on hover; the library's head line names only the author.
+    const longDate = (date: string) =>
+      formatDate(date, { year: 'numeric', month: 'long', day: 'numeric' });
+    const dateTitle = [
+      formatMessage(messages.postedOn, { date: longDate(created_at) }),
+      updated_at && updated_at !== created_at
+        ? formatMessage(messages.lastEdition, { date: longDate(updated_at) })
+        : null,
+    ]
+      .filter(Boolean)
+      .join(' - ');
 
     return (
       <div
@@ -298,6 +292,15 @@ const OfficialFeedbackPost = ({
             getPostBodyText(body_multiloc)}
         </ScreenReaderOnly>
 
+        <p
+          className={`e2e-official-feedback-post-author ${panelStyles.postHead}`}
+          title={dateTitle}
+        >
+          <FormattedMessage
+            {...messages.panelPostHead}
+            values={{ author: <T value={author_multiloc} /> }}
+          />
+        </p>
         <QuillEditedContent fontWeight={400} fontSize="s">
           <div
             className={`e2e-official-feedback-post-body ${panelStyles.postBody}`}
@@ -306,14 +309,6 @@ const OfficialFeedbackPost = ({
             }}
           />
         </QuillEditedContent>
-        <div className={panelStyles.footer}>
-          <span
-            className={`e2e-official-feedback-post-author ${panelStyles.author}`}
-          >
-            <T value={author_multiloc} />
-          </span>
-          <span>{datesPostedEdited}</span>
-        </div>
       </div>
     );
   }

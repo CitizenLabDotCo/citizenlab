@@ -681,6 +681,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.delete',
     defaultMessage: 'Delete',
   },
+  phase: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.phase',
+    defaultMessage: 'Phase',
+  },
   phases: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.phases',
     defaultMessage: 'Phases',

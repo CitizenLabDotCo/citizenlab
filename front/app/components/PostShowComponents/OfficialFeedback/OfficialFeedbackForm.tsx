@@ -338,8 +338,10 @@ const OfficialFeedbackForm = ({
         data-testid="official-feedback-form"
       >
         <div id="official-feedback-form" className={panelStyles.form}>
+          {/* The library puts the language button inside the field, top right. */}
+          <div className={panelStyles.bodyField}>
           {tenantLocales.length > 1 && (
-            <div className={panelStyles.localeRow}>
+            <div className={panelStyles.localeInField}>
               <PanelLocaleSwitcher
                 aria-label={formatMessage(messages.officialUpdateBody)}
                 locales={tenantLocales}
@@ -362,13 +364,18 @@ const OfficialFeedbackForm = ({
             rows={3}
             border="var(--gv-border-width-1) solid var(--gv-border-control)"
             borderRadius="var(--gv-radius-8)"
-            padding="var(--gv-space-8) var(--gv-space-10)"
+            padding={
+              tenantLocales.length > 1
+                ? 'var(--gv-space-8) 120px var(--gv-space-8) var(--gv-space-10)'
+                : 'var(--gv-space-8) var(--gv-space-10)'
+            }
             color={panelTextAreaStyle.color}
             fontSize={panelTextAreaStyle.fontSize}
             fontWeight={panelTextAreaStyle.fontWeight}
             lineHeight={panelTextAreaStyle.lineHeight}
             background="var(--gv-surface-panel)"
           />
+          </div>
 
           <TextField
             aria-label={formatMessage(messages.officialUpdateAuthor)}

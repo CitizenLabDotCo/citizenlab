@@ -26,8 +26,21 @@ const OfficialFeedback = memo<Props>(
     variant,
   }) => {
     if (typeof permissionToPost === 'boolean') {
+      const feed = (
+        <OfficialFeedbackFeed
+          postId={postId}
+          editingAllowed={permissionToPost}
+          variant={variant}
+          a11y_pronounceLatestOfficialFeedbackPost={
+            a11y_pronounceLatestOfficialFeedbackPost
+          }
+        />
+      );
+
       return (
         <Container className={className || ''}>
+          {/* The back-office panel shows what was published above the form. */}
+          {variant === 'panel' && feed}
           {permissionToPost && (
             <Suspense fallback={null}>
               <OfficialFeedbackForm
@@ -38,14 +51,7 @@ const OfficialFeedback = memo<Props>(
             </Suspense>
           )}
 
-          <OfficialFeedbackFeed
-            postId={postId}
-            editingAllowed={permissionToPost}
-            variant={variant}
-            a11y_pronounceLatestOfficialFeedbackPost={
-              a11y_pronounceLatestOfficialFeedbackPost
-            }
-          />
+          {variant !== 'panel' && feed}
         </Container>
       );
     }

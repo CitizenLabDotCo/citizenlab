@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import Button from 'design-system/Button';
+import Icon from 'design-system/Icon';
 import { MenuTrigger } from 'design-system/Menu';
-import TagGroup, { Tag } from 'design-system/TagGroup';
-import { Key } from 'design-system/types';
+import Text from 'design-system/Text';
+import UnstyledButton from 'design-system/UnstyledButton';
 
 import { IIdeaData } from 'api/ideas/types';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -16,11 +16,11 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import OptionList from '../OptionList';
-import useInputTermLabels from '../useInputTermLabels';
 import usePickerOptions from '../usePickerOptions';
 import { phaseIds } from '../utils';
 
 import PropertyRow from './PropertyRow';
+import styles from './SidePanel.module.css';
 
 interface Props {
   idea: IIdeaData;
@@ -28,7 +28,6 @@ interface Props {
 
 const PhasesProperty = ({ idea }: Props) => {
   const { formatMessage } = useIntl();
-  const { terms } = useInputTermLabels();
   const { phaseOptions } = usePickerOptions(
     'ProjectIdeas',
     idea.relationships.project.data.id
@@ -39,7 +38,6 @@ const PhasesProperty = ({ idea }: Props) => {
   const { mutate: updateIdea, isPending } = useUpdateIdea();
   const [phaseToRemove, setPhaseToRemove] = useState<string | null>(null);
   const current = phaseIds(idea);
-  const label = formatMessage(messages.phases);
 
   const savePhases = (newPhaseIds: string[]) =>
     updateIdea({ id: idea.id, requestBody: { phase_ids: newPhaseIds } });
@@ -58,55 +56,43 @@ const PhasesProperty = ({ idea }: Props) => {
   const otherPhases = phaseOptions.filter(
     (option) => !current.includes(option.value)
   );
-
-  const addButton = (
-    <Button
-      size={28}
-      variant="quiet"
-      icon="plus-16"
-      disabledReason={
-        otherPhases.length === 0
-          ? formatMessage(messages.noOtherPhasesForTerms, { terms })
-          : undefined
-      }
-    >
-      {formatMessage(messages.copyToPhase)}
-    </Button>
-  );
+  const names = phaseOptions
+    .filter((option) => current.includes(option.value))
+    .map((option) => option.label)
+    .join(', ');
 
   return (
-    <PropertyRow label={label}>
-      {/* The row draws the label on the left, so the group takes an aria-label. */}
-      <TagGroup
-        aria-label={label}
-        onRemove={(keys: Set<Key>) =>
-          keys.forEach((key) => requestRemoval(String(key)))
-        }
-        add={
-          otherPhases.length > 0 ? (
-            <MenuTrigger>
-              {addButton}
-              <OptionList
-                aria-label={formatMessage(messages.copyToPhase)}
-                options={otherPhases}
-                selected={[]}
-                onToggle={(phaseId) => savePhases([...current, phaseId])}
-                selectionMode="single"
-              />
-            </MenuTrigger>
-          ) : (
-            addButton
-          )
-        }
-      >
-        {phaseOptions
-          .filter((option) => current.includes(option.value))
-          .map((option) => (
-            <Tag key={option.value} id={option.value}>
-              {option.label}
-            </Tag>
-          ))}
-      </TagGroup>
+    <PropertyRow label={formatMessage(messages.phase)}>
+      <div className={styles.phases}>
+        <Text as="span" variant="ui" tone="primary">
+          {names}
+        </Text>
+        {/* Every phase, ticked where the idea is: tick to copy it there,
+            untick to take it out. */}
+        <MenuTrigger>
+          <UnstyledButton
+            className={styles.linkTrigger}
+            isDisabled={otherPhases.length === 0 && current.length < 2}
+          >
+            {formatMessage(messages.copyToPhase)}
+            <Icon name="chevron-down-12" />
+          </UnstyledButton>
+          <OptionList
+            aria-label={formatMessage(messages.copyToPhase)}
+            options={phaseOptions.map((option) => ({
+              ...option,
+              // The idea stays in at least one phase.
+              disabled: current.length === 1 && current.includes(option.value),
+            }))}
+            selected={current}
+            onToggle={(phaseId) =>
+              current.includes(phaseId)
+                ? requestRemoval(phaseId)
+                : savePhases([...current, phaseId])
+            }
+          />
+        </MenuTrigger>
+      </div>
       <PhaseDeselectModal
         open={!!phaseToRemove}
         isLoading={isPending}

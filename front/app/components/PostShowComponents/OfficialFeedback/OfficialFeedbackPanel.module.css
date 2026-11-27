@@ -1,7 +1,7 @@
 /* The panel look of the official feedback (variant 'panel'). */
 
 .feed {
-  margin-top: var(--gv-space-16);
+  margin-bottom: var(--gv-space-8);
 }
 
 .loadMore {
@@ -42,18 +42,6 @@
   font-style: italic;
 }
 
-.footer {
-  composes: small from '../../../design-system/typography.module.css';
-  display: flex;
-  flex-direction: column;
-  color: var(--gv-text-secondary);
-}
-
-.author {
-  composes: smallStrong from '../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
 .form {
   display: flex;
   flex-direction: column;
@@ -67,9 +55,24 @@
   background: var(--gv-surface-sunken);
 }
 
-.localeRow {
-  display: flex;
-  justify-content: flex-end;
+.bodyField {
+  position: relative;
+}
+
+/* Over the text area's top right; the text area keeps its first line clear. */
+.localeInField {
+  position: absolute;
+  top: var(--gv-space-6);
+  right: var(--gv-space-8);
+  z-index: 1;
+}
+
+/* "Official update · The project team" above the text. */
+.postHead {
+  composes: small from '../../../design-system/typography.module.css';
+  margin: 0;
+  padding-right: var(--gv-space-28);
+  color: var(--gv-text-secondary);
 }
 
 .formActions {

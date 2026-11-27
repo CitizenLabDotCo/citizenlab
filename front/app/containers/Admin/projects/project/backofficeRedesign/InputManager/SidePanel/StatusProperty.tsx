@@ -53,6 +53,7 @@ const StatusProperty = ({ idea, type }: Props) => {
             if (newStatusId !== statusId) changeStatus(newStatusId);
           }}
           selectionMode="single"
+          showColors={false}
         />
       </PropertyMenu>
     </PropertyRow>
