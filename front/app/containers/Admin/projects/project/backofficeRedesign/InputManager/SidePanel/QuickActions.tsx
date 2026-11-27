@@ -23,7 +23,7 @@ interface Props {
 
 const QuickActions = ({ idea, onEdit, onDeleted }: Props) => {
   const { formatMessage } = useIntl();
-  const { term } = useInputTermLabels();
+  const { inputTerm } = useInputTermLabels();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const { mutate: deleteIdea, isPending } = useDeleteIdea();
 
@@ -62,11 +62,11 @@ const QuickActions = ({ idea, onEdit, onDeleted }: Props) => {
         isOpen={deleteModalOpen}
         onOpenChange={setDeleteModalOpen}
         isPending={isPending}
-        title={formatMessage(messages.deleteTermTitle, { term })}
+        title={formatMessage(messages.deleteTermTitle, { inputTerm })}
         confirmLabel={formatMessage(warningModalMessages.confirm)}
         onConfirm={handleDelete}
       >
-        {formatMessage(messages.deleteTermExplanation, { term })}
+        {formatMessage(messages.deleteTermExplanation, { inputTerm })}
       </AlertDialog>
     </div>
   );

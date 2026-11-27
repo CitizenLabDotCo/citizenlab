@@ -11,15 +11,15 @@ import useInputTermLabels from './useInputTermLabels';
 
 const EmptyState = () => {
   const { formatMessage } = useIntl();
-  const { terms, capitalizedTerms } = useInputTermLabels();
+  const { inputTerm } = useInputTermLabels();
 
   return (
     <DesignSystemEmptyState>
       <span className={styles.content}>
         <Text as="span" variant="uiStrong" tone="primary">
-          {formatMessage(messages.noTermsTitle, { terms: capitalizedTerms })}
+          {formatMessage(messages.noTermsTitle, { inputTerm })}
         </Text>
-        <span>{formatMessage(messages.noTermsDescription, { terms })}</span>
+        <span>{formatMessage(messages.noTermsDescription, { inputTerm })}</span>
       </span>
     </DesignSystemEmptyState>
   );

@@ -3,7 +3,7 @@ import React from 'react';
 import { IdeationMetrics as IdeationMetricsType } from 'api/phase_insights/types';
 import { InputTerm } from 'api/phases/types';
 
-import inputTermMessages from 'containers/Admin/projects/project/inputTermMessages';
+import inputTermMessages from 'containers/Admin/projects/project/inputTerm/messages';
 
 import { useIntl } from 'utils/cl-intl';
 

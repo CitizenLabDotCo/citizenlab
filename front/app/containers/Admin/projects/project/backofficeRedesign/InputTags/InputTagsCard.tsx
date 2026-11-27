@@ -4,7 +4,6 @@ import useInputTopics from 'api/input_topics/useInputTopics';
 import { InputTerm } from 'api/phases/types';
 
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
-import inputTermMessages from 'containers/Admin/projects/project/inputTermMessages';
 
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -21,12 +20,9 @@ interface Props {
 const InputTagsCard = ({ projectId, inputTerm = 'idea' }: Props) => {
   const { formatMessage } = useIntl();
   const { data: tags } = useInputTopics(projectId);
-  const term = formatMessage(inputTermMessages.capitalizedSingular, {
-    term: inputTerm,
-  });
   return (
     <PanelField
-      label={formatMessage(messages.tagsTitle, { term })}
+      label={formatMessage(messages.tagsTitle, { inputTerm })}
       action={
         tags && (
           <SummaryPill

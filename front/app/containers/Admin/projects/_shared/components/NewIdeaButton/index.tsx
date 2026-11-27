@@ -7,9 +7,9 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { type TypedLinkProps } from 'utils/cl-router/Link';
-import { getInputTermMessage } from 'utils/i18n';
 import { useLocation } from 'utils/router';
 
+import getNewInputMessage from './getNewInputMessage';
 import messages from './messages';
 import tracks from './tracks';
 
@@ -32,26 +32,7 @@ const NewIdeaButton = ({
   const buttonText =
     participationMethod === 'common_ground'
       ? formatMessage(messages.createInput)
-      : formatMessage(
-          getInputTermMessage(inputTerm, {
-            idea: messages.newIdea,
-            option: messages.newOption,
-            project: messages.newProject,
-            question: messages.newQuestion,
-            issue: messages.newIssue,
-            contribution: messages.newContribution,
-            proposal: messages.newProposal,
-            initiative: messages.newInitiative,
-            petition: messages.newPetition,
-            comment: messages.newComment,
-            response: messages.newResponse,
-            suggestion: messages.newSuggestion,
-            topic: messages.newTopic,
-            post: messages.newPost,
-            story: messages.newStory,
-            observation: messages.newObservation,
-          })
-        );
+      : formatMessage(getNewInputMessage(inputTerm));
 
   return (
     <ButtonWithLink

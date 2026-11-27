@@ -70,14 +70,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.saveStatement',
     defaultMessage: 'Save',
   },
-  statementNoun: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.statementNoun',
-    defaultMessage: 'statement',
-  },
-  statementsNoun: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.statementsNoun',
-    defaultMessage: 'statements',
-  },
   agreementFilter: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.agreementFilter',
     defaultMessage: 'Agreement',

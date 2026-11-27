@@ -53,7 +53,7 @@ const IdeaTable = ({
   onChangePage,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { capitalizedTerms, term, terms } = useInputTermLabels();
+  const { capitalizedTerms, inputTerm } = useInputTermLabels();
   const pageIds = ideas.map((idea) => idea.id);
 
   return (
@@ -67,8 +67,8 @@ const IdeaTable = ({
             onSelectOnPage(
               new Set(keys === 'all' ? pageIds : [...keys].map(String))
             ),
-          selectAll: formatMessage(messages.selectAllOnPage, { terms }),
-          selectRow: formatMessage(messages.selectTerm, { term }),
+          selectAll: formatMessage(messages.selectAllOnPage, { inputTerm }),
+          selectRow: formatMessage(messages.selectTerm, { inputTerm }),
         }}
       >
         <HeaderRow

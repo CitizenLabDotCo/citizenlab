@@ -15,7 +15,6 @@ import SelectAllButton from '../InputManager/BatchBar/SelectAllButton';
 import useBatchActions from '../InputManager/BatchBar/useBatchActions';
 import managerMessages from '../InputManager/messages';
 
-import messages from './messages';
 import 'design-system/tokens.css';
 
 interface Props {
@@ -50,10 +49,6 @@ const StatementBatchBar = ({
   });
 
   const isSingle = ideas.length === 1;
-  const statementCount = (count: number) =>
-    formatMessage(messages.statementCount, { count });
-  const term = formatMessage(messages.statementNoun);
-  const terms = formatMessage(messages.statementsNoun);
 
   return (
     <>
@@ -61,7 +56,8 @@ const StatementBatchBar = ({
         {total !== undefined && ideas.length < total && (
           <SelectAllButton
             label={formatMessage(managerMessages.selectAllTerms, {
-              termCount: statementCount(total),
+              inputTerm: 'statement',
+              count: total,
             })}
             processing={isSelectingAll}
             failed={selectAllFailed}
@@ -88,7 +84,8 @@ const StatementBatchBar = ({
           {isSingle
             ? formatMessage(managerMessages.delete)
             : formatMessage(managerMessages.deleteTerms, {
-                termCount: statementCount(ideas.length),
+                inputTerm: 'statement',
+                count: ideas.length,
               })}
         </Button>
 
@@ -101,17 +98,24 @@ const StatementBatchBar = ({
         isPending={isDeleting}
         title={
           isSingle
-            ? formatMessage(managerMessages.deleteTermTitle, { term })
-            : formatMessage(managerMessages.deleteTermsTitle2, {
-                termCount: statementCount(ideas.length),
+            ? formatMessage(managerMessages.deleteTermTitle, {
+                inputTerm: 'statement',
+              })
+            : formatMessage(managerMessages.deleteTermsTitle3, {
+                inputTerm: 'statement',
+                count: ideas.length,
               })
         }
         confirmLabel={formatMessage(warningModalMessages.confirm)}
         onConfirm={deleteAll}
       >
         {isSingle
-          ? formatMessage(managerMessages.deleteTermExplanation, { term })
-          : formatMessage(managerMessages.deleteTermsExplanation, { terms })}
+          ? formatMessage(managerMessages.deleteTermExplanation, {
+              inputTerm: 'statement',
+            })
+          : formatMessage(managerMessages.deleteTermsExplanation, {
+              inputTerm: 'statement',
+            })}
       </AlertDialog>
     </>
   );

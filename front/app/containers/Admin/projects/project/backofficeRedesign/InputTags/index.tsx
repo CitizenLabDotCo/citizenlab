@@ -13,8 +13,6 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-import inputTermMessages from 'containers/Admin/projects/project/inputTermMessages';
-
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
@@ -81,11 +79,7 @@ const InputTags = ({ project, phase, inputTerm }: Props) => {
           onPress={() => removeSearchParams(['input_tags'])}
         />
         <Text as="h2" variant="uiStrong" tone="primary">
-          {formatMessage(messages.tagsTitle, {
-            term: formatMessage(inputTermMessages.capitalizedSingular, {
-              term: inputTerm,
-            }),
-          })}
+          {formatMessage(messages.tagsTitle, { inputTerm })}
         </Text>
       </div>
       {others.length > 0 && (

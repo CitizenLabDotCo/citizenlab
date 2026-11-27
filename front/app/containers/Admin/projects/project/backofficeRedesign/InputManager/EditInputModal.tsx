@@ -19,7 +19,7 @@ interface Props {
 
 const EditInputModal = ({ ideaId, phaseId, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const { term } = useInputTermLabels();
+  const { inputTerm } = useInputTermLabels();
   const { data: idea, isPlaceholderData } = useIdeaById(ideaId);
   const { mutateAsync: updateIdea } = useUpdateIdea();
 
@@ -29,7 +29,7 @@ const EditInputModal = ({ ideaId, phaseId, onClose }: Props) => {
     <AddInputModal
       phaseId={phaseId}
       kind="input"
-      header={formatMessage(messages.editTerm, { term })}
+      header={formatMessage(messages.editTerm, { inputTerm })}
       submitLabel={formatMessage(messages.save)}
       fullFormLink={
         <FullFormLink to="/ideas/edit/$ideaId" params={{ ideaId }} />
