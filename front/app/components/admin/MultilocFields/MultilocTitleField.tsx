@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Multiloc, SupportedLocale } from 'typings';
 
 import Banner from 'design-system/Banner';
 import TitleField from 'design-system/TitleField';
+import TranslatedField from 'design-system/TranslatedField';
 
+import { appLocalePairs } from 'containers/App/constants';
+
+import LanguageButtonContext from './LanguageButtonContext';
 import LocaleSwitcher from './LocaleSwitcher';
 import styles from './MultilocFields.module.css';
+import { hasText } from './useLanguageGroup';
 import useSelectedLocale from './useSelectedLocale';
 import 'design-system/tokens.css';
 
@@ -23,7 +28,8 @@ interface Props {
   errorMessage?: string;
 }
 
-// A multilingual design-system TitleField, e.g. the name of a new project.
+// A multilingual design-system TitleField, e.g. the name of a new project. In
+// the new back office a title on its own picks its language inside the field.
 const MultilocTitleField = ({
   id,
   locale,
@@ -34,6 +40,7 @@ const MultilocTitleField = ({
   errorMultiloc,
   errorMessage,
 }: Props) => {
+  const redesigned = useContext(LanguageButtonContext);
   const {
     locales,
     selectedLocale: defaultLocale,
@@ -44,6 +51,31 @@ const MultilocTitleField = ({
   if (!selectedLocale) return null;
 
   const error = errorMultiloc?.[selectedLocale];
+
+  if (redesigned && !locale) {
+    return (
+      <TranslatedField
+        id={id}
+        aria-label={ariaLabel}
+        placeholder={placeholder}
+        value={valueMultiloc?.[selectedLocale] ?? ''}
+        onChange={(text) =>
+          onChange({ ...valueMultiloc, [selectedLocale]: text })
+        }
+        errorMessage={errorMessage ?? error}
+        languages={locales.map((option) => ({
+          id: option,
+          name: appLocalePairs[option],
+          done: hasText(valueMultiloc?.[option]),
+        }))}
+        selectedLanguage={selectedLocale}
+        onLanguageChange={(id) =>
+          setSelectedLocale(locales.find((option) => option === id))
+        }
+        hasText={locales.some((option) => hasText(valueMultiloc?.[option]))}
+      />
+    );
+  }
 
   return (
     <div className={styles.field}>

@@ -9,7 +9,6 @@ import TextField from 'design-system/TextField';
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
-import LanguageGroup from 'components/admin/MultilocFields/LanguageGroup';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import useLanguageGroup from 'components/admin/MultilocFields/useLanguageGroup';
@@ -86,24 +85,19 @@ const RegistrationCard = ({ form }: Props) => {
             isInvalid={!!usingUrlError}
             errorMessage={usingUrlError}
           />
-          <LanguageGroup
+          <MultilocTextField
+            id="event-custom-button-text"
             group={group}
-            aria-label={formatMessage(eventMessages.customButtonText)}
-          >
-            <MultilocTextField
-              id="event-custom-button-text"
-              locale={group.selectedLocale}
-              label={formatMessage(eventMessages.customButtonText)}
-              description={formatMessage(
-                eventMessages.customButtonTextTooltip3
-              )}
-              valueMultiloc={attributes.attend_button_multiloc}
-              onChange={(attend_button_multiloc: Multiloc) =>
-                form.updateAttributes({ attend_button_multiloc })
-              }
-              maxCharCount={28}
-            />
-          </LanguageGroup>
+            label={formatMessage(eventMessages.customButtonText)}
+            description={formatMessage(
+              eventMessages.customButtonTextTooltip3
+            )}
+            valueMultiloc={attributes.attend_button_multiloc}
+            onChange={(attend_button_multiloc: Multiloc) =>
+              form.updateAttributes({ attend_button_multiloc })
+            }
+            maxCharCount={28}
+          />
         </>
       )}
     </SetupCard>

@@ -1,7 +1,9 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 
+import TranslatedFieldGroup from 'design-system/TranslatedFieldGroup';
+
+import LanguageButtonContext from './LanguageButtonContext';
 import LocaleSwitcher from './LocaleSwitcher';
-import MissingLanguages from './MissingLanguages';
 import styles from './MultilocFields.module.css';
 import { LanguageGroupState } from './useLanguageGroup';
 import 'design-system/tokens.css';
@@ -14,24 +16,46 @@ interface Props {
   children: ReactNode;
 }
 
-// One Language button above a group of multilingual fields, and the line
-// under them naming the languages still to translate.
-const LanguageGroup = ({ group, 'aria-label': ariaLabel, children }: Props) => (
-  <div className={styles.languageGroup}>
-    {group.selectedLocale && group.locales.length > 1 && (
-      <div className={styles.localeRow}>
-        <LocaleSwitcher
-          aria-label={ariaLabel}
-          locales={group.locales}
-          selectedLocale={group.selectedLocale}
-          onChange={group.setSelectedLocale}
-          valueMultiloc={group.translations}
-        />
-      </div>
-    )}
-    {children}
-    <MissingLanguages message={group.error} />
-  </div>
-);
+// One language switcher for a group of multilingual fields. In the new back
+// office it is the language bar above them, with the line under them naming
+// the languages still to translate.
+const LanguageGroup = ({ group, 'aria-label': ariaLabel, children }: Props) => {
+  const redesigned = useContext(LanguageButtonContext);
+  const { locales, selectedLocale, setSelectedLocale } = group;
+
+  if (redesigned && selectedLocale) {
+    return (
+      <TranslatedFieldGroup
+        aria-label={ariaLabel}
+        languages={group.languages}
+        selectedLanguage={selectedLocale}
+        onLanguageChange={(id) =>
+          setSelectedLocale(locales.find((locale) => locale === id))
+        }
+        hasText={group.hasText}
+        blockedMessage={group.error}
+      >
+        {children}
+      </TranslatedFieldGroup>
+    );
+  }
+
+  return (
+    <div className={styles.languageGroup}>
+      {selectedLocale && locales.length > 1 && (
+        <div className={styles.localeRow}>
+          <LocaleSwitcher
+            aria-label={ariaLabel}
+            locales={locales}
+            selectedLocale={selectedLocale}
+            onChange={setSelectedLocale}
+            valueMultiloc={group.translations}
+          />
+        </div>
+      )}
+      {children}
+    </div>
+  );
+};
 
 export default LanguageGroup;

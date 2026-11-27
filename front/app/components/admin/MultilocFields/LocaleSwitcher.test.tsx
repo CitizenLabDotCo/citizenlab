@@ -20,18 +20,15 @@ describe('LocaleSwitcher', () => {
     expect(screen.getByRole('radiogroup', { name: 'Title' })).toBeVisible();
   });
 
-  it('uses the Language button inside the new back office', () => {
+  it('uses the language bar inside the new back office', () => {
     render(
       <LanguageButtonContext.Provider value>
         <LocaleSwitcher {...props} locales={[...props.locales]} />
       </LanguageButtonContext.Provider>
     );
 
-    expect(
-      screen.getByRole('button', {
-        name: 'Title: English. 1 of 2 languages done',
-      })
-    ).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Title: English' })).toBeVisible();
+    expect(screen.getByRole('status')).toHaveTextContent('1 of 2 languages');
     expect(screen.queryByRole('radiogroup')).not.toBeInTheDocument();
   });
 });

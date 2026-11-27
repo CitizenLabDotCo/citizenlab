@@ -8,7 +8,6 @@ import TextField from 'design-system/TextField';
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
-import LanguageGroup from 'components/admin/MultilocFields/LanguageGroup';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import useLanguageGroup from 'components/admin/MultilocFields/useLanguageGroup';
@@ -65,22 +64,17 @@ const LocationCard = ({ form }: Props) => {
         onChange={(address_1) => form.updateAttributes({ address_1 })}
       />
 
-      <LanguageGroup
+      <MultilocTextField
+        id="event-address-2"
         group={group}
-        aria-label={formatMessage(messages.addressDetails)}
-      >
-        <MultilocTextField
-          id="event-address-2"
-          locale={group.selectedLocale}
-          label={formatMessage(messages.addressDetails)}
-          labelTooltip={formatMessage(eventMessages.addressTwoTooltip)}
-          placeholder={formatMessage(eventMessages.addressTwoPlaceholder)}
-          valueMultiloc={attributes.address_2_multiloc}
-          onChange={(address_2_multiloc: Multiloc) =>
-            form.updateAttributes({ address_2_multiloc })
-          }
-        />
-      </LanguageGroup>
+        label={formatMessage(messages.addressDetails)}
+        labelTooltip={formatMessage(eventMessages.addressTwoTooltip)}
+        placeholder={formatMessage(eventMessages.addressTwoPlaceholder)}
+        valueMultiloc={attributes.address_2_multiloc}
+        onChange={(address_2_multiloc: Multiloc) =>
+          form.updateAttributes({ address_2_multiloc })
+        }
+      />
 
       {form.hasLocationPoint && (
         <div className={styles.field}>

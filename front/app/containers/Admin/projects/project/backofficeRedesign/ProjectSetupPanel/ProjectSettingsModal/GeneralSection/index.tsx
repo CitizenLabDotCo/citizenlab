@@ -2,15 +2,12 @@ import React from 'react';
 
 import { CLErrors, Multiloc } from 'typings';
 
-import TextField from 'design-system/TextField';
-
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import SettingsSections from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSections';
 import SlugInput from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SlugInput';
 
-import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
-import MissingLanguages from 'components/admin/MultilocFields/MissingLanguages';
+import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { LanguageGroupState } from 'components/admin/MultilocFields/useLanguageGroup';
 
@@ -54,8 +51,6 @@ const GeneralSection = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const getApiErrorMessage = useApiErrorText();
-  const { locales, selectedLocale, setSelectedLocale } = titleGroup;
-
   const titleLabel = formatMessage(messages.settingsProjectName);
   const titleError = getApiErrorMessage(
     apiErrors.title_multiloc,
@@ -64,33 +59,15 @@ const GeneralSection = ({
 
   return (
     <SettingsSections>
-      <SettingsSection
-        title={titleLabel}
-        action={
-          selectedLocale && (
-            <LocaleSwitcher
-              aria-label={titleLabel}
-              locales={locales}
-              selectedLocale={selectedLocale}
-              onChange={setSelectedLocale}
-              valueMultiloc={titleGroup.translations}
-            />
-          )
-        }
-      >
-        {selectedLocale && (
-          <TextField
-            id="project-title"
-            aria-label={titleLabel}
-            value={titleMultiloc[selectedLocale] ?? ''}
-            onChange={(value) =>
-              onTitleChange({ ...titleMultiloc, [selectedLocale]: value })
-            }
-            isInvalid={!!titleError}
-            errorMessage={titleError}
-          />
-        )}
-        <MissingLanguages message={titleGroup.error} />
+      <SettingsSection title={titleLabel}>
+        <MultilocTextField
+          id="project-title"
+          group={titleGroup}
+          aria-label={titleLabel}
+          valueMultiloc={titleMultiloc}
+          onChange={onTitleChange}
+          errorMessage={titleError}
+        />
       </SettingsSection>
       <SettingsSection title={formatMessage(messages.settingsProjectUrl)}>
         <SlugInput

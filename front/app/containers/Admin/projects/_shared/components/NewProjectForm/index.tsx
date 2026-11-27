@@ -9,10 +9,8 @@ import { Visibility } from 'api/projects/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import generalMessages from 'containers/Admin/projects/project/general/messages';
 
-import LanguageGroup from 'components/admin/MultilocFields/LanguageGroup';
-import MultilocTitleField from 'components/admin/MultilocFields/MultilocTitleField';
+import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import useLanguageGroup from 'components/admin/MultilocFields/useLanguageGroup';
 
@@ -137,23 +135,20 @@ const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
       className={`intercom-projects-new-project-name ${styles.form}`}
     >
       <div className={styles.titleField}>
-        <LanguageGroup
+        <MultilocTextField
+          id="e2e-project-title-setting-field"
           group={titleGroup}
-          aria-label={formatMessage(generalMessages.projectName)}
-        >
-          <MultilocTitleField
-            id="e2e-project-title-setting-field"
-            locale={titleGroup.selectedLocale}
-            valueMultiloc={titleMultiloc}
-            onChange={handleTitleChange}
-            placeholder={titleGroup.placeholder(
-              messages.titlePlaceholderInLanguage,
-              messages.titlePlaceholder
-            )}
-            aria-label={formatMessage(generalMessages.projectName)}
-            errorMultiloc={titleError}
-          />
-        </LanguageGroup>
+          label={formatMessage(messages.projectTitleLabel)}
+          valueMultiloc={titleMultiloc}
+          onChange={handleTitleChange}
+          placeholder={titleGroup.placeholder(
+            messages.titlePlaceholderInLanguage,
+            messages.titlePlaceholder
+          )}
+          errorMessage={
+            titleGroup.selectedLocale && titleError?.[titleGroup.selectedLocale]
+          }
+        />
         {titleApiErrorText && <Banner tone="error">{titleApiErrorText}</Banner>}
       </div>
 

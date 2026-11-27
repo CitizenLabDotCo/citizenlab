@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.NewProjectForm.titlePlaceholderInLanguage',
     defaultMessage: 'Add a project title in {language}',
   },
+  projectTitleLabel: {
+    id: 'app.containers.Admin.projects.NewProjectForm.projectTitleLabel',
+    defaultMessage: 'Project title',
+  },
   projectTitleField: {
     id: 'app.containers.Admin.projects.NewProjectForm.projectTitleField',
     defaultMessage: 'project title',

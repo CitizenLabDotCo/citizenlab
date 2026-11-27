@@ -146,19 +146,14 @@ const HomepageCardFields = ({ project }: Props) => {
               onRemove={removeImage}
               stackActions
             />
-            <LanguageGroup
+            <MultilocTextField
+              id="homepage-card-image-alt-text"
               group={altTextGroup}
-              aria-label={formatMessage(eventMessages.altText)}
-            >
-              <MultilocTextField
-                id="homepage-card-image-alt-text"
-                locale={altTextGroup.selectedLocale}
-                label={formatMessage(eventMessages.altText)}
-                placeholder={formatMessage(eventMessages.altTextPlaceholder)}
-                valueMultiloc={altText}
-                onChange={(altText) => changeImage('altText', altText)}
-              />
-            </LanguageGroup>
+              label={formatMessage(eventMessages.altText)}
+              placeholder={formatMessage(eventMessages.altTextPlaceholder)}
+              valueMultiloc={altText}
+              onChange={(altText) => changeImage('altText', altText)}
+            />
           </div>
         ) : (
           <>

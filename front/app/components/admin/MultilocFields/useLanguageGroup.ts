@@ -21,12 +21,12 @@ export type GroupField = {
 };
 
 // Rich text keeps its markup when emptied, e.g. "<p><br></p>".
-const hasText = (text: string | undefined) =>
+export const hasText = (text: string | undefined) =>
   !!text &&
   (text.replace(/<[^>]*>/g, '').trim().length > 0 ||
     /<(img|iframe)/.test(text));
 
-// The fields one Language button drives. In the new back office, saving with a
+// The fields one language picker drives. In the new back office, saving with a
 // language still to translate doesn't save: the group opens that language and
 // names what is missing in one line under the fields.
 const useLanguageGroup = (
@@ -51,6 +51,9 @@ const useLanguageGroup = (
     (!!field.required || locales.some((other) => filled(field, other)));
   const missingLocales = locales.filter((locale) =>
     fields.some((field) => isMissing(field, locale))
+  );
+  const anyText = fields.some((field) =>
+    locales.some((locale) => filled(field, locale))
   );
   // A required field empty in every language gets the form's own error.
   const requiredEmpty = fields.some(
@@ -100,14 +103,21 @@ const useLanguageGroup = (
     locales,
     selectedLocale,
     setSelectedLocale,
-    // For the switcher: a language is done once nothing is left to translate.
+    // A language is done once nothing is left to translate.
+    languages: locales.map((locale) => ({
+      id: locale,
+      name: appLocalePairs[locale],
+      done: !missingLocales.includes(locale),
+    })),
+    hasText: anyText,
+    // For the segmented switcher outside the new back office.
     translations: Object.fromEntries(
       locales.map((locale) => [
         locale,
         missingLocales.includes(locale) ? '' : 'done',
       ])
     ),
-    // Names the language being edited, where the Language button shows.
+    // Names the language being edited, where the language picker shows.
     placeholder: (inLanguage: MessageDescriptor, plain: MessageDescriptor) =>
       active && selectedLocale
         ? formatMessage(inLanguage, {

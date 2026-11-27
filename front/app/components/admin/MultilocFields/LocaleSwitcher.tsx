@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 
 import { Multiloc, SupportedLocale } from 'typings';
 
-import LanguageSwitcher from 'design-system/LanguageSwitcher';
 import NewDot from 'design-system/NewDot';
 import ToggleButton from 'design-system/ToggleButton';
 import ToggleButtonGroup from 'design-system/ToggleButtonGroup';
+import { LanguageBar } from 'design-system/TranslatedFieldGroup';
 import { Key } from 'design-system/types';
 import 'design-system/tokens.css';
 
@@ -13,6 +13,7 @@ import { appLocalePairs } from 'containers/App/constants';
 
 import LanguageButtonContext from './LanguageButtonContext';
 import styles from './MultilocFields.module.css';
+import { hasText } from './useLanguageGroup';
 
 interface Props {
   // Names the group, e.g. the label of the field it switches.
@@ -25,8 +26,9 @@ interface Props {
 }
 
 // Picks which locale of a multilingual field is being edited. Hidden when
-// the platform has one locale. The new back office uses the compact Language
-// button; the current back office keeps the segmented switcher.
+// the platform has one locale. The new back office uses the language bar
+// (languages done, then the picker); the current back office keeps the
+// segmented switcher.
 const LocaleSwitcher = ({
   'aria-label': ariaLabel,
   locales,
@@ -40,15 +42,19 @@ const LocaleSwitcher = ({
 
   if (redesigned) {
     return (
-      <LanguageSwitcher
+      <LanguageBar
         aria-label={ariaLabel}
         languages={locales.map((locale) => ({
           id: locale,
           name: appLocalePairs[locale],
-          done: !valueMultiloc || !!valueMultiloc[locale],
+          done: !valueMultiloc || hasText(valueMultiloc[locale]),
         }))}
-        selectedId={selectedLocale}
-        onChange={(id) => {
+        hasText={
+          !valueMultiloc ||
+          locales.some((locale) => hasText(valueMultiloc[locale]))
+        }
+        selectedLanguage={selectedLocale}
+        onLanguageChange={(id) => {
           const locale = locales.find((option) => option === id);
           if (locale) onChange(locale);
         }}

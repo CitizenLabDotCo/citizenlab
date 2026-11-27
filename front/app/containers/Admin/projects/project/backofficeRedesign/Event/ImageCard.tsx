@@ -7,7 +7,6 @@ import DropZone from 'design-system/DropZone';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 
-import LanguageGroup from 'components/admin/MultilocFields/LanguageGroup';
 import fieldMessages from 'components/admin/MultilocFields/messages';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useLanguageGroup from 'components/admin/MultilocFields/useLanguageGroup';
@@ -66,19 +65,14 @@ const ImageCard = ({ form }: Props) => {
             onReplace={(image) => addImage([image])}
             onRemove={form.removeImage}
           />
-          <LanguageGroup
+          <MultilocTextField
+            id="event-image-alt-text"
             group={group}
-            aria-label={formatMessage(messages.altText)}
-          >
-            <MultilocTextField
-              id="event-image-alt-text"
-              locale={group.selectedLocale}
-              label={formatMessage(messages.altText)}
-              placeholder={formatMessage(messages.altTextPlaceholder)}
-              valueMultiloc={form.imageAltText}
-              onChange={form.changeImageAltText}
-            />
-          </LanguageGroup>
+            label={formatMessage(messages.altText)}
+            placeholder={formatMessage(messages.altTextPlaceholder)}
+            valueMultiloc={form.imageAltText}
+            onChange={form.changeImageAltText}
+          />
         </>
       ) : (
         <>

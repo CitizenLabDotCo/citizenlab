@@ -1,11 +1,17 @@
-import React, { ReactNode, RefCallback } from 'react';
+import React, { ReactNode, RefCallback, useContext } from 'react';
 
 import { Multiloc, SupportedLocale } from 'typings';
 
 import TextField from 'design-system/TextField';
+import TranslatedField from 'design-system/TranslatedField';
 
+import { appLocalePairs } from 'containers/App/constants';
+
+import LanguageButtonContext from './LanguageButtonContext';
+import LanguageGroup from './LanguageGroup';
 import LocaleSwitcher from './LocaleSwitcher';
 import styles from './MultilocFields.module.css';
+import { hasText, LanguageGroupState } from './useLanguageGroup';
 import useSelectedLocale from './useSelectedLocale';
 import 'design-system/tokens.css';
 
@@ -18,6 +24,9 @@ type Props = LabelProps & {
   id?: string;
   // Set when one switcher above drives a group of fields; the field then has none of its own.
   locale?: SupportedLocale;
+  // Set when the field is a language group on its own: in the new back office
+  // it carries the group's picker, count and missing line.
+  group?: LanguageGroupState;
   description?: ReactNode;
   placeholder?: string;
   valueMultiloc: Multiloc | null | undefined;
@@ -31,34 +40,52 @@ type Props = LabelProps & {
 };
 
 // A multilingual text field: one design-system TextField, showing the locale
-// picked in the switcher above it.
-const MultilocTextField = ({
-  id,
-  locale,
-  label,
-  labelTooltip,
-  'aria-label': ariaLabel,
-  description,
-  placeholder,
-  valueMultiloc,
-  onChange,
-  onBlur,
-  inputRef,
-  errorMessage,
-  size,
-  maxCharCount,
-}: Props) => {
+// picked in the switcher above it. In the new back office a field on its own
+// picks its language inside the field.
+const MultilocTextField = (props: Props) => {
+  const redesigned = useContext(LanguageButtonContext);
+  const {
+    group,
+    id,
+    locale,
+    label,
+    labelTooltip,
+    'aria-label': ariaLabel,
+    description,
+    placeholder,
+    valueMultiloc,
+    onChange,
+    onBlur,
+    inputRef,
+    errorMessage,
+    size,
+    maxCharCount,
+  } = props;
   const {
     locales,
     selectedLocale: defaultLocale,
     setSelectedLocale,
   } = useSelectedLocale();
-  const selectedLocale = locale ?? defaultLocale;
+  const ownLocale = group ? group.selectedLocale : defaultLocale;
+  const selectedLocale = locale ?? ownLocale;
 
   if (!selectedLocale) return null;
 
-  const value = valueMultiloc?.[selectedLocale] ?? '';
   const name = label === undefined ? ariaLabel : label;
+
+  if (group && !redesigned) {
+    return (
+      <LanguageGroup group={group} aria-label={name}>
+        <MultilocTextField
+          {...props}
+          group={undefined}
+          locale={selectedLocale}
+        />
+      </LanguageGroup>
+    );
+  }
+
+  const value = valueMultiloc?.[selectedLocale] ?? '';
 
   const handleChange = (newValue: string) => {
     if (maxCharCount !== undefined && newValue.length > maxCharCount) return;
@@ -74,6 +101,46 @@ const MultilocTextField = ({
         {`${value.length}/${maxCharCount}`}
       </>
     );
+
+  if (redesigned && !locale) {
+    const fieldLocales = group ? group.locales : locales;
+    const translated = {
+      id,
+      value,
+      onChange: handleChange,
+      onBlur,
+      inputRef,
+      placeholder,
+      description: help,
+      errorMessage,
+      languages: group
+        ? group.languages
+        : fieldLocales.map((option) => ({
+            id: option,
+            name: appLocalePairs[option],
+            done: hasText(valueMultiloc?.[option]),
+          })),
+      selectedLanguage: selectedLocale,
+      onLanguageChange: (id: string) =>
+        (group ? group.setSelectedLocale : setSelectedLocale)(
+          fieldLocales.find((option) => option === id)
+        ),
+      hasText: group
+        ? group.hasText
+        : fieldLocales.some((option) => hasText(valueMultiloc?.[option])),
+      blockedMessage: group?.error,
+    };
+
+    return label === undefined ? (
+      <TranslatedField aria-label={ariaLabel} {...translated} />
+    ) : (
+      <TranslatedField
+        label={label}
+        labelTooltip={labelTooltip}
+        {...translated}
+      />
+    );
+  }
 
   const field =
     label === undefined ? (

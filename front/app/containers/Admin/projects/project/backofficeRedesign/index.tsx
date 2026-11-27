@@ -109,7 +109,7 @@ const ProjectWorkspace = ({
     // language group marks the line that names what is left to translate.
     const frame = requestAnimationFrame(() => {
       const error = workspaceRef.current?.querySelector<HTMLElement>(
-        '[slot="errorMessage"], [data-save-error], .e2e-error-message:not(.error-exit):not(.error-exit-active)'
+        '[slot="errorMessage"], [data-translation-gap], .e2e-error-message:not(.error-exit):not(.error-exit-active)'
       );
       error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
