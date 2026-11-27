@@ -15,7 +15,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-const variants: ButtonVariant[] = ['primary', 'secondary', 'quiet', 'danger'];
+const variants: ButtonVariant[] = [
+  'primary',
+  'secondary',
+  'quiet',
+  'danger',
+  'quietDanger',
+];
 
 export const AllVariants: Story = {
   render: () => (

@@ -1,0 +1,74 @@
+.field {
+  composes: field from '../Field/Field.module.css';
+}
+
+/* The Text field's 36 px box. */
+.frame {
+  composes: input size36 from '../TextField/input.module.css';
+  position: relative;
+}
+
+.field[data-open] .frame {
+  border-color: var(--gv-border-control-active);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-tertiary);
+}
+
+/* The button covers the whole box, so a click anywhere opens the calendar. */
+.trigger {
+  composes: button from '../reset.module.css';
+  composes: ui from '../typography.module.css';
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  gap: var(--gv-space-8);
+  min-width: 0;
+  height: 100%;
+  margin: 0 calc(-1 * var(--gv-space-10));
+  padding: 0 var(--gv-space-10);
+  border-radius: inherit;
+  color: inherit;
+  text-align: start;
+  outline: none;
+  cursor: pointer;
+}
+
+.value,
+.placeholder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.placeholder {
+  color: var(--gv-text-placeholder);
+}
+
+.time {
+  display: flex;
+  min-width: 0;
+}
+
+/* The library leaves 16 between the clock and the start time; the segments carry 2 of it. */
+.startTime {
+  composes: time;
+  margin-left: var(--gv-space-6);
+}
+
+.segments {
+  composes: segments from '../DateField/DateInput.module.css';
+}
+
+.popover {
+  composes: dropdown from '../surfaces.module.css';
+  padding: var(--gv-space-12);
+  /* React Aria caps the height to the viewport. */
+  overflow: auto;
+}
+
+.dialog {
+  outline: none;
+}
