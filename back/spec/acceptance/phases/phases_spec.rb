@@ -546,7 +546,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
+          custom_field_answers: [build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat dog])]
         )
       end
       let!(:survey_response2) do
@@ -555,7 +555,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
+          custom_field_answers: [build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat])]
         )
       end
 
@@ -614,11 +614,7 @@ resource 'Phases' do
         let!(:i1) { create_idea(phase, 1, 0, 2) }
         let!(:i2) { create_idea(phase, 1, 1, 0) }
         let!(:i3) { create_idea(phase, 1, 1, 1) }
-
-        before do
-          # idea with only neutral reactions that should not be included in results
-          create_idea(phase, 0, 1, 0)
-        end
+        let!(:i4) { create_idea(phase, 0, 1, 0) }
 
         example_request 'Get common ground results' do
           assert_status 200
@@ -641,12 +637,22 @@ resource 'Phases' do
           expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id]
           expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id]
           # i1 sits between the two thresholds, so only the full list carries it
-          expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id]
+          expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id, i4.id]
+
+          neutral_idea = response_data.dig(:attributes, :ideas_by_agreement).last
+          expect(neutral_idea).to include(
+            id: i4.id,
+            agree_percent: 0,
+            agreement: nil,
+            votes: { down: 0, neutral: 1, up: 0 }
+          )
 
           top_controversial_idea = response_data.dig(:attributes, :top_controversial_ideas, 0)
           expect(top_controversial_idea.with_indifferent_access).to match(
             id: i3.id,
             title_multiloc: i3.title_multiloc,
+            agree_percent: 33, # 1 of 3 reactions agrees
+            agreement: 'split',
             votes: { down: 1, neutral: 1, up: 1 }
           )
 
@@ -654,6 +660,8 @@ resource 'Phases' do
           expect(top_consensus_idea.with_indifferent_access).to match(
             id: i2.id,
             title_multiloc: i2.title_multiloc,
+            agree_percent: 0,
+            agreement: 'split', # 1 of 2 reactions disagrees
             votes: { down: 1, neutral: 1, up: 0 }
           )
         end
@@ -678,7 +686,7 @@ resource 'Phases' do
             })
             expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id]
             expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id]
-            expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id]
+            expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id, i4.id]
             expect(response_data.dig(:attributes, :ideas_by_agreement, 0, :votes)).to eq({ up: 2, down: 1, neutral: 0 })
           end
         end
@@ -709,8 +717,8 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           custom_field_answers: [
-            build(:custom_field_answer, key: sentiment_question1.key, value: 2),
-            build(:custom_field_answer, key: sentiment_question2.key, value: 4)
+            build(:custom_field_answer, custom_field: sentiment_question1, value: 2),
+            build(:custom_field_answer, custom_field: sentiment_question2, value: 4)
           ],
           created_at: Time.new(2025, 1, 1)
         )
@@ -721,8 +729,8 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           custom_field_answers: [
-            build(:custom_field_answer, key: sentiment_question1.key, value: 3),
-            build(:custom_field_answer, key: sentiment_question2.key, value: 1)
+            build(:custom_field_answer, custom_field: sentiment_question1, value: 3),
+            build(:custom_field_answer, custom_field: sentiment_question2, value: 1)
           ],
           created_at: Time.new(2025, 4, 1)
         )
@@ -768,8 +776,8 @@ resource 'Phases' do
               creation_phase: active_phase,
               author: author,
               custom_field_answers: [
-                build(:custom_field_answer, key: sentiment_question1.key, value: 5),
-                build(:custom_field_answer, key: sentiment_question2.key, value: 5)
+                build(:custom_field_answer, custom_field: sentiment_question1, value: 5),
+                build(:custom_field_answer, custom_field: sentiment_question2, value: 5)
               ],
               created_at: Time.new(2025, 1, 1)
             )
@@ -807,7 +815,7 @@ resource 'Phases' do
             project: project,
             creation_phase: active_phase,
             author: author,
-            custom_field_answers: [build(:custom_field_answer, key: sentiment_question.key, value: 3)]
+            custom_field_answers: [build(:custom_field_answer, custom_field: sentiment_question, value: 3)]
           )
         end
       end
@@ -851,7 +859,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
+          custom_field_answers: [build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat dog])]
         )
       end
       let!(:survey_response2) do
@@ -860,7 +868,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
+          custom_field_answers: [build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat])]
         )
       end
       let!(:survey_response3) do
@@ -869,7 +877,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[dog])]
+          custom_field_answers: [build(:custom_field_answer, custom_field: multiselect_field, value: %w[dog])]
         )
       end
 
@@ -918,7 +926,7 @@ resource 'Phases' do
               project: project,
               creation_phase: active_phase,
               phases: [active_phase],
-              custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
+              custom_field_answers: [build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat dog])]
             )
           end
           let!(:survey_response2) do
@@ -927,7 +935,7 @@ resource 'Phases' do
               project: project,
               creation_phase: active_phase,
               phases: [active_phase],
-              custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
+              custom_field_answers: [build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat])]
             )
           end
 
@@ -1064,7 +1072,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
+          custom_field_answers: [build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat dog])]
         )
       end
 

@@ -2,6 +2,9 @@
 // native de-AT January month name "Jänner"/"Jän" -> "Januar"/"Jan"). Keep it
 // first.
 import 'utils/patchIntlDeAtJanuary';
+// Side-effect import: inside the admin phase preview, this blocks writes before
+// any other module runs. Keep it before the app imports.
+import 'utils/phasePreview/install';
 
 import React, { StrictMode, useEffect } from 'react';
 
@@ -13,6 +16,7 @@ import 'tippy.js/themes/light.css';
 import * as Sentry from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { isbot } from 'isbot';
 import modules from 'modules';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
@@ -22,7 +26,15 @@ import OutletsProvider from 'containers/OutletsProvider';
 import 'utils/locale';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import {
+  isPhasePreviewFrame,
+  phasePreviewReady,
+} from 'utils/phasePreview/runtime';
 import { RouterProvider } from 'utils/router';
+import {
+  installStaleBuildReload,
+  isReloadingForNewBuild,
+} from 'utils/staleBuildReload';
 
 import prefetchData from './prefetchData';
 import { initRouter, router } from './routes';
@@ -31,7 +43,11 @@ import { initRouter, router } from './routes';
 // This must happen before any component renders.
 initRouter(modules.routes);
 
+installStaleBuildReload(router);
+
 Sentry.init({
+  // Bots cause most of our error volume and we can't act on it.
+  enabled: !isPhasePreviewFrame() && !isbot(navigator.userAgent),
   dsn: process.env.SENTRY_DSN,
   environment: process.env.SENTRY_ENV,
   integrations: [
@@ -40,12 +56,18 @@ Sentry.init({
   ],
   tracesSampleRate: 0.05,
   sendClientReports: false,
+  denyUrls: [
+    // Scripts injected by Meta's in-app browsers (Facebook, Instagram).
+    // Sentry matches the frame that threw, so our own errors still get through.
+    /^iabjs:\/\//,
+  ],
+  beforeSend: (event) => (isReloadingForNewBuild() ? null : event),
 });
 
 const Root = () => {
   useEffect(() => {
     prefetchData();
-    modules.afterMountApplication();
+    if (!isPhasePreviewFrame()) modules.afterMountApplication();
   }, []);
 
   return (
@@ -57,7 +79,7 @@ const Root = () => {
           </LanguageProvider>
         </HelmetProvider>
       </OutletsProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {!isPhasePreviewFrame() && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );
 };
@@ -66,7 +88,7 @@ const mountApplication = () => {
   const container = document.getElementById('app');
   const root = createRoot(container!);
   try {
-    modules.beforeMountApplication();
+    if (!isPhasePreviewFrame()) modules.beforeMountApplication();
   } finally {
     // We don't want to use StrictMode during E2E tests, since it causes test failures due to
     // some issues with the re-rendering & re-running of effects in the JSONForms and react-select libraries.
@@ -80,4 +102,10 @@ const mountApplication = () => {
   }
 };
 
-mountApplication();
+// The phase preview mounts once the editor has sent its first snapshot.
+const previewReady = phasePreviewReady();
+if (previewReady) {
+  previewReady.then(mountApplication);
+} else {
+  mountApplication();
+}

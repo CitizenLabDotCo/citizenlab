@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { ReactNode, useState } from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import Button from 'design-system/Button';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
+import ExpandAllContext from 'containers/Admin/projects/_shared/components/SettingsPanel/ExpandAllContext';
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import useExpandAll from 'containers/Admin/projects/_shared/components/SettingsPanel/useExpandAll';
 import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
+import postManagerMessages from 'components/admin/PostManager/messages';
+import assigneeMessages from 'components/admin/ProjectAssignee/messages';
+
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './DraftMethodSettings.module.css';
 import messages from './messages';
-import PanelSettings from './PanelSettings';
+import 'design-system/tokens.css';
 
 // Information has nothing to set here, and document annotation's Konveio link
 // sits in the build panel.
@@ -20,7 +28,13 @@ const METHODS_WITHOUT_SETTINGS: ParticipationMethod[] = [
   'document_annotation',
 ];
 
+export type SetupSettingsAction = 'access' | 'notifications' | 'moderation';
+
 interface Props {
+  surveyPlacement?: ReactNode;
+  onOpenSetting: (action: SetupSettingsAction) => Promise<void>;
+  saving: boolean;
+  uploading: boolean;
   formData: IUpdatedPhaseProperties;
   validationErrors: ValidationErrors;
   apiErrors: CLErrors | null;
@@ -29,6 +43,10 @@ interface Props {
 }
 
 const DraftMethodSettings = ({
+  surveyPlacement,
+  onOpenSetting,
+  saving,
+  uploading,
   formData,
   validationErrors,
   apiErrors,
@@ -36,27 +54,89 @@ const DraftMethodSettings = ({
   setValidationErrors,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const expandAll = useExpandAll();
+  const [opening, setOpening] = useState<SetupSettingsAction>();
+
+  const open = async (action: SetupSettingsAction) => {
+    if (saving || uploading || opening) return;
+
+    setOpening(action);
+    try {
+      await onOpenSetting(action);
+    } finally {
+      setOpening(undefined);
+    }
+  };
+
+  const moderationAction = (
+    <Button
+      variant="secondary"
+      size={32}
+      data-cy="draft-moderation-settings"
+      isDisabled={saving || uploading}
+      isPending={opening === 'moderation'}
+      onPress={() => open('moderation')}
+    >
+      {formatMessage(assigneeMessages.assignee)}
+    </Button>
+  );
 
   return (
-    <PanelSettings p="0 18px 24px">
-      {!METHODS_WITHOUT_SETTINGS.some(
-        (method) => method === formData.participation_method
-      ) && (
-        <PhaseParticipationConfig
-          formData={formData}
-          validationErrors={validationErrors}
-          apiErrors={apiErrors}
-          onChange={onChange}
-          setValidationErrors={setValidationErrors}
-          hideMethodPicker
-          layout="panel"
-        />
-      )}
+    <ExpandAllContext.Provider value={expandAll}>
+      <div className={styles.panel}>
+        {!METHODS_WITHOUT_SETTINGS.some(
+          (method) => method === formData.participation_method
+        ) && (
+          <PhaseParticipationConfig
+            moderationAction={moderationAction}
+            formData={formData}
+            validationErrors={validationErrors}
+            apiErrors={apiErrors}
+            onChange={onChange}
+            setValidationErrors={setValidationErrors}
+            hideMethodPicker
+            layout="panel"
+            surveyPlacement={surveyPlacement}
+          />
+        )}
 
-      <Text variant="boHelper">
-        {formatMessage(messages.saveToEditSettings)}
-      </Text>
-    </PanelSettings>
+        <div className={styles.actions}>
+          <Button
+            variant="secondary"
+            size={32}
+            data-cy="draft-access-settings"
+            isDisabled={saving || uploading}
+            isPending={opening === 'access'}
+            onPress={() => open('access')}
+          >
+            {formatMessage(messages.editAccess)}
+          </Button>
+          <PanelGroup
+            label={formatMessage(messages.participantCommunications)}
+            defaultOpen
+          >
+            <Button
+              variant="secondary"
+              size={32}
+              data-cy="draft-notification-settings"
+              isDisabled={saving || uploading}
+              isPending={opening === 'notifications'}
+              onPress={() => open('notifications')}
+            >
+              {formatMessage(messages.participantCommunications)}
+            </Button>
+          </PanelGroup>
+          {formData.participation_method === 'voting' && (
+            <PanelGroup
+              label={formatMessage(postManagerMessages.assignee)}
+              defaultOpen
+            >
+              {moderationAction}
+            </PanelGroup>
+          )}
+        </div>
+      </div>
+    </ExpandAllContext.Provider>
   );
 };
 

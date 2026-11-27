@@ -1,0 +1,113 @@
+.checkbox {
+  composes: body from '../typography.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  color: var(--gv-text-primary);
+  cursor: pointer;
+}
+
+.checkbox[data-disabled] {
+  opacity: var(--gv-opacity-disabled);
+  color: var(--gv-text-disabled);
+  cursor: default;
+}
+
+.box {
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-4);
+  background: var(--gv-surface-panel);
+  transition-property: background-color, border-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+/* Unchecked */
+.checkbox[data-hovered] .box {
+  border-color: var(--gv-border-control-active);
+}
+
+.checkbox[data-pressed] .box {
+  background: var(--gv-surface-pressed);
+  border-color: var(--gv-border-control-active);
+}
+
+.checkbox[data-disabled] .box {
+  background: var(--gv-surface-sunken);
+}
+
+/* Checked and Indeterminate */
+.checkbox[data-selected] .box,
+.checkbox[data-indeterminate] .box {
+  background: var(--gv-component-checkbox-surface-checked);
+  border-color: var(--gv-component-checkbox-border-checked);
+}
+
+.checkbox[data-selected][data-hovered] .box,
+.checkbox[data-indeterminate][data-hovered] .box {
+  background: var(--gv-surface-selected-strong);
+  border-color: var(--gv-surface-selected-strong);
+}
+
+.checkbox[data-selected][data-pressed] .box,
+.checkbox[data-indeterminate][data-pressed] .box {
+  background: var(--gv-surface-brand-strong);
+  border-color: var(--gv-surface-brand-strong);
+}
+
+/* Figma draws the focus stroke on the box itself, 2 px outside with no gap, replacing its border. */
+.checkbox[data-focus-visible] .box {
+  border-color: transparent;
+  outline: var(--gv-border-width-2) solid var(--gv-border-focused);
+}
+
+/* The tick draws in after the box fills; clearing it fades without rewinding. */
+.tick {
+  width: 11px;
+  height: 11px;
+  color: var(--gv-icon-inverse);
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  transition: opacity var(--gv-motion-duration-instant)
+      var(--gv-motion-easing-exit),
+    clip-path var(--gv-motion-duration-instant) step-end;
+}
+
+.tick path {
+  stroke-width: 1.5px;
+  vector-effect: non-scaling-stroke;
+}
+
+.checkbox[data-selected]:not([data-indeterminate]) .tick {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+  transition: clip-path var(--gv-motion-duration-medium)
+    var(--gv-motion-easing-enter) var(--gv-motion-stagger);
+}
+
+.dash {
+  display: none;
+  width: 8px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--gv-icon-inverse);
+}
+
+.checkbox[data-indeterminate] .tick {
+  display: none;
+}
+
+.checkbox[data-indeterminate] .dash {
+  display: block;
+}
+
+.label {
+  min-width: 0;
+}

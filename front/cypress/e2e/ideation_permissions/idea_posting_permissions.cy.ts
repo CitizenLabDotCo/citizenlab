@@ -1,3 +1,5 @@
+import moment = require('moment');
+
 import { logIn } from '../../support/auth';
 import { randomString, randomEmail } from '../../support/commands';
 
@@ -226,5 +228,78 @@ describe('idea posting permissions for non-active users', () => {
   after(() => {
     cy.apiRemoveUser(userId);
     cy.apiRemoveCustomField(customFieldId);
+  });
+});
+
+describe('idea posting permissions use the phase in the URL', () => {
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+  let userId: string;
+  let projectId: string;
+  let projectSlug: string;
+  let pastPhaseId: string;
+  let currentPhaseId: string;
+
+  before(() => {
+    cy.apiSignup(firstName, lastName, email, password).then((response) => {
+      userId = response.body.data.id;
+    });
+
+    cy.apiCreateProject({
+      title: randomString(),
+      descriptionPreview: randomString(),
+      publicationStatus: 'published',
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+
+      cy.apiCreatePhase({
+        projectId,
+        title: randomString(),
+        startAt: moment().subtract(60, 'days').format('DD/MM/YYYY'),
+        endAt: moment().subtract(31, 'days').format('DD/MM/YYYY'),
+        participationMethod: 'ideation',
+        canPost: true,
+        canReact: true,
+        canComment: true,
+      }).then((phase) => {
+        pastPhaseId = phase.body.data.id;
+      });
+
+      cy.apiCreatePhase({
+        projectId,
+        title: randomString(),
+        startAt: moment().subtract(30, 'days').format('DD/MM/YYYY'),
+        endAt: moment().add(30, 'days').format('DD/MM/YYYY'),
+        participationMethod: 'ideation',
+        canPost: true,
+        canReact: true,
+        canComment: true,
+      }).then((phase) => {
+        currentPhaseId = phase.body.data.id;
+      });
+    });
+  });
+
+  beforeEach(() => {
+    cy.setLoginCookie(email, password);
+  });
+
+  it('shows the form for the current phase', () => {
+    cy.visit(`projects/${projectSlug}/ideas/new/${currentPhaseId}`);
+    cy.get('#idea-form').should('be.visible');
+  });
+
+  it('does not show the form for a past phase while another phase is open', () => {
+    cy.visit(`projects/${projectSlug}/ideas/new/${pastPhaseId}`);
+    cy.get('#e2e-not-authorized').should('be.visible');
+    cy.get('#idea-form').should('not.exist');
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+    cy.apiRemoveUser(userId);
   });
 });

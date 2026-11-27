@@ -126,8 +126,8 @@ describe Analysis::InputsFinder do
   describe 'author_custom_<uuid>[]' do
     it 'filters correctly on custom_field with input_type select' do
       cf = create(:custom_field_select, :with_options)
-      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: cf.options[0].key)])
-      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: cf.options[1].key)])
+      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: cf.options[0].key)])
+      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: cf.options[1].key)])
       idea1 = create(:idea, project: analysis.source_project, author: author1)
       _idea2 = create(:idea, project: analysis.source_project, author: author2)
       _idea3 = create(:idea, project: analysis.source_project)
@@ -137,8 +137,8 @@ describe Analysis::InputsFinder do
 
     it 'filters correctly on custom_field with input_type date' do
       cf = create(:custom_field_date)
-      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: '2021-01-01')])
-      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: '2022-01-01')])
+      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: '2021-01-01')])
+      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: '2022-01-01')])
       author3 = create(:user)
       idea1 = create(:idea, project: analysis.source_project, author: author1)
       _idea2 = create(:idea, project: analysis.source_project, author: author2)
@@ -149,8 +149,8 @@ describe Analysis::InputsFinder do
 
     it 'filters correctly on custom_field with input_type multiselect' do
       cf = create(:custom_field_multiselect, :with_options)
-      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: [cf.options[0].key, cf.options[1].key])])
-      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: [cf.options[0].key])])
+      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: [cf.options[0].key, cf.options[1].key])])
+      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: [cf.options[0].key])])
       idea1 = create(:idea, project: analysis.source_project, author: author1)
       _idea2 = create(:idea, project: analysis.source_project, author: author2)
       _idea3 = create(:idea, project: analysis.source_project)
@@ -160,9 +160,9 @@ describe Analysis::InputsFinder do
 
     it 'filters correctly on custom_field with input_type number' do
       cf = create(:custom_field_number)
-      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: 10)])
-      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: 20)])
-      author3 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: 30)])
+      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: 10)])
+      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: 20)])
+      author3 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: 30)])
       idea1 = create(:idea, project: analysis.source_project, author: author1)
       _idea2 = create(:idea, project: analysis.source_project, author: author2)
       idea3 = create(:idea, project: analysis.source_project, author: author3)
@@ -178,7 +178,7 @@ describe Analysis::InputsFinder do
 
     it 'returns items with no value on an array with a nil value with input type select' do
       cf = create(:custom_field_select, :with_options)
-      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: cf.options[0].key)])
+      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: cf.options[0].key)])
       author2 = create(:user)
       _idea1 = create(:idea, project: analysis.source_project, author: author1)
       idea2 = create(:idea, project: analysis.source_project, author: author2)
@@ -189,8 +189,8 @@ describe Analysis::InputsFinder do
 
     it 'returns items with no values on an array with a nil value with input type multiselect' do
       cf = create(:custom_field_multiselect, :with_options)
-      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: [cf.options[0].key, cf.options[1].key])])
-      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: [])])
+      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: [cf.options[0].key, cf.options[1].key])])
+      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: [])])
       _idea1 = create(:idea, project: analysis.source_project, author: author1)
       idea2 = create(:idea, project: analysis.source_project, author: author2)
       idea3 = create(:idea, project: analysis.source_project)
@@ -201,7 +201,7 @@ describe Analysis::InputsFinder do
     it 'works correctly with the domicile field, when passed custom_field_options for areas' do
       area = create(:area)
       cf = create(:custom_field_domicile)
-      author = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: area.id)])
+      author = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: area.id)])
       idea1 = create(:idea, project: analysis.source_project, author: author)
       _idea2 = create(:idea, project: analysis.source_project)
       @params = { "author_custom_#{cf.id}": [cf.options[0].key] }
@@ -212,9 +212,9 @@ describe Analysis::InputsFinder do
   describe 'author_custom_<uuid>_from and author_custom_<uuid>_to' do
     it 'filters correctly on custom_field with input_type number' do
       cf = create(:custom_field_birthyear)
-      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: 1990)])
-      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: 2000)])
-      author3 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: 2010)])
+      author1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: 1990)])
+      author2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: 2000)])
+      author3 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf, value: 2010)])
       author4 = create(:user)
       author5 = create(:user)
       idea1 = create(:idea, project: analysis.source_project, author: author1)
@@ -241,25 +241,25 @@ describe Analysis::InputsFinder do
     let_it_be(:input0) { create(:idea, project: analysis.source_project) }
     let_it_be(:input1) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: custom_field_select.key, value: custom_field_select.options[0].key),
-        build(:custom_field_answer, key: custom_field_multiselect.key, value: [custom_field_multiselect.options[0].key]),
-        build(:custom_field_answer, key: custom_field_date.key, value: '2022-01-01'),
-        build(:custom_field_answer, key: custom_field_number.key, value: 1),
-        build(:custom_field_answer, key: custom_field_linear_scale.key, value: 1),
-        build(:custom_field_answer, key: custom_field_rating.key, value: 1),
-        build(:custom_field_answer, key: custom_field_multiselect_image.key, value: [custom_field_multiselect_image.options[0].key])
+        build(:custom_field_answer, custom_field: custom_field_select, value: custom_field_select.options[0].key),
+        build(:custom_field_answer, custom_field: custom_field_multiselect, value: [custom_field_multiselect.options[0].key]),
+        build(:custom_field_answer, custom_field: custom_field_date, value: '2022-01-01'),
+        build(:custom_field_answer, custom_field: custom_field_number, value: 1),
+        build(:custom_field_answer, custom_field: custom_field_linear_scale, value: 1),
+        build(:custom_field_answer, custom_field: custom_field_rating, value: 1),
+        build(:custom_field_answer, custom_field: custom_field_multiselect_image, value: [custom_field_multiselect_image.options[0].key])
       ])
     end
 
     let_it_be(:input2) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: custom_field_select.key, value: custom_field_select.options[1].key),
-        build(:custom_field_answer, key: custom_field_multiselect.key, value: [custom_field_multiselect.options[1].key]),
-        build(:custom_field_answer, key: custom_field_date.key, value: '2022-01-02'),
-        build(:custom_field_answer, key: custom_field_number.key, value: 2),
-        build(:custom_field_answer, key: custom_field_linear_scale.key, value: 2),
-        build(:custom_field_answer, key: custom_field_rating.key, value: 2),
-        build(:custom_field_answer, key: custom_field_multiselect_image.key, value: [custom_field_multiselect_image.options[1].key])
+        build(:custom_field_answer, custom_field: custom_field_select, value: custom_field_select.options[1].key),
+        build(:custom_field_answer, custom_field: custom_field_multiselect, value: [custom_field_multiselect.options[1].key]),
+        build(:custom_field_answer, custom_field: custom_field_date, value: '2022-01-02'),
+        build(:custom_field_answer, custom_field: custom_field_number, value: 2),
+        build(:custom_field_answer, custom_field: custom_field_linear_scale, value: 2),
+        build(:custom_field_answer, custom_field: custom_field_rating, value: 2),
+        build(:custom_field_answer, custom_field: custom_field_multiselect_image, value: [custom_field_multiselect_image.options[1].key])
       ])
     end
 
@@ -322,31 +322,31 @@ describe Analysis::InputsFinder do
     let_it_be(:input0) { create(:idea, project: analysis.source_project) }
     let_it_be(:input1) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: custom_field_text.key, value: 'value 1')
+        build(:custom_field_answer, custom_field: custom_field_text, value: 'value 1')
       ])
     end
 
     let_it_be(:input2) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: custom_field_text.key, value: 'value 2')
+        build(:custom_field_answer, custom_field: custom_field_text, value: 'value 2')
       ])
     end
 
     let_it_be(:input3) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: custom_field_text.key, value: '')
+        build(:custom_field_answer, custom_field: custom_field_text, value: '')
       ])
     end
 
     let_it_be(:input4) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: custom_field_text.key, value: '  ')
+        build(:custom_field_answer, custom_field: custom_field_text, value: '  ')
       ])
     end
 
     let_it_be(:input5) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: custom_field_text.key, value: "   \n")
+        build(:custom_field_answer, custom_field: custom_field_text, value: "   \n")
       ])
     end
 
@@ -368,20 +368,20 @@ describe Analysis::InputsFinder do
 
     let_it_be(:input_no_followup) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: main_field.key, value: 2)
+        build(:custom_field_answer, custom_field: main_field, value: 2)
       ])
     end
 
     let_it_be(:input_with_followup) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: main_field.key, value: 1),
+        build(:custom_field_answer, custom_field: main_field, value: 1),
         build(:custom_field_answer, key: follow_up_key, value: 'too cold', custom_field: main_field)
       ])
     end
 
     let_it_be(:input_blank_followup) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: main_field.key, value: 5),
+        build(:custom_field_answer, custom_field: main_field, value: 5),
         build(:custom_field_answer, key: follow_up_key, value: "  \n", custom_field: main_field)
       ])
     end
@@ -412,23 +412,23 @@ describe Analysis::InputsFinder do
     let_it_be(:input0) { create(:idea, project: analysis.source_project) }
     let_it_be(:input1) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: custom_field_select.key, value: custom_field_select.options[0].key),
-        build(:custom_field_answer, key: custom_field_multiselect.key, value: [custom_field_multiselect.options[0].key]),
-        build(:custom_field_answer, key: custom_field_date.key, value: '2022-01-01'),
-        build(:custom_field_answer, key: custom_field_number.key, value: 1),
-        build(:custom_field_answer, key: custom_field_linear_scale.key, value: 1),
-        build(:custom_field_answer, key: custom_field_rating.key, value: 1)
+        build(:custom_field_answer, custom_field: custom_field_select, value: custom_field_select.options[0].key),
+        build(:custom_field_answer, custom_field: custom_field_multiselect, value: [custom_field_multiselect.options[0].key]),
+        build(:custom_field_answer, custom_field: custom_field_date, value: '2022-01-01'),
+        build(:custom_field_answer, custom_field: custom_field_number, value: 1),
+        build(:custom_field_answer, custom_field: custom_field_linear_scale, value: 1),
+        build(:custom_field_answer, custom_field: custom_field_rating, value: 1)
       ])
     end
 
     let_it_be(:input2) do
       create(:idea, project: analysis.source_project, custom_field_answers: [
-        build(:custom_field_answer, key: custom_field_select.key, value: custom_field_select.options[1].key),
-        build(:custom_field_answer, key: custom_field_multiselect.key, value: [custom_field_multiselect.options[1].key]),
-        build(:custom_field_answer, key: custom_field_date.key, value: '2022-01-02'),
-        build(:custom_field_answer, key: custom_field_number.key, value: 2),
-        build(:custom_field_answer, key: custom_field_linear_scale.key, value: 2),
-        build(:custom_field_answer, key: custom_field_rating.key, value: 2)
+        build(:custom_field_answer, custom_field: custom_field_select, value: custom_field_select.options[1].key),
+        build(:custom_field_answer, custom_field: custom_field_multiselect, value: [custom_field_multiselect.options[1].key]),
+        build(:custom_field_answer, custom_field: custom_field_date, value: '2022-01-02'),
+        build(:custom_field_answer, custom_field: custom_field_number, value: 2),
+        build(:custom_field_answer, custom_field: custom_field_linear_scale, value: 2),
+        build(:custom_field_answer, custom_field: custom_field_rating, value: 2)
       ])
     end
 

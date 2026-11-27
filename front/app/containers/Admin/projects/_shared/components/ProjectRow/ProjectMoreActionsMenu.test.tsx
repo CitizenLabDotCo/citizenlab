@@ -62,6 +62,7 @@ const server = setupServer(
 
 describe('ProjectMoreActionsMenu', () => {
   beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
   it('calls setError with an error when copying fails', async () => {
@@ -89,6 +90,37 @@ describe('ProjectMoreActionsMenu', () => {
         'There was an error copying this project, please try again later.'
       );
     });
+  });
+
+  it('starts only one copy when copy is clicked again while copying', async () => {
+    let copyRequests = 0;
+    server.use(
+      http.post(copyApiPath, async () => {
+        copyRequests += 1;
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        return HttpResponse.json(null, { status: 500 });
+      })
+    );
+    render(<ProjectMoreActionsMenu {...defaultProps} />);
+    const user = userEvent.setup();
+
+    await user.click(screen.getByTestId('moreOptionsButton'));
+    await user.click(
+      await screen.findByRole('menuitem', { name: 'Copy project' })
+    );
+
+    // Reopen the menu while the copy is running and click the item again
+    await user.click(screen.getByTestId('moreOptionsButton'));
+    const copyingItem = await screen.findByRole('menuitem', {
+      name: 'Copying project…',
+    });
+    expect(copyingItem).toHaveAttribute('aria-disabled', 'true');
+    await user.click(copyingItem);
+
+    await waitFor(() => {
+      expect(defaultProps.setError).toHaveBeenCalled();
+    });
+    expect(copyRequests).toBe(1);
   });
 
   it('calls setError with an error when deleting fails', async () => {

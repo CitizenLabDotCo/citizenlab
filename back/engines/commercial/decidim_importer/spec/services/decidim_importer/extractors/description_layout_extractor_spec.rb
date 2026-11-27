@@ -114,6 +114,22 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
     expect(left.last['props']['text']['fr-FR']).to eq('<p>Une description</p>')
   end
 
+  # Only the bridge's inline images are stored in Go Vocal on import; a TextMultiloc's would keep
+  # loading from the Decidim site.
+  it 'puts a description holding an image in a RichTextMultiloc bridge node' do
+    html = '<p>Le plan</p><img src="https://decidim.example/rails/active_storage/blobs/redirect/abc/plan.png">'
+    craftjs = extract([row('description' => { fr: html }.to_json)]).first.attributes['craftjs_json']
+
+    bridge = nodes_named(craftjs, 'RichTextMultiloc').sole
+    expect(bridge['props']['text']).to eq('fr-FR' => html)
+    expect(bridge['custom']).to eq(
+      ContentBuilder::CustomPageLayoutService.new.craftjs_json_for_body('fr-FR' => html)
+        .dig(ContentBuilder::CustomPageLayoutService::TOP_INFO_ID, 'custom')
+    )
+    expect(bridge['custom']).to be_present
+    expect(nodes_named(craftjs, 'TextMultiloc')).to be_empty
+  end
+
   it 'lays out subtitle (H2), short description and description as separate TextMultilocs, in that order' do
     register_participation_phase
     craftjs = extract([row(

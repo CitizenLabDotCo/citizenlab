@@ -1,17 +1,26 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import Banner from 'design-system/Banner';
+import Disclosure from 'design-system/Disclosure';
+import ReviewStatus from 'design-system/ReviewStatus';
+import tooltipMessages from 'design-system/Tooltip/messages';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
+import { SetupReviewCard } from 'api/phases/types';
+
+import { useIntl } from 'utils/cl-intl';
+
+import reviewMessages from './messages';
+import styles from './SetupCard.module.css';
 import SetupCardButton, { CardButton } from './SetupCardButton';
+import { useSetupReview } from './SetupReview';
+import { SummaryReviewedContext } from './SummaryPill';
+import 'design-system/tokens.css';
 
 interface Props {
   title: string;
+  reviewKey?: SetupReviewCard;
+  reviewNeedsChoice?: boolean;
   titleTooltip?: JSX.Element;
   action?: ReactNode;
   button?: CardButton;
@@ -20,51 +29,85 @@ interface Props {
 
 const SetupCard = ({
   title,
+  reviewKey,
+  reviewNeedsChoice = false,
   titleTooltip,
   action,
   button,
   children,
-}: Props) => (
-  <Box
-    as="section"
-    display="flex"
-    flexDirection="column"
-    border={`1px solid ${colors.grey200}`}
-    borderRadius={bo.borderRadius}
-  >
-    {button ? (
-      <Box as="h3" m="0">
-        <SetupCardButton
-          title={title}
-          titleTooltip={titleTooltip}
-          action={action}
-          button={button}
-        />
-      </Box>
-    ) : (
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        gap="10px"
-        minHeight="44px"
-        p="8px 8px 8px 12px"
-      >
-        <Box as="h3" m="0" display="flex" alignItems="center" gap="4px">
-          <Text as="span" variant="boControl" fontSize="xs" m="0">
-            {title}
-          </Text>
-          {titleTooltip && <IconTooltip content={titleTooltip} />}
-        </Box>
-        {action}
-      </Box>
-    )}
-    {children && (
-      <Box display="flex" flexDirection="column" gap="12px" p="2px 12px 14px">
-        {children}
-      </Box>
-    )}
-  </Box>
-);
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const review = useSetupReview(reviewKey);
+  const reviewed = review.reviewed && !reviewNeedsChoice;
+  const status = review.enabled ? (
+    <span aria-live="polite">
+      <ReviewStatus
+        status={
+          reviewNeedsChoice ? 'toSet' : reviewed ? 'reviewed' : 'toReview'
+        }
+      />
+    </span>
+  ) : undefined;
+
+  const summary = action && (
+    <SummaryReviewedContext.Provider value={reviewed}>
+      {action}
+    </SummaryReviewedContext.Provider>
+  );
+
+  const staticTitle = titleTooltip ? (
+    <span className={styles.titleRow}>
+      {title}
+      <TooltipMark
+        label={formatMessage(tooltipMessages.moreInformationAbout, {
+          subject: title,
+        })}
+        content={titleTooltip}
+        className={styles.infoMark}
+      />
+    </span>
+  ) : (
+    title
+  );
+
+  const card = button ? (
+    <SetupCardButton
+      title={title}
+      titleTooltip={titleTooltip}
+      staticTitle={staticTitle}
+      status={status}
+      action={summary}
+      button={button}
+    >
+      {children}
+    </SetupCardButton>
+  ) : (
+    <Disclosure
+      header="static"
+      title={staticTitle}
+      status={status}
+      actions={summary}
+    >
+      {children}
+    </Disclosure>
+  );
+
+  if (!review.enabled) return card;
+
+  return (
+    // Any click inside the card counts as reviewing it, including clicks
+    // that a control inside handles itself.
+    <section
+      className={styles.review}
+      data-review-card={reviewKey}
+      onClickCapture={reviewNeedsChoice ? undefined : review.onReview}
+    >
+      {card}
+      {review.isError && (
+        <Banner tone="error">{formatMessage(reviewMessages.failed)}</Banner>
+      )}
+    </section>
+  );
+};
 
 export default SetupCard;

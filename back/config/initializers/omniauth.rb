@@ -13,6 +13,11 @@ OmniAuth.config.full_host = lambda { |_env|
   AppConfiguration.instance&.base_backend_uri
 }
 
+OmniAuth.config.on_failure = lambda { |env|
+  OmniauthFailureService.new.report(env)
+  OmniAuth::FailureEndpoint.call(env)
+}
+
 # Configure the HTTP client of the OpenID Connect gem to use the middleware
 # that parses responses with a content type of application/jwt.
 #

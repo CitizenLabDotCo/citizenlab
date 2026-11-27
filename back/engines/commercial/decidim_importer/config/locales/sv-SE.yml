@@ -9,3 +9,5 @@ sv-SE:
     debate_information_updates: Informationsuppdateringar
     debate_instructions: Instruktioner
     documents_to_consult: Samrådsdokument
+    private_space_members: 'Medlemmar: %{space}'
+    untitled_folder: Namnlös mapp

@@ -1,13 +1,14 @@
-import React, { FormEvent } from 'react';
+import React, { useId } from 'react';
 
 import {
   Toggle,
   IconTooltip,
   Box,
   Text,
-  colors,
 } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import { FieldError } from 'design-system/Field';
 
 import { PresentationMode } from 'api/phases/types';
 
@@ -15,6 +16,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import viewNameMessages from 'components/PostCardsComponents/messages';
 import Error from 'components/UI/Error';
@@ -26,6 +28,8 @@ import messages from '../../../../../messages';
 
 import MapConfigButton from './MapConfigButton';
 import ViewRow from './ViewRow';
+import styles from './ViewSelector.module.css';
+import 'design-system/tokens.css';
 
 interface ViewOption {
   value: PresentationMode;
@@ -61,6 +65,8 @@ const ViewSelector = ({
   variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
+  const errorId = useId();
+  const getApiErrorMessage = useApiErrorText();
   const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
@@ -112,7 +118,7 @@ const ViewSelector = ({
       : []),
   ];
 
-  const handleToggle = (view: PresentationMode) => (_event: FormEvent) => {
+  const handleToggle = (view: PresentationMode) => () => {
     const isEnabled = currentAvailableViews.includes(view);
 
     if (isEnabled) {
@@ -142,9 +148,11 @@ const ViewSelector = ({
     ).length;
     const defaultViewName =
       defaultView && formatMessage(defaultView.shortTitle);
+    const errorMessage = getApiErrorMessage(apiErrors?.presentation_mode);
 
     return (
       <PanelGroup
+        reviewKey="views"
         label={formatMessage(title || messages.availableViews)}
         summary={
           defaultViewName && otherViewsCount > 0
@@ -155,12 +163,14 @@ const ViewSelector = ({
             : defaultViewName
         }
       >
-        <Box display="flex" flexDirection="column">
-          {viewOptions.map((option, index) => (
-            <Box
-              key={option.value}
-              borderTop={index > 0 ? `1px solid ${colors.grey200}` : undefined}
-            >
+        <div
+          className={styles.views}
+          role="group"
+          aria-label={formatMessage(title || messages.availableViews)}
+          aria-describedby={errorMessage ? errorId : undefined}
+        >
+          {viewOptions.map((option) => (
+            <div key={option.value} className={styles.view}>
               <ViewRow
                 title={formatMessage(option.title)}
                 description={
@@ -177,10 +187,10 @@ const ViewSelector = ({
               >
                 {option.value === 'map' && <MapConfigButton />}
               </ViewRow>
-            </Box>
+            </div>
           ))}
-        </Box>
-        <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+        </div>
+        {errorMessage && <FieldError id={errorId}>{errorMessage}</FieldError>}
       </PanelGroup>
     );
   }

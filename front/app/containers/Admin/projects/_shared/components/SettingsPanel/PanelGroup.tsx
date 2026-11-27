@@ -1,59 +1,69 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useContext, useState } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { SetupReviewCard } from 'api/phases/types';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
-import PanelRowButton from './PanelRowButton';
+import ExpandAllContext from './ExpandAllContext';
+import styles from './PanelGroup.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   label: string;
+  reviewKey?: SetupReviewCard;
+  reviewNeedsChoice?: boolean;
   defaultOpen?: boolean;
-  variant?: 'card' | 'row';
   /** Shown as a pill in the card header while the group is closed. */
   summary?: string;
+  // Holds it open while a field inside shows an error, so the error can be seen.
+  hasError?: boolean;
+  onClose?: () => void;
   children: ReactNode;
 }
 
 const PanelGroup = ({
   label,
+  reviewKey,
+  reviewNeedsChoice,
   defaultOpen = false,
-  variant = 'card',
   summary,
+  hasError = false,
+  onClose,
   children,
 }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
-  const toggle = () => setOpen((open) => !open);
+  const expandAll = useContext(ExpandAllContext).count;
+  const [seenExpandAll, setSeenExpandAll] = useState(expandAll);
 
-  if (variant === 'row') {
-    return (
-      <Box borderTop={`1px solid ${colors.grey200}`}>
-        <PanelRowButton
-          label={label}
-          icon={open ? 'chevron-down' : 'chevron-right'}
-          ariaExpanded={open}
-          onClick={toggle}
-        />
-        {open && <Box pb="16px">{children}</Box>}
-      </Box>
-    );
+  // Opens on each Expand all press; adjusted during render, as React recommends for derived state.
+  if (expandAll !== seenExpandAll) {
+    setSeenExpandAll(expandAll);
+    setOpen(true);
   }
+  const isOpen = open || hasError;
+  const toggle = () => {
+    if (isOpen) onClose?.();
+    setOpen(!isOpen);
+  };
 
   return (
-    <Box mb="10px">
+    <div className={styles.group}>
       <SetupCard
         title={label}
-        action={summary && !open && <SummaryPill label={summary} />}
+        reviewKey={reviewKey}
+        reviewNeedsChoice={reviewNeedsChoice}
+        action={summary && <SummaryPill label={summary} />}
         button={{
-          icon: open ? 'chevron-up' : 'chevron-down',
-          expanded: open,
+          icon: isOpen ? 'chevron-up' : 'chevron-down',
+          expanded: isOpen,
           onClick: toggle,
         }}
       >
-        {open && children}
+        {/* Kept mounted while closed, so unsaved edits inside stay registered for saving. */}
+        {children}
       </SetupCard>
-    </Box>
+    </div>
   );
 };
 

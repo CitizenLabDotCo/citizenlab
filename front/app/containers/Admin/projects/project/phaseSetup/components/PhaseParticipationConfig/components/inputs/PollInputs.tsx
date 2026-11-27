@@ -33,37 +33,41 @@ const PollInputs = ({
   phaseId,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const error = <Error apiErrors={apiErrors && apiErrors.poll_anonymous} />;
+  const error = (
+    <Error
+      showBackground={layout !== 'panel'}
+      showIcon={layout !== 'panel'}
+      apiErrors={apiErrors && apiErrors.poll_anonymous}
+    />
+  );
 
   if (layout === 'panel') {
     return (
       <>
-        <Box mb="10px">
-          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+        <Box pt="14px" mb="10px">
+          <PanelHeading
+            label={formatMessage(configMessages.settingsGroup)}
+            expandable
+          />
         </Box>
-        <PanelGroup
-          label={formatMessage(configMessages.participantActionsGroup)}
-          defaultOpen
-        >
-          {phaseId && (
-            <>
-              <PhaseActionAccessRow
-                phaseId={phaseId}
-                action="taking_poll"
-                label={configMessages.takingPollAction}
-              />
-              <PhaseActionAccessRow
-                phaseId={phaseId}
-                action="attending_event"
-                label={messages.attendingEventAction}
-              />
-            </>
-          )}
-        </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.moderationGroup)}
-          defaultOpen
-        >
+        {/* Access rights belong to a saved phase. */}
+        {phaseId && (
+          <PanelGroup
+            label={formatMessage(configMessages.participantActionsGroup)}
+          >
+            <PhaseActionAccessRow
+              phaseId={phaseId}
+              action="taking_poll"
+              label={configMessages.takingPollAction}
+            />
+            <PhaseActionAccessRow
+              phaseId={phaseId}
+              action="attending_event"
+              label={messages.attendingEventAction}
+            />
+          </PanelGroup>
+        )}
+        <PanelGroup label={formatMessage(configMessages.moderationGroup)}>
           <SettingToggleRow
             title={formatMessage(messages.anonymousPolling)}
             description={formatMessage(messages.anonymousPollingTooltip)}

@@ -193,7 +193,7 @@ it-IT:
       personal_data: Dati personali
       personal_data_explanation_private: Invieremo il tuo contributo alla piattaforma partecipativa di %{organizationName}. Se vuoi ricevere via e-mail gli aggiornamenti relativi al tuo contributo, compila i seguenti campi in questa pagina e creeremo un account per te. I tuoi dati non saranno pubblici e saranno utilizzati solo da %{organizationName}. Se non sei d'accordo che i tuoi dati personali vengano utilizzati in questo modo, puoi lasciarli vuoti.
       personal_data_explanation_public: Invieremo il tuo contributo alla piattaforma partecipativa di %{organizationName}. Se vuoi che il tuo nome venga visualizzato come autore di questo contributo e ricevere via e-mail gli aggiornamenti ad esso relativi, compila i seguenti campi in questa pagina e creeremo un account per te. Il tuo indirizzo e-mail non sarà pubblico e sarà utilizzato solo da %{organizationName}. Se vuoi rimanere anonimo o non vuoi che i tuoi dati personali vengano utilizzati in questo modo, puoi lasciarli vuoti.
-      point_print_description: Per indicare la posizione, traccia una X sulla mappa sottostante oppure scrivi l'indirizzo.
+      point_print_description: Per indicare la posizione, segna una X sulla mappa sottostante oppure scrivi l'indirizzo.
       polygon_print_description: Disegna una forma sulla mappa sottostante.
       ranking_print_description: Scrivi un numero da 1 (opzione preferita) a %{max_rank} (opzione meno preferita) in ogni casella. Usa ogni numero solo una volta.
       rating_print_description: Dai una valutazione scrivendo un numero compreso tra 1 (peggiore) e %{max_stars} (migliore).

@@ -35,7 +35,7 @@ RSpec.describe McpServer::ReportingQueryRunner do
 
   describe '.run' do
     it 'returns the columns and rows of the query' do
-      result = described_class.run('SELECT count(*) AS n FROM reporting_contributions')
+      result = described_class.run('SELECT count(*) AS n FROM reporting_contributions', scope: McpServer::QueryScope.all)
 
       expect(result.columns).to eq(['n'])
       expect(result.rows.size).to eq(1)
@@ -53,7 +53,7 @@ RSpec.describe McpServer::ReportingQueryRunner do
         )
       )
 
-      result = described_class.run('SELECT current_user AS u')
+      result = described_class.run('SELECT current_user AS u', scope: McpServer::QueryScope.all)
 
       expect(result.rows).to eq([{ 'u' => 'analytics_reader' }])
     end
@@ -63,7 +63,7 @@ RSpec.describe McpServer::ReportingQueryRunner do
     it 'caps the rows at ROW_LIMIT and says that it truncated' do
       stub_const("#{described_class}::ROW_LIMIT", 2)
 
-      result = described_class.run('SELECT unnest(ARRAY[1, 2, 3]) AS n')
+      result = described_class.run('SELECT unnest(ARRAY[1, 2, 3]) AS n', scope: McpServer::QueryScope.all)
 
       expect(result.rows.size).to eq(2)
       expect(result.truncated).to be true
@@ -72,7 +72,7 @@ RSpec.describe McpServer::ReportingQueryRunner do
     it 'does not claim truncation when the rows exactly fill the cap' do
       stub_const("#{described_class}::ROW_LIMIT", 3)
 
-      result = described_class.run('SELECT unnest(ARRAY[1, 2, 3]) AS n')
+      result = described_class.run('SELECT unnest(ARRAY[1, 2, 3]) AS n', scope: McpServer::QueryScope.all)
 
       expect(result.rows.size).to eq(3)
       expect(result.truncated).to be false
@@ -83,7 +83,7 @@ RSpec.describe McpServer::ReportingQueryRunner do
     # everything it did afterwards.
     it 'leaves the connection unrestricted for a caller that wrapped it in a transaction' do
       ActiveRecord::Base.transaction do
-        described_class.run('SELECT 1 AS n')
+        described_class.run('SELECT 1 AS n', scope: McpServer::QueryScope.all)
 
         expect(ActiveRecord::Base.connection.select_value('SELECT current_user'))
           .not_to eq(described_class::ANALYTICS_READER_ROLE)
@@ -93,9 +93,93 @@ RSpec.describe McpServer::ReportingQueryRunner do
     it 'raises rather than returning a result when there is no tenant to run in' do
       expect do
         Apartment::Tenant.switch('public') do
-          described_class.run('SELECT count(*) AS n FROM reporting_contributions')
+          described_class.run('SELECT count(*) AS n FROM reporting_contributions', scope: McpServer::QueryScope.all)
         end
       end.to raise_error(/No tenant context/)
+    end
+  end
+
+  describe '.run with a project scope' do
+    let!(:mine) { create_reporting_rows }
+    let(:scope) { McpServer::QueryScope.new(project_ids: [mine.id]) }
+
+    before { create_reporting_rows }
+
+    def count(view, scope)
+      described_class.run("SELECT count(*) AS n FROM #{view}", scope: scope).rows.first['n']
+    end
+
+    # One project's rows through the wrapper must be exactly the rows its rule keeps,
+    # for every view a scoped query may read.
+    McpServer::Tools::GetReportingSqlSchema.tables_for(McpServer::QueryScope.new(project_ids: [])).each do |model|
+      it "reads the rows of #{model.table_name} that the view's rule keeps" do
+        expect(count(model.table_name, scope)).to eq model.for_projects([mine.id]).count
+      end
+
+      # Census figures and platform baselines are the same for every scope.
+      next if [Analytics::Reporting::ReferenceDistribution, Analytics::Reporting::PlatformBaseline].include?(model)
+
+      it "reads no rows of #{model.table_name} for an empty scope" do
+        expect(count(model.table_name, McpServer::QueryScope.new(project_ids: []))).to eq 0
+      end
+    end
+
+    # The rows above stay under the view's floor of 5 projects, so the baselines
+    # are empty there and need rows of their own.
+    it 'reads the same platform baselines in every scope' do
+      create_list(:project_with_active_ideation_phase, 5)
+      every_row = count('reporting_platform_baselines', McpServer::QueryScope.all)
+
+      expect(every_row).to be > 0
+      expect(count('reporting_platform_baselines', scope)).to eq every_row
+      expect(count('reporting_platform_baselines', McpServer::QueryScope.new(project_ids: []))).to eq every_row
+    end
+
+    it 'refuses an admin-only view' do
+      expect { described_class.run('SELECT count(*) FROM reporting_staff_activities', scope: scope) }
+        .to raise_error(described_class::Rejected, /reporting_staff_activities/)
+    end
+
+    it 'reads no rows of an admin-only view even when the sandbox lets the name through' do
+      create(:activity, item_type: 'User', item_id: create(:user).id, action: 'created', payload: { 'flow' => 'password' })
+      sql = 'SELECT count(*) AS n FROM reporting_registrations'
+      allow(McpServer::SqlSandboxer).to receive(:validate)
+        .and_return(McpServer::SqlSandboxer::Result.new(valid: true, error: nil, normalized_sql: sql))
+
+      expect(described_class.run(sql, scope: scope).rows).to eq([{ 'n' => 0 }])
+      expect(described_class.run(sql, scope: McpServer::QueryScope.all).rows).to eq([{ 'n' => 1 }])
+    end
+
+    it 'keeps the scope inside a CTE that reuses a view name' do
+      sql = 'WITH reporting_inputs AS (SELECT * FROM reporting_inputs) SELECT DISTINCT project_id FROM reporting_inputs'
+
+      expect(described_class.run(sql, scope: scope).rows).to eq([{ 'project_id' => mine.id }])
+    end
+
+    # The wrapper loads each view's columns the first time a process uses it. Done
+    # under the restricted role, that lookup would fail where the role has no grant,
+    # with an error that blames the view, and count against the query's timeout.
+    it 'builds the scoped SQL as the application user, before the role switch' do
+      role_at_wrap = nil
+      allow(McpServer::ReportingScopeWrapper).to receive(:new).and_wrap_original do |original, *args, **kwargs|
+        wrapper = original.call(*args, **kwargs)
+        allow(wrapper).to receive(:wrap).and_wrap_original do |wrap, sql|
+          role_at_wrap = ActiveRecord::Base.connection.select_value('SELECT current_user')
+          wrap.call(sql)
+        end
+        wrapper
+      end
+
+      described_class.run('SELECT 1 AS n', scope: scope)
+
+      expect(role_at_wrap).not_to be_nil
+      expect(role_at_wrap).not_to eq described_class::ANALYTICS_READER_ROLE
+    end
+
+    it 'keeps the scope inside a subquery' do
+      sql = 'SELECT DISTINCT project_id FROM (SELECT project_id FROM reporting_inputs) inputs'
+
+      expect(described_class.run(sql, scope: scope).rows).to eq([{ 'project_id' => mine.id }])
     end
   end
 end

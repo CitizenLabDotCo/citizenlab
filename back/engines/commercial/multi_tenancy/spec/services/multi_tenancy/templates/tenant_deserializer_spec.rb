@@ -94,6 +94,47 @@ describe MultiTenancy::Templates::TenantDeserializer do
       expect(ProjectFolders::Folder.count).to eq 1
     end
 
+    it 'resolves translation keys in the text props of layout nodes' do
+      template = YAML.load(<<~YAML, aliases: true)
+        models:
+          static_page:
+            - &faq
+              code: faq
+              slug: faq
+              title_multiloc: static_pages.faq_title
+          content_builder/layout:
+            - code: custom_page
+              enabled: true
+              content_buildable_ref: *faq
+              craftjs_json:
+                ROOT:
+                  type:
+                    resolvedName: CustomPageRoot
+                  nodes: [KEYED, INLINE]
+                  isCanvas: true
+                KEYED:
+                  type:
+                    resolvedName: TextMultiloc
+                  props:
+                    text: static_pages.faq_body
+                  parent: ROOT
+                INLINE:
+                  type:
+                    resolvedName: TextMultiloc
+                  props:
+                    text:
+                      en: "<p>Inline text</p>"
+                  parent: ROOT
+      YAML
+
+      service.deserialize(template)
+
+      craftjs_json = ContentBuilder::Layout.find_by!(code: 'custom_page').craftjs_json
+      expect(craftjs_json.dig('KEYED', 'props', 'text', 'en')).to eq I18n.t('static_pages.faq_body', locale: :en)
+      expect(craftjs_json.dig('KEYED', 'props', 'text', 'nl-BE')).to eq I18n.t('static_pages.faq_body', locale: :'nl-BE')
+      expect(craftjs_json.dig('INLINE', 'props', 'text')).to eq('en' => '<p>Inline text</p>')
+    end
+
     it 'creates all records and resolves refs when the records span several transaction batches' do
       stub_const("#{described_class}::TRANSACTION_BATCH_SIZE", 2)
 
@@ -166,7 +207,7 @@ describe MultiTenancy::Templates::TenantDeserializer do
         create(:follower, followable: ideas[0], user: users[1])
 
         field = create(:custom_field)
-        create(:custom_field_answer, answerable: users[0], key: field.key, value: 'blue')
+        create(:custom_field_answer, answerable: users[0], custom_field: field, value: 'blue')
         create(:consent, user: users[1], consented: false)
 
         expected = snapshot

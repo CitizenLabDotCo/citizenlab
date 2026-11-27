@@ -125,6 +125,34 @@ describe UserPolicy do
         expect(scope.resolve.size).to eq 2
       end
     end
+
+    context 'on a super admin' do
+      let(:subject_user) { create(:super_admin) }
+
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:block)   }
+      it { is_expected.not_to permit(:unblock) }
+    end
+
+    context 'on a staff address being made admin' do
+      let(:subject_user) do
+        create(:user, email: 'staff@govocal.com').tap { |user| user.roles = [{ 'type' => 'admin' }] }
+      end
+
+      it { is_expected.to permit(:update) }
+    end
+  end
+
+  context 'for a super admin on another super admin' do
+    let(:current_user) { create(:super_admin) }
+    let(:subject_user) { create(:super_admin) }
+
+    it { is_expected.to permit(:update)  }
+    it { is_expected.to permit(:destroy) }
+    it { is_expected.to permit(:block)   }
+    it { is_expected.to permit(:unblock) }
   end
 
   context 'for a project moderator' do
@@ -348,6 +376,54 @@ describe UserPolicy do
     end
   end
 
+  describe 'userjot_identity?' do
+    subject { described_class.new(current_user, :user).userjot_identity? }
+
+    let(:current_user) { create(:admin) }
+    let(:secret) { 'userjot-project-secret' }
+
+    before do
+      SettingsService.new.activate_feature!('userjot')
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('USERJOT_PROJECT_ID', nil).and_return('userjot-project-id')
+      allow(ENV).to receive(:fetch).with('USERJOT_PROJECT_SECRET', nil).and_return(secret)
+    end
+
+    it { is_expected.to be true }
+
+    %i[project_moderator project_folder_moderator space_moderator].each do |moderator_factory|
+      context "for a #{moderator_factory.to_s.humanize(capitalize: false)}" do
+        let(:current_user) { create(moderator_factory) }
+
+        it { is_expected.to be true }
+      end
+    end
+
+    context 'for a resident' do
+      let(:current_user) { create(:user) }
+
+      it { is_expected.to be false }
+    end
+
+    context 'for a visitor' do
+      let(:current_user) { nil }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context 'when the userjot feature is not active' do
+      before { SettingsService.new.deactivate_feature!('userjot') }
+
+      it { is_expected.to be false }
+    end
+
+    context 'when the secret is missing' do
+      let(:secret) { nil }
+
+      it { is_expected.to be false }
+    end
+  end
+
   describe 'permitted_attributes_for_update' do
     subject(:permitted) { described_class.new(current_user, subject_user).permitted_attributes_for_update }
 
@@ -360,6 +436,7 @@ describe UserPolicy do
       let(:subject_user) { current_user }
 
       it { expect(permits_early_access_opt_ins?).to be true }
+      it { is_expected.to include(:password) }
     end
 
     context 'for an admin on somebody else' do
@@ -367,6 +444,7 @@ describe UserPolicy do
       let(:subject_user) { create(:admin) }
 
       it { expect(permits_early_access_opt_ins?).to be false }
+      it { is_expected.not_to include(:password) }
     end
 
     context 'for a resident on their own record' do

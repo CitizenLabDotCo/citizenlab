@@ -20,8 +20,8 @@ describe CustomFieldService do
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
       create_list(:user, 5) do |user|
-        create(:custom_field_answer, answerable: user, key: cf1.key, value: 'some_value')
-        create(:custom_field_answer, answerable: user, key: cf2.key, value: 'other_value')
+        create(:custom_field_answer, answerable: user, custom_field: cf1, value: 'some_value')
+        create(:custom_field_answer, answerable: user, custom_field: cf2, value: 'other_value')
       end
       create_list(:user, 5)
       service.delete_field_answers(cf1)
@@ -32,13 +32,13 @@ describe CustomFieldService do
     it 'deletes the values that a user field stored on inputs through user fields in form' do
       field = create(:custom_field, key: 'the_field')
       user = create(:user, custom_field_answers: [
-        build(:custom_field_answer, key: 'the_field', value: 'other'),
-        build(:custom_field_answer, key: 'the_field_other', value: 'gone')
+        build(:custom_field_answer, custom_field: field, value: 'other'),
+        build(:custom_field_answer, key: 'the_field_other', custom_field: field, value: 'gone')
       ])
       input = create(:idea, custom_field_answers: [
-        build(:custom_field_answer, key: 'u_the_field', value: 'other'),
-        build(:custom_field_answer, key: 'u_the_field_other', value: 'gone'),
-        build(:custom_field_answer, key: 'other_field', value: 'stays')
+        build(:custom_field_answer, key: 'u_the_field', custom_field: field, value: 'other'),
+        build(:custom_field_answer, key: 'u_the_field_other', custom_field: field, value: 'gone'),
+        build(:custom_field_answer, custom_field: create(:custom_field, key: 'other_field'), value: 'stays')
       ])
 
       service.delete_field_answers(field)
@@ -56,9 +56,9 @@ describe CustomFieldService do
         project: phase.project,
         creation_phase: phase,
         custom_field_answers: [
-          build(:custom_field_answer, key: 'extra_field', value: 'gone'),
-          build(:custom_field_answer, key: 'extra_field_follow_up', value: 'gone'),
-          build(:custom_field_answer, key: 'another_field', value: 'stays')
+          build(:custom_field_answer, custom_field: field, value: 'gone'),
+          build(:custom_field_answer, key: 'extra_field_follow_up', custom_field: field, value: 'gone'),
+          build(:custom_field_answer, custom_field: create(:custom_field_text, resource: form, key: 'another_field'), value: 'stays')
         ]
       )
 
@@ -69,12 +69,13 @@ describe CustomFieldService do
 
     it 'does not delete values of inputs in other participation contexts with the same field key' do
       other_phase = create(:single_phase_native_survey_project).phases.first
-      create(:custom_form, participation_context: other_phase)
+      other_form = create(:custom_form, participation_context: other_phase)
+      other_field = create(:custom_field_text, resource: other_form, key: 'extra_field')
       other_input = create(
         :idea,
         project: other_phase.project,
         creation_phase: other_phase,
-        custom_field_answers: [build(:custom_field_answer, key: 'extra_field', value: 'stays')]
+        custom_field_answers: [build(:custom_field_answer, custom_field: other_field, value: 'stays')]
       )
 
       phase = create(:single_phase_native_survey_project).phases.first
@@ -95,11 +96,11 @@ describe CustomFieldService do
       cf2 = create(:custom_field_select)
       cfo3 = create(:custom_field_option, custom_field: cf2)
       u1 = create(:user, custom_field_answers: [
-        build(:custom_field_answer, key: cf1.key, value: [cfo1.key]),
-        build(:custom_field_answer, key: cf2.key, value: cfo3.key)
+        build(:custom_field_answer, custom_field: cf1, value: [cfo1.key]),
+        build(:custom_field_answer, custom_field: cf2, value: cfo3.key)
       ])
-      u2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf1.key, value: [cfo1.key, cfo2.key])])
-      u3 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf1.key, value: [cfo2.key])])
+      u2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf1, value: [cfo1.key, cfo2.key])])
+      u3 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf1, value: [cfo2.key])])
 
       service.delete_custom_field_option_values(cfo1.key, cfo1.custom_field)
 
@@ -112,8 +113,8 @@ describe CustomFieldService do
       cf1 = create(:custom_field_select)
       cfo1 = create(:custom_field_option, custom_field: cf1)
       cfo2 = create(:custom_field_option, custom_field: cf1)
-      u1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf1.key, value: cfo1.key)])
-      u2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf1.key, value: cfo2.key)])
+      u1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf1, value: cfo1.key)])
+      u2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: cf1, value: cfo2.key)])
 
       service.delete_custom_field_option_values(cfo1.key, cfo1.custom_field)
 

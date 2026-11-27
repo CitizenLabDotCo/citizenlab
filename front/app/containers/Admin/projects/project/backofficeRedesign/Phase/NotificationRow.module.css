@@ -1,0 +1,64 @@
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gv-space-12);
+}
+
+.switch {
+  padding-top: var(--gv-space-6);
+}
+
+.main {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.edit {
+  composes: ringOutside from '../../../../../../design-system/focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-8);
+  width: 100%;
+  padding: var(--gv-space-4) 0;
+  border: none;
+  border-radius: var(--gv-radius-4);
+  background: transparent;
+  text-align: start;
+  cursor: pointer;
+}
+
+.edit[data-disabled],
+.edit[aria-disabled='true'] {
+  opacity: var(--gv-opacity-disabled);
+  cursor: default;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+  min-width: 0;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.off[data-disabled] {
+  opacity: 1;
+}
+
+.off .title {
+  color: var(--gv-text-disabled);
+}
+
+.off .chevron {
+  visibility: hidden;
+}
+
+.edit[data-hovered]:not([aria-disabled='true']) .chevron {
+  color: var(--gv-icon-primary);
+}

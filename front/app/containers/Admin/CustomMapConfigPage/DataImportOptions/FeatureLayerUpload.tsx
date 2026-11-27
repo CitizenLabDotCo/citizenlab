@@ -27,12 +27,19 @@ import messages from '../messages';
 import tooltipImage from '../TooltipImages/esri_feature_url_example.png';
 import { getFeatureLayerInitialTitleMultiloc } from '../utils';
 
+import EsriImportForm from './EsriImportForm';
+
 type Props = {
   setView: (view: ViewOptions) => void;
   mapConfigId: string;
+  variant?: 'default' | 'panel';
 };
 
-const FeatureLayerUpload = ({ mapConfigId, setView }: Props) => {
+const FeatureLayerUpload = ({
+  mapConfigId,
+  setView,
+  variant = 'default',
+}: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
 
@@ -121,6 +128,27 @@ const FeatureLayerUpload = ({ mapConfigId, setView }: Props) => {
         }
       });
   };
+
+  if (variant === 'panel') {
+    return (
+      <EsriImportForm
+        title={formatMessage(messages.addFeatureLayer)}
+        tooltip={formatMessage(messages.featureLayerTooltop)}
+        instruction={formatMessage(messages.addFeatureLayerInstruction)}
+        inputId="e2e-feature-layer-url-input"
+        value={url}
+        onChange={setUrl}
+        placeholder="https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/Congressional_Districts/FeatureServer/0"
+        importDataCy="e2e-feature-layer-import-btn"
+        isPending={apiCallLoading || loading}
+        onCancel={() => setView('main')}
+        onImport={addEsriFeatureLayer}
+        success={success}
+        errorId="e2e-feature-layer-error"
+        errorMessage={importError ? errorMessage : undefined}
+      />
+    );
+  }
 
   return (
     <>

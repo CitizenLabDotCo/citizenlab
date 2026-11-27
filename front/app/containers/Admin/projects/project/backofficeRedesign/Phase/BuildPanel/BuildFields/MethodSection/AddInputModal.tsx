@@ -1,27 +1,28 @@
-import React from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  IconTooltip,
-  Text,
-} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import { boolean, ObjectSchema, object, string } from 'yup';
+import { Multiloc } from 'typings';
+import { boolean, mixed, ObjectSchema, object, string } from 'yup';
+
+import Banner from 'design-system/Banner';
+import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import usePhase from 'api/phases/usePhase';
 
+import FormMultilocRichTextField from 'components/admin/MultilocFields/FormMultilocRichTextField';
+import FormMultilocTextField from 'components/admin/MultilocFields/FormMultilocTextField';
 import AuthorField from 'components/CustomFieldsForm/Fields/AuthorField';
 import fieldMessages from 'components/CustomFieldsForm/messages';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
+import styles from './MethodSection.module.css';
 import { InputValues } from './useStagedInputs';
 
 const COPY = {
@@ -39,6 +40,13 @@ const COPY = {
     emptyError: messages.emptyOptionError,
     anonymousTooltip: messages.optionAnonymousTooltip,
   },
+  input: {
+    header: messages.addAnInput,
+    label: messages.inputTitleLabel,
+    placeholder: messages.inputTitlePlaceholder,
+    emptyError: messages.emptyInputTitleError,
+    anonymousTooltip: messages.optionAnonymousTooltip,
+  },
 };
 
 // The input forms fix these limits on the title.
@@ -48,16 +56,35 @@ const MAX_CHARACTERS = 120;
 interface Props {
   phaseId: string;
   kind: keyof typeof COPY;
-  onSubmit: (values: InputValues) => void;
+  /** A returned promise keeps the modal open until it settles. */
+  onSubmit: (values: InputValues) => void | Promise<unknown>;
   onClose: () => void;
+  defaultValues?: InputValues;
+  header?: string;
+  submitLabel?: string;
+  /** Leads to the input form, for the questions this modal leaves out. */
+  fullFormLink?: ReactNode;
 }
 
-const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
+const AddInputModal = ({
+  phaseId,
+  kind,
+  onSubmit,
+  onClose,
+  defaultValues,
+  header,
+  submitLabel,
+  fullFormLink,
+}: Props) => {
   const { formatMessage } = useIntl();
+  const [saveFailed, setSaveFailed] = useState(false);
+  // isSubmitting only updates after a render, so a double click needs this.
+  const submitting = useRef(false);
   const { data: phase } = usePhase(phaseId);
   const allowAnonymous = !!phase?.data.attributes.allow_anonymous_participation;
   const copy = COPY[kind];
   const fieldName = formatMessage(copy.label);
+  const isInput = kind === 'input';
 
   const schema: ObjectSchema<InputValues> = object({
     title_multiloc: validateAtLeastOneLocale(formatMessage(copy.emptyError), {
@@ -78,6 +105,8 @@ const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
             })
           ),
     }),
+    // Whether it is required depends on the phase's form, so the API checks it.
+    body_multiloc: mixed<Multiloc>(),
     author_id: string().nullable(),
     anonymous: boolean(),
   });
@@ -85,77 +114,97 @@ const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
   const methods = useForm<InputValues>({
     mode: 'onTouched',
     resolver: yupResolver(schema),
+    defaultValues,
   });
 
-  const submit = methods.handleSubmit((values) => {
-    onSubmit(values);
-    onClose();
+  const submit = methods.handleSubmit(async (values) => {
+    if (submitting.current) return;
+
+    submitting.current = true;
+    setSaveFailed(false);
+    try {
+      await onSubmit(values);
+      onClose();
+    } catch {
+      setSaveFailed(true);
+    } finally {
+      submitting.current = false;
+    }
   });
 
   return (
     <Modal
-      opened
-      close={onClose}
-      width={MEDIUM_MODAL_WIDTH}
-      variant="bo"
-      header={formatMessage(copy.header)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-text" onClick={onClose}>
-            {formatMessage(messages.statementCancel)}
-          </Button>
-          <Button buttonStyle="bo-primary" onClick={submit}>
-            {formatMessage(messages.addStatement)}
-          </Button>
-        </Box>
-      }
+      isOpen
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      size={560}
+      title={header ?? formatMessage(copy.header)}
+      secondaryAction={{
+        label: formatMessage(messages.statementCancel),
+        onPress: onClose,
+      }}
+      primaryAction={{
+        label: submitLabel ?? formatMessage(messages.addStatement),
+        isPending: methods.formState.isSubmitting,
+        onPress: () => submit(),
+      }}
     >
       <FormProvider {...methods}>
-        <Box
-          as="form"
-          p="24px"
-          display="flex"
-          flexDirection="column"
-          gap="24px"
-          onSubmit={submit}
-        >
-          <Box>
-            <AuthorField name="author_id" variant="bo" />
-          </Box>
-          <InputMultilocWithLocaleSwitcher
+        <form className={styles.form} onSubmit={submit}>
+          <div>
+            <AuthorField name="author_id" variant="panel" />
+          </div>
+          <FormMultilocTextField
             name="title_multiloc"
-            variant="bo"
             label={fieldName}
             placeholder={formatMessage(copy.placeholder)}
             maxCharCount={MAX_CHARACTERS}
           />
+          {isInput && (
+            <FormMultilocRichTextField
+              name="body_multiloc"
+              label={formatMessage(messages.inputDescriptionLabel)}
+              aria-label={formatMessage(messages.inputDescriptionLabel)}
+              noImages
+              noVideos
+            />
+          )}
           {allowAnonymous && (
-            <Box>
-              <Box display="flex" alignItems="center" gap="4px" mb="8px">
-                <Text as="span" variant="boHelper" fontSize="xs" m="0">
+            <div>
+              <div className={styles.visibilityLabel}>
+                <Text as="span" variant="small" tone="secondary">
                   {formatMessage(messages.statementProfileVisibility)}
                 </Text>
-                <IconTooltip
-                  content={
-                    <Text color="white" fontSize="s" m="0">
-                      {formatMessage(copy.anonymousTooltip)}
-                    </Text>
-                  }
-                  placement="top-start"
+                <TooltipMark
+                  size={24}
+                  label={formatMessage(copy.anonymousTooltip)}
                 />
-              </Box>
+              </div>
               <CheckboxWithLabel
                 name="anonymous"
                 size="20px"
                 label={
-                  <Text as="span" variant="boControl" m="0">
+                  <Text as="span" variant="ui" tone="primary">
                     {formatMessage(messages.statementPostAnonymously)}
                   </Text>
                 }
               />
-            </Box>
+            </div>
           )}
-        </Box>
+          {saveFailed && (
+            <Banner tone="error">
+              {formatMessage(
+                isInput
+                  ? messages.inputSaveFailedFullForm
+                  : messages.inputSaveFailed
+              )}
+            </Banner>
+          )}
+          {/* The modal footer only holds its two actions, so the link to the
+              full form ends the body. */}
+          {fullFormLink && <div>{fullFormLink}</div>}
+        </form>
       </FormProvider>
     </Modal>
   );

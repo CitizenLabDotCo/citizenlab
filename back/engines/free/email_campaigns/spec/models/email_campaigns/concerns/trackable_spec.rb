@@ -35,17 +35,17 @@ RSpec.describe EmailCampaigns::Trackable do
     end
   end
 
-  it 'generates the delivery ID, includes it in the Mailgun headers, and persists the delivery after sending' do
+  it 'generates the delivery ID into the command and persists the delivery after sending' do
     user = create(:user)
     command = {
       event_payload: {},
       recipient: user,
       tracked_content: {}
     }
-    expect(campaign.extra_mailgun_variables(command)['cl_delivery_id']).to be_nil
+    expect(command[:delivery_id]).to be_nil
 
     campaign.run_before_send_hooks(command)
-    delivery_id = campaign.extra_mailgun_variables(command)['cl_delivery_id']
+    delivery_id = command[:delivery_id]
     expect(delivery_id).to be_present
     campaign.run_after_send_hooks(command)
 

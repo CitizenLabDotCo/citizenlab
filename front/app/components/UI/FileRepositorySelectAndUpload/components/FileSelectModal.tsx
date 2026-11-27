@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Box, Select, Text } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
+
+import { ListBoxOption } from 'design-system/ListBox';
+import DesignSystemModal from 'design-system/Modal';
+import DesignSystemSelect from 'design-system/Select';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
@@ -14,9 +18,13 @@ import { useParams } from 'utils/router';
 
 import FileInput from '../../FileUploader/FileInput';
 
+import styles from './FileSelectModal.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
+  /** The panel keeps the modal open to show the attached files (children). */
+  variant?: 'default' | 'panel';
   opened: boolean;
   onClose: () => void;
   onFileAdd: (fileToAdd: UploadFile) => void;
@@ -24,9 +32,12 @@ interface Props {
   fileAttachments?: IFileAttachmentData[];
   maxSizeMb?: number;
   dataCy?: string;
+  children?: ReactNode;
+  isUploadingFile?: boolean;
 }
 
 const FileSelectModal = ({
+  variant = 'default',
   opened,
   onClose,
   onFileAdd,
@@ -34,6 +45,8 @@ const FileSelectModal = ({
   fileAttachments,
   maxSizeMb,
   dataCy,
+  children,
+  isUploadingFile = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams({ strict: false });
@@ -59,15 +72,82 @@ const FileSelectModal = ({
       )
     : fileOptions;
 
+  const closeUnlessUploading = () => {
+    if (!isUploadingFile) onClose();
+  };
+
+  const isPanel = variant === 'panel';
+
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
     onFileAdd(fileToAdd);
-    onClose();
+    if (!isPanel) onClose();
   };
+
+  const attachExistingFile = (fileId: string) => {
+    const fileToAttach = files?.data.find((file) => file.id === fileId);
+
+    if (fileToAttach) {
+      onFileAttach?.(fileToAttach);
+      if (!isPanel) onClose();
+    }
+  };
+
+  if (isPanel) {
+    return (
+      <DesignSystemModal
+        isOpen={opened}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) closeUnlessUploading();
+        }}
+        isDismissable={!isUploadingFile}
+        title={formatMessage(messages.attachments)}
+        size={440}
+        secondaryAction={{
+          label: formatMessage(messages.done),
+          isDisabled: isUploadingFile,
+          onPress: onClose,
+        }}
+      >
+        <div className={styles.body}>
+          {filteredFileOptions.length > 0 && (
+            <>
+              <DesignSystemSelect
+                aria-label={formatMessage(messages.selectExistingFile)}
+                placeholder={formatMessage(messages.selectExistingFile)}
+                size={32}
+                // Attached files disappear from the available options.
+                value={null}
+                onChange={(key) => {
+                  if (typeof key === 'string') attachExistingFile(key);
+                }}
+              >
+                {filteredFileOptions.map(({ value, label }) => (
+                  <ListBoxOption key={value} id={value}>
+                    {label}
+                  </ListBoxOption>
+                ))}
+              </DesignSystemSelect>
+              <p className={styles.or}>{formatMessage(messages.or)}</p>
+            </>
+          )}
+          {children}
+          <FileInput
+            variant="panel"
+            onAdd={handleFileOnAdd}
+            id={'e2e-file-upload-input'}
+            multiple={false}
+            maxSizeMb={maxSizeMb}
+            dataCy={dataCy}
+          />
+        </div>
+      </DesignSystemModal>
+    );
+  }
 
   return (
     <Modal
       closeOnClickOutside={true}
-      close={onClose}
+      close={closeUnlessUploading}
       opened={opened}
       header={formatMessage(messages.selectFile)}
     >
@@ -76,16 +156,7 @@ const FileSelectModal = ({
           <Box>
             <Select
               value={''} // Since onChange we close the modal, we don't need to worry about setting this value.
-              onChange={(option) => {
-                const fileToAttach = files?.data.find(
-                  (file) => file.id === option.value
-                );
-
-                if (fileToAttach) {
-                  onFileAttach?.(fileToAttach);
-                  onClose();
-                }
-              }}
+              onChange={(option) => attachExistingFile(option.value)}
               placeholder={formatMessage(messages.selectExistingFile)}
               options={filteredFileOptions}
             />
@@ -95,6 +166,7 @@ const FileSelectModal = ({
           </Box>
         )}
 
+        {children}
         <FileInput
           onAdd={handleFileOnAdd}
           id={'e2e-file-upload-input'}

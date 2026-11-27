@@ -25,23 +25,24 @@ class SanitizationService
   # Sanitizes a string from malicious and unwanted input.
   # @param text [String] string input to be sanitized
   # @param features [Array<Symbol>] A list of allowed features
+  # @param host [String, nil] The host of the platform the text belongs to. Required by the `embed` feature.
   # See {IframeScrubber, EDITOR_FEATURES} for the list of allowed tags and attributes.
-  def sanitize(text, features)
+  def sanitize(text, features, host: nil)
     return nil if text.nil?
 
-    scrubber = IframeScrubber.new(features)
+    scrubber = IframeScrubber.new(features, host: host)
     sanitized = SANITIZER.sanitize(text, scrubber: scrubber)
 
     if sanitized == text
       sanitized
     else
-      sanitize(sanitized, features)
+      sanitize(sanitized, features, host: host)
     end
   end
 
-  def sanitize_multiloc(multiloc, features)
+  def sanitize_multiloc(multiloc, features, host: nil)
     multiloc.transform_values do |text|
-      sanitize(text, features)
+      sanitize(text, features, host: host)
     end
   end
 
@@ -68,6 +69,24 @@ class SanitizationService
         with_content?(node) ? break : node.remove
       end
 
+      doc.to_s
+    end
+  end
+
+  def remove_multiloc_hidden_elements(multiloc)
+    multiloc.transform_values do |text|
+      remove_hidden_elements text
+    end
+  end
+
+  # `sanitize` drops a tag it does not allow but keeps its text, so content the browser never shows
+  # (a `<style>`, a `<script>`, a `<noscript>`…) would show up as visible text. This removes those
+  # elements with their content. `<textarea>` and `<xmp>` are left to `sanitize`: browsers show their text.
+  def remove_hidden_elements(html)
+    return html if html.blank?
+
+    Nokogiri::HTML.fragment(html).then do |doc|
+      doc.css('style, script, noscript, template, title, noembed, noframes').each(&:remove)
       doc.to_s
     end
   end
@@ -242,6 +261,16 @@ class SanitizationService
         tags: %w[iframe],
         attributes: %w[class frameborder allowfullscreen referrerpolicy src data-blot-formatter-unclickable-bound width height data-align style]
       },
+      embed: {
+        tags: %w[iframe],
+        tag_attributes: {
+          'iframe' => %w[src width height frameborder allowfullscreen style title loading referrerpolicy scrolling marginheight marginwidth]
+        }
+      },
+      blocks: {
+        tags: %w[h1 div],
+        tag_attributes: { 'h1' => %w[class], 'div' => %w[class] }
+      },
       mention: {
         tags: %w[span],
         attributes: %w[class data-user-id data-link-profile]
@@ -252,18 +281,37 @@ class SanitizationService
       }
     }.freeze
 
-    private_constant :EDITOR_FEATURES
-    attr_reader :tags, :attributes
+    # Any https page but a Go Vocal platform's (see `embeddable?`). No control character or backslash, and
+    # no whitespace in the host part or at either end: browsers drop or rewrite them, so the host they load
+    # could differ from the one checked. A space after the host is only percent-encoded, so it is kept.
+    EMBED_SRC = %r{\Ahttps://[^[:space:][:cntrl:]\\/?#]+(?:[/?#][^[:cntrl:]\\]*)?(?<!\s)\z}i
 
-    def initialize(features = [])
+    # The domains Go Vocal platforms are hosted on. `Seo::UpdateGoogleHostJob` has its own copy, for
+    # another decision (which hosts to verify with Google), so the two may change apart.
+    PLATFORM_DOMAINS = %w[govocal.com citizenlab.co].freeze
+
+    private_constant :EDITOR_FEATURES, :EMBED_SRC, :PLATFORM_DOMAINS
+    attr_reader :features, :tags, :attributes, :tag_attributes, :host
+
+    # A feature's `attributes` are kept on every allowed tag, its `tag_attributes` only on their own tag.
+    # `host` is passed in rather than read from the current tenant, which is not always the one the text
+    # belongs to (e.g. while a tenant is being created).
+    def initialize(features = [], host: nil)
+      raise ArgumentError, 'the embed feature needs the platform host' if features.include?(:embed) && host.blank?
+
       super()
-      features_w_default = features + [:default]
-      @tags = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:tags] }.uniq
-      @attributes = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:attributes] }.uniq
+      @host = host
+      @features = features + [:default]
+      @tags = @features.flat_map { |f| EDITOR_FEATURES[f][:tags] }.uniq
+      @tag_attributes = @features.filter_map { |f| EDITOR_FEATURES[f][:tag_attributes] }
+        .reduce({}) { |all, more| all.merge(more) { |_tag, mine, theirs| mine | theirs } }
+      shared_attributes = @features.flat_map { |f| EDITOR_FEATURES[f][:attributes] || [] }
+      @tag_only_attributes = @tag_attributes.values.flatten - shared_attributes
+      @attributes = (shared_attributes + @tag_attributes.values.flatten).uniq
     end
 
     def allowed_node?(node)
-      return iframe_allowed? && UrlValidationService.new.video_whitelisted?(node['src']) if node.name == 'iframe'
+      return iframe_allowed?(node['src']) if node.name == 'iframe'
 
       ensure_nofollow(node) if node.name == 'a'
       tags.include? node.name
@@ -271,8 +319,33 @@ class SanitizationService
 
     private
 
-    def iframe_allowed?
-      tags.include? 'iframe'
+    # `PermitScrubber` checks attributes against one list for every tag, so the ones kept for a
+    # single tag are removed from the others first.
+    def scrub_attributes(node)
+      node.attribute_nodes.each do |attr|
+        next unless @tag_only_attributes.include?(attr.name)
+
+        attr.remove unless tag_attributes.fetch(node.name, []).include?(attr.name)
+      end
+      super
+    end
+
+    def iframe_allowed?(src)
+      (features.include?(:video) && UrlValidationService.new.video_whitelisted?(src)) ||
+        (features.include?(:embed) && embeddable?(src.to_s))
+    end
+
+    # Helper texts embed pages from other sites (maps…), never a Go Vocal platform's own pages.
+    def embeddable?(src)
+      return false unless EMBED_SRC.match?(src)
+
+      embedded_host = Addressable::URI.parse(src).normalize.host
+      return false if embedded_host.blank?
+      return false if embedded_host == Addressable::URI.parse("https://#{host}").normalize.host
+
+      PLATFORM_DOMAINS.none? { |domain| embedded_host == domain || embedded_host.end_with?(".#{domain}") }
+    rescue Addressable::URI::InvalidURIError
+      false
     end
 
     def ensure_nofollow(node)

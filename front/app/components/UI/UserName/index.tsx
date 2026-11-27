@@ -20,6 +20,10 @@ import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 
+// polished can't read CSS variables (design-system tokens); those keep their colour.
+const hoverColor = (color: string) =>
+  color.startsWith('var(') ? color : darken(0.15, color);
+
 export const Name = styled.span<{
   color?: string;
   fontWeight?: number;
@@ -38,7 +42,7 @@ export const Name = styled.span<{
     &:hover {
       text-decoration: underline;
       color: ${({ color, theme }) =>
-        darken(0.15, color || theme.colors.tenantText)};
+        hoverColor(color || theme.colors.tenantText)};
     }
   }
 

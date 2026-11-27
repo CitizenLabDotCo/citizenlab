@@ -113,23 +113,10 @@ class ApplicationMailer < ActionMailer::Base
       subject: subject,
       from: from_email,
       to: to_email,
-      reply_to: reply_to_email,
-      domain: domain
+      reply_to: reply_to_email
     }
     config.merge!(custom_smtp_delivery_options) if custom_smtp_enabled?
     config
-  end
-
-  def mailgun_headers
-    {
-      'X-Mailgun-Variables' => mailgun_variables.to_json
-    }
-  end
-
-  def mailgun_variables
-    {
-      'cl_tenant_id' => app_configuration.id
-    }
   end
 
   def email_address_with_name(email, name)
@@ -154,10 +141,6 @@ class ApplicationMailer < ActionMailer::Base
 
   def reply_to_email
     app_settings.core['reply_to_email'].presence || default_from_email
-  end
-
-  def domain
-    raw_from_email&.split('@')&.last
   end
 
   def custom_smtp_enabled?

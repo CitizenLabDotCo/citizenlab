@@ -1,13 +1,13 @@
+import { captureMessage, withScope } from '@sentry/react';
 import { isArray, isNil, omitBy } from 'lodash-es';
 import { stringify } from 'qs';
 import { CLErrors } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
 
-import { getJwt } from 'utils/auth/jwt';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { handleBlockedUserError } from 'utils/errorUtils';
-import { reportError } from 'utils/loggingUtils';
+import { baseReportTags, reportError } from 'utils/loggingUtils';
 
 // FETCHER
 
@@ -67,6 +67,20 @@ export class HttpError extends Error {
   }
 }
 
+// The status and method are tags so the issue can be broken down by them.
+// The path goes in the context because it holds ids.
+const reportInvalidJson = (status: number, method: string, path: Path) => {
+  withScope((scope) => {
+    scope.setTags({
+      ...baseReportTags(),
+      http_status: status,
+      http_method: method,
+    });
+    scope.setContext('api_request', { path });
+    captureMessage('Unsupported case. No valid JSON.');
+  });
+};
+
 function fetcher<TResponseData extends BaseResponseData | null>(
   args: FetcherArgs
 ): FetcherArgs['action'] extends 'delete' ? null : Promise<TResponseData>;
@@ -96,7 +110,6 @@ async function fetcher({
     delete: 'DELETE',
     put: 'PUT',
   };
-  const jwt = getJwt();
   // Remove query parameters that have an empty value from query object in order to keep
   // sanitization behaviour consistent current and previous data-fetchign setup
   const relevantQueryParams = omitBy(
@@ -116,9 +129,9 @@ async function fetcher({
   const response = await fetch(`${apiPath}${path}${requestQueryParams}`, {
     method: methodMap[action],
     body: body ? JSON.stringify(body) : undefined,
+    credentials: 'include', // Include cookies (session, auth tokens) with all requests
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
     },
   });
 
@@ -157,16 +170,30 @@ async function fetcher({
       return null;
     }
 
-    reportError('Unsupported case. No valid JSON.');
+    // A SyntaxError means the body arrived but isn't JSON, or is empty. Any
+    // other error means it never fully arrived (page closed, connection
+    // dropped): a network problem, not an API bug.
+    const isInvalidJson = e instanceof SyntaxError;
+    // A bodiless 401 or 404 is expected, mostly from crawlers.
+    const isExpectedStatus = response.status === 401 || response.status === 404;
+    if (isInvalidJson && !isExpectedStatus) {
+      reportInvalidJson(response.status, methodMap[action], path);
+    }
     throw new HttpError('Unsupported case. No valid JSON.', response.status);
   }
 
   if (!response.ok) {
-    const error = data as unknown as CLErrors;
+    // Error bodies don't have the success shape.
+    const body: unknown = data;
+    const error = body as CLErrors;
     handleBlockedUserError(response.status, error);
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!error.errors) {
+
+    // A missing record's 404 body is a bare string (the exception message).
+    // Unknown routes return an object, so wrong API paths are still reported.
+    const isMissingRecord = response.status === 404 && typeof body === 'string';
+    const hasErrors =
+      typeof body === 'object' && body !== null && 'errors' in body;
+    if (!hasErrors && !isMissingRecord) {
       reportError(data);
     }
 

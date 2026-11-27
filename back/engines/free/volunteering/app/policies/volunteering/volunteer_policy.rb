@@ -13,6 +13,10 @@ module Volunteering
       end
     end
 
+    def index_by_phase?
+      index_xlsx?
+    end
+
     def index_xlsx?
       user&.active? && (user&.admin? || user&.moderator?)
     end

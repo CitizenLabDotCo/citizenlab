@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  platformNavigation: {
+    id: 'app.containers.AdminPage.SideBar.platformNavigation',
+    defaultMessage: 'Platform navigation',
+  },
   dashboard: {
     id: 'app.containers.AdminPage.SideBar.dashboard',
     defaultMessage: 'Dashboard',
@@ -24,6 +28,10 @@ export default defineMessages({
   community_monitor: {
     id: 'app.containers.AdminPage.SideBar.community_monitor',
     defaultMessage: 'Community monitor',
+  },
+  productFeedback: {
+    id: 'app.containers.AdminPage.SideBar.productFeedback',
+    defaultMessage: 'Product feedback',
   },
   projects: {
     id: 'app.containers.AdminPage.SideBar.projects',

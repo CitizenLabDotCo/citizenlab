@@ -108,9 +108,9 @@ resource 'Volunteering Volunteers' do
       create(:volunteer)
       @phase = create(:volunteering_phase)
       @cause1 = create(:cause, title_multiloc: { en: 'For sure works with very long titles too!!!' }, phase: @phase)
-      create(:custom_field_domicile)
+      domicile_field = create(:custom_field_domicile)
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)])
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: domicile_field, value: area.id)])
       @volunteer1 = create(:volunteer, cause: @cause1, user: user)
       @other_volunteers = create_list(:volunteer, 2, cause: @cause1)
       @cause2 = create(:cause, phase: @phase)
@@ -133,6 +133,79 @@ resource 'Volunteering Volunteers' do
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].map { |d| d[:relationships][:user][:data][:id] }).to match_array @volunteers.map(&:user_id)
         expect(json_response[:included].pluck(:id)).to match_array @volunteers.map(&:user_id)
+      end
+    end
+
+    get 'web_api/v1/phases/:phase_id/volunteers' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of volunteers per page'
+      end
+      parameter :causes, 'Filter by cause ids', type: :array, required: false
+      parameter :search, 'Filter by the volunteer\'s name or email', required: false
+      parameter :sort, 'Either created_at or -created_at (default)', required: false
+      parameter :signed_up, 'Either this_week or earlier, relative to the start of the current week', required: false
+
+      let(:phase_id) { @phase.id }
+      let(:phase_volunteers) { [@volunteer1, *@other_volunteers, *@volunteers2] }
+
+      example_request 'List all volunteers of a phase, newest first' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).to eq phase_volunteers.sort_by(&:created_at).reverse.map(&:id)
+        expect(json_response[:included].pluck(:id)).to match_array phase_volunteers.map(&:user_id)
+        expect(json_response[:included].first[:attributes]).to have_key :email
+        expect(json_response.dig(:meta, :total)).to eq phase_volunteers.size
+      end
+
+      example 'List the volunteers of one cause, oldest first' do
+        do_request(causes: [@cause2.id], sort: 'created_at')
+        assert_status 200
+        expect(json_parse(response_body)[:data].pluck(:id)).to eq @volunteers2.sort_by(&:created_at).map(&:id)
+      end
+
+      example 'Search volunteers by name' do
+        @volunteer1.user.update!(first_name: 'Zebulon')
+        do_request(search: 'zebul')
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).to eq [@volunteer1.id]
+        expect(json_response.dig(:meta, :total)).to eq 1
+      end
+
+      example 'Filter signups this week before paginating' do
+        travel_to Time.zone.local(2026, 11, 11, 12) do
+          phase_volunteers.each { |volunteer| volunteer.update!(created_at: 2.weeks.ago) }
+          @volunteer1.update!(created_at: Time.zone.now.beginning_of_week)
+
+          do_request(signed_up: 'this_week', page: { size: 1 })
+
+          assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to eq [@volunteer1.id]
+          expect(json_parse(response_body).dig(:meta, :total)).to eq 1
+        end
+      end
+
+      example 'Earlier signups exclude the week boundary and respect cause filtering' do
+        travel_to Time.zone.local(2026, 11, 11, 12) do
+          phase_volunteers.each { |volunteer| volunteer.update!(created_at: 2.weeks.ago) }
+          @volunteer1.update!(created_at: Time.zone.now.beginning_of_week)
+
+          do_request(signed_up: 'earlier', causes: [@cause1.id])
+
+          assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to match_array @other_volunteers.map(&:id)
+          expect(json_parse(response_body).dig(:meta, :total)).to eq @other_volunteers.size
+        end
+      end
+
+      describe 'when resident' do
+        before { resident_header_token }
+
+        example '[error] List the volunteers of a phase', document: false do
+          do_request
+          assert_status 401
+        end
       end
     end
 

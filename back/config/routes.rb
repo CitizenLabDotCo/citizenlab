@@ -129,6 +129,7 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
+      delete 'user_token' => 'user_token#destroy'
       post 'user_token_phone' => 'user_token#create_phone'
 
       resources :users, only: %i[index create update destroy] do
@@ -136,6 +137,7 @@ Rails.application.routes.draw do
           get :me
           get 'me/ping', action: 'ping'
           get 'me/intercom_token', action: 'intercom_token'
+          get 'me/userjot_identity', action: 'userjot_identity'
           get :seats
           get :billed_admins
           get :billed_moderators
@@ -247,6 +249,7 @@ Rails.application.routes.draw do
         concerns :file_attachable, attachable_type: 'Phase'
 
         member do
+          post 'review_setup_card'
           get 'survey_results'
           get 'input_response_fields'
           post 'input_responses_pdf'
@@ -471,6 +474,5 @@ Rails.application.routes.draw do
   post '/auth/:provider/callback', to: 'omniauth_callback#create'
   get '/auth/failure', to: 'omniauth_callback#failure'
   post '/auth/failure', to: 'omniauth_callback#failure'
-  get '/auth/:provider/logout_data', to: 'omniauth_callback#logout_data'
   get '/auth/:provider/spslo', to: 'omniauth_callback#spslo'
 end

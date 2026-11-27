@@ -15,12 +15,11 @@ resource 'Posts' do
 
   # 3 Ideas
   let!(:ideas) do
-    create_list(:idea, 3, created_at: '2020-01-01').tap do |ideas|
-      ideas.each do |idea|
-        idea.custom_field_answers.build(key: 'audience_size', value: rand(101...4000))
-        idea.custom_field_answers.build(key: 'audience_type', value: 'young people')
-        idea.save!
-      end
+    size_field = create(:custom_field_number, key: 'audience_size')
+    type_field = create(:custom_field, key: 'audience_type')
+    create_list(:idea, 3, created_at: '2020-01-01').each do |idea|
+      create(:custom_field_answer, answerable: idea, custom_field: size_field, value: rand(101...4000))
+      create(:custom_field_answer, answerable: idea, custom_field: type_field, value: 'young people')
     end
   end
 

@@ -154,6 +154,32 @@ describe TrackIntercomService do
     end
   end
 
+  describe 'forget_users' do
+    let(:contacts) { double('contacts') }
+    let(:intercom) { double(INTERCOM_CLIENT, contacts: contacts) }
+
+    before { allow(contacts).to receive(:delete) }
+
+    def or_query(user_ids)
+      {
+        'operator' => 'OR',
+        'value' => user_ids.map { |id| { 'field' => 'external_id', 'operator' => '=', 'value' => id } }
+      }
+    end
+
+    it 'searches the contacts SEARCH_BATCH_SIZE users at a time and deletes the ones found' do
+      stub_const("#{described_class}::SEARCH_BATCH_SIZE", 2)
+      contact = double('contact')
+      allow(contacts).to receive(:search).with(query: or_query(%w[user-1 user-2])).and_return([contact])
+      allow(contacts).to receive(:search).with(query: or_query(%w[user-3])).and_return([])
+
+      service.forget_users(%w[user-1 user-2 user-3])
+
+      expect(contacts).to have_received(:search).twice
+      expect(contacts).to have_received(:delete).once.with(contact)
+    end
+  end
+
   describe 'track_activity' do
     it "doesn't interact with Intercom when the given user is not an admin or moderator" do
       user = create(:user)

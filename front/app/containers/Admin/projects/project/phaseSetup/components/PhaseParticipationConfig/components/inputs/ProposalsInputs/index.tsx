@@ -1,12 +1,6 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Input,
-  IOption,
-  Text,
-  bo,
-} from '@citizenlab/cl2-component-library';
+import { Input, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -18,15 +12,18 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import ExpandAllContext from 'containers/Admin/projects/_shared/components/SettingsPanel/ExpandAllContext';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import messages from 'containers/Admin/projects/project/messages';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
@@ -37,9 +34,17 @@ import NumberSettingRow from '../_shared/NumberSettingRow';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 import SortingPicker from '../_shared/SortingPicker';
+import useAssigneeSummary from '../_shared/useAssigneeSummary';
+import useParticipantActionsSummary from '../_shared/useParticipantActionsSummary';
 import UserActions from '../_shared/UserActions';
 
+import styles from './ProposalsInputs.module.css';
+import 'design-system/tokens.css';
+
+const NO_EXPAND_ALL = { count: 0 };
+
 interface Props {
+  moderationAction?: ReactNode;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   submission_enabled?: boolean | null;
@@ -91,6 +96,7 @@ interface Props {
 }
 
 const ProposalsInputs = ({
+  moderationAction,
   input_term,
   handleInputTermChange,
   submission_enabled,
@@ -131,6 +137,14 @@ const ProposalsInputs = ({
   phaseId,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { setup_action } = useSearch({ strict: false });
+  const assigneeSummary = useAssigneeSummary(phaseId);
+  const actionsSummary = useParticipantActionsSummary({
+    submission_enabled,
+    commenting_enabled,
+    reacting_enabled,
+  });
+  const getApiErrorMessage = useApiErrorText();
   const prescreeningFeatureEnabled = useFeatureFlag({
     name: 'prescreening',
   });
@@ -185,37 +199,54 @@ const ProposalsInputs = ({
   const requirements = (
     <PanelGroup
       label={formatMessage(configMessages.proposalRequirementsGroup)}
-      defaultOpen
+      hasError={
+        !!reactingThresholdError ||
+        !!expireDateLimitError ||
+        !!apiErrors?.reacting_threshold ||
+        !!apiErrors?.expire_days_limit
+      }
+      summary={
+        reacting_threshold && expire_days_limit
+          ? formatMessage(configMessages.proposalRequirementsSummary, {
+              votes: reacting_threshold,
+              days: expire_days_limit,
+            })
+          : undefined
+      }
     >
       <NumberSettingRow
         id="reacting_threshold"
         label={formatMessage(messages.reactingThreshold)}
         value={reacting_threshold}
-        min="2"
+        min={2}
         onChange={handleReactingThresholdChange}
-        error={
-          <Error
-            text={reactingThresholdError}
-            apiErrors={apiErrors && apiErrors.reacting_threshold}
-          />
+        errorMessage={
+          [
+            reactingThresholdError,
+            getApiErrorMessage(apiErrors?.reacting_threshold),
+          ]
+            .filter(Boolean)
+            .join(' ') || undefined
         }
       />
       <NumberSettingRow
         id="expire_days_limit"
         label={formatMessage(messages.expireDaysLimit)}
         value={expire_days_limit}
-        min="1"
+        min={1}
         onChange={handleDaysLimitChange}
-        error={
-          <Error
-            text={expireDateLimitError}
-            apiErrors={apiErrors && apiErrors.expire_days_limit}
-          />
+        errorMessage={
+          [
+            expireDateLimitError,
+            getApiErrorMessage(apiErrors?.expire_days_limit),
+          ]
+            .filter(Boolean)
+            .join(' ') || undefined
         }
       />
-      <Text variant="boHelper" fontSize="xs" m="0">
+      <p className={styles.note}>
         {formatMessage(configMessages.proposalRequirementsNote)}
-      </Text>
+      </p>
     </PanelGroup>
   );
 
@@ -247,14 +278,11 @@ const ProposalsInputs = ({
       maxLabel={formatMessage(messages.maxLikes)}
       onMethodChange={handleReactingLikeMethodOnChange}
       onMaxChange={handleLikingLimitOnChange}
-      error={
-        <>
-          <Error apiErrors={apiErrors && apiErrors.reacting_method} />
-          <Error
-            text={noLikingLimitError}
-            apiErrors={apiErrors && apiErrors.reacting_limit}
-          />
-        </>
+      methodError={getApiErrorMessage(apiErrors?.reacting_method)}
+      maxError={
+        [noLikingLimitError, getApiErrorMessage(apiErrors?.reacting_limit)]
+          .filter(Boolean)
+          .join(' ') || undefined
       }
     />
   );
@@ -276,7 +304,9 @@ const ProposalsInputs = ({
       phaseId={phaseId}
       layout={layout}
       reactingSettings={
-        layout === 'panel' && <Box pl={bo.toggleLabelIndent}>{likes}</Box>
+        layout === 'panel' && (
+          <div className={styles.reactingSettings}>{likes}</div>
+        )
       }
     />
   );
@@ -326,34 +356,52 @@ const ProposalsInputs = ({
   if (layout === 'panel') {
     return (
       <>
-        <Box mb="10px">
+        <div className={styles.heading}>
           <PanelHeading
             label={formatMessage(configMessages.howProposalsAreShown)}
           />
-        </Box>
-        {views}
-        {sorting}
-        <Box mb="10px">
-          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
-        </Box>
+        </div>
+        <ExpandAllContext.Provider value={NO_EXPAND_ALL}>
+          {views}
+          {sorting}
+        </ExpandAllContext.Provider>
+        <div className={styles.heading}>
+          <PanelHeading
+            label={formatMessage(configMessages.settingsGroup)}
+            expandable
+          />
+        </div>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
-          defaultOpen
+          summary={actionsSummary}
+          hasError={
+            !!noLikingLimitError ||
+            !!apiErrors?.reacting_limit ||
+            !!apiErrors?.reacting_method ||
+            !!apiErrors?.submission_enabled ||
+            !!apiErrors?.commenting_enabled ||
+            !!apiErrors?.reacting_enabled
+          }
         >
           {userActions}
         </PanelGroup>
         {requirements}
-        <PanelGroup
-          label={formatMessage(configMessages.moderationGroup)}
-          defaultOpen
-        >
-          <Box display="flex" flexDirection="column" gap="16px">
-            <ModerationAssignee phaseId={phaseId} />
-            {screening}
-            {anonymity}
-            {similarity}
-          </Box>
-        </PanelGroup>
+        <div id="phase-moderation-settings">
+          <PanelGroup
+            label={formatMessage(configMessages.moderationGroup)}
+            // An unsaved phase keeps it open for its save-first action.
+            defaultOpen={!phaseId || setup_action === 'moderation'}
+            summary={assigneeSummary}
+          >
+            <div className={styles.moderation}>
+              {!phaseId && moderationAction}
+              <ModerationAssignee phaseId={phaseId} />
+              {screening}
+              {anonymity}
+              {similarity}
+            </div>
+          </PanelGroup>
+        </div>
       </>
     );
   }

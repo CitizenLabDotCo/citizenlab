@@ -7,7 +7,10 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   let!(:idea1) { create(:idea, phases: [phase]) }
   let!(:idea2) { create(:idea, phases: [phase], manual_votes_amount: 10) }
 
-  let(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male')]) }
+  let(:gender_field) do
+    create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' })
+  end
+  let(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: gender_field, value: 'male')]) }
   let!(:basket1) { create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day) }
   let!(:baskets_idea1) { create(:baskets_idea, basket: basket1, idea: idea1, votes: 2) }
   let!(:baskets_idea2) { create(:baskets_idea, basket: basket1, idea: idea2, votes: 3) }
@@ -137,7 +140,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
   describe '#idea_vote_counts_data' do
     let(:participations) { service.send(:phase_participations)[:voting] }
-    let(:custom_field) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
+    let(:custom_field) { gender_field }
     let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field, key: 'male', title_multiloc: { en: 'Male' }) }
     let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field, key: 'female', title_multiloc: { en: 'Female' }) }
     let!(:custom_field_option_unspecified) { create(:custom_field_option, custom_field: custom_field, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
@@ -303,7 +306,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
     end
 
     it 'gives expected results when grouping by a single-select custom field' do
-      custom_field = create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' })
+      custom_field = gender_field
       create(:custom_field_option, custom_field: custom_field, key: 'male', title_multiloc: { en: 'Male' })
       create(:custom_field_option, custom_field: custom_field, key: 'female', title_multiloc: { en: 'Female' })
       create(:custom_field_option, custom_field: custom_field, key: 'unspecified', title_multiloc: { en: 'Unspecified' })
@@ -359,7 +362,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       create(:custom_field_option, custom_field: custom_field, key: 'option_a', title_multiloc: { en: 'Option A' })
       create(:custom_field_option, custom_field: custom_field, key: 'option_b', title_multiloc: { en: 'Option B' })
 
-      create(:custom_field_answer, answerable: user, key: 'multiselect', value: %w[option_a option_b])
+      create(:custom_field_answer, answerable: user, custom_field:, value: %w[option_a option_b])
 
       result = service.vote_counts_with_user_custom_field_grouping(custom_field)
 
@@ -406,7 +409,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
     it 'gives expected results when grouping by a checkbox custom field' do
       custom_field = create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
-      create(:custom_field_answer, answerable: user, key: 'checkbox', value: true)
+      create(:custom_field_answer, answerable: user, custom_field:, value: true)
 
       result = service.vote_counts_with_user_custom_field_grouping(custom_field)
 
@@ -460,7 +463,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           counts: [50, 200, 400, 300, 50, 700] # Population in each bin
         )
 
-        create(:custom_field_answer, answerable: user, key: 'birthyear', value: Date.current.year - 30) # Age 30
+        create(:custom_field_answer, answerable: user, custom_field:, value: Date.current.year - 30) # Age 30
 
         result = service.vote_counts_with_user_custom_field_grouping(custom_field)
 

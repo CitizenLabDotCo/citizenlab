@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import {
-  useBreakpoint,
-  ClickOutside,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint, ClickOutside } from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -14,6 +10,14 @@ import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCom
 import useAuthUser from 'api/me/useAuthUser';
 
 import Avatar from 'components/Avatar';
+import LazyPanelFormButtons from 'components/PostShowComponents/Comments/CommentForm/LazyPanelFormButtons';
+import panelStyles from 'components/PostShowComponents/Comments/commentsPanel.module.css';
+import {
+  CommentsVariant,
+  defaultCommentFormFrame,
+  panelTextAreaStyle,
+  useIsPanelComments,
+} from 'components/PostShowComponents/Comments/commentsVariant';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -23,6 +27,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { commentReplyButtonClicked$, commentAdded } from './events';
 import tracks from './tracks';
+import 'design-system/tokens.css';
 
 const Container = styled.div`
   display: flex;
@@ -41,19 +46,11 @@ const FormContainer = styled(ClickOutside)`
   align-items: stretch;
 `;
 
-const Form = styled.form`
+const Form = styled.form<{ variant: CommentsVariant }>`
   flex: 1;
   background: #fff;
-  border: 1px solid ${colors.borderDark};
-  border-radius: ${(props) => props.theme.borderRadius};
 
-  &:not(.focused):hover {
-    border-color: ${colors.black};
-  }
-
-  &.focused {
-    border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
-  }
+  ${defaultCommentFormFrame}
 `;
 
 const HiddenLabel = styled.span`
@@ -88,6 +85,7 @@ const InternalChildCommentForm = ({
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const smallerThanTablet = useBreakpoint('tablet');
+  const isPanel = useIsPanelComments();
 
   const {
     mutate: addCommentToIdeaComment,
@@ -255,9 +253,14 @@ const InternalChildCommentForm = ({
           onClickOutside={onCancel}
           closeOnClickOutsideEnabled={false}
         >
-          {/* TODO: Fix this the next time the file is edited. */}
-          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-          <Form className={focused ? 'focused' : ''}>
+          <Form
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            className={`${focused ? 'focused' : ''} ${
+              isPanel ? panelStyles.form : ''
+            }`}
+            variant={isPanel ? 'panel' : 'default'}
+          >
             <label>
               <HiddenLabel>
                 <FormattedMessage {...commentsMessages.replyToComment} />
@@ -275,7 +278,10 @@ const InternalChildCommentForm = ({
                 error={getErrorMessage()}
                 onChange={onChange}
                 onFocus={onFocus}
-                fontWeight="300"
+                color={isPanel ? panelTextAreaStyle.color : undefined}
+                fontWeight={isPanel ? panelTextAreaStyle.fontWeight : '300'}
+                fontSize={isPanel ? panelTextAreaStyle.fontSize : undefined}
+                lineHeight={isPanel ? panelTextAreaStyle.lineHeight : undefined}
                 padding="10px"
                 borderRadius="none"
                 border="none"
@@ -283,26 +289,44 @@ const InternalChildCommentForm = ({
                 getTextareaRef={setRef}
                 adminsAndModerators
               />
-              <ButtonWrapper>
-                <CancelButton
-                  disabled={processing}
-                  onClick={onCancel}
-                  buttonStyle="secondary-outlined"
-                  padding={smallerThanTablet ? '6px 12px' : undefined}
-                >
-                  <FormattedMessage {...commentsMessages.cancel} />
-                </CancelButton>
-                <ButtonWithLink
-                  className="e2e-submit-childcomment"
-                  processing={processing}
-                  onClick={onSubmit}
-                  disabled={!canSubmit}
-                  padding={smallerThanTablet ? '6px 12px' : undefined}
-                  icon="shield-check"
-                >
-                  <FormattedMessage {...commentsMessages.postInternalComment} />
-                </ButtonWithLink>
-              </ButtonWrapper>
+              {isPanel ? (
+                <div className={panelStyles.formFooter}>
+                  <LazyPanelFormButtons
+                    cancelLabel={formatMessage(commentsMessages.cancel)}
+                    submitLabel={formatMessage(
+                      commentsMessages.postInternalComment
+                    )}
+                    onCancel={onCancel}
+                    onSubmit={onSubmit}
+                    processing={processing}
+                    isCancelDisabled={processing}
+                    isSubmitDisabled={!canSubmit}
+                  />
+                </div>
+              ) : (
+                <ButtonWrapper>
+                  <CancelButton
+                    disabled={processing}
+                    onClick={onCancel}
+                    buttonStyle="secondary-outlined"
+                    padding={smallerThanTablet ? '6px 12px' : undefined}
+                  >
+                    <FormattedMessage {...commentsMessages.cancel} />
+                  </CancelButton>
+                  <ButtonWithLink
+                    className="e2e-submit-childcomment"
+                    processing={processing}
+                    onClick={onSubmit}
+                    disabled={!canSubmit}
+                    padding={smallerThanTablet ? '6px 12px' : undefined}
+                    icon="shield-check"
+                  >
+                    <FormattedMessage
+                      {...commentsMessages.postInternalComment}
+                    />
+                  </ButtonWithLink>
+                </ButtonWrapper>
+              )}
             </label>
           </Form>
         </FormContainer>

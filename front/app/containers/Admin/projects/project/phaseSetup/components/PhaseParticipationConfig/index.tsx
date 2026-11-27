@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import {
   Box,
@@ -53,6 +53,8 @@ import useSurveyProviders from './useSurveyProviders';
 import { defaultConfigForMethod } from './utils/participationMethodConfigs';
 
 interface Props {
+  moderationAction?: ReactNode;
+  surveyPlacement?: ReactNode;
   phase?: IPhase;
   formData: IUpdatedPhaseProperties;
   validationErrors: ValidationErrors;
@@ -74,6 +76,8 @@ const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
 };
 
 const PhaseParticipationConfig = ({
+  moderationAction,
+  surveyPlacement,
   phase,
   formData,
   validationErrors,
@@ -482,12 +486,14 @@ const PhaseParticipationConfig = ({
         {participation_method === 'common_ground' &&
           (layout === 'panel' ? (
             <>
-              <Box mb="10px">
-                <PanelHeading label={formatMessage(messages.settingsGroup)} />
+              <Box pt="14px" mb="10px">
+                <PanelHeading
+                  label={formatMessage(messages.settingsGroup)}
+                  expandable
+                />
               </Box>
               <PanelGroup
                 label={formatMessage(messages.participantActionsGroup)}
-                defaultOpen
               >
                 {commonGroundActions}
               </PanelGroup>
@@ -533,6 +539,7 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'ideation' && (
           <IdeationInputs
+            moderationAction={moderationAction}
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
             submission_enabled={submission_enabled}
@@ -587,6 +594,7 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'proposals' && (
           <ProposalsInputs
+            moderationAction={moderationAction}
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
             submission_enabled={submission_enabled}
@@ -684,6 +692,7 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'native_survey' && (
           <NativeSurveyInputs
+            surveyPlacement={surveyPlacement}
             apiErrors={apiErrors}
             phase={phase}
             formData={formData}

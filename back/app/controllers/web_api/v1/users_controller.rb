@@ -114,7 +114,8 @@ class WebApi::V1::UsersController < ApplicationController
       return
     end
 
-    head :ok
+    # The front-end can't read the auth token, so it learns when the session ends from here.
+    render json: { expires_at: AuthToken::AuthToken.new(token: token).payload['exp'] }
   end
 
   def intercom_token
@@ -122,6 +123,12 @@ class WebApi::V1::UsersController < ApplicationController
 
     token = IntercomMessengerTokenService.new.token(current_user)
     render json: raw_json({ token: })
+  end
+
+  def userjot_identity
+    authorize :user, :userjot_identity?
+
+    render json: raw_json(UserjotIdentityService.new.identity(current_user))
   end
 
   def me
@@ -277,6 +284,11 @@ class WebApi::V1::UsersController < ApplicationController
     delete_participation_data = ActiveModel::Type::Boolean.new.cast(params[:delete_participation_data])
     ban_email = ActiveModel::Type::Boolean.new.cast(params[:ban_email])
 
+    # Users deleting their own account are signed out, also at their SSO provider if
+    # it supports that. As when signing out, the front-end sends them to logout_url.
+    deleting_self = @user == current_user
+    logout_url = sso_logout_url if deleting_self
+
     DeleteUserJob.perform_now(
       @user.id,
       current_user,
@@ -284,7 +296,13 @@ class WebApi::V1::UsersController < ApplicationController
       ban_email:,
       ban_reason: params[:ban_reason]
     )
-    head :ok
+
+    AuthToken::Cookie.clear(response) if deleting_self
+    if logout_url
+      render json: { logout_url: logout_url }, status: :ok
+    else
+      head :ok
+    end
   end
 
   def block

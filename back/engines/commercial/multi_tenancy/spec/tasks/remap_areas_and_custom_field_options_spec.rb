@@ -30,8 +30,8 @@ describe 'rake fix_existing_tenants:remap_areas_and_custom_field_options' do # r
       project = create(:project)
       area_graauw.projects << project
       area_paal.projects << project
-      user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area_paal.id)])
-      user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area_zandberg.id)])
+      user1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: domicile_field, value: area_paal.id)])
+      user2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: domicile_field, value: area_zandberg.id)])
       area_graauw.update!(title_multiloc: { 'en' => 'Graauw', 'nl-NL' => 'Graauw Nederlands', 'fr-FR' => 'Graauw Français' })
       user3 = create(:user)
       create(:follower, followable: area_graauw, user: user1)

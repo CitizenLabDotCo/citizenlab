@@ -4,11 +4,8 @@ import {
   IconTooltip,
   LocaleSwitcher,
   Label,
-  colors,
-  fontSizes,
-  boInputLabelStyle,
 } from '@citizenlab/cl2-component-library';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { SupportedLocale, Multiloc } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -23,27 +20,17 @@ import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const Container = styled.div``;
 
-const LabelContainer = styled.div<{ variant: QuillEditorProps['variant'] }>`
+const LabelContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: ${({ variant }) => (variant === 'bo' ? '4px' : '10px')};
+  margin-bottom: 10px;
   flex-wrap: wrap;
   gap: 16px;
-
-  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 `;
 
-const boLabelStyle = css`
-  font-size: ${fontSizes.xs}px;
-  line-height: 1.4;
-  color: ${colors.coolGrey600};
-`;
-
-const StyledLabel = styled(Label)<{ variant: QuillEditorProps['variant'] }>`
+const StyledLabel = styled(Label)`
   margin-bottom: 0px;
-
-  ${({ variant }) => variant === 'bo' && boLabelStyle}
 `;
 
 const StyledIconTooltip = styled(IconTooltip)``;
@@ -122,12 +109,11 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
 
   return (
     <Container id={props.id} ref={containerRef}>
-      <LabelContainer variant={quillProps.variant}>
+      <LabelContainer>
         {label && (
           <StyledLabel
             id={`${sanitizeForClassname(props.id)}-label`}
             htmlFor={id}
-            variant={quillProps.variant}
           >
             <span>{label}</span>
             {labelTooltipText && (
@@ -148,7 +134,6 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
             locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
             selectedLocale={selectedLocale}
             values={{ valueMultiloc }}
-            variant={quillProps.variant}
           />
         )}
       </LabelContainer>

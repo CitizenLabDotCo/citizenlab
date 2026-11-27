@@ -15,10 +15,12 @@ export const isSafeRedirectUrl = (value: string) => {
   }
 };
 
-// The navigation itself, wrapped so a caller's behaviour can be asserted: jsdom
-// exposes window.location as a read-only property, so the call cannot be spied on
-// where it happens. A URL that did not originate in our own code must go through
-// isSafeRedirectUrl first.
+// These wrap window.location so tests can mock them (jsdom's can't be spied
+// on). URLs not from our own code must pass isSafeRedirectUrl first.
 export const navigateToUrl = (url: string) => {
   window.location.assign(url);
+};
+
+export const reloadPage = () => {
+  window.location.reload();
 };

@@ -5,12 +5,17 @@ import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
+
+import projectMessages from 'containers/Admin/projects/project/messages';
+
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import messages from '../messages';
+import { usePdfExportContext } from '../pdf/PdfExportContext';
 import wordMessages from '../word/messages';
 import { useWordSection } from '../word/useWordSection';
 
@@ -23,6 +28,8 @@ interface Props {
 
 const ParticipationMetrics = ({ phase }: Props) => {
   const intl = useIntl();
+  const redesigned = useProjectBackofficeRedesign();
+  const { isPdfRenderMode } = usePdfExportContext();
   const { formatMessage, formatNumber } = intl;
   const { start_at, end_at, participation_method } = phase.attributes;
   const {
@@ -154,7 +161,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
           ? [
               {
                 type: 'paragraph' as const,
-                text: formatMessage(messages.konveioParticipationDataNotice),
+                text: formatMessage(
+                  projectMessages.konveioParticipationDataNotice
+                ),
               },
             ]
           : []),
@@ -194,12 +203,17 @@ const ParticipationMetrics = ({ phase }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" gap="16px" w="100%">
-      {showKonveioNotice && (
+      {showKonveioNotice && (!redesigned || isPdfRenderMode) && (
         <Warning>
-          {formatMessage(messages.konveioParticipationDataNotice)}
+          {formatMessage(projectMessages.konveioParticipationDataNotice)}
         </Warning>
       )}
-      <Box display="flex" flexWrap="wrap" gap="16px" w="100%">
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        gap={redesigned && !isPdfRenderMode ? '10px' : '16px'}
+        w="100%"
+      >
         <MetricCard
           label={formatMessage(messages.visitors)}
           value={metrics.visitors}
@@ -225,6 +239,11 @@ const ParticipationMetrics = ({ phase }: Props) => {
         )}
         <MethodMetrics
           participationMethod={participation_method}
+          inputTerm={
+            redesigned && !isPdfRenderMode
+              ? phase.attributes.input_term
+              : undefined
+          }
           metrics={metrics}
           showChange={isCurrentPhase}
         />

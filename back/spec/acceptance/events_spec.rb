@@ -135,6 +135,11 @@ resource 'Events' do
         do_request(page: { number: { injected: '1' } })
         assert_status 200
       end
+
+      example 'returns 400 for a parameter containing a null byte', document: false do
+        do_request(project_publication_statuses: ["published\u0000"])
+        assert_status 400
+      end
     end
 
     context 'when the user registered to some events' do

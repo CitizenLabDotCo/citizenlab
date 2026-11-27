@@ -12,6 +12,8 @@ import HorizontalScroll from 'components/HorizontalScroll';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { getPreviewEventsPeriod } from 'utils/phasePreview/events';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 import { useParams } from 'utils/router';
 
 import EventPreviewCard from './EventPreviewCard';
@@ -31,17 +33,23 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const { data: project } = useProjectBySlug(slug);
   const projectIdToUse = projectId || project?.data.id;
   const { data: phases } = usePhases(projectIdToUse);
+  const preview = usePhasePreview();
   const { data: events } = useEvents({
     projectIds: projectIdToUse ? [projectIdToUse] : undefined,
-    currentAndFutureOnly: true,
     sort: '-start_at',
-    ongoing_during: [
-      moment(getCurrentPhase(phases?.data)?.attributes.start_at).toString() ||
-        null,
-      moment(getCurrentPhase(phases?.data)?.attributes.end_at)
-        .add(1, 'day')
-        .toString() || null,
-    ],
+    ...(preview
+      ? getPreviewEventsPeriod(preview)
+      : {
+          currentAndFutureOnly: true,
+          ongoing_during: [
+            moment(
+              getCurrentPhase(phases?.data)?.attributes.start_at
+            ).toString() || null,
+            moment(getCurrentPhase(phases?.data)?.attributes.end_at)
+              .add(1, 'day')
+              .toString() || null,
+          ],
+        }),
   });
 
   // TODO: Fix this the next time the file is edited.

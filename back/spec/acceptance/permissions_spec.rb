@@ -15,6 +15,7 @@ resource 'Permissions' do
     # once the action has been overridden. The inherited state is covered
     # separately, in the 'when the action inherits the global permission' groups.
     override_permissions!(@phase)
+    allow_test_id_methods
     AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'fake_sso' }] }
     AppConfiguration.instance.save!
   end
@@ -575,10 +576,10 @@ resource 'Permissions' do
           @permission = @phase.permissions.first
           @permission.update!(permitted_by: 'users', require_confirmed_email: true, require_name: false, require_password: false)
           create(:custom_field_birthyear, required: true)
-          create(:custom_field_gender, required: false)
+          gender_field = create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
 
-          @user.custom_field_answers.build(key: 'gender', value: 'male')
+          create(:custom_field_answer, answerable: @user, custom_field: gender_field, value: 'male')
           @user.update!(
             first_name: 'Jack',
             last_name: nil,
@@ -671,11 +672,11 @@ resource 'Permissions' do
       context 'with custom fields and onboarding' do
         before do
           create(:custom_field_birthyear, required: true)
-          create(:custom_field_gender, required: false)
+          gender_field = create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
           create(:custom_field, resource_type: 'User', enabled: false, key: 'disabled_field') # Should not be returned
 
-          @user.custom_field_answers.build(key: 'gender', value: 'male')
+          create(:custom_field_answer, answerable: @user, custom_field: gender_field, value: 'male')
           @user.update!(
             email: 'my@email.com',
             first_name: 'Jack',
@@ -781,6 +782,7 @@ resource 'Permissions' do
 
       context 'with fields locked by verification' do
         before do
+          allow_test_id_methods
           AppConfiguration.instance.settings['id_config'] = {
             allowed: true,
             enabled: true,

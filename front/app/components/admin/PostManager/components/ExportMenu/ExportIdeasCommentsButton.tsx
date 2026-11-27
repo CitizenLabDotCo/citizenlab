@@ -84,13 +84,13 @@ class ExportCommentsButton extends React.PureComponent<
         fontSize={`${fontSizes.s}px`}
       >
         {exportType === 'all' && (
-          <FormattedMessage {...messages.exportIdeasComments} />
+          <FormattedMessage {...messages.exportIdeasComments2} />
         )}
         {exportType === 'project' && (
-          <FormattedMessage {...messages.exportIdeasCommentsProjects} />
+          <FormattedMessage {...messages.exportIdeasCommentsProjects2} />
         )}
         {exportType === 'selected_posts' && (
-          <FormattedMessage {...messages.exportSelectedInputsComments} />
+          <FormattedMessage {...messages.exportSelectedInputsComments2} />
         )}
       </ButtonWithLink>
     );

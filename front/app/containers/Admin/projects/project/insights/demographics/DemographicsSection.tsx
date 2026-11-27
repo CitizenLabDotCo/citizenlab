@@ -9,12 +9,15 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 
+import EmptyState from 'design-system/EmptyState';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { transformDemographicsResponse } from 'api/phase_insights/transformDemographics';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import {
@@ -26,6 +29,7 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
+import InsightCard from '../InsightCard';
 import messages from '../messages';
 import { usePdfExportContext } from '../pdf/PdfExportContext';
 import { useWordSection, type WordSection } from '../word/useWordSection';
@@ -37,11 +41,15 @@ import DemographicFieldContent from './DemographicFieldContent';
 // Styled components reusing NavigationTabs constants and styles
 const TabsContainer = styled.div`
   display: flex;
+  overflow-x: auto;
+  min-width: 0;
   border-bottom: ${tabBorderSize}px solid ${colors.divider};
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
   ${({ active }) => css`
+    flex-shrink: 0;
+    white-space: nowrap;
     list-style: none;
     display: flex;
     align-items: center;
@@ -88,6 +96,7 @@ interface Props {
 const DemographicsSection = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
   const { isPdfRenderMode } = usePdfExportContext();
+  const redesigned = useProjectBackofficeRedesign() && !isPdfRenderMode;
   const { isDownloadingWord } = useWordExportContext();
   const localize = useLocalize();
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
@@ -217,6 +226,20 @@ const DemographicsSection = ({ phase }: Props) => {
     );
   }
 
+  if (fields.length === 0 && redesigned) {
+    return (
+      <WordExportableInsight exportId="demographics">
+        <InsightCard
+          title={formatMessage(messages.demographicsAndAudienceCard)}
+        >
+          <EmptyState context="card">
+            {formatMessage(messages.noDemographicData)}
+          </EmptyState>
+        </InsightCard>
+      </WordExportableInsight>
+    );
+  }
+
   if (fields.length === 0) {
     return (
       <WordExportableInsight exportId="demographics">
@@ -287,6 +310,63 @@ const DemographicsSection = ({ phase }: Props) => {
     );
   }
 
+  const tabs = (
+    <>
+      <TabsContainer
+        data-pdf-exclude="true"
+        data-cy="e2e-insights-demographic-tabs"
+      >
+        {fields.map((field, index) => (
+          <TabButton
+            key={field.field_id}
+            active={selectedFieldIndex === index}
+            onClick={() => setSelectedFieldIndex(index)}
+            type="button"
+            aria-selected={selectedFieldIndex === index}
+            role="tab"
+          >
+            {field.field_name}
+          </TabButton>
+        ))}
+      </TabsContainer>
+
+      <Box position="relative" minWidth="0">
+        {fields.map((field, index) => {
+          const isSelected = index === selectedFieldIndex;
+          return (
+            <Box
+              key={field.field_id}
+              position={isSelected ? 'relative' : 'absolute'}
+              top={isSelected ? undefined : '0'}
+              left={isSelected ? undefined : '0'}
+              width="100%"
+              opacity={isSelected ? 1 : 0}
+              pointerEvents={isSelected ? 'auto' : 'none'}
+              aria-hidden={!isSelected}
+            >
+              <DemographicFieldContent
+                field={field}
+                showExportMenu={isSelected}
+              />
+            </Box>
+          );
+        })}
+      </Box>
+    </>
+  );
+
+  if (redesigned) {
+    return (
+      <WordExportableInsight exportId="demographics">
+        <InsightCard
+          title={formatMessage(messages.demographicsAndAudienceCard)}
+        >
+          <Box position="relative">{tabs}</Box>
+        </InsightCard>
+      </WordExportableInsight>
+    );
+  }
+
   return (
     <WordExportableInsight exportId="demographics">
       <Box
@@ -305,43 +385,7 @@ const DemographicsSection = ({ phase }: Props) => {
           </Text>
         </Box>
 
-        <TabsContainer data-pdf-exclude="true">
-          {fields.map((field, index) => (
-            <TabButton
-              key={field.field_id}
-              active={selectedFieldIndex === index}
-              onClick={() => setSelectedFieldIndex(index)}
-              type="button"
-              aria-selected={selectedFieldIndex === index}
-              role="tab"
-            >
-              {field.field_name}
-            </TabButton>
-          ))}
-        </TabsContainer>
-
-        <Box position="relative">
-          {fields.map((field, index) => {
-            const isSelected = index === selectedFieldIndex;
-            return (
-              <Box
-                key={field.field_id}
-                position={isSelected ? 'relative' : 'absolute'}
-                top={isSelected ? undefined : '0'}
-                left={isSelected ? undefined : '0'}
-                width="100%"
-                opacity={isSelected ? 1 : 0}
-                pointerEvents={isSelected ? 'auto' : 'none'}
-                aria-hidden={!isSelected}
-              >
-                <DemographicFieldContent
-                  field={field}
-                  showExportMenu={isSelected}
-                />
-              </Box>
-            );
-          })}
-        </Box>
+        {tabs}
       </Box>
     </WordExportableInsight>
   );

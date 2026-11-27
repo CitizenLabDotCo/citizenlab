@@ -118,7 +118,7 @@ resource 'Ideas' do
           permitted_by: 'users',
           user_fields_in_form: false
         )
-        @user = create(:user, custom_field_answers: [build(:custom_field_answer, key: @user_select_field.key, value: 'option1')])
+        @user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @user_select_field, value: 'option1')])
         header_token_for @user
       end
 
@@ -224,14 +224,14 @@ resource 'Ideas' do
             project: @project,
             creation_phase: @phase,
             phases: [@phase],
-            custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: 'option2')],
+            custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: 'option2')],
             publication_status: 'draft'
           )
         end
         let(:id) { idea.id }
 
         it 'updates the user profile with the provided custom field values and author_id' do
-          create(:idea, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: 'option2')])
+          create(:idea, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: 'option2')])
           do_request({
             idea: {
               publication_status: 'published',
@@ -251,19 +251,41 @@ resource 'Ideas' do
           expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [%w[user_select_field option1]]
         end
 
+        it 'accepts a birth year sent as a numeric string and stores it as a number' do
+          birthyear_field = create(:custom_field_birthyear)
+          create(:permissions_custom_field, custom_field: birthyear_field, permission: @permission)
+
+          do_request({ idea: { publication_status: 'published', 'u_birthyear' => '1963', @custom_field.key => 'option2' } })
+
+          assert_status 200
+          expect(idea.reload.custom_field_answers.find_by(key: 'u_birthyear').value).to eq 1963
+          expect(@user.reload.custom_field_answers.find_by(key: 'birthyear').value).to eq 1963
+        end
+
+        it 'rejects a birth year that is not a number' do
+          birthyear_field = create(:custom_field_birthyear)
+          create(:permissions_custom_field, custom_field: birthyear_field, permission: @permission)
+
+          do_request({ idea: { publication_status: 'published', 'u_birthyear' => 'abc', @custom_field.key => 'option2' } })
+
+          assert_status 422
+          expect(json_response_body.dig(:errors, :'custom_field_answers.value')).to eq [{ error: 'invalid' }]
+          expect(@user.reload.custom_field_answers.find_by(key: 'birthyear')).to be_nil
+        end
+
         context do
           before do
             @gender_field = create(:custom_field_gender)
             @verification = create(:verification, method_name: 'bogus')
             @user = @verification.user
-            create(:custom_field_answer, answerable: @user, key: @gender_field.key, value: 'female')
+            create(:custom_field_answer, answerable: @user, custom_field: @gender_field, value: 'female')
             @user.custom_field_answers.reset
 
             header_token_for @user
           end
 
           it 'does not update locked field' do
-            create(:idea, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: 'option2')])
+            create(:idea, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: 'option2')])
             expect(@user.custom_field_answers.pluck(:key, :value)).to eq [[@gender_field.key, 'female']]
 
             do_request({
@@ -299,14 +321,14 @@ resource 'Ideas' do
             project: @project,
             creation_phase: @phase,
             phases: [@phase],
-            custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: 'option2')],
+            custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: 'option2')],
             publication_status: 'draft'
           )
         end
         let(:id) { idea.id }
 
         it 'updates the user profile with the provided custom field values but not author_id' do
-          create(:idea, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: 'option2')])
+          create(:idea, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: 'option2')])
           do_request({
             idea: {
               publication_status: 'published',

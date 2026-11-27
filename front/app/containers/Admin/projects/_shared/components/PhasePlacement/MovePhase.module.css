@@ -1,0 +1,14 @@
+/* Literal values on purpose: the old timeline opens this modal too and keeps its current look. */
+
+.helper {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #596b7a;
+}
+
+.status {
+  composes: helper;
+  margin-right: auto;
+}

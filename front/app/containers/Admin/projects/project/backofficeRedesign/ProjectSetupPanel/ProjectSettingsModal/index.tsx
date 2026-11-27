@@ -1,13 +1,12 @@
 import React, { useRef, useState } from 'react';
 
-import { Box, Button, Text, bo } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { CLErrors } from 'typings';
 
+import Banner from 'design-system/Banner';
+
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
@@ -21,11 +20,9 @@ import { validateSlug } from 'utils/textUtils';
 import DiscardChangesModal from './DiscardChangesModal';
 import GeneralSection from './GeneralSection';
 import messages from './messages';
-import PerspectivesSection from './PerspectivesSection';
 import ResourcesSection from './ResourcesSection';
 import useFilesDraft from './ResourcesSection/useFilesDraft';
-import TagsSection from './TagsSection';
-import useTagsDraft from './TagsSection/useTagsDraft';
+import 'design-system/tokens.css';
 
 interface Props {
   project: IProjectData;
@@ -39,10 +36,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
 
   const { mutateAsync: updateProject } = useUpdateProject();
   const validateProjectContext = useValidateProjectContext();
-  const perspectivesActive = useFeatureFlag({
-    name: 'live_auto_input_topics',
-  });
-  const tagsDraft = useTagsDraft(projectId);
   const filesDraft = useFilesDraft(projectId);
 
   const [processing, setProcessing] = useState(false);
@@ -114,23 +107,19 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       return;
     }
 
-    const [tagsSaved, filesSaved] = await Promise.all([
-      tagsDraft.save(),
-      filesDraft.save(),
-    ]);
+    const filesSaved = await filesDraft.save();
 
     savingRef.current = false;
     setProcessing(false);
 
-    if (tagsSaved && filesSaved) {
+    if (filesSaved) {
       onClose();
     } else {
       setSaveFailed(true);
     }
   };
 
-  const dirty =
-    !isEmpty(projectAttributesDiff) || tagsDraft.dirty || filesDraft.dirty;
+  const dirty = !isEmpty(projectAttributesDiff) || filesDraft.dirty;
 
   const discard = () => {
     setProjectAttributesDiff({});
@@ -139,7 +128,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
     setProjectContextError(false);
     setApiErrors({});
     setSaveFailed(false);
-    tagsDraft.reset();
     filesDraft.reset();
     setConfirmingDiscard(false);
     onClose();
@@ -158,7 +146,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       name: 'general',
       group: messages.settingsProjectGroup,
       label: messages.settingsGeneral,
-      icon: 'cog',
+      icon: 'settings-16',
       content: (
         <GeneralSection
           projectId={projectId}
@@ -181,34 +169,9 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       name: 'resources',
       group: messages.settingsProjectGroup,
       label: messages.settingsResources,
-      icon: 'paperclip',
+      icon: 'paperclip-16',
       content: <ResourcesSection projectId={projectId} draft={filesDraft} />,
     },
-    {
-      name: 'tags',
-      group: messages.settingsInputsGroup,
-      label: messages.settingsTags,
-      icon: 'label',
-      content: <TagsSection draft={tagsDraft} />,
-    },
-    ...(perspectivesActive
-      ? [
-          {
-            name: 'perspectives',
-            group: messages.settingsInputsGroup,
-            label: messages.settingsPerspectives,
-            icon: 'stars',
-            content: (
-              <PerspectivesSection
-                enabled={projectAttrs.live_auto_input_topics_enabled}
-                onChange={(live_auto_input_topics_enabled) =>
-                  applyDiff({ live_auto_input_topics_enabled })
-                }
-              />
-            ),
-          } satisfies SettingsModalSection,
-        ]
-      : []),
   ];
 
   return (
@@ -218,27 +181,19 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
         close={handleClose}
         header={formatMessage(messages.settingsTitle)}
         sections={sections}
-        footer={
-          <Box display="flex" alignItems="center" gap="12px">
-            {saveFailed && (
-              <Text variant="boMicro" color="red600" m="0px">
-                {formatMessage(messages.settingsSaveFailed)}
-              </Text>
-            )}
-            <Button
-              buttonStyle="bo-primary"
-              width="auto"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
-              processing={processing}
-              onClick={handleSave}
-              id="e2e-project-settings-save"
-            >
-              {formatMessage(messages.settingsSave)}
-            </Button>
-          </Box>
+        notice={
+          saveFailed && (
+            <Banner tone="error">
+              {formatMessage(messages.settingsSaveFailed)}
+            </Banner>
+          )
         }
+        primaryAction={{
+          label: formatMessage(messages.settingsSave),
+          onPress: handleSave,
+          isPending: processing,
+          id: 'e2e-project-settings-save',
+        }}
       />
       <DiscardChangesModal
         opened={confirmingDiscard}

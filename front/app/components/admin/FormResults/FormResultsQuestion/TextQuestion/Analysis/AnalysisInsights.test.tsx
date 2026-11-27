@@ -196,9 +196,7 @@ describe('<AnalysisInsights /> auto-summary threshold', () => {
 // The Community Monitor live monitor URL carries no $projectId/$phaseId, so the
 // Explore link must use the ids passed down as props, not the route params.
 describe('<AnalysisInsights /> Explore link', () => {
-  const insightOfType = (
-    type: 'summary' | 'analysis_question'
-  ): IInsights => ({
+  const insightOfType = (type: 'summary' | 'analysis_question'): IInsights => ({
     data: [
       {
         id: 'i1',

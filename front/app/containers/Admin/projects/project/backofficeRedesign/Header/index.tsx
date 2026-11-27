@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Button,
-  Tooltip,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { useRouter } from '@tanstack/react-router';
+
+import Breadcrumbs, { Breadcrumb } from 'design-system/Breadcrumbs';
+import IconButton from 'design-system/IconButton';
+import StatusBadge from 'design-system/StatusBadge';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import sharedMessages from 'containers/Admin/projects/_shared/components/messages';
+import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
+import { useWorkspaceHeader } from 'containers/Admin/sideBar/WorkspaceHeaderContext';
+
 import { usePageSave } from 'components/admin/PageSaveContext';
-import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import goBackMessages from 'components/UI/GoBackButton/messages';
 
 import { useIntl } from 'utils/cl-intl';
@@ -26,20 +26,22 @@ import { ProjectSection } from '../_shared/sections';
 import usePhaseViews, { PhaseViewKey } from '../Phase/usePhaseViews';
 import ViewSwitch from '../Phase/ViewSwitch';
 
+import styles from './Header.module.css';
 import { HeaderDropdownName } from './HeaderDropdown';
 import messages from './messages';
 import PublishDropdown from './PublishDropdown';
+import publishMessages from './PublishDropdown/messages';
 import ReviewFlow from './ReviewFlow';
 import SaveChangesButton from './SaveChangesButton';
 import ShareDropdown from './ShareDropdown';
+import 'design-system/tokens.css';
 
-const HEADER_HEIGHT = '48px';
-
-const CrumbBar = styled(Box)`
-  span {
-    white-space: nowrap;
-  }
-`;
+type Crumb = {
+  key: string;
+  label: string;
+  // Absent for a level that is only a name.
+  path?: string;
+};
 
 interface Props {
   project: IProjectData;
@@ -48,6 +50,7 @@ interface Props {
   draftParentLabel?: string;
   saveLabel?: string;
   activeView: PhaseViewKey;
+  viewSwitch?: ReactNode;
   /** The back button then returns from the map to the phase. */
   editingMap?: boolean;
   section?: ProjectSection;
@@ -62,6 +65,7 @@ const WorkspaceHeader = ({
   draftParentLabel,
   saveLabel,
   activeView,
+  viewSwitch,
   editingMap,
   section,
   openDropdown,
@@ -70,145 +74,126 @@ const WorkspaceHeader = ({
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
   const localize = useLocalize();
+  const locale = useLocale();
+  const router = useRouter();
+  const workspaceHeader = useWorkspaceHeader();
   const views = usePhaseViews(phase);
   const inPhase = !!(phase || draftLabel);
-  const saveButtonLabel = inPhase
-    ? saveLabel
-    : formatMessage(messages.saveProjectSetup);
+  const saveButtonLabel =
+    saveLabel ??
+    formatMessage(
+      inPhase ? phaseSetupMessages.saveChangesLabel : messages.save
+    );
 
-  const phaseCrumbs: TBreadcrumbs = [
-    {
-      label: localize(project.attributes.title_multiloc),
-      link: {
-        to: '/admin/projects/$projectId',
-        params: { projectId: project.id },
-      },
-    },
-    ...(draftParentLabel ? [{ label: draftParentLabel }] : []),
-    ...(phase ? [{ label: localize(phase.attributes.title_multiloc) }] : []),
-    ...(draftLabel ? [{ label: draftLabel }] : []),
+  const projectPath = router.buildLocation({
+    to: '/$locale/admin/projects/$projectId',
+    params: { locale, projectId: project.id },
+  }).href;
+  const projectTitle = localize(project.attributes.title_multiloc);
+
+  const phaseCrumbs: Crumb[] = [
+    { key: 'project', label: projectTitle, path: projectPath },
+    ...(draftParentLabel
+      ? [{ key: 'draftParent', label: draftParentLabel }]
+      : []),
+    ...(phase
+      ? [{ key: 'phase', label: localize(phase.attributes.title_multiloc) }]
+      : []),
+    ...(draftLabel ? [{ key: 'draft', label: draftLabel }] : []),
   ];
 
-  const projectCrumbs: TBreadcrumbs = [
+  const projectCrumbs: Crumb[] = [
     {
+      key: 'projects',
       label: formatMessage(messages.projectsCrumb),
-      link: { to: '/admin/projects' },
+      path: router.buildLocation({
+        to: '/$locale/admin/projects',
+        params: { locale },
+      }).href,
     },
     {
-      label: localize(project.attributes.title_multiloc),
-      ...(section && {
-        link: {
-          to: '/admin/projects/$projectId' as const,
-          params: { projectId: project.id },
-        },
-      }),
+      key: 'project',
+      label: projectTitle,
+      path: section ? projectPath : undefined,
     },
-    ...(section ? [{ label: formatMessage(section.label) }] : []),
+    ...(section
+      ? [{ key: 'section', label: formatMessage(section.label) }]
+      : []),
   ];
+
+  const crumbs = inPhase ? phaseCrumbs : projectCrumbs;
+  const publicationStatus = project.attributes.publication_status;
 
   return (
-    <Box
-      as="header"
-      display="flex"
-      alignItems="center"
-      flex={`0 0 ${HEADER_HEIGHT}`}
-      height={HEADER_HEIGHT}
-      pl="26px"
-      pr="20px"
-      background={colors.white}
-      borderRadius={bo.panelBorderRadius}
+    <header
+      ref={workspaceHeader?.setElement}
+      data-project-workspace-header=""
+      className={styles.header}
     >
-      <CrumbBar
-        flex="1 1 0"
-        minWidth="0"
-        overflow="hidden"
-        display="flex"
-        alignItems="center"
-        gap="12px"
-      >
-        {inPhase ? (
-          <>
-            {editingMap ? (
-              <Button
-                buttonStyle="bo-secondary"
-                icon="arrow-left"
-                width={bo.buttonMedium.height}
-                height={bo.buttonMedium.height}
-                padding="0"
-                ariaLabel={formatMessage(goBackMessages.goBack)}
-                onClick={() => removeSearchParams(['map_config'])}
-              />
-            ) : (
-              <ButtonWithLink
-                to="/admin/projects/$projectId"
-                params={{ projectId: project.id }}
-                buttonStyle="bo-secondary"
-                icon="arrow-left"
-                width={bo.buttonMedium.height}
-                height={bo.buttonMedium.height}
-                padding="0"
-                ariaLabel={formatMessage(messages.backToProjectSetup)}
-              />
-            )}
-            <Breadcrumbs
-              breadcrumbs={phaseCrumbs}
-              separator={draftParentLabel ? 'chevron' : 'slash'}
-              variant="backofficeRedesign"
-              highlightCurrentPage
+      <span className={styles.separator} aria-hidden="true" />
+      <div className={styles.crumbBar}>
+        {inPhase &&
+          (editingMap ? (
+            <IconButton
+              icon="arrow-left-16"
+              aria-label={formatMessage(goBackMessages.goBack)}
+              onPress={() => removeSearchParams(['map_config'])}
             />
-          </>
-        ) : (
+          ) : (
+            <IconButton
+              icon="arrow-left-16"
+              aria-label={formatMessage(messages.backToProjectSetup)}
+              href={projectPath}
+            />
+          ))}
+        <div className={styles.crumbs}>
           <Breadcrumbs
-            breadcrumbs={projectCrumbs}
-            icon="folder-outline"
-            separator="chevron"
-            variant="backofficeRedesign"
-            highlightCurrentPage
-          />
-        )}
-      </CrumbBar>
+            separator={inPhase && !draftParentLabel ? 'slash' : 'chevron'}
+          >
+            {crumbs.map((crumb) => (
+              <Breadcrumb
+                key={crumb.key}
+                id={crumb.key}
+                href={crumb.path}
+                isDisabled={!crumb.path}
+              >
+                {crumb.label}
+              </Breadcrumb>
+            ))}
+          </Breadcrumbs>
+          {/* A phase goes live with its project; an archived one has no badge. */}
+          {phase && publicationStatus === 'draft' && (
+            <StatusBadge status="draft">
+              {formatMessage(sharedMessages.draft)}
+            </StatusBadge>
+          )}
+          {phase && publicationStatus === 'published' && (
+            <StatusBadge status="published">
+              {formatMessage(publishMessages.publishButtonLive)}
+            </StatusBadge>
+          )}
+        </div>
+      </div>
 
-      <Box flex="0 0 auto">
-        {phase && (
-          <ViewSwitch
-            views={views}
-            activeView={activeView}
-            projectId={project.id}
-            phaseId={phase.id}
-          />
-        )}
-      </Box>
+      <div className={styles.viewSwitch}>
+        {viewSwitch ??
+          (phase && (
+            <ViewSwitch
+              label={formatMessage(messages.phaseViewSwitch)}
+              views={views}
+              activeView={activeView}
+              projectId={project.id}
+              phaseId={phase.id}
+            />
+          ))}
+      </div>
 
-      <Box
-        flex="1 1 0"
-        display="flex"
-        alignItems="center"
-        justifyContent="flex-end"
-        gap="8px"
-      >
+      <div className={styles.actions}>
         {inPhase || pageSave?.dirty ? (
           <SaveChangesButton key={phase?.id} label={saveButtonLabel} />
         ) : (
           <>
-            <Tooltip
-              content={formatMessage(messages.previewProject)}
-              theme="dark"
-              placement="bottom"
-            >
-              <ButtonWithLink
-                to="/projects/$slug"
-                params={{ slug: project.attributes.slug }}
-                buttonStyle="bo-text"
-                icon="eye"
-                width={bo.buttonMedium.height}
-                height={bo.buttonMedium.height}
-                padding="0"
-                bgHoverColor={colors.grey100}
-                iconHoverColor={colors.textPrimary}
-                ariaLabel={formatMessage(messages.previewProject)}
-              />
-            </Tooltip>
-            <Box position="relative" display="flex" gap="8px">
+            <div className={styles.dropdowns}>
               <ShareDropdown
                 project={project}
                 opened={openDropdown === 'share'}
@@ -230,11 +215,11 @@ const WorkspaceHeader = ({
                   onOpenDropdown(opened ? 'publish' : null)
                 }
               />
-            </Box>
+            </div>
           </>
         )}
-      </Box>
-    </Box>
+      </div>
+    </header>
   );
 };
 

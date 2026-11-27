@@ -1,11 +1,9 @@
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import { IPhaseData } from 'api/phases/types';
+import { PHASE_REPORT_TEMPLATE_METHODS } from 'api/reports/constants';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-export const PARTICIPATION_METHODS: ParticipationMethod[] = [
-  'ideation',
-  'native_survey',
-];
+export const PARTICIPATION_METHODS = PHASE_REPORT_TEMPLATE_METHODS;
 
 export const findInitialPhase = (phases: IPhaseData[]) => {
   for (const phase of phases) {

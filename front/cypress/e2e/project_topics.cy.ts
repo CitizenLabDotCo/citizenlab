@@ -122,7 +122,7 @@ describe('Project topics', () => {
       cy.visit(`/projects/${projectSlug}`);
 
       // Go to idea form for our project
-      cy.visit(`projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+      cy.visit(`projects/${projectSlug}/ideas/new/${phaseId}`);
 
       // Fill in the title and description since these are required
       cy.get('#title_multiloc ').type(title, { delay: 0 });
@@ -159,7 +159,7 @@ describe('Project topics', () => {
       cy.get('.e2e-admin-list-row').contains(topicTitle).should('not.exist');
 
       // Go to idea form for our project
-      cy.visit(`projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+      cy.visit(`projects/${projectSlug}/ideas/new/${phaseId}`);
 
       cy.get('#title_multiloc ').type(title, { delay: 0 });
       cy.get('#title_multiloc ').should('contain.value', title);

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
@@ -12,26 +12,24 @@ import actionFormMessages from 'components/admin/ActionForm/messages';
 import { useIntl } from 'utils/cl-intl';
 
 import methodSectionMessages from './BuildFields/MethodSection/messages';
-
-import SurveySetupModal from './SurveySetupModal';
+import styles from './BuildPanel.module.css';
 
 interface Props {
   projectId: string;
   phaseId: string;
-  name: string;
   title: string;
   description: string;
+  onAddQuestions: () => void;
 }
 
 const NativeSurveyOption = ({
   projectId,
   phaseId,
-  name,
   title,
   description,
+  onAddQuestions,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [opened, setOpened] = useState(false);
   const { data: customFields } = useCustomFields({ projectId, phaseId });
 
   const nQuestions = (customFields ?? []).filter(
@@ -40,11 +38,9 @@ const NativeSurveyOption = ({
   const hasQuestions = nQuestions > 0;
 
   return (
-    <Box display="flex" flexDirection="column" gap="12px">
+    <div className={styles.option}>
       <ChoiceRadio
-        name={name}
         value="native_survey"
-        currentValue="native_survey"
         title={title}
         titleAdornment={
           hasQuestions && (
@@ -57,26 +53,17 @@ const NativeSurveyOption = ({
           )
         }
         description={description}
-        onChange={() => {}}
       />
       {customFields && (
-        <Button
-          buttonStyle="bo-secondary"
-          boSize="medium"
-          width="100%"
-          onClick={() => setOpened(true)}
-        >
-          {formatMessage(methodSectionMessages.addQuestions)}
+        <Button fullWidth variant="secondary" onPress={onAddQuestions}>
+          {formatMessage(
+            hasQuestions
+              ? methodSectionMessages.editSurvey
+              : methodSectionMessages.addQuestions
+          )}
         </Button>
       )}
-      <SurveySetupModal
-        projectId={projectId}
-        phaseId={phaseId}
-        hasQuestions={hasQuestions}
-        opened={opened}
-        onClose={() => setOpened(false)}
-      />
-    </Box>
+    </div>
   );
 };
 

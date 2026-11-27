@@ -147,6 +147,8 @@ resource 'AppConfigurations' do
     end
 
     describe do
+      before { header_token_for create(:super_admin) }
+
       let(:settings) do
         { gibberish_feature: { setting1: 'fake' } }.deep_stringify_keys!
       end
@@ -160,6 +162,8 @@ resource 'AppConfigurations' do
     end
 
     describe do
+      before { header_token_for create(:super_admin) }
+
       let(:settings) do
         { core: { fake_setting: 'should_fail' } }.deep_stringify_keys!
       end
@@ -170,6 +174,67 @@ resource 'AppConfigurations' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :settings)).to be_present
       end
+    end
+
+    describe 'settings that only super admins may change' do
+      example '[error] An admin changes a setting only super admins may change', document: false do
+        do_request(app_configuration: { settings: { core: { lifecycle_stage: 'churned' } } })
+
+        assert_status 403
+        expect(json_parse(response_body).dig(:errors, :settings))
+          .to include({ error: 'not_permitted', value: [%w[core lifecycle_stage]] })
+        expect(AppConfiguration.instance.reload.lifecycle_stage).to eq 'active'
+      end
+
+      example '[error] An admin adds an unsupported setting', document: false do
+        do_request(app_configuration: { settings: { core: { fake_setting: 'should_fail' } } })
+
+        assert_status 403
+        expect(json_parse(response_body).dig(:errors, :settings))
+          .to include({ error: 'not_permitted', value: [%w[core fake_setting]] })
+      end
+
+      example '[error] An admin removes the logo along with a setting only super admins may change', document: false do
+        configuration = AppConfiguration.instance
+        configuration.update(logo: Rails.root.join('spec/fixtures/logo.png').open)
+        do_request(app_configuration: { logo: nil, settings: { core: { lifecycle_stage: 'churned' } } })
+
+        assert_status 403
+        expect(configuration.reload.logo.file.exists?).to be true
+      end
+
+      example 'An admin sends back the whole core settings with one allowed change', document: false do
+        core = AppConfiguration.instance.settings('core').merge('organization_name' => { 'en' => 'Echo town' })
+        do_request(app_configuration: { settings: { core: core } })
+
+        assert_status 200
+        expect(AppConfiguration.instance.reload.settings('core', 'organization_name', 'en')).to eq 'Echo town'
+      end
+
+      example 'A super admin changes a setting only super admins may change', document: false do
+        header_token_for create(:super_admin)
+        do_request(app_configuration: { settings: { core: { lifecycle_stage: 'churned' } } })
+
+        assert_status 200
+        expect(AppConfiguration.instance.reload.lifecycle_stage).to eq 'churned'
+      end
+    end
+
+    example 'An admin saves a helper text with unsafe HTML', document: false do
+      helper_text = { 'en' => '<b>Welcome</b><img src="x" onerror="alert(1)"><style>body{display:none}</style>' }
+      do_request(app_configuration: { settings: { core: { enter_email_helper_text: helper_text } } })
+
+      assert_status 200
+      expect(json_parse(response_body).dig(:data, :attributes, :settings, :core, :enter_email_helper_text, :en))
+        .to eq '<b>Welcome</b>'
+      expect(AppConfiguration.instance.reload.settings('core', 'enter_email_helper_text', 'en')).to eq '<b>Welcome</b>'
+    end
+
+    example '[error] An admin saves a helper text that is not text', document: false do
+      do_request(app_configuration: { settings: { core: { enter_email_helper_text: { en: ['<b>Welcome</b>'] } } } })
+
+      assert_status 422
+      expect(json_parse(response_body).dig(:errors, :settings)).to be_present
     end
 
     describe do

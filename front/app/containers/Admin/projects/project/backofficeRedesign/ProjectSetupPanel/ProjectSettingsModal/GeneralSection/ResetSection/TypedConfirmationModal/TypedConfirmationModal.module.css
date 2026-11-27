@@ -1,0 +1,15 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-20);
+}
+
+.word {
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--gv-space-8);
+}

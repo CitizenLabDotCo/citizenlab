@@ -1,6 +1,49 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  settingsTitle: {
+    id: 'app.containers.Admin.projects.project.setupCards.settingsTitle',
+    defaultMessage: 'Settings',
+  },
+  projectCardTitle: {
+    id: 'app.containers.Admin.projects.project.setupCards.projectCardTitle',
+    defaultMessage: 'Set project card',
+  },
+  areaTitle: {
+    id: 'app.containers.Admin.projects.project.setupCards.areaTitle',
+    defaultMessage: 'Set area',
+  },
+  topicTagsTitle: {
+    id: 'app.containers.Admin.projects.project.setupCards.topicTagsTitle',
+    defaultMessage: 'Set topic tags',
+  },
+  methodsTitle: {
+    id: 'app.containers.Admin.projects.project.setupCards.methodsTitle',
+    defaultMessage: 'Plan participation',
+  },
+  generalTooltip: {
+    id: 'app.containers.Admin.projects.project.setupCards.generalTooltip',
+    defaultMessage: 'The project name, and the space and folder it belongs to',
+  },
+  homepageCardTooltip: {
+    id: 'app.containers.Admin.projects.project.setupCards.homepageCardTooltip',
+    defaultMessage:
+      'Shown wherever the project is listed: homepage, folders, spaces and pages',
+  },
+  projectPageTooltip: {
+    id: 'app.containers.Admin.projects.project.setupCards.projectPageTooltip',
+    defaultMessage: 'The page participants see when they open the project',
+  },
+  areaTooltip: {
+    id: 'app.containers.Admin.projects.project.setupCards.areaTooltip',
+    defaultMessage:
+      'Participants can filter projects by area on the homepage. Choose where this project applies.',
+  },
+  methodsTooltip: {
+    id: 'app.containers.Admin.projects.project.setupCards.methodsTooltip',
+    defaultMessage: 'The ways participants take part, one after the other',
+  },
+
   areaFilterAllAreas: {
     id: 'app.containers.Admin.projects.project.areaFilterAllAreas',
     defaultMessage: 'All areas',
@@ -38,12 +81,9 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, one {# area selected} other {# areas selected}}',
   },
-  topicTagsSearch: {
-    id: 'app.containers.Admin.projects.project.topicTagsSearch',
-    defaultMessage: 'Search tags...',
-  },
-  topicTagsNoMatch: {
-    id: 'app.containers.Admin.projects.project.topicTagsNoMatch',
-    defaultMessage: 'No matching tags',
+  topicTagsDescription: {
+    id: 'app.containers.Admin.projects.project.topicTagsDescription',
+    defaultMessage:
+      'Participants can filter projects by topic on the homepage.',
   },
 });

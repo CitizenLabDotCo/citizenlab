@@ -1,108 +1,115 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Icon,
-  IconNames,
-  Text,
-  Tooltip,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import Disclosure from 'design-system/Disclosure';
+import { IconName } from 'design-system/Icon';
+import IconButton from 'design-system/IconButton';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 
+type CardIcon =
+  | 'chevron-right'
+  | 'chevron-down'
+  | 'chevron-up'
+  | 'plus'
+  | 'edit';
+
 export interface CardButton {
-  icon: IconNames;
+  icon: CardIcon;
   onClick: () => void;
   actionLabel?: string;
   expanded?: boolean;
   disabled?: boolean;
+  describedBy?: string;
 }
+
+const ACTION_ICONS: Record<CardIcon, IconName> = {
+  'chevron-right': 'chevron-right-16',
+  'chevron-down': 'chevron-down-16',
+  'chevron-up': 'chevron-down-16',
+  plus: 'plus-16',
+  edit: 'pencil-14',
+};
 
 interface Props {
   title: string;
   titleTooltip?: JSX.Element;
+  staticTitle?: ReactNode;
+  /** A review status, shown next to the title. */
+  status?: ReactNode;
   action?: ReactNode;
   button: CardButton;
+  children?: ReactNode;
 }
 
-const SetupCardButton = ({ title, titleTooltip, action, button }: Props) => {
-  const header = (
-    <Box
-      as="button"
-      type="button"
-      w="100%"
-      minHeight="44px"
-      display="flex"
-      alignItems="center"
-      gap="10px"
-      p="8px 8px 8px 12px"
-      background="transparent"
-      border="none"
-      borderRadius={bo.borderRadius}
-      cursor={button.disabled ? 'default' : 'pointer'}
-      aria-expanded={button.expanded}
-      disabled={button.disabled}
-      onClick={button.onClick}
-    >
-      <Box
-        flex="1 1 auto"
-        minWidth="0"
-        display="flex"
-        alignItems="center"
-        gap="4px"
-      >
-        <Text
-          as="span"
-          variant="boControl"
-          fontSize="xs"
-          m="0"
-          textAlign="left"
-        >
-          {title}
-          {button.actionLabel && (
-            <ScreenReaderOnly>{`, ${button.actionLabel}`}</ScreenReaderOnly>
-          )}
-        </Text>
-        {titleTooltip && (
-          <Icon
-            name="info-solid"
-            width="20px"
-            height="20px"
-            fill={colors.textSecondary}
-            ariaHidden
-          />
-        )}
-      </Box>
-      {action}
-      <Box
-        flex="0 0 auto"
-        w="28px"
-        h="28px"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        aria-hidden
-      >
-        <Icon
-          name={button.icon}
-          width="16px"
-          height="16px"
-          fill={colors.coolGrey500}
-        />
-      </Box>
-    </Box>
+const SetupCardButton = ({
+  title,
+  titleTooltip,
+  staticTitle = title,
+  status,
+  action,
+  button,
+  children,
+}: Props) => {
+  const titleWithAction = (
+    <>
+      {title}
+      {button.actionLabel && (
+        <ScreenReaderOnly>{`, ${button.actionLabel}`}</ScreenReaderOnly>
+      )}
+    </>
   );
 
-  // A tooltip icon is a button of its own and can't sit inside the header
-  // button, so the whole header carries the tooltip instead.
-  if (!titleTooltip) return header;
+  if (button.expanded !== undefined) {
+    return (
+      <Disclosure
+        title={titleWithAction}
+        tooltip={titleTooltip}
+        status={status}
+        summary={action}
+        isExpanded={button.expanded}
+        onExpandedChange={button.onClick}
+        isDisabled={button.disabled}
+      >
+        {children}
+      </Disclosure>
+    );
+  }
+
+  // A button header has no body, so a card with content gets its action as
+  // an icon button in a static header instead.
+  if (children) {
+    return (
+      <Disclosure
+        header="static"
+        title={staticTitle}
+        status={status}
+        summary={action}
+        actions={
+          <IconButton
+            icon={ACTION_ICONS[button.icon]}
+            aria-label={button.actionLabel ?? title}
+            aria-describedby={button.describedBy}
+            isDisabled={button.disabled}
+            onPress={button.onClick}
+          />
+        }
+      >
+        {children}
+      </Disclosure>
+    );
+  }
 
   return (
-    <Tooltip content={titleTooltip} theme="dark" width="100%">
-      {header}
-    </Tooltip>
+    <Disclosure
+      header="button"
+      tooltip={titleTooltip}
+      title={titleWithAction}
+      status={status}
+      summary={action}
+      actionIcon={ACTION_ICONS[button.icon]}
+      isDisabled={button.disabled}
+      onPress={button.onClick}
+    />
   );
 };
 

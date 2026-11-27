@@ -13,5 +13,4 @@ export interface Props {
   defaultMonth?: Date;
   onUpdateRange: (range: Partial<DateRange>) => void;
   className?: string;
-  variant?: 'default' | 'bo';
 }

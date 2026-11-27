@@ -62,9 +62,9 @@ describe SideFxUserService do
     end
 
     it 'creates a follower for the domicile' do
-      create(:custom_field_domicile)
+      domicile_field = create(:custom_field_domicile)
       area = create(:area)
-      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)])
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: domicile_field, value: area.id)])
 
       expect do
         service.after_create user, user
@@ -270,9 +270,9 @@ describe SideFxUserService do
     end
 
     it 'creates a follower for the domicile' do
-      create(:custom_field_domicile)
+      domicile_field = create(:custom_field_domicile)
       area = create(:area)
-      user.custom_field_answers.create!(key: 'domicile', value: area.id)
+      create(:custom_field_answer, answerable: user, custom_field: domicile_field, value: area.id)
 
       expect do
         service.after_update user, user
@@ -301,12 +301,22 @@ describe SideFxUserService do
 
     it 'successfully enqueues PII data deletion job for Intercom' do
       expect { service.after_destroy(user, current_user) }
-        .to have_enqueued_job(RemoveUserFromIntercomJob).with(user.id)
+        .to have_enqueued_job(RemoveUserFromIntercomJob).with([user.id])
     end
 
     it 'successfully enqueues PII data deletion job for Segment' do
       expect { service.after_destroy(user, current_user) }
         .to have_enqueued_job(RemoveUsersFromSegmentJob).with([user.id])
+    end
+  end
+
+  describe 'after_destroy_all' do
+    let(:user_ids) { create_list(:user, 2).map(&:id) }
+
+    it 'enqueues one job per third-party service for all the users' do
+      expect { service.after_destroy_all(user_ids) }
+        .to  have_enqueued_job(RemoveUserFromIntercomJob).with(user_ids).exactly(:once)
+        .and have_enqueued_job(RemoveUsersFromSegmentJob).with(user_ids).exactly(:once)
     end
   end
 
@@ -339,6 +349,42 @@ describe SideFxUserService do
     it "logs an 'unblocked' action job when a user is unblocked" do
       expect { service.after_unblock(user, current_user) }
         .to have_enqueued_job(LogActivityJob).with(user, 'unblocked', current_user, user.updated_at.to_i)
+    end
+  end
+
+  describe 'after_error' do
+    def invalid_user(email)
+      build(:user, email: email).tap(&:validate)
+    end
+
+    it "logs a 'blacklisted_email_domain_used' activity when the email domain is blocked" do
+      rejected_user = invalid_user("someone@#{User::EMAIL_DOMAIN_BLACKLIST.first}")
+
+      expect { service.after_error(rejected_user, '1.2.3.4') }
+        .to have_enqueued_job(LogActivityJob)
+        .with(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, anything, payload: { email: rejected_user.email, remote_ip: '1.2.3.4' })
+    end
+
+    it "logs a 'banned_email_used' activity on the ban, without the email, when the email is banned" do
+      ban = EmailBan.ban!('banned@example.com')
+
+      expect { service.after_error(invalid_user('banned@example.com'), '1.2.3.4') }
+        .to have_enqueued_job(LogActivityJob)
+        .with(ban, 'banned_email_used', nil, anything, payload: { remote_ip: '1.2.3.4' })
+    end
+
+    it 'logs the activity for a blocked new email too' do
+      user.new_email = "someone@#{User::EMAIL_DOMAIN_BLACKLIST.first}"
+      user.validate
+
+      expect { service.after_error(user, '1.2.3.4') }
+        .to have_enqueued_job(LogActivityJob)
+        .with(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, anything, payload: { email: user.new_email, remote_ip: '1.2.3.4' })
+    end
+
+    it 'logs nothing for other validation errors' do
+      expect { service.after_error(invalid_user('not-an-email'), '1.2.3.4') }
+        .not_to have_enqueued_job(LogActivityJob)
     end
   end
 end

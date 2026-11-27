@@ -4,6 +4,11 @@ module EmailCampaigns
   class ApplicationMailer < ApplicationMailer
     layout 'campaign_mailer'
 
+    # Provider-neutral tracking headers, set on every campaign mail. `MetadataInterceptor`
+    # adapts them to the delivery provider right before sending.
+    TENANT_ID_HEADER = 'X-GoVocal-Tenant-Id'
+    DELIVERY_ID_HEADER = 'X-GoVocal-Delivery-Id'
+
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)
       @user = @command[:recipient]
@@ -20,7 +25,9 @@ module EmailCampaigns
     def campaign_mail
       I18n.with_locale(locale.locale_sym) do
         mail(default_config, &:mjml).tap do |message|
-          message.mailgun_headers = mailgun_headers if self.class.delivery_method == :mailgun
+          message[TENANT_ID_HEADER] = app_configuration.id
+          # Absent when no before_send hook ran (admin previews, stored examples).
+          message[DELIVERY_ID_HEADER] = command[:delivery_id] if command[:delivery_id]
           # Still rendered, so previews work, but never sent. Also stops queued
           # emails for users whose address bounced after the email was queued.
           message.perform_deliveries = false if self.class.undeliverable_to?(recipient)
@@ -33,10 +40,6 @@ module EmailCampaigns
     helper_method :command, :campaign, :event, :show_unsubscribe_link?, :cta_button_text
 
     private
-
-    def mailgun_variables
-      super.merge(campaign&.extra_mailgun_variables(command) || {})
-    end
 
     def show_unsubscribe_link?
       user && campaign.class.try(:consentable_for?, user)

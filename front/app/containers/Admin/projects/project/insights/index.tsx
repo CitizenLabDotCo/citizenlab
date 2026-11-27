@@ -11,11 +11,16 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import DsBadge from 'design-system/Badge';
+import Disclosure from 'design-system/Disclosure';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
@@ -24,6 +29,7 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import Navigate from 'utils/cl-router/Navigate';
 import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
 import { useParams } from 'utils/router';
 
@@ -31,6 +37,7 @@ import { getAnalysisScope } from '../../_shared/components/AnalysisBanner/utils'
 
 import DemographicsSection from './demographics/DemographicsSection';
 import getExportFilename from './getExportFilename';
+import styles from './Insights.module.css';
 import messages from './messages';
 import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
 import SurveyActions from './methodSpecific/nativeSurvey/SurveyActions';
@@ -39,11 +46,13 @@ import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import InsightsPdfContent from './pdf/InsightsPdfContent';
 import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
 import PdfRenderModeProvider from './pdf/PdfRenderModeProvider';
+import RecommendedActions from './RecommendedActions';
 import wordMessages from './word/messages';
 import {
   WordExportProvider,
   useWordExportContext,
 } from './word/WordExportContext';
+import 'design-system/tokens.css';
 
 const AI_ANALYSIS_SUPPORTED_METHODS = [
   'ideation',
@@ -79,6 +88,7 @@ const InsightsContent = () => {
     phaseId: string;
   };
   const { data: phase } = usePhase(phaseId);
+  const redesigned = useProjectBackofficeRedesign();
   const { formatMessage } = useIntl();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const inputResponseExport = useInputResponseExport({ projectId, phaseId });
@@ -199,174 +209,247 @@ const InsightsContent = () => {
     !!participationMethod &&
     INPUT_RESPONSE_EXPORT_METHODS.includes(participationMethod);
 
-  return (
+  const exportOptions = (
+    <Box
+      p="8px"
+      display="flex"
+      flexDirection="column"
+      gap="4px"
+      style={{ whiteSpace: 'nowrap' }}
+    >
+      {showInputResponseExport && (
+        <>
+          <DropdownListItem
+            onClick={() => {
+              setDropdownOpened(false);
+              inputResponseExport.openPdfExportModal();
+            }}
+          >
+            <FormattedMessage {...messages.exportResponsesToPdf} />
+          </DropdownListItem>
+          <DropdownListItem
+            onClick={() => {
+              setDropdownOpened(false);
+              inputResponseExport.openXlsxExportModal();
+            }}
+          >
+            <FormattedMessage {...messages.exportResponsesToXlsx} />
+          </DropdownListItem>
+        </>
+      )}
+      <DropdownListItem onClick={handleDownloadPdf}>
+        <FormattedMessage {...messages.downloadPdf} />
+      </DropdownListItem>
+      <DropdownListItem onClick={handleDownloadWord}>
+        <Box display="inline-flex" alignItems="center" gap="6px">
+          <FormattedMessage {...messages.downloadWord} />
+          <Badge color={colors.coolGrey600} className="inverse">
+            {formatMessage(projectFilesMessages.beta)}
+          </Badge>
+        </Box>
+      </DropdownListItem>
+    </Box>
+  );
+
+  const exportStatusTexts = (
     <>
-      <Box
-        borderBottom="none"
-        display="flex"
-        flexDirection="column"
-        role="region"
-        aria-label="Phase Insights"
-      >
+      {isDownloadingWord && getExportStatusText() && (
+        <Text fontSize="s" color="textSecondary" m="0px">
+          {getExportStatusText()}
+        </Text>
+      )}
+      {isDownloadingPdf && getPdfStatusText() && (
+        <Text fontSize="s" color="textSecondary" m="0px">
+          {getPdfStatusText()}
+        </Text>
+      )}
+      {exportError && (
+        <Text fontSize="s" color="error" m="0px">
+          {exportError}
+        </Text>
+      )}
+      {(captureWarnings.length > 0 || pdfSkippedSections.length > 0) &&
+        !isDownloading && (
+          <Text fontSize="s" color="orange500" m="0px">
+            {formatMessage(wordMessages.exportCaptureWarning)}
+          </Text>
+        )}
+    </>
+  );
+
+  const actions = (
+    <Box display="flex" flexDirection="column" gap="8px" alignItems="flex-end">
+      {isNativeSurvey ? (
+        <SurveyActions phase={phase.data} />
+      ) : (
         <Box
           display="flex"
-          w="100%"
-          justifyContent="space-between"
-          alignItems="flex-start"
+          flexDirection="column"
+          gap="8px"
+          alignItems="flex-end"
         >
-          <Box>
-            <Title variant="h2" as="h1" color="textPrimary" m="0px">
-              <FormattedMessage {...messages.insights} />
-            </Title>
-            <Text fontSize="s" color="textSecondary" m="0" mt="4px">
-              <FormattedMessage {...messages.insightsSubtitle1} />
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap="8px"
-            alignItems="flex-end"
-          >
-            {isNativeSurvey ? (
-              <SurveyActions phase={phase.data} />
-            ) : (
-              <Box
-                display="flex"
-                flexDirection="column"
-                gap="8px"
-                alignItems="flex-end"
+          <Box display="flex" gap="8px">
+            <Box position="relative" display="inline-block">
+              <Button
+                buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
+                icon="download"
+                onClick={toggleDropdown()}
+                processing={isDownloading}
+                disabled={!allComponentsReady && !isDownloading}
+                aria-label={formatMessage(messages.exportButton)}
               >
-                <Box display="flex" gap="8px">
-                  <Box position="relative" display="inline-block">
-                    <Button
-                      buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
-                      icon="download"
-                      onClick={toggleDropdown()}
-                      processing={isDownloading}
-                      disabled={!allComponentsReady && !isDownloading}
-                      aria-label={formatMessage(messages.exportButton)}
-                    >
-                      <FormattedMessage {...messages.exportButton} />
-                    </Button>
-                    <Dropdown
-                      width="max-content"
-                      top="42px"
-                      right="12px"
-                      opened={dropdownOpened}
-                      onClickOutside={toggleDropdown(false)}
-                      zIndex="10000"
-                      content={
-                        <Box
-                          p="8px"
-                          display="flex"
-                          flexDirection="column"
-                          gap="4px"
-                          style={{ whiteSpace: 'nowrap' }}
-                        >
-                          {showInputResponseExport && (
-                            <>
-                              <DropdownListItem
-                                onClick={() => {
-                                  setDropdownOpened(false);
-                                  inputResponseExport.openPdfExportModal();
-                                }}
-                              >
-                                <FormattedMessage
-                                  {...messages.exportResponsesToPdf}
-                                />
-                              </DropdownListItem>
-                              <DropdownListItem
-                                onClick={() => {
-                                  setDropdownOpened(false);
-                                  inputResponseExport.openXlsxExportModal();
-                                }}
-                              >
-                                <FormattedMessage
-                                  {...messages.exportResponsesToXlsx}
-                                />
-                              </DropdownListItem>
-                            </>
-                          )}
-                          <DropdownListItem onClick={handleDownloadPdf}>
-                            <FormattedMessage {...messages.downloadPdf} />
-                          </DropdownListItem>
-                          <DropdownListItem onClick={handleDownloadWord}>
-                            <Box
-                              display="inline-flex"
-                              alignItems="center"
-                              gap="6px"
-                            >
-                              <FormattedMessage {...messages.downloadWord} />
-                              <Badge
-                                color={colors.coolGrey600}
-                                className="inverse"
-                              >
-                                {formatMessage(projectFilesMessages.beta)}
-                              </Badge>
-                            </Box>
-                          </DropdownListItem>
-                        </Box>
-                      }
-                    />
-                  </Box>
-                  {supportsAiAnalysis && (
-                    <Button
-                      buttonStyle="primary"
-                      icon="stars"
-                      onClick={handleGoToAnalysis}
-                      processing={isCreatingAnalysis}
-                    >
-                      <FormattedMessage {...messages.aiAnalysis} />
-                    </Button>
-                  )}
-                </Box>
-                {isDownloadingWord && getExportStatusText() && (
-                  <Text fontSize="s" color="textSecondary" m="0px">
-                    {getExportStatusText()}
-                  </Text>
-                )}
-                {isDownloadingPdf && getPdfStatusText() && (
-                  <Text fontSize="s" color="textSecondary" m="0px">
-                    {getPdfStatusText()}
-                  </Text>
-                )}
-                {exportError && (
-                  <Text fontSize="s" color="error" m="0px">
-                    {exportError}
-                  </Text>
-                )}
-                {(captureWarnings.length > 0 ||
-                  pdfSkippedSections.length > 0) &&
-                  !isDownloading && (
-                    <Text fontSize="s" color="orange500" m="0px">
-                      {formatMessage(wordMessages.exportCaptureWarning)}
-                    </Text>
-                  )}
-              </Box>
+                <FormattedMessage {...messages.exportButton} />
+              </Button>
+              <Dropdown
+                width="max-content"
+                top="42px"
+                right="12px"
+                opened={dropdownOpened}
+                onClickOutside={toggleDropdown(false)}
+                zIndex="10000"
+                content={exportOptions}
+              />
+            </Box>
+
+            {supportsAiAnalysis && (
+              <Button
+                buttonStyle="primary"
+                icon="stars"
+                onClick={handleGoToAnalysis}
+                processing={isCreatingAnalysis}
+              >
+                <FormattedMessage {...messages.aiAnalysis} />
+              </Button>
             )}
           </Box>
+          {exportStatusTexts}
         </Box>
+      )}
+    </Box>
+  );
 
-        <Box display="flex" flexDirection="column" gap="16px" pt="16px">
-          <PageBreakBox>
-            <ParticipationMetrics phase={phase.data} />
-          </PageBreakBox>
+  const panelStatusText =
+    (isDownloadingWord && getExportStatusText()) ||
+    (isDownloadingPdf && getPdfStatusText()) ||
+    null;
 
-          <PageBreakBox>
-            <ParticipantsTimeline phase={phase.data} />
-          </PageBreakBox>
+  const panelActions = isNativeSurvey ? (
+    <SurveyActions phase={phase.data} />
+  ) : (
+    <div className={styles.panelActions}>
+      {supportsAiAnalysis && (
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.aiSensemaking)}
+          actionIcon="sparkles-16"
+          onPress={handleGoToAnalysis}
+          isPending={isCreatingAnalysis}
+        />
+      )}
+      <MenuTrigger>
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.downloadInsights)}
+          actionIcon="download-16"
+          isPending={isDownloading}
+          isDisabled={!allComponentsReady && !isDownloading}
+        />
+        <Menu aria-label={formatMessage(messages.downloadInsights)}>
+          <MenuItem onAction={handleDownloadPdf}>
+            {formatMessage(messages.downloadPdf)}
+          </MenuItem>
+          <MenuItem
+            onAction={handleDownloadWord}
+            count={
+              <DsBadge use="note">
+                {formatMessage(projectFilesMessages.beta)}
+              </DsBadge>
+            }
+          >
+            {formatMessage(messages.downloadWord)}
+          </MenuItem>
+        </Menu>
+      </MenuTrigger>
+      {panelStatusText && <p className={styles.status}>{panelStatusText}</p>}
+      {exportError && <p className={styles.statusError}>{exportError}</p>}
+      {(captureWarnings.length > 0 || pdfSkippedSections.length > 0) &&
+        !isDownloading && (
+          <p className={styles.statusWarning}>
+            {formatMessage(wordMessages.exportCaptureWarning)}
+          </p>
+        )}
+    </div>
+  );
 
-          <DemographicsSection phase={phase.data} />
+  const dashboard = (
+    <Box display="flex" flexDirection="column" gap="16px" pt="16px">
+      <PageBreakBox>
+        <ParticipationMetrics phase={phase.data} />
+      </PageBreakBox>
 
-          <PageBreakBox>
-            <MethodSpecificInsights
-              phaseId={phase.data.id}
-              participationMethod={phase.data.attributes.participation_method}
-            />
-          </PageBreakBox>
-        </Box>
+      <PageBreakBox>
+        <ParticipantsTimeline phase={phase.data} />
+      </PageBreakBox>
+
+      <DemographicsSection phase={phase.data} />
+
+      <PageBreakBox>
+        <MethodSpecificInsights
+          phaseId={phase.data.id}
+          participationMethod={phase.data.attributes.participation_method}
+        />
+      </PageBreakBox>
+    </Box>
+  );
+  const header = (
+    <Box
+      display="flex"
+      w="100%"
+      justifyContent="space-between"
+      alignItems="flex-start"
+    >
+      <Box>
+        <Title variant="h2" as="h1" color="textPrimary" m="0px">
+          <FormattedMessage {...messages.insights} />
+        </Title>
+        <Text fontSize="s" color="textSecondary" m="0" mt="4px">
+          <FormattedMessage {...messages.insightsSubtitle1} />
+        </Text>
       </Box>
+      {actions}
+    </Box>
+  );
+
+  return (
+    <>
+      {redesigned ? (
+        <div
+          className={styles.panelRegion}
+          role="region"
+          aria-label="Phase Insights"
+        >
+          <div className={styles.panelLayout}>
+            <div className={styles.dashboardPanel}>{dashboard}</div>
+            <div className={styles.sideColumn}>
+              <RecommendedActions phase={phase.data}>
+                {panelActions}
+              </RecommendedActions>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <Box
+          minHeight="0"
+          borderBottom="none"
+          display="flex"
+          flexDirection="column"
+          role="region"
+          aria-label="Phase Insights"
+        >
+          {header}
+          {dashboard}
+        </Box>
+      )}
 
       {inputResponseExport.modal}
 
@@ -383,7 +466,7 @@ const InsightsContent = () => {
 
 // Main component that wraps with PdfExportProvider
 const AdminPhaseInsights = () => {
-  const { phaseId } = useParams({ strict: false }) as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };
@@ -399,6 +482,23 @@ const AdminPhaseInsights = () => {
   const sanitizedPhaseName = getExportFilename(phaseName, phaseId);
 
   const participationMethod = phase?.data.attributes.participation_method;
+
+  if (
+    participationMethod === 'survey' ||
+    participationMethod === 'information'
+  ) {
+    return (
+      <Navigate
+        to={
+          participationMethod === 'survey'
+            ? '/admin/projects/$projectId/phases/$phaseId/survey-results'
+            : '/admin/projects/$projectId/phases/$phaseId/setup'
+        }
+        params={{ projectId, phaseId }}
+        replace
+      />
+    );
+  }
 
   return (
     <PdfExportProvider filename={sanitizedPhaseName}>

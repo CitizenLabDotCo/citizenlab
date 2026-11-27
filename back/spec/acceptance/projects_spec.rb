@@ -1079,7 +1079,7 @@ resource 'Projects' do
 
         @ideation_response = create(
           :idea,
-          custom_field_answers: [build(:custom_field_answer, key: @extra_idea_field.key, value: 'Answer')],
+          custom_field_answers: [build(:custom_field_answer, custom_field: @extra_idea_field, value: 'Answer')],
           phases: [ideation_phase, single_voting_phase],
           manual_votes_amount: 24
         )
@@ -1088,7 +1088,7 @@ resource 'Projects' do
           :idea,
           creation_phase: native_survey_phase,
           phases: [native_survey_phase],
-          custom_field_answers: [build(:custom_field_answer, key: @linear_scale_field.key, value: 2)]
+          custom_field_answers: [build(:custom_field_answer, custom_field: @linear_scale_field, value: 2)]
         )
       end
 
@@ -2172,6 +2172,15 @@ resource 'Projects' do
   post 'web_api/v1/projects/:id/copy' do
     let(:source_project) { create(:project) }
     let(:id) { source_project.id }
+
+    context 'when not signed in' do
+      example '[Unauthorized] Copy a project in a folder', document: false do
+        create(:project_folder, projects: [source_project])
+
+        do_request
+        assert_status 401
+      end
+    end
 
     context 'when project moderator' do
       before { header_token_for moderator }

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 
 import { CLErrors, UploadFile } from 'typings';
+
+import { FieldError } from 'design-system/Field';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
 
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import FileSelectModal from 'components/UI/FileRepositorySelectAndUpload/components/FileSelectModal';
 import fileMessages from 'components/UI/FileRepositorySelectAndUpload/components/messages';
@@ -12,6 +15,8 @@ import fileMessages from 'components/UI/FileRepositorySelectAndUpload/components
 import { useIntl } from 'utils/cl-intl';
 
 import SetupCard from './SetupCard';
+import SummaryPill from './SummaryPill';
+import 'design-system/tokens.css';
 
 const MAX_SIZE_MB = 10;
 
@@ -40,7 +45,10 @@ const AttachmentsCard = ({
   disabled = false,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const getApiErrorMessage = useApiErrorText();
+  const errorId = useId();
   const [opened, setOpened] = useState(false);
+  const fileError = opened ? undefined : getApiErrorMessage(errors?.file);
   const hasBody =
     files.attachments.length > 0 || files.isUploadingFile || !!errors?.file;
 
@@ -48,17 +56,41 @@ const AttachmentsCard = ({
     <>
       <SetupCard
         title={title}
+        action={
+          files.attachments.length > 0 && (
+            <SummaryPill
+              active
+              icon="paperclip-16"
+              label={formatMessage(fileMessages.attachmentCount, {
+                count: files.attachments.length,
+              })}
+            />
+          )
+        }
         button={{
-          icon: 'plus',
+          icon: files.attachments.length > 0 ? 'edit' : 'plus',
           actionLabel: formatMessage(fileMessages.addFile),
           disabled: files.isUploadingFile || disabled,
+          describedBy: fileError ? errorId : undefined,
           onClick: () => setOpened(true),
         }}
+      >
+        {fileError && <FieldError id={errorId}>{fileError}</FieldError>}
+      </SetupCard>
+      <FileSelectModal
+        opened={opened}
+        variant="panel"
+        onClose={() => setOpened(false)}
+        fileAttachments={files.attachments}
+        onFileAdd={files.uploadFile}
+        onFileAttach={files.attachFile}
+        maxSizeMb={MAX_SIZE_MB}
+        isUploadingFile={files.isUploadingFile}
       >
         {hasBody && (
           <FileRepositorySelectAndUpload
             id={id}
-            variant="bo"
+            variant="panel"
             onFileAdd={files.uploadFile}
             onFileRemove={files.removeFile}
             onFileReorder={files.reorderFiles}
@@ -71,15 +103,7 @@ const AttachmentsCard = ({
             hideTrigger
           />
         )}
-      </SetupCard>
-      <FileSelectModal
-        opened={opened}
-        onClose={() => setOpened(false)}
-        fileAttachments={files.attachments}
-        onFileAdd={files.uploadFile}
-        onFileAttach={files.attachFile}
-        maxSizeMb={MAX_SIZE_MB}
-      />
+      </FileSelectModal>
     </>
   );
 };

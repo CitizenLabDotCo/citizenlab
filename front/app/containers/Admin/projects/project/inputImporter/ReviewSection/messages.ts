@@ -109,6 +109,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noApprovedInputsYet',
     defaultMessage: 'No approved inputs yet.',
   },
+  saveFailed: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed',
+    defaultMessage:
+      "We couldn't save this input. Check its answers and try again.",
+  },
   approvedReadOnlyNotice: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedReadOnlyNotice',
     defaultMessage: 'This input is approved. Undo the approval to edit it.',

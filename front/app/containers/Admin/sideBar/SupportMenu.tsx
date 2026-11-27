@@ -12,6 +12,8 @@ import styled from 'styled-components';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
@@ -32,6 +34,7 @@ export const SupportMenu = () => {
   const collapsed = useSidebarCollapsed();
   const { data: authUser } = useAuthUser();
   const { data: tenant } = useAppConfiguration();
+  const userjotEnabled = useFeatureFlag({ name: 'userjot' });
 
   const customerPortalUrl =
     tenant?.data.attributes.settings.core.customer_portal_url;
@@ -46,6 +49,7 @@ export const SupportMenu = () => {
         p="0px"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         position="relative"
+        id="e2e-support-menu-button"
       >
         <Box
           display="flex"
@@ -83,7 +87,7 @@ export const SupportMenu = () => {
           onClickOutside={() => setIsDropdownOpen(false)}
           left={collapsed ? '60px' : '200px'}
           mobileLeft="60px"
-          top="-140px"
+          bottom="0px"
           content={
             <Box>
               <ItemMenu
@@ -110,6 +114,20 @@ export const SupportMenu = () => {
                   <StyledIcon name="survey-long-answer" fill={colors.grey600} />
                 </Box>
               </ItemMenu>
+              {userjotEnabled && (
+                <ItemMenu to="/admin/product-feedback" buttonStyle="text">
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    width="100%"
+                  >
+                    <Text my="0px" color="coolGrey600">
+                      {formatMessage({ ...messages.productFeedback })}
+                    </Text>
+                    <StyledIcon name="idea" fill={colors.grey600} />
+                  </Box>
+                </ItemMenu>
+              )}
               <ItemMenu
                 linkTo={
                   formatMessage(messages.linkToCommunityPlatform) as string

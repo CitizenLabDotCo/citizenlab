@@ -281,11 +281,11 @@ resource 'Ideas' do
             public_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
             private_field = create(:custom_field_select, :with_options, resource: form)
             disabled_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true, enabled: false)
-            create(:custom_field_answer, answerable: @i1, key: public_field.key, value: 'option1')
-            create(:custom_field_answer, answerable: @i2, key: public_field.key, value: 'option1')
-            create(:custom_field_answer, answerable: @i3, key: public_field.key, value: 'option2')
-            create(:custom_field_answer, answerable: @i4, key: private_field.key, value: 'option1')
-            create(:custom_field_answer, answerable: @i4, key: disabled_field.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i1, custom_field: public_field, value: 'option1')
+            create(:custom_field_answer, answerable: @i2, custom_field: public_field, value: 'option1')
+            create(:custom_field_answer, answerable: @i3, custom_field: public_field, value: 'option2')
+            create(:custom_field_answer, answerable: @i4, custom_field: private_field, value: 'option1')
+            create(:custom_field_answer, answerable: @i4, custom_field: disabled_field, value: 'option1')
 
             do_request
 
@@ -297,14 +297,14 @@ resource 'Ideas' do
           example 'Answer counts ignore the filter on their own question, not the one on other questions' do
             multiselect = create(:custom_field_multiselect, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
             select = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
-            create(:custom_field_answer, answerable: @i1, key: multiselect.key, value: %w[option1 option2])
-            create(:custom_field_answer, answerable: @i2, key: multiselect.key, value: ['option1'])
-            create(:custom_field_answer, answerable: @i3, key: multiselect.key, value: ['option1'])
-            create(:custom_field_answer, answerable: @i4, key: multiselect.key, value: ['option2'])
-            create(:custom_field_answer, answerable: @i1, key: select.key, value: 'option1')
-            create(:custom_field_answer, answerable: @i2, key: select.key, value: 'option1')
-            create(:custom_field_answer, answerable: @i3, key: select.key, value: 'option2')
-            create(:custom_field_answer, answerable: @i4, key: select.key, value: 'option2')
+            create(:custom_field_answer, answerable: @i1, custom_field: multiselect, value: %w[option1 option2])
+            create(:custom_field_answer, answerable: @i2, custom_field: multiselect, value: ['option1'])
+            create(:custom_field_answer, answerable: @i3, custom_field: multiselect, value: ['option1'])
+            create(:custom_field_answer, answerable: @i4, custom_field: multiselect, value: ['option2'])
+            create(:custom_field_answer, answerable: @i1, custom_field: select, value: 'option1')
+            create(:custom_field_answer, answerable: @i2, custom_field: select, value: 'option1')
+            create(:custom_field_answer, answerable: @i3, custom_field: select, value: 'option2')
+            create(:custom_field_answer, answerable: @i4, custom_field: select, value: 'option2')
 
             do_request custom_field_answers: { multiselect.id => ['option1'] }
 
@@ -405,7 +405,7 @@ resource 'Ideas' do
       let!(:text_field) { create(:custom_field_text, key: extra_field_key, required: true, resource: form) }
       let!(:idea) do
         create(:native_survey_response, project: project, author: @user, custom_field_answers: [
-          build(:custom_field_answer, key: extra_field_key, value: extra_field_answer)
+          build(:custom_field_answer, custom_field: text_field, value: extra_field_answer)
         ])
       end
       let!(:id) { idea.id }
@@ -494,12 +494,13 @@ resource 'Ideas' do
 
       context 'idea authored by user' do
         let!(:idea) do
+          field = phase.custom_form.custom_fields.find_by!(key: 'field')
           create(
             :native_survey_response,
             project: phase.project,
             author: @user, publication_status:
             'draft',
-            custom_field_answers: [build(:custom_field_answer, key: 'field', value: 'value')]
+            custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'value')]
           )
         end
 
@@ -556,7 +557,7 @@ resource 'Ideas' do
         let!(:idea) { create(:idea, project: phase.project, phases: [phase], author: @user, publication_status: 'draft') }
 
         example '[empty idea] User not logged in', document: false do
-          header 'Authorization', nil
+          header 'Cookie', nil
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
@@ -628,7 +629,7 @@ resource 'Ideas' do
           expect(json_response[:data].pluck(:id)).to include(submitted_idea.id)
 
           # A visitor making the same request does not
-          header 'Authorization', nil
+          header 'Cookie', nil
           do_request
           assert_status 200
           json_response = json_parse(response_body)

@@ -1,0 +1,30 @@
+.header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-12);
+  min-width: 0;
+}
+
+.label {
+  composes: ui from '../typography.module.css';
+  flex: 1;
+  min-width: 0;
+}
+
+.panel {
+  height: var(--gv-size-28);
+}
+
+.panel .label {
+  color: var(--gv-text-secondary);
+}
+
+.rail {
+  height: var(--gv-size-32);
+}
+
+.rail .label {
+  color: var(--gv-text-disabled);
+}

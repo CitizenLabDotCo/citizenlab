@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-
 import useProjectReview from 'api/project_reviews/useProjectReview';
 import { IProjectData } from 'api/projects/types';
 
@@ -15,11 +13,13 @@ import { usePermission } from 'utils/permissions';
 import backofficeRedesignMessages from '../messages';
 import { useParticipationPanel } from '../ParticipationPanelContext';
 
+import styles from './BeforeYouPublish.module.css';
 import messages from './messages';
 import PanelHeading from './PanelHeading';
 import SelectMethodModal from './SelectMethodModal';
 import SetupCard from './SetupCard';
 import SetupCards from './SetupCards';
+import setupCardMessages from './SetupCards/messages';
 import { getMissingItems, SETUP_ITEMS } from './setupItems';
 import useSetupReadiness from './useSetupReadiness';
 
@@ -61,7 +61,7 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
   const { scheduled_at } = project.attributes;
 
   return (
-    <Box>
+    <div>
       <PanelHeading
         title={getTitle()}
         meta={
@@ -74,7 +74,7 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
         }
       />
       {scheduled_at && (
-        <Text variant="boMicro" m="0" mb="8px">
+        <p className={styles.scheduled}>
           {formatMessage(messages.scheduledToPublish, {
             date: formatDate(scheduled_at, {
               day: 'numeric',
@@ -83,10 +83,10 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
               minute: '2-digit',
             }),
           })}
-        </Text>
+        </p>
       )}
 
-      <Box display="flex" flexDirection="column" gap="8px">
+      <div className={styles.cards}>
         <SetupCards
           project={project}
           readiness={readiness}
@@ -94,13 +94,14 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
         />
         <SetupCard
           id="e2e-setup-card-methods"
-          title={formatMessage(backofficeRedesignMessages.participationMethods)}
+          tooltip={formatMessage(setupCardMessages.methodsTooltip)}
+          title={formatMessage(setupCardMessages.methodsTitle)}
           ready={readiness.methods}
           behaviour={
             participationPanel.collapsed
               ? {
                   kind: 'action',
-                  icon: 'chevron-right',
+                  icon: 'chevron-right-16',
                   actionLabel: formatMessage(
                     backofficeRedesignMessages.showPanel
                   ),
@@ -108,7 +109,7 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
                 }
               : {
                   kind: 'action',
-                  icon: 'plus',
+                  icon: 'plus-16',
                   actionLabel: formatMessage(
                     projectPageMessages.newParticipationMethod
                   ),
@@ -116,14 +117,14 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
                 }
           }
         />
-      </Box>
+      </div>
 
       <SelectMethodModal
         projectId={projectId}
         opened={methodModalOpened}
         onClose={() => setMethodModalOpened(false)}
       />
-    </Box>
+    </div>
   );
 };
 

@@ -42,6 +42,12 @@ class UserPolicy < ApplicationPolicy
       IntercomMessengerTokenService.new.configured?
   end
 
+  def userjot_identity?
+    active_admin_or_moderator? &&
+      AppConfiguration.instance.feature_activated?('userjot') &&
+      UserjotIdentityService.new.configured?
+  end
+
   def index_xlsx?
     active_admin?
   end
@@ -80,19 +86,19 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.active? && (record.id == user.id || user&.admin?)
+    user&.active? && (record.id == user.id || (user.admin? && can_manage_record?))
   end
 
   def destroy?
-    record.id == user&.id || active_admin?
+    record.id == user&.id || (active_admin? && can_manage_record?)
   end
 
   def block?
-    active_admin?
+    active_admin? && can_manage_record?
   end
 
   def unblock?
-    active_admin?
+    active_admin? && can_manage_record?
   end
 
   def blocked_count?
@@ -148,7 +154,8 @@ class UserPolicy < ApplicationPolicy
   def permitted_attributes_for_update
     # avatar is allowed even if the feature "user_avatars" is not activated to allow
     # users to remove their avatar.
-    shared = [:first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
+    shared = [:first_name, :last_name, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
+    shared += [:password] if record.id == user&.id
     shared += [{ early_access_opt_ins: [] }] if own_early_access?
     attributes = admin? ? shared + [roles: %i[type project_id project_folder_id project_reviewer]] : shared
     attributes - verification_service.locked_attributes(record) # locked attributes cannot be updated
@@ -159,6 +166,12 @@ class UserPolicy < ApplicationPolicy
   end
 
   private
+
+  # Only super admins may act on another super admin's account. The saved roles
+  # decide, since the record may already hold the roles being authorized.
+  def can_manage_record?
+    user.super_admin? || record.highest_role_for(record.roles_in_database) != :super_admin
+  end
 
   def allowed_custom_field_keys
     CustomFieldParamsService.new.custom_field_values_params allowed_custom_fields

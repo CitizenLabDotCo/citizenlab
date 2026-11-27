@@ -1,49 +1,23 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Button, IconNames } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import { MenuTrigger } from 'design-system/Menu';
 
-import MenuButton from '../MenuButton';
+import styles from './SidePanel.module.css';
 
 interface Props {
   label?: string;
-  color?: string;
-  icon?: IconNames;
-  children: (close: () => void) => ReactNode;
+  // An OptionList.
+  children: ReactNode;
 }
 
-const PropertyMenu = ({
-  label,
-  color,
-  icon = 'chevron-down',
-  children,
-}: Props) => (
-  <MenuButton
-    width="280px"
-    trigger={({ opened, toggle }) => (
-      <Button
-        buttonStyle="bo-picker"
-        icon={icon}
-        iconPos="right"
-        onClick={toggle}
-        ariaExpanded={opened}
-        ariaHasPopup="menu"
-      >
-        <Box display="flex" alignItems="center" gap="6px">
-          {color && (
-            <Box
-              width="8px"
-              height="8px"
-              borderRadius="50%"
-              background={color}
-            />
-          )}
-          {label}
-        </Box>
-      </Button>
-    )}
-  >
+const PropertyMenu = ({ label, children }: Props) => (
+  <MenuTrigger>
+    <Button size={28} hasMenu>
+      <span className={styles.menuLabel}>{label}</span>
+    </Button>
     {children}
-  </MenuButton>
+  </MenuTrigger>
 );
 
 export default PropertyMenu;

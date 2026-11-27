@@ -39,7 +39,7 @@ describe Facets::IdeaCustomFieldAnswer do
       end
 
       it 'ignores the answers of users under the same key' do
-        create(:user, custom_field_answers: [build(:custom_field_answer, key: field.key, value: 'option1')])
+        create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'option1')])
 
         expect(described_class.new(field).counts(Idea.all)).to eq({ field.id => {} })
       end

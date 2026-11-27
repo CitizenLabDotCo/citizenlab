@@ -9,3 +9,5 @@ tr-TR:
     debate_information_updates: Bilgi güncellemeleri
     debate_instructions: Talimatlar
     documents_to_consult: İstişare Belgeleri
+    private_space_members: 'Üyeler: %{space}'
+    untitled_folder: Adsız klasör

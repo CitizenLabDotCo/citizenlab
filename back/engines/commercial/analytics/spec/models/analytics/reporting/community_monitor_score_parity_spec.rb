@@ -31,7 +31,7 @@ RSpec.describe 'reporting_community_monitor_scores parity with Surveys::AverageG
       [Time.utc(2026, 6, 20, 12), create(:user), { quality => 1, service => 1 }, { publication_status: 'submitted' }]
     ].each do |created_at, author, answers, attributes = {}|
       response = create(:native_survey_response, project: phase.project, creation_phase: phase, author: author, created_at: created_at, **attributes)
-      answers.each { |field, value| response.custom_field_answers.create!(key: field.key, value: value) }
+      answers.each { |field, value| create(:custom_field_answer, answerable: response, custom_field: field, value: value) }
     end
   end
 

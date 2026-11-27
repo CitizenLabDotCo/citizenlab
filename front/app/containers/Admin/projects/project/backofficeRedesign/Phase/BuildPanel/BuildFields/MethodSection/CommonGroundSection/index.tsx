@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Spinner } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import IconButton from 'design-system/IconButton';
+import Spinner from 'design-system/Spinner';
 
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
-
-import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -13,6 +13,7 @@ import AddInputModal from '../AddInputModal';
 import methodSectionMessages from '../messages';
 import useStagedInputs from '../useStagedInputs';
 
+import styles from './CommonGroundSection.module.css';
 import ImportInputsModal from './ImportInputsModal';
 import messages from './messages';
 
@@ -39,22 +40,20 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
         label={formatMessage(messages.statementsSection)}
         action={
           count > 0 || importProgress ? (
-            <Box display="flex" alignItems="center" gap="4px">
-              <IconAction
-                icon="plus"
-                tooltip={addLabel}
-                ariaLabel={addLabel}
-                onClick={() => setAddOpened(true)}
+            <div className={styles.actions}>
+              <IconButton
+                icon="plus-16"
+                aria-label={addLabel}
+                onPress={() => setAddOpened(true)}
               />
-              <IconAction
-                icon="upload-file"
-                tooltip={importLabel}
-                ariaLabel={importLabel}
-                disabled={!!importProgress}
-                onClick={() => setImportOpened(true)}
+              <IconButton
+                icon="upload-16"
+                aria-label={importLabel}
+                isDisabled={!!importProgress}
+                onPress={() => setImportOpened(true)}
               />
-              <Box display="flex" alignItems="center" gap="6px">
-                {(saving || importProgress) && <Spinner size="14px" />}
+              <div className={styles.status}>
+                {(saving || importProgress) && <Spinner />}
                 <SummaryPill
                   label={
                     importProgress
@@ -65,32 +64,17 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
                       : formatMessage(messages.nStatements, { count })
                   }
                 />
-              </Box>
-            </Box>
+              </div>
+            </div>
           ) : (
-            <Box
-              display="flex"
-              gap="8px"
-              flexWrap="wrap"
-              justifyContent="flex-end"
-            >
-              <Button
-                buttonStyle="bo-secondary"
-                boSize="medium"
-                width="auto"
-                onClick={() => setAddOpened(true)}
-              >
+            <div className={styles.emptyActions}>
+              <Button variant="secondary" onPress={() => setAddOpened(true)}>
                 {addLabel}
               </Button>
-              <Button
-                buttonStyle="bo-primary"
-                boSize="medium"
-                width="auto"
-                onClick={() => setImportOpened(true)}
-              >
+              <Button variant="primary" onPress={() => setImportOpened(true)}>
                 {importLabel}
               </Button>
-            </Box>
+            </div>
           )
         }
       />

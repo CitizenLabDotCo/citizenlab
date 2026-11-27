@@ -105,7 +105,7 @@ class Invites::Service
         locale: params['locale'] || default_params['locale'] || AppConfiguration.instance.settings('core', 'locales').first,
         invite_status: 'pending'
       })
-      CustomFieldValuesTransitionService.new.assign(user, params.slice(*registration_custom_fields.map(&:key)))
+      CustomFieldValuesTransitionService.new.assign!(user, params.slice(*registration_custom_fields.map(&:key)))
     end
 
     user.manual_group_ids = (user.manual_group_ids + group_ids).uniq

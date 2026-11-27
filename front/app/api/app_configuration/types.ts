@@ -208,10 +208,10 @@ export interface IAppConfigurationSettings {
   project_static_pages?: AppConfigurationFeature;
   project_backoffice_redesign?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
-  custom_page_builder?: AppConfigurationFeature;
   configurable_dropdown?: AppConfigurationFeature;
   llm_reporting?: AppConfigurationFeature;
   ai_assistant?: AppConfigurationFeature;
+  userjot?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

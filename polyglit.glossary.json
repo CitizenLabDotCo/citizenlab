@@ -7,6 +7,7 @@
     "nl-NL": "inspiratiecentrum"
   },
   "input": {
+    "da-DK": "input",
     "de-DE": "Beitrag",
     "fr-FR": "contribution",
     "nl-NL": "bijdrage"
@@ -46,14 +47,14 @@
   "rating": {
     "nl-NL": "beoordeling"
   },
+  "story": {
+    "de-DE": "Story"
+  },
   "homepage": {
     "nl-NL": "startpagina"
   },
   "information (participation method)": {
     "nl-NL": "informatie delen"
-  },
-  "idea": {
-    "de-DE": "Beitrag"
   },
   "survey respondents": {
     "nl-NL": "deelnemers van de vragenlijst"
@@ -63,6 +64,9 @@
     "de-DE": "Zugänge",
     "es-ES": "asientos",
     "nl-NL": "accounts"
+  },
+  "issue": {
+    "de-DE": "Mangel"
   },
   "template": {
     "nl-NL": "sjabloon"
@@ -81,6 +85,13 @@
   },
   "space": {
     "de-DE": "Space"
+  },
+  "question (input term)": {
+    "da-DK": "spørgsmål",
+    "es-ES": "pregunta",
+    "fr-FR": "question",
+    "it-IT": "domanda",
+    "nl-NL": "vraag"
   },
   "users": {
     "de-DE": "Nutzende",
@@ -101,7 +112,25 @@
   "embedded": {
     "nl-NL": "ingesloten"
   },
+  "petition (input term)": {
+    "da-DK": "underskrift",
+    "es-ES": "petición",
+    "fr-FR": "pétition",
+    "it-IT": "petizione",
+    "nl-NL": "petitie"
+  },
+  "suggestion (input term)": {
+    "da-DK": "udspil",
+    "es-ES": "sugerencia",
+    "fr-FR": "suggestion",
+    "it-IT": "suggerimento",
+    "nl-NL": "suggestie"
+  },
   "response (input term)": {
+    "da-DK": "svar",
+    "es-ES": "respuesta",
+    "fr-FR": "réponse",
+    "it-IT": "parere",
     "nl-NL": "reactie"
   },
   "auto-insights": {
@@ -134,6 +163,10 @@
     "nl-NL": "vragenlijstreacties"
   },
   "topic (input term)": {
+    "da-DK": "emne",
+    "es-ES": "tema",
+    "fr-FR": "thème",
+    "it-IT": "tema",
     "nl-NL": "thema"
   },
   "text message": {
@@ -154,6 +187,7 @@
     "de-DE": "Zeitleiste"
   },
   "comments (on inputs)": {
+    "da-DK": "kommentar",
     "nl-NL": "reacties"
   },
   "profanity": {
@@ -172,10 +206,14 @@
   "file upload questions": {
     "nl-NL": "bestand upload vragen"
   },
+  "suggestion": {
+    "de-DE": "Anregung"
+  },
   "mapping questions": {
     "nl-NL": "kaart-gerelateerde vragen"
   },
   "input manager": {
+    "da-DK": "input manager",
     "nl-NL": "beheer bijdragen-pagina"
   },
   "poll": {
@@ -203,6 +241,9 @@
   },
   "events": {
     "de-DE": "Veranstaltungen"
+  },
+  "AI Sensemaking": {
+    "de-DE": "KI-Analyse"
   },
   "manager": {
     "da-DK": "projektleder",
@@ -233,16 +274,32 @@
     "fr-FR": "Bêta"
   },
   "story (input term)": {
+    "da-DK": "historie",
+    "de-DE": "Story",
+    "es-ES": "experiencia",
+    "fr-FR": "témoignage",
+    "it-IT": "esperienza",
     "nl-NL": "verhaal"
   },
   "document annotation": {
     "nl-NL": "feedback op een document"
   },
   "option (input term)": {
+    "da-DK": "mulighed",
+    "es-ES": "opción",
+    "fr-FR": "option",
+    "it-IT": "opzione",
     "nl-NL": "optie"
   },
   "topics / tags": {
     "nl-NL": "tags"
+  },
+  "idea (input term)": {
+    "da-DK": "idé",
+    "es-ES": "idea",
+    "fr-FR": "idée",
+    "it-IT": "idea",
+    "nl-NL": "idee"
   },
   "seat": {
     "da-DK": "plads",
@@ -253,6 +310,13 @@
   "phone": {
     "de-DE": "Handy"
   },
+  "proposal (input term)": {
+    "da-DK": "forslag",
+    "es-ES": "propuesta",
+    "fr-FR": "proposition",
+    "it-IT": "proposta",
+    "nl-NL": "voorstel"
+  },
   "community monitor": {
     "nl-NL": "gemeenschapsmonitor"
   },
@@ -262,12 +326,29 @@
   "proposals": {
     "nl-NL": "voorstellen"
   },
+  "contribution (input term)": {
+    "da-DK": "bidrag",
+    "es-ES": "propuesta",
+    "fr-FR": "contribution",
+    "it-IT": "contributo",
+    "nl-NL": "bijdrage"
+  },
+  "project (input term)": {
+    "da-DK": "projekt",
+    "es-ES": "proyecto",
+    "fr-FR": "projet",
+    "it-IT": "progetto",
+    "nl-NL": "project"
+  },
   "attendees (events)": {
     "de-DE": "Teilnehmende",
     "nl-NL": "aanwezigen"
   },
   "chart": {
     "nl-NL": "grafiek"
+  },
+  "issues": {
+    "de-DE": "Mängel"
   },
   "participation data": {
     "nl-NL": "deelnamegegevens"
@@ -276,9 +357,18 @@
     "nl-NL": "geregistreerden"
   },
   "post (input term)": {
+    "da-DK": "opslag",
+    "de-DE": "Post",
+    "es-ES": "publicación",
+    "fr-FR": "publication",
+    "it-IT": "post",
     "nl-NL": "bericht"
   },
+  "toggle": {
+    "fr-FR": "interrupteur"
+  },
   "reactions (on inputs)": {
+    "da-DK": "likes / dislikes",
     "nl-NL": "likes / dislikes"
   },
   "approve": {
@@ -286,6 +376,10 @@
     "nl-NL": "Goedkeuren"
   },
   "initiative (input term)": {
+    "da-DK": "initiativ",
+    "es-ES": "iniciativa",
+    "fr-FR": "initiative",
+    "it-IT": "Iniziativa",
     "nl-NL": "initiatief"
   },
   "spotlight survey": {
@@ -309,6 +403,7 @@
     "nl-NL": "vereist"
   },
   "ideation": {
+    "de-DE": "Ideenfindung",
     "nl-NL": "ideeënvorming"
   },
   "Volunteering": {
@@ -337,12 +432,17 @@
     "nl-NL": "voorvertoning"
   },
   "comment (input term)": {
+    "da-DK": "kommentar",
+    "es-ES": "comentario",
+    "fr-FR": "commentaire",
+    "it-IT": "commento",
     "nl-NL": "opmerking"
   },
   "button": {
     "de-DE": "Button"
   },
   "input form": {
+    "da-DK": "inputformular",
     "de-DE": "Eingabeformular"
   },
   "FormSync": {
@@ -357,10 +457,18 @@
   "custom page": {
     "nl-NL": "aanpasbare pagina"
   },
+  "to upload": {
+    "fr-FR": "téléverser / importer (selon le contexte)"
+  },
   "preview (verb)": {
     "nl-NL": "tonen"
   },
   "issue (input term)": {
+    "da-DK": "problem",
+    "de-DE": "Mangel",
+    "es-ES": "asunto",
+    "fr-FR": "problème",
+    "it-IT": "segnalazione",
     "nl-NL": "probleem"
   },
   "sign in": {

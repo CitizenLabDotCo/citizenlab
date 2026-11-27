@@ -1,19 +1,9 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import Text from 'design-system/Text';
 
-// No Text variant has the 13px / 500 section title this modal uses.
-const Title = styled(Text)`
-  font-weight: 500;
-`;
-
-const Description = styled(Text)`
-  a {
-    color: inherit;
-    text-decoration: underline;
-  }
-`;
+import styles from './SettingsSection.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   title: string;
@@ -30,46 +20,26 @@ const SettingsSection = ({
   action,
   children,
 }: Props) => (
-  <Box as="section">
-    <Box display="flex" alignItems="flex-start" gap="16px">
-      <Box
-        display="flex"
-        flexDirection="column"
-        gap="8px"
-        flex="1"
-        minWidth="0"
-      >
-        <Box display="flex" alignItems="center" gap="4px">
-          {titleVariant === 'heading' ? (
-            <Title variant="boControl" lineHeight="1.4" m="0px">
-              {title}
-            </Title>
-          ) : (
-            <Text
-              variant="boMicro"
-              color="coolGrey500"
-              lineHeight="1.5"
-              m="0px"
-            >
-              {title}
-            </Text>
-          )}
-        </Box>
+  <section>
+    <div className={styles.header}>
+      <div className={styles.text}>
+        <Text
+          as="h3"
+          variant={titleVariant === 'heading' ? 'uiStrong' : 'ui'}
+          tone={titleVariant === 'heading' ? 'primary' : 'secondary'}
+        >
+          {title}
+        </Text>
         {description && (
-          <Description
-            variant="boMicro"
-            color="coolGrey700"
-            lineHeight="1.5"
-            m="0px"
-          >
+          <Text variant="small" tone="secondary" className={styles.description}>
             {description}
-          </Description>
+          </Text>
         )}
-      </Box>
-      {action && <Box flexShrink={0}>{action}</Box>}
-    </Box>
-    {children && <Box mt="12px">{children}</Box>}
-  </Box>
+      </div>
+      {action && <div className={styles.action}>{action}</div>}
+    </div>
+    {children && <div className={styles.content}>{children}</div>}
+  </section>
 );
 
 export default SettingsSection;

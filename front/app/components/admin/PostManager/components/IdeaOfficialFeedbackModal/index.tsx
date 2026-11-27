@@ -6,6 +6,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
 
+import DSModal from 'design-system/Modal';
+
 import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
 
 import Feedback from 'components/HookForm/Feedback';
@@ -18,10 +20,14 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import eventEmitter from 'utils/eventEmitter';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
+import FormMultilocField from './FormMultilocField';
+import styles from './IdeaOfficialFeedbackModal.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 type Props = {
   ideaId: string;
+  variant?: 'default' | 'panel';
 };
 
 type FormValues = {
@@ -32,7 +38,7 @@ export const getIdeaOfficialFeedbackModalEventName = (ideaId: string) => {
   return `openIdeaOfficialFeedbackModal-${ideaId}`;
 };
 
-const IdeaOfficialFeedbackModal = ({ ideaId }: Props) => {
+const IdeaOfficialFeedbackModal = ({ ideaId, variant = 'default' }: Props) => {
   const [ideaOfficialFeedbackModalIsOpen, setIdeaOfficialFeedbackModalIsOpen] =
     useState(false);
 
@@ -77,6 +83,53 @@ const IdeaOfficialFeedbackModal = ({ ideaId }: Props) => {
       onCloseModal();
     }
   };
+  const submit = methods.handleSubmit(onFormSubmit);
+
+  if (variant === 'panel') {
+    // Links the submit button in the modal footer to the form.
+    const formId = `official-feedback-form-${ideaId}`;
+
+    return (
+      <DSModal
+        size={560}
+        isOpen={ideaOfficialFeedbackModalIsOpen}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) onCloseModal();
+        }}
+        title={formatMessage(messages.title)}
+        description={formatMessage(messages.description)}
+        secondaryAction={{
+          label: formatMessage(messages.skip),
+          onPress: onCloseModal,
+          isDisabled: methods.formState.isSubmitting,
+        }}
+        primaryAction={{
+          label: formatMessage(messages.postFeedback),
+          type: 'submit',
+          form: formId,
+          isPending: methods.formState.isSubmitting,
+        }}
+      >
+        <FormProvider {...methods}>
+          <form id={formId} onSubmit={submit} className={styles.form}>
+            <Feedback />
+            <FormMultilocField
+              name="body_multiloc"
+              label={formatMessage(messages.officialFeedback)}
+              placeholder={formatMessage(messages.officialFeedbackPlaceholder)}
+              multiline
+            />
+            <FormMultilocField
+              name="author_multiloc"
+              label={formatMessage(messages.author)}
+              placeholder={formatMessage(messages.authorPlaceholder)}
+            />
+          </form>
+        </FormProvider>
+      </DSModal>
+    );
+  }
+
   return (
     <Modal
       opened={ideaOfficialFeedbackModalIsOpen}
@@ -85,7 +138,7 @@ const IdeaOfficialFeedbackModal = ({ ideaId }: Props) => {
     >
       <Box p="32px">
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+          <form onSubmit={submit}>
             <Box display="flex" flexDirection="column" gap="24px">
               <Text>{formatMessage(messages.description)}</Text>
               <Feedback />

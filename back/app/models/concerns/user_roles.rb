@@ -4,8 +4,9 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   extend ActiveSupport::Concern
 
   ROLES = %w[admin project_moderator project_folder_moderator space_moderator].freeze
-  CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
-  GOVOCAL_MEMBER_REGEX_CONTENT = 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
+  # Subdomains count (demo platforms use them); look-alike domains such as evilgovocal.com don't.
+  CITIZENLAB_MEMBER_REGEX_CONTENT = '@([a-z0-9-]+\.)*citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
+  GOVOCAL_MEMBER_REGEX_CONTENT = '@([a-z0-9-]+\.)*govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
 
   class << self
     def roles_json_schema

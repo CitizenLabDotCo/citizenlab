@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { router } from 'routes';
 
 import { ParticipationMethod } from 'api/phases/types';
@@ -11,10 +10,14 @@ import SettingsModal from 'containers/Admin/projects/project/backofficeRedesign/
 import ParticipationMethodChoices from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodChoices';
 import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
+import { PROJECT_SETUP_SAVER_KEY } from 'components/admin/PageSaveContext/constants';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { useSearch } from 'utils/router';
 
 import messages from './messages';
+import styles from './SelectMethodModal.module.css';
 
 const METHOD_GROUPS: {
   name: string;
@@ -49,43 +52,54 @@ interface Props {
 const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
+  const pageSave = usePageSave();
   const { participation_method } = useSearch({ strict: false });
 
   return (
     <SettingsModal
       opened={opened}
       close={onClose}
-      width="min(920px, 94vw)"
+      size={920}
+      tabStyle="rail"
       header={formatMessage(projectPageMessages.newParticipationMethod)}
       sections={METHOD_GROUPS.map(({ name, label, methods }) => ({
         name,
         label,
         content: (
-          <Box
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '16px',
-            }}
-          >
+          <div className={styles.methods}>
             <ParticipationMethodChoices
-              variant="bo"
+              variant="panel"
               methods={methods}
-              onSelect={(_event, method) =>
-                method === participation_method
-                  ? onClose()
-                  : // Through the router, so unsaved changes block it.
-                    router.navigate({
-                      to: '/$locale/admin/projects/$projectId/phases/new',
-                      params: { locale, projectId },
-                      search: ({ project_backoffice_redesign }) => ({
-                        project_backoffice_redesign,
-                        participation_method: method,
-                      }),
-                    })
-              }
+              onSelect={async (_event, method) => {
+                if (method === participation_method) {
+                  onClose();
+                  return;
+                }
+                if (pageSave?.saving) return;
+
+                onClose();
+
+                if (pageSave?.dirtyKeys.includes(PROJECT_SETUP_SAVER_KEY)) {
+                  const failed = await pageSave.save(
+                    [PROJECT_SETUP_SAVER_KEY],
+                    'leave'
+                  );
+                  if (failed.length > 0) return;
+                  // Other unsaved changes are left to the guard, which asks.
+                  if (pageSave.dirtyKeys.length === 1) pageSave.leave();
+                }
+
+                router.navigate({
+                  to: '/$locale/admin/projects/$projectId/phases/new',
+                  params: { locale, projectId },
+                  search: ({ project_backoffice_redesign }) => ({
+                    project_backoffice_redesign,
+                    participation_method: method,
+                  }),
+                });
+              }}
             />
-          </Box>
+          </div>
         ),
       }))}
     />

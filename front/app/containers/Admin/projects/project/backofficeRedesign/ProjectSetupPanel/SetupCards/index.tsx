@@ -27,22 +27,36 @@ const SetupCards = ({ project, readiness, onOpenSettings }: Props) => {
     <>
       <SetupCard
         id="e2e-setup-card-general"
-        title={formatMessage(projectSetupPanelMessages.generalInformation)}
+        tooltip={formatMessage(messages.generalTooltip)}
+        title={formatMessage(messages.settingsTitle)}
         ready={readiness?.general}
         behaviour={{
           kind: 'action',
-          icon: 'chevron-right',
+          icon: 'chevron-right-16',
           actionLabel: formatMessage(projectSetupPanelMessages.projectSettings),
           onClick: onOpenSettings,
         }}
       />
       <SetupCard
+        id="e2e-setup-card-homepage-card"
+        tooltip={formatMessage(messages.homepageCardTooltip)}
+        title={formatMessage(messages.projectCardTitle)}
+        ready={readiness?.homepageCard}
+        behaviour={{
+          kind: 'expand',
+          children: <HomepageCardFields project={project} />,
+        }}
+      />
+      <AreaCard ready={readiness?.area} />
+      <TopicTagsCard ready={readiness?.topics} />
+      <SetupCard
         id="e2e-setup-card-project-page"
-        title={formatMessage(projectSetupPanelMessages.projectPageItem)}
+        tooltip={formatMessage(messages.projectPageTooltip)}
+        title={formatMessage(messages.editProjectPage)}
         ready={readiness?.page}
         behaviour={{
           kind: 'action',
-          icon: 'chevron-right',
+          icon: 'chevron-right-16',
           actionLabel: formatMessage(messages.editProjectPage),
           onClick: () =>
             clHistory.push(
@@ -50,17 +64,6 @@ const SetupCards = ({ project, readiness, onOpenSettings }: Props) => {
             ),
         }}
       />
-      <SetupCard
-        id="e2e-setup-card-homepage-card"
-        title={formatMessage(projectSetupPanelMessages.homepageCard)}
-        ready={readiness?.homepageCard}
-        behaviour={{
-          kind: 'expand',
-          children: <HomepageCardFields project={project} />,
-        }}
-      />
-      <AreaCard project={project} ready={readiness?.area} />
-      <TopicTagsCard project={project} ready={readiness?.topics} />
     </>
   );
 };

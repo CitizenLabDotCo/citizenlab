@@ -1,26 +1,26 @@
-import React, {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
+import React, { createContext, ReactNode, useContext } from 'react';
 
+import { FieldPath, FieldPathValue, useForm } from 'react-hook-form';
 import { Multiloc, UploadFile } from 'typings';
 
 import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 import useProjectImages from 'api/project_images/useProjectImages';
 import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
-import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
+import { IProjectData } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
+import { PROJECT_SETUP_SAVER_KEY } from 'components/admin/PageSaveContext/constants';
 
-export type ProjectChanges = Partial<
-  Omit<IUpdatedProjectProperties, 'projectId'>
->;
+import markSaved from '../_shared/markSaved';
+
+export interface ProjectDraftValues {
+  area_ids: string[];
+  include_all_areas: boolean;
+  global_topic_ids: string[];
+  description_preview_multiloc: Multiloc;
+}
 
 export interface PickedImage {
   file: UploadFile;
@@ -33,36 +33,30 @@ export interface ImageChanges {
   altText?: Multiloc;
 }
 
-// Drops what was sent, but keeps any edit made while the request ran.
-const withoutSent = (current: object, sent: object) => {
-  const sentValues = new Map(Object.entries(sent));
-  return Object.fromEntries(
-    Object.entries(current).filter(
-      ([key, value]) => sentValues.get(key) !== value
-    )
-  );
-};
-
-export const getDraftValues = (
-  project: IProjectData,
-  changes: ProjectChanges
-) => ({
-  areaIds:
-    changes.area_ids ?? project.relationships.areas.data.map((area) => area.id),
-  includeAllAreas:
-    changes.include_all_areas ?? project.attributes.include_all_areas,
-  topicIds:
-    changes.global_topic_ids ??
-    project.relationships.global_topics.data.map((topic) => topic.id),
+export const getProjectDraftValues = (
+  project: IProjectData
+): ProjectDraftValues => ({
+  area_ids: project.relationships.areas.data.map((area) => area.id),
+  include_all_areas: project.attributes.include_all_areas,
+  global_topic_ids: project.relationships.global_topics.data.map(
+    (topic) => topic.id
+  ),
+  description_preview_multiloc: project.attributes.description_preview_multiloc,
 });
 
 interface SetupDraftContextValue {
-  changes: ProjectChanges;
+  values: ProjectDraftValues;
   imageChanges: ImageChanges;
-  saveFailed: boolean;
-  changeProject: (changes: ProjectChanges) => void;
-  changeImage: (changes: ImageChanges) => void;
+  changeProject: <K extends FieldPath<ProjectDraftValues>>(
+    name: K,
+    value: FieldPathValue<ProjectDraftValues, K>
+  ) => void;
+  changeImage: <K extends FieldPath<ImageChanges>>(
+    name: K,
+    value: FieldPathValue<ImageChanges, K>
+  ) => void;
   resetImage: () => void;
+  saveFailed: boolean;
 }
 
 const SetupDraftContext = createContext<SetupDraftContextValue | null>(null);
@@ -72,6 +66,8 @@ interface Props {
   children: ReactNode;
 }
 
+// The setup cards change the project and its card image, and both are saved
+// with the page.
 export const SetupDraftProvider = ({ project, children }: Props) => {
   const projectId = project.id;
   const { data: images } = useProjectImages(projectId);
@@ -80,29 +76,28 @@ export const SetupDraftProvider = ({ project, children }: Props) => {
   const { mutateAsync: updateProjectImage } = useUpdateProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
 
-  const [changes, setChanges] = useState<ProjectChanges>({});
-  const [imageChanges, setImageChanges] = useState<ImageChanges>({});
-  const [saveFailed, setSaveFailed] = useState(false);
+  const projectForm = useForm<ProjectDraftValues>({
+    defaultValues: getProjectDraftValues(project),
+  });
+  const imageForm = useForm<ImageChanges>();
 
-  const changeProject = useCallback((newChanges: ProjectChanges) => {
-    setChanges((changes) => ({ ...changes, ...newChanges }));
-    setSaveFailed(false);
-  }, []);
+  const changeProject: SetupDraftContextValue['changeProject'] = (
+    name,
+    value
+  ) => {
+    projectForm.setValue(name, value, { shouldDirty: true });
+    projectForm.clearErrors('root');
+  };
 
-  const changeImage = useCallback((newChanges: ImageChanges) => {
-    setImageChanges((changes) => ({ ...changes, ...newChanges }));
-    setSaveFailed(false);
-  }, []);
-
-  const resetImage = useCallback(() => {
-    setImageChanges(({ image: _image, ...rest }) => rest);
-  }, []);
+  const changeImage: SetupDraftContextValue['changeImage'] = (name, value) => {
+    imageForm.setValue(name, value, { shouldDirty: true });
+    projectForm.clearErrors('root');
+  };
 
   // Doesn't reuse useSyncProjectImages: that one sends the image again with an
   // alt text change, and runs add and delete in parallel.
-  const saveImage = async (sent: ImageChanges) => {
+  const saveImage = async ({ image, altText }: ImageChanges) => {
     const savedImageId = images?.data[0]?.id;
-    const { image, altText } = sent;
 
     if (image !== undefined) {
       // Add before delete, so a failed upload keeps the current image.
@@ -128,42 +123,50 @@ export const SetupDraftProvider = ({ project, children }: Props) => {
   };
 
   const save = async () => {
-    const sentChanges = changes;
-    const sentImageChanges = imageChanges;
-    setSaveFailed(false);
+    const projectChanged = projectForm.formState.isDirty;
+    const imageChanged = imageForm.formState.isDirty;
+    // Copies, so edits made while saving don't change what was sent.
+    const sentProject = { ...projectForm.getValues() };
+    const sentImage = { ...imageForm.getValues() };
+    projectForm.clearErrors('root');
 
     try {
-      if (Object.keys(sentChanges).length > 0) {
-        await updateProject({ projectId, ...sentChanges });
-        setChanges((current) => withoutSent(current, sentChanges));
+      if (projectChanged) {
+        await updateProject({ projectId, ...sentProject });
+        markSaved(projectForm, sentProject);
       }
-      if (Object.keys(sentImageChanges).length > 0) {
-        await saveImage(sentImageChanges);
-        setImageChanges((current) => withoutSent(current, sentImageChanges));
+      if (imageChanged) {
+        await saveImage(sentImage);
+        // The saved image shows again, except where it was changed since.
+        const { image, altText } = imageForm.getValues();
+        imageForm.reset({});
+        imageForm.reset(
+          {
+            ...(image !== sentImage.image && { image }),
+            ...(altText !== sentImage.altText && { altText }),
+          },
+          { keepDefaultValues: true }
+        );
       }
     } catch (error) {
-      setSaveFailed(true);
+      projectForm.setError('root', { type: 'server' });
       throw error;
     }
   };
 
-  useRegisterPageSaver('project-setup', {
-    dirty:
-      Object.keys(changes).length > 0 || Object.keys(imageChanges).length > 0,
+  useRegisterPageSaver(PROJECT_SETUP_SAVER_KEY, {
+    dirty: projectForm.formState.isDirty || imageForm.formState.isDirty,
     save,
   });
 
-  const value = useMemo(
-    () => ({
-      changes,
-      imageChanges,
-      saveFailed,
-      changeProject,
-      changeImage,
-      resetImage,
-    }),
-    [changes, imageChanges, saveFailed, changeProject, changeImage, resetImage]
-  );
+  const value: SetupDraftContextValue = {
+    values: projectForm.watch(),
+    imageChanges: imageForm.watch(),
+    changeProject,
+    changeImage,
+    resetImage: () => imageForm.resetField('image'),
+    saveFailed: !!projectForm.formState.errors.root,
+  };
 
   return (
     <SetupDraftContext.Provider value={value}>

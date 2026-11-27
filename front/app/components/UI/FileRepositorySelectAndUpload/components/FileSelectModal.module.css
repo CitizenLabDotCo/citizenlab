@@ -1,0 +1,12 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+.or {
+  composes: ui from '../../../../design-system/typography.module.css';
+  margin: 0;
+  color: var(--gv-text-secondary);
+  text-align: center;
+}

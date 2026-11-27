@@ -9,10 +9,11 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
-import { DefaultTheme, useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
+import { ParticipationMethod } from 'api/phases/types';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
@@ -20,9 +21,7 @@ import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfinitePro
 import useDebouncedValue from 'hooks/useDebouncedValue';
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
-import selectStyles, {
-  boSelectSettings,
-} from 'components/UI/MultipleSelect/styles';
+import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -41,6 +40,7 @@ interface Option {
 
 interface Props {
   selectedProjectId?: string;
+  participationMethods?: ParticipationMethod[];
   excludeProjectId?: string;
   emptyOptionMessage?: MessageDescriptor;
   placeholder?: string;
@@ -48,7 +48,6 @@ interface Props {
   onProjectFilter: (filter: Option) => void;
   includeHiddenProjects?: boolean;
   isClearable?: boolean;
-  variant?: 'bo';
 }
 
 const generateProjectOptions = (
@@ -69,17 +68,9 @@ const generateProjectOptions = (
   return [...(emptyOption ? [emptyOption] : []), ...sortedProjectOptions];
 };
 
-const getBorderColor = (
-  theme: DefaultTheme,
-  isFocused: boolean,
-  isBo: boolean
-) => {
-  if (isFocused) return theme.colors.tenantPrimary;
-  return isBo ? colors.grey300 : colors.borderDark;
-};
-
 const ProjectFilter = ({
   selectedProjectId,
+  participationMethods,
   excludeProjectId,
   emptyOptionMessage,
   placeholder,
@@ -88,7 +79,6 @@ const ProjectFilter = ({
   includeHiddenProjects = false,
   isClearable = true,
   id,
-  variant,
   ...boxProps
 }: Props & Omit<BoxProps, 'children'>) => {
   const localize = useLocalize();
@@ -101,6 +91,7 @@ const ProjectFilter = ({
     {
       status: PUBLICATION_STATUSES,
       sort: 'alphabetically_asc',
+      participation_methods: participationMethods,
       search: debouncedSearchValue,
       discoverability: includeHiddenProjects
         ? ['listed', 'unlisted']
@@ -174,8 +165,7 @@ const ProjectFilter = ({
   const selectedOption =
     allProjectOptions.find((option) => option.value === selectedProjectId) ||
     null;
-  const settings = variant === 'bo' ? boSelectSettings : undefined;
-  const controlHeight = `${settings?.minHeight ?? stylingConsts.inputHeight}px`;
+  const controlHeight = `${stylingConsts.inputHeight}px`;
 
   return (
     <Box {...boxProps} width="100%">
@@ -191,7 +181,7 @@ const ProjectFilter = ({
         menuShouldScrollIntoView={false}
         placeholder={placeholder || label}
         styles={{
-          ...selectStyles(theme, settings),
+          ...selectStyles(theme),
           menuPortal: (base) => ({
             ...base,
             zIndex: 1001,
@@ -201,12 +191,10 @@ const ProjectFilter = ({
             width: '100%',
             minHeight: controlHeight,
             height: controlHeight,
-            ...(settings && {
-              borderRadius: settings.borderRadius,
-              fontSize: `${settings.fontSize}px`,
-            }),
             borderWidth: isFocused ? '2px' : '1px',
-            borderColor: getBorderColor(theme, isFocused, !!settings),
+            borderColor: isFocused
+              ? theme.colors.tenantPrimary
+              : colors.borderDark,
             boxShadow: 'none',
             '&:hover': {
               borderColor: isFocused

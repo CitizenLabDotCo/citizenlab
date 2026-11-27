@@ -1,57 +1,88 @@
-import React from 'react';
+import React, { useId } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
-import OptionPicker from 'components/UI/OptionPicker';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import styles from './ProjectAssignee.module.css';
 import useProjectAssignee from './useProjectAssignee';
 
 interface Props {
   projectId: string;
+  defaultOpen?: boolean;
+  onClose?: () => void;
   assignee?: string | null;
   onAssigneeChange: (assignee: string | null) => void;
 }
 
-const ProjectAssignee = ({ projectId, assignee, onAssigneeChange }: Props) => {
+const ProjectAssignee = ({
+  projectId,
+  assignee,
+  onAssigneeChange,
+  defaultOpen,
+  onClose,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { loaded, options, savedAssignee } = useProjectAssignee(projectId);
+  const labelId = useId();
+  const descriptionId = useId();
 
   if (!loaded) return null;
 
   const title = formatMessage(messages.assignee);
-  const description = formatMessage(messages.assigneeDescription);
+  const selected =
+    (assignee === undefined ? savedAssignee : assignee) ?? UNASSIGNED;
+  const selectedLabel = options.find(({ value }) => value === selected)?.label;
 
   return (
-    <Box
-      display="flex"
-      alignItems="flex-start"
-      justifyContent="space-between"
-      gap="12px"
-    >
-      <Box display="flex" flexDirection="column" gap="3px">
-        <Text as="span" variant="boControl" m="0">
+    <div className={styles.row}>
+      <div className={styles.text}>
+        <span id={labelId} className={styles.label}>
           {title}
-        </Text>
-        <Text as="span" variant="boMicro" m="0">
-          {description}
-        </Text>
-      </Box>
-      <OptionPicker
-        title={title}
-        description={description}
-        options={options.map((option) => ({ ...option, icon: 'user' }))}
-        value={
-          (assignee === undefined ? savedAssignee : assignee) ?? UNASSIGNED
-        }
-        onChange={(value) =>
-          onAssigneeChange(value === UNASSIGNED ? null : value)
-        }
-      />
-    </Box>
+        </span>
+        <span id={descriptionId} className={styles.description}>
+          {formatMessage(messages.assigneeDescription)}
+        </span>
+      </div>
+      <MenuTrigger
+        defaultOpen={defaultOpen}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) onClose?.();
+        }}
+      >
+        <Button
+          variant="secondary"
+          size={28}
+          icon="user-16"
+          hasMenu
+          aria-describedby={`${labelId} ${descriptionId}`}
+        >
+          {selectedLabel}
+        </Button>
+        <Menu
+          aria-label={title}
+          placement="bottom end"
+          selectionMode="single"
+          selectedKeys={new Set([selected])}
+          onAction={(key) =>
+            onAssigneeChange(
+              typeof key === 'string' && key !== UNASSIGNED ? key : null
+            )
+          }
+        >
+          {options.map(({ value, label }) => (
+            <MenuItem key={value} id={value} icon="user-16">
+              {label}
+            </MenuItem>
+          ))}
+        </Menu>
+      </MenuTrigger>
+    </div>
   );
 };
 

@@ -8,18 +8,23 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
+import DSIcon from 'design-system/Icon';
+import DSModal from 'design-system/Modal';
+
+import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import styles from './FormInputEditWarningModal.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 type Props = {
   showEditWarningModal: boolean;
   setShowEditWarningModal: (show: boolean) => void;
   editFormLink: string;
-  variant?: 'bo';
+  variant?: 'panel';
 };
 
 const FormInputEditWarningModal = ({
@@ -29,29 +34,74 @@ const FormInputEditWarningModal = ({
   variant,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const isBo = variant === 'bo';
   const close = () => setShowEditWarningModal(false);
   const goToForm = () => clHistory.push(editFormLink);
 
+  if (variant === 'panel') {
+    return (
+      <DSModal
+        size={560}
+        isOpen={showEditWarningModal}
+        onOpenChange={setShowEditWarningModal}
+        title={formatMessage(messages.title)}
+        secondaryAction={{ label: formatMessage(messages.noCancel) }}
+        primaryAction={{
+          label: formatMessage(messages.yesContinue),
+          onPress: goToForm,
+        }}
+        data-cy="e2e-form-input-edit-warning-modal"
+      >
+        <div className={styles.content}>
+          <p className={styles.warning}>
+            {formatMessage(messages.loseDataWarning)}
+          </p>
+
+          <div className={styles.item}>
+            <DSIcon name="trash-2-16" className={styles.iconDanger} />
+            <div className={styles.itemText}>
+              <p className={styles.itemTitle}>
+                {formatMessage(messages.deleteAQuestion)}
+              </p>
+              <p className={styles.itemDescription}>
+                {formatMessage(messages.deleteAQuestionDescription)}
+              </p>
+            </div>
+          </div>
+
+          <div className={styles.item}>
+            <DSIcon name="triangle-alert-16" className={styles.iconNeutral} />
+            <div className={styles.itemText}>
+              <p className={styles.itemTitle}>
+                {formatMessage(messages.addOrReorder)}
+              </p>
+              <p className={styles.itemDescription}>
+                {formatMessage(messages.addOrReorderDescription)}
+              </p>
+            </div>
+          </div>
+
+          <div className={styles.item}>
+            <DSIcon name="circle-check-filled-16" />
+            <div className={styles.itemText}>
+              <p className={styles.itemTitle}>
+                {formatMessage(messages.changeQuestionText)}
+              </p>
+              <p className={styles.itemDescription}>
+                {formatMessage(messages.changeQuestionTextDescription)}
+              </p>
+            </div>
+          </div>
+        </div>
+      </DSModal>
+    );
+  }
+
   return (
     <Modal
-      width={isBo ? MEDIUM_MODAL_WIDTH : 520}
-      variant={variant}
+      width={520}
       opened={showEditWarningModal}
       close={close}
       header={formatMessage(messages.title)}
-      footer={
-        isBo ? (
-          <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-            <Button buttonStyle="bo-secondary" onClick={close}>
-              {formatMessage(messages.noCancel)}
-            </Button>
-            <Button buttonStyle="bo-delete" onClick={goToForm}>
-              {formatMessage(messages.yesContinue)}
-            </Button>
-          </Box>
-        ) : undefined
-      }
     >
       <Box m="24px" data-cy="e2e-form-input-edit-warning-modal">
         <Box mb="32px" display="flex">
@@ -102,16 +152,14 @@ const FormInputEditWarningModal = ({
           </Box>
         </Box>
 
-        {!isBo && (
-          <Box mt="40px" display="flex" justifyContent="space-between">
-            <Button p="0px" m="0px" buttonStyle="text" onClick={close}>
-              {formatMessage(messages.noCancel)}
-            </Button>
-            <Button bgColor={colors.error} onClick={goToForm}>
-              {formatMessage(messages.yesContinue)}
-            </Button>
-          </Box>
-        )}
+        <Box mt="40px" display="flex" justifyContent="space-between">
+          <Button p="0px" m="0px" buttonStyle="text" onClick={close}>
+            {formatMessage(messages.noCancel)}
+          </Button>
+          <Button bgColor={colors.error} onClick={goToForm}>
+            {formatMessage(messages.yesContinue)}
+          </Button>
+        </Box>
       </Box>
     </Modal>
   );

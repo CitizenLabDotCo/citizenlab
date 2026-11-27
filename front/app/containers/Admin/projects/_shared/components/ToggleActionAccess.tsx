@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-
 import { IPhasePermissionAction } from 'api/permissions/types';
 
 import PhaseActionAccess from './PhaseActionAccess';
+import styles from './ToggleActionAccess.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   phaseId: string;
@@ -13,16 +13,10 @@ interface Props {
 }
 
 const ToggleActionAccess = ({ phaseId, action, children }: Props) => (
-  <Box
-    display="flex"
-    alignItems="center"
-    justifyContent="space-between"
-    gap="12px"
-    minHeight="42px"
-  >
+  <div className={styles.row}>
     {children}
     <PhaseActionAccess phaseId={phaseId} action={action} />
-  </Box>
+  </div>
 );
 
 export default ToggleActionAccess;

@@ -1,10 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import {
-  ClickOutside,
-  useBreakpoint,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { ClickOutside, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
@@ -14,6 +10,14 @@ import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCom
 import useAuthUser from 'api/me/useAuthUser';
 
 import Avatar from 'components/Avatar';
+import LazyPanelFormButtons from 'components/PostShowComponents/Comments/CommentForm/LazyPanelFormButtons';
+import panelStyles from 'components/PostShowComponents/Comments/commentsPanel.module.css';
+import {
+  CommentsVariant,
+  defaultCommentFormFrame,
+  panelTextAreaStyle,
+  useIsPanelComments,
+} from 'components/PostShowComponents/Comments/commentsVariant';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -23,6 +27,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { commentAdded } from './events';
 import tracks from './tracks';
+import 'design-system/tokens.css';
 
 const Container = styled.div`
   display: flex;
@@ -50,19 +55,11 @@ const Anchor = styled.div`
   left: 0px;
 `;
 
-const Form = styled.form`
+const Form = styled.form<{ variant: CommentsVariant }>`
   flex: 1;
-  border: 1px solid ${colors.borderDark};
-  border-radius: ${(props) => props.theme.borderRadius};
   overflow: hidden;
 
-  &:not(.focused):hover {
-    border-color: ${colors.black};
-  }
-
-  &.focused {
-    border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
-  }
+  ${defaultCommentFormFrame}
 `;
 
 const HiddenLabel = styled.span`
@@ -95,6 +92,7 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
+  const isPanel = useIsPanelComments();
   const {
     mutate: addInternalCommentToIdea,
     isPending: addCommentToIdeaIsLoading,
@@ -212,7 +210,12 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
         closeOnClickOutsideEnabled={false}
       >
         <Anchor id="submit-comment-anchor" />
-        <Form className={focused ? 'focused' : ''}>
+        <Form
+          className={`${focused ? 'focused' : ''} ${
+            isPanel ? panelStyles.form : ''
+          }`}
+          variant={isPanel ? 'panel' : 'default'}
+        >
           <label htmlFor="submit-comment">
             <HiddenLabel>
               <FormattedMessage {...commentsMessages.yourComment} />
@@ -228,7 +231,10 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
               error={getErrorMessage()}
               onChange={onChange}
               onFocus={onFocus}
-              fontWeight="300"
+              color={isPanel ? panelTextAreaStyle.color : undefined}
+              fontWeight={isPanel ? panelTextAreaStyle.fontWeight : '300'}
+              fontSize={isPanel ? panelTextAreaStyle.fontSize : undefined}
+              lineHeight={isPanel ? panelTextAreaStyle.lineHeight : undefined}
               padding="10px"
               borderRadius="none"
               border="none"
@@ -236,26 +242,44 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
               getTextareaRef={setRef}
               adminsAndModerators
             />
-            <ButtonWrapper className={focused || processing ? 'visible' : ''}>
-              <CancelButton
-                disabled={processing}
-                onClick={close}
-                buttonStyle="secondary-outlined"
-                padding={smallerThanTablet ? '6px 12px' : undefined}
-              >
-                <FormattedMessage {...commentsMessages.cancel} />
-              </CancelButton>
-              <ButtonWithLink
-                className="e2e-submit-parentcomment"
-                processing={processing}
-                onClick={onSubmit}
-                disabled={hasEmptyError}
-                padding={smallerThanTablet ? '6px 12px' : undefined}
-                icon="shield-check"
-              >
-                <FormattedMessage {...commentsMessages.postInternalComment} />
-              </ButtonWithLink>
-            </ButtonWrapper>
+            {isPanel ? (
+              (focused || processing) && (
+                <div className={panelStyles.formFooter}>
+                  <LazyPanelFormButtons
+                    cancelLabel={formatMessage(commentsMessages.cancel)}
+                    submitLabel={formatMessage(
+                      commentsMessages.postInternalComment
+                    )}
+                    onCancel={close}
+                    onSubmit={onSubmit}
+                    processing={processing}
+                    isCancelDisabled={processing}
+                    isSubmitDisabled={hasEmptyError}
+                  />
+                </div>
+              )
+            ) : (
+              <ButtonWrapper className={focused || processing ? 'visible' : ''}>
+                <CancelButton
+                  disabled={processing}
+                  onClick={close}
+                  buttonStyle="secondary-outlined"
+                  padding={smallerThanTablet ? '6px 12px' : undefined}
+                >
+                  <FormattedMessage {...commentsMessages.cancel} />
+                </CancelButton>
+                <ButtonWithLink
+                  className="e2e-submit-parentcomment"
+                  processing={processing}
+                  onClick={onSubmit}
+                  disabled={hasEmptyError}
+                  padding={smallerThanTablet ? '6px 12px' : undefined}
+                  icon="shield-check"
+                >
+                  <FormattedMessage {...commentsMessages.postInternalComment} />
+                </ButtonWithLink>
+              </ButtonWrapper>
+            )}
           </label>
         </Form>
       </FormContainer>

@@ -228,7 +228,6 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def copy
     source_project = Project.find(params[:id])
-    dest_folder = source_project.folder if UserRoleService.new.can_moderate?(source_project.folder, current_user)
 
     # The authorization of this action is more complex than usual. It works in two steps:
     # - Check if the user can copy the source project.
@@ -236,6 +235,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     # In between these two steps, there is a third authorization check that is an optimization that allows us to
     # return early in some cases.
     authorize(source_project)
+    dest_folder = source_project.folder if UserRoleService.new.can_moderate?(source_project.folder, current_user)
 
     # Optimization: We perform the authorization on a dummy project that resembles the result of the copy. This
     # approach allows us to return early in some cases without performing the actual copy, which can be expensive.

@@ -1,0 +1,49 @@
+.header {
+  composes: panel from '../../../../../../design-system/surfaces.module.css';
+  display: flex;
+  flex: 0 0 var(--gv-size-48);
+  align-items: center;
+  height: var(--gv-size-48);
+  padding: 0 var(--gv-space-20) 0 var(--gv-space-56);
+}
+
+.separator {
+  flex: 0 0 auto;
+  height: var(--gv-size-24);
+  margin-right: var(--gv-space-16);
+  border-left: 1px solid var(--gv-border-divider);
+}
+
+.crumbBar {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  gap: var(--gv-space-12);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.viewSwitch {
+  flex: 0 0 auto;
+}
+
+.actions {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--gv-space-8);
+}
+
+.dropdowns {
+  position: relative;
+  display: flex;
+  gap: var(--gv-space-8);
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+  min-width: 0;
+}
