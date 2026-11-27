@@ -13,7 +13,6 @@ import {
 import AlertDialog from 'design-system/AlertDialog';
 import DSButton from 'design-system/Button';
 import DSDivider from 'design-system/Divider';
-import IconButton from 'design-system/IconButton';
 
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
@@ -21,7 +20,9 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import AccessSection from './AccessSection';
 import styles from './ActionForm.module.css';
+import dsStyles from './ActionFormDs.module.css';
 import DataSection from './DataSection';
+import DesignSystemContext from './DesignSystemContext';
 import { buildSummary, useVisibleSecurityRequirements } from './logic';
 import messages from './messages';
 import PlatformDefaultsHeader from './PlatformDefaultsHeader';
@@ -37,6 +38,7 @@ const ActionForm = ({
   title,
   defaultOpen = false,
   variant = 'card',
+  showData = true,
   onChange,
   onOverride,
   onRevertToDefaults,
@@ -103,17 +105,13 @@ const ActionForm = ({
   if (variant !== 'card') {
     const panelBody = (
       <>
-        <div className={styles.dividerTop}>
-          <DSDivider />
-        </div>
-
         <AccessSection
           permission={permissionData}
           showAnyone={showAnyone}
           onChange={handleChange}
         />
 
-        {!isAdmins && (
+        {!isAdmins && showData && (
           <>
             <div className={styles.dividerBetween}>
               <DSDivider />
@@ -126,17 +124,6 @@ const ActionForm = ({
           </>
         )}
 
-        {onRevertToDefaults && !usingPlatformDefaults && (
-          <div className={styles.revert}>
-            <DSButton
-              variant="quiet"
-              data-cy={`e2e-revert-to-platform-defaults-${action}`}
-              onPress={() => setRevertModalOpened(true)}
-            >
-              <FormattedMessage {...messages.revertToPlatformDefaults} />
-            </DSButton>
-          </div>
-        )}
       </>
     );
 
@@ -153,32 +140,50 @@ const ActionForm = ({
     );
     const content = variant === 'data' ? dataBody : panelBody;
 
+    // The library frame: a row about the platform defaults, then the form.
+    const defaultsRow = usingPlatformDefaults ? (
+      <>
+        <PlatformDefaultsNote />
+        <DSButton
+          variant="secondary"
+          size={32}
+          icon="pencil-14"
+          isPending={processing}
+          onPress={handleOverride}
+        >
+          {formatMessage(messages.override)}
+        </DSButton>
+      </>
+    ) : (
+      onRevertToDefaults && (
+        <>
+          {formatMessage(messages.overridingPlatformDefaults)}
+          <DSButton
+            variant="quiet"
+            size={28}
+            data-cy={`e2e-revert-to-platform-defaults-${action}`}
+            onPress={() => setRevertModalOpened(true)}
+          >
+            <FormattedMessage {...messages.revertToPlatformDefaults} />
+          </DSButton>
+        </>
+      )
+    );
+
     return (
-      <div>
-        {usingPlatformDefaults && (
-          <div className={styles.defaultsRow}>
-            <IconButton
-              icon="info-16"
-              aria-label={formatMessage(messages.platformDefaultsTooltip)}
-            />
-            <div className={styles.spacer} />
-            <PlatformDefaultsNote />
-            <DSButton
-              variant="secondary"
-              size={32}
-              icon="pencil-14"
-              isPending={processing}
-              onPress={handleOverride}
-            >
-              {formatMessage(messages.override)}
-            </DSButton>
+      <DesignSystemContext.Provider value>
+        <div className={dsStyles.frame}>
+          {defaultsRow && (
+            <div className={dsStyles.frameHead}>{defaultsRow}</div>
+          )}
+          <div className={dsStyles.frameBody}>
+            {usingPlatformDefaults ? (
+              <div className={styles.readOnly}>{content}</div>
+            ) : (
+              content
+            )}
           </div>
-        )}
-        {usingPlatformDefaults ? (
-          <div className={styles.readOnly}>{content}</div>
-        ) : (
-          content
-        )}
+        </div>
         {onRevertToDefaults && (
           <AlertDialog
             isOpen={revertModalOpened}
@@ -194,7 +199,7 @@ const ActionForm = ({
             {formatMessage(messages.revertToPlatformDefaultsInfo)}
           </AlertDialog>
         )}
-      </div>
+      </DesignSystemContext.Provider>
     );
   }
 

@@ -72,6 +72,10 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.usingPlatformDefaults',
     defaultMessage: 'Using <link>platform defaults</link>',
   },
+  overridingPlatformDefaults: {
+    id: 'app.components.admin.ActionForm.overridingPlatformDefaults',
+    defaultMessage: 'Overriding platform defaults',
+  },
   override: {
     id: 'app.components.admin.ActionForm.override',
     defaultMessage: 'Override',

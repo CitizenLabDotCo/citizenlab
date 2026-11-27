@@ -1,0 +1,130 @@
+/* The library's access modal pieces. */
+.sectionHeader {
+  composes: ui from '../../../design-system/typography.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  margin-bottom: var(--gv-space-12);
+  color: var(--gv-text-secondary);
+}
+
+.sectionIcon {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.expanderToggle {
+  composes: button from '../../../design-system/reset.module.css';
+  composes: ringInside from '../../../design-system/focus.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  width: 100%;
+  padding: var(--gv-space-12) 0;
+  border-radius: var(--gv-radius-4);
+  text-align: start;
+  cursor: pointer;
+}
+
+.expanderIcon {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.expanderTitle {
+  composes: ui from '../../../design-system/typography.module.css';
+  color: var(--gv-text-link);
+}
+
+.expanderSummary {
+  composes: small from '../../../design-system/typography.module.css';
+  margin-left: auto;
+  color: var(--gv-text-secondary);
+}
+
+.expanderBody {
+  padding: 0 0 var(--gv-space-16) var(--gv-space-24);
+}
+
+.modeCards {
+  display: flex;
+  gap: var(--gv-space-12);
+  margin-bottom: var(--gv-space-16);
+}
+
+.modeCard {
+  composes: button from '../../../design-system/reset.module.css';
+  composes: ringOutside from '../../../design-system/focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gv-space-4);
+  min-width: 0;
+  padding: var(--gv-space-16);
+  border: var(--gv-border-width-1) solid var(--gv-border-default);
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-panel);
+  text-align: start;
+  cursor: pointer;
+}
+
+.modeCard[aria-pressed='true'] {
+  border-color: var(--gv-border-selected);
+  /* The library binds this fill to blue 10. */
+  background: var(--gv-blue-10);
+}
+
+.modeIcon {
+  margin-bottom: var(--gv-space-4);
+  color: var(--gv-icon-secondary);
+}
+
+.modeTitle {
+  composes: ui from '../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.modeDescription {
+  composes: small from '../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.requirements {
+  margin-top: var(--gv-space-12);
+  padding: 0 var(--gv-space-16);
+  border: var(--gv-border-width-1) solid var(--gv-border-default);
+  border-radius: var(--gv-radius-8);
+}
+
+.requirements > * + * {
+  border-top: var(--gv-border-width-1) solid var(--gv-border-divider);
+}
+
+/* The bordered frame with the platform defaults row on top. */
+.frame {
+  border: var(--gv-border-width-1) solid var(--gv-border-default);
+  border-radius: var(--gv-radius-8);
+}
+
+.frameHead {
+  composes: small from '../../../design-system/typography.module.css';
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--gv-space-16);
+  min-height: var(--gv-size-48);
+  padding: var(--gv-space-8) var(--gv-space-20);
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-divider);
+  color: var(--gv-text-secondary);
+}
+
+.frameHead a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.frameBody {
+  padding: var(--gv-space-20);
+}

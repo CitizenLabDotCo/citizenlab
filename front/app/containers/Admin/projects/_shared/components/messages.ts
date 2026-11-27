@@ -62,4 +62,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  saveChanges: {
+    id: 'app.containers.AdminPage.ProjectEdit.saveAccessChanges',
+    defaultMessage: 'Save changes',
+  },
+  saveFailed: {
+    id: 'app.containers.AdminPage.ProjectEdit.accessSaveFailed',
+    defaultMessage: 'The changes could not be saved. Please try again.',
+  },
 });

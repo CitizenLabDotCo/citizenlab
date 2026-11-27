@@ -2,12 +2,14 @@
 // extra proof is required once they are in (security checks) and which groups
 // they must belong to.
 
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from '../ActionFormDs.module.css';
+import DesignSystemContext from '../DesignSystemContext';
 import { requiresAccount } from '../logic';
 import { SectionHeader } from '../ui';
 
@@ -35,6 +37,7 @@ const AccessSection = ({
   // Usually platform-wide, but it can also be a method set to only show for
   // verification on a permission that does not require verification.
   const noSignInMethod = signInMethods.length === 0;
+  const designSystem = useContext(DesignSystemContext);
 
   return (
     <Box>
@@ -62,18 +65,28 @@ const AccessSection = ({
         <>
           <IdMethodsModalTrigger />
 
-          <Box
-            mt="12px"
-            border={`1px solid ${colors.borderLight}`}
-            borderRadius="8px"
-            px="14px"
-          >
-            <SecurityRequirementsSection
-              permission={permission}
-              onChange={onChange}
-            />
-            <GroupsSection permission={permission} onChange={onChange} />
-          </Box>
+          {designSystem ? (
+            <div className={styles.requirements}>
+              <SecurityRequirementsSection
+                permission={permission}
+                onChange={onChange}
+              />
+              <GroupsSection permission={permission} onChange={onChange} />
+            </div>
+          ) : (
+            <Box
+              mt="12px"
+              border={`1px solid ${colors.borderLight}`}
+              borderRadius="8px"
+              px="14px"
+            >
+              <SecurityRequirementsSection
+                permission={permission}
+                onChange={onChange}
+              />
+              <GroupsSection permission={permission} onChange={onChange} />
+            </Box>
+          )}
         </>
       )}
     </Box>

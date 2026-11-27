@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Box, Color } from '@citizenlab/cl2-component-library';
 
@@ -6,6 +6,8 @@ import { PermittedBy } from 'api/permissions/types';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from '../../ActionFormDs.module.css';
+import DesignSystemContext from '../../DesignSystemContext';
 import { Changes } from '../../types';
 
 import messages from './messages';
@@ -31,10 +33,17 @@ const ModeCards = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const setMode = (permitted_by: PermittedBy) => onChange({ permitted_by });
+  const designSystem = useContext(DesignSystemContext);
 
   return (
     <>
-      <Box display="flex" flexWrap="wrap" gap="8px" mb="16px">
+      <Box
+        className={designSystem ? styles.modeCards : undefined}
+        display="flex"
+        flexWrap={designSystem ? undefined : 'wrap'}
+        gap="8px"
+        mb="16px"
+      >
         {showAnyone && (
           <ModeCard
             icon="user-circle"

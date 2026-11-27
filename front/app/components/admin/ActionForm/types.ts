@@ -49,6 +49,9 @@ export type Props = {
   // own heading, such as a modal titled with the action.
   /** 'data' shows only what is collected, without who can take part. */
   variant?: 'card' | 'plain' | 'data';
+  // 'plain' only: leaves out what is collected, where a phase has its own
+  // Collect demographic data card for that.
+  showData?: boolean;
   onChange: (changes: Changes) => Promise<void>;
   // Called when the admin opts the action out of the platform defaults, and
   // when they put it back. Omitted where the distinction doesn't apply (the

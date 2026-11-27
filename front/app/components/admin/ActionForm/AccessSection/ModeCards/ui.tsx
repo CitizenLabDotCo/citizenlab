@@ -1,6 +1,6 @@
 // The presentational pieces of the mode picker. Only this folder renders them.
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 
 import {
   Box,
@@ -11,6 +11,9 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+
+import styles from '../../ActionFormDs.module.css';
+import DesignSystemContext from '../../DesignSystemContext';
 
 /** Inline "this isn't possible because…" note shown next to disabled controls. */
 export const Hint = ({ children }: { children: ReactNode }) => (
@@ -52,7 +55,21 @@ export const ModeCard = ({
   selected: boolean;
   className?: string;
   onClick: () => void;
-}) => (
+}) =>
+  useContext(DesignSystemContext) ? (
+    <button
+      type="button"
+      className={`${styles.modeCard} ${className ?? ''}`}
+      aria-pressed={selected}
+      onClick={onClick}
+    >
+      <span className={styles.modeIcon}>
+        <Icon name={icon} width="16px" height="16px" fill="currentColor" />
+      </span>
+      <span className={styles.modeTitle}>{title}</span>
+      <span className={styles.modeDescription}>{description}</span>
+    </button>
+  ) : (
   <Box
     as="button"
     type="button"
@@ -88,4 +105,4 @@ export const ModeCard = ({
       </Text>
     </Box>
   </Box>
-);
+  );

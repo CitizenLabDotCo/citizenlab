@@ -1,7 +1,7 @@
 // Small presentational building blocks shared across the panel. Kept here so
 // the section components read top-to-bottom as layout.
 
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useContext, useState } from 'react';
 
 import {
   Box,
@@ -14,6 +14,8 @@ import {
 import { transparentize } from 'polished';
 import styled from 'styled-components';
 
+import styles from './ActionFormDs.module.css';
+import DesignSystemContext from './DesignSystemContext';
 import { SummaryChip } from './logic';
 
 /** A muted, all-caps section label with an icon and optional helper tooltip. */
@@ -25,7 +27,16 @@ export const SectionHeader = ({
   icon: IconNames;
   title: string;
   tooltip?: string;
-}) => (
+}) =>
+  useContext(DesignSystemContext) ? (
+    <div className={styles.sectionHeader}>
+      <span className={styles.sectionIcon}>
+        <Icon name={icon} width="16px" height="16px" fill="currentColor" />
+      </span>
+      {title}
+      {tooltip && <IconTooltip content={tooltip} iconSize="14px" />}
+    </div>
+  ) : (
   <Box display="flex" alignItems="center" gap="8px" mb="12px">
     <Icon name={icon} width="18px" height="18px" fill={colors.coolGrey600} />
     <Text
@@ -40,7 +51,7 @@ export const SectionHeader = ({
     </Text>
     {tooltip && <IconTooltip content={tooltip} iconSize="14px" />}
   </Box>
-);
+  );
 
 const CHIP_COLORS = { bg: colors.grey100, fg: colors.grey700 };
 
@@ -100,6 +111,36 @@ export const Expander = ({
   dataCy?: string;
 }) => {
   const [open, setOpen] = useState(defaultOpen);
+  const designSystem = useContext(DesignSystemContext);
+
+  if (designSystem && !locked) {
+    return (
+      <div data-cy={dataCy}>
+        <button
+          data-expander-toggle
+          type="button"
+          className={styles.expanderToggle}
+          aria-expanded={open}
+          onClick={() => setOpen((o) => !o)}
+        >
+          <span className={styles.expanderIcon}>
+            <Icon
+              name={open ? 'chevron-down' : 'chevron-right'}
+              width="16px"
+              height="16px"
+              fill="currentColor"
+            />
+          </span>
+          <span className={styles.expanderIcon}>
+            <Icon name={icon} width="16px" height="16px" fill="currentColor" />
+          </span>
+          <span className={styles.expanderTitle}>{title}</span>
+          {!open && <span className={styles.expanderSummary}>{summary}</span>}
+        </button>
+        {open && <div className={styles.expanderBody}>{children}</div>}
+      </div>
+    );
+  }
 
   if (locked) {
     return (
