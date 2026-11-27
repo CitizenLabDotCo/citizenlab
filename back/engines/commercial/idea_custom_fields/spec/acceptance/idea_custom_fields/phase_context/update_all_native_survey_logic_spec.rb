@@ -225,24 +225,80 @@ resource 'Idea Custom Fields' do
       expect(logic_errors).to eq({ '0': [{ error: 'invalid_structure' }] })
     end
 
-    example '[error] Persists the other changes and the invalid logic when logic is invalid (currently existing bug, B4)', document: false do
+    example '[error] Persists none of the changes when logic is invalid', document: false do
       do_request form_params(
         select_field => { title_multiloc: { en: 'Changed title' }, logic: { rules: [{ if: cat.id, goto_page_id: page3.id }] } },
         scale_field => { logic: { rules: [{ if: 1, goto_page_id: page1.id }] } }
       )
 
       assert_status 422
-      expect(select_field.reload.title_multiloc).to eq({ 'en' => 'Changed title' })
-      expect(select_field.logic).to eq({ 'rules' => [{ 'if' => cat.id, 'goto_page_id' => page3.id }] })
-      expect(scale_field.reload.logic).to eq({ 'rules' => [{ 'if' => 1, 'goto_page_id' => page1.id }] })
+      expect(select_field.reload.title_multiloc).not_to eq({ 'en' => 'Changed title' })
+      expect(select_field.logic).to eq({})
+      expect(scale_field.reload.logic).to eq({})
     end
 
-    example '[error] Persists an unresolved temp id when the target page does not exist (currently existing bug, B4)', document: false do
+    example '[error] Persists no unresolved temp id when the target page does not exist', document: false do
       do_request form_params(page1 => { logic: { next_page_id: 'TEMP-ID-MISSING' } })
 
       assert_status 422
       expect(logic_errors).to eq({ '0': [{ error: 'invalid_next_page_id', value: 'TEMP-ID-MISSING' }] })
-      expect(page1.reload.logic).to eq({ 'next_page_id' => 'TEMP-ID-MISSING' })
+      expect(page1.reload.logic).to eq({})
+    end
+
+    context 'when logic is invalid' do
+      let(:invalid_logic) { { logic: { rules: [{ if: 1, goto_page_id: page1.id }] } } }
+
+      example '[error] Keeps a field left out of the request and its answers', document: false do
+        text_field = create(:custom_field_text, resource: custom_form, key: 'text_field')
+        response = create(:idea, project: phase.project, creation_phase: phase, phases: [phase], custom_field_answers: [
+          build(:custom_field_answer, key: 'text_field', value: 'Keep me', custom_field: text_field)
+        ])
+        do_request form_params(scale_field => invalid_logic)
+
+        assert_status 422
+        expect(CustomField.exists?(text_field.id)).to be true
+        expect(CustomFieldAnswer.where(answerable: response).pluck(:key, :value)).to eq [['text_field', 'Keep me']]
+      end
+
+      example '[error] Creates no new field and no new option', document: false do
+        request = form_params(
+          select_field => {
+            options: [
+              { id: cat.id, title_multiloc: cat.title_multiloc },
+              { id: dog.id, title_multiloc: dog.title_multiloc },
+              { temp_id: 'TEMP-ID-OPTION', title_multiloc: { en: 'Bird' } }
+            ]
+          },
+          scale_field => invalid_logic
+        )
+        request[:custom_fields].insert(4, { temp_id: 'TEMP-ID-PAGE', input_type: 'page', page_layout: 'default', title_multiloc: { en: 'New page' } })
+
+        expect { do_request request }.not_to change(CustomField, :count)
+        assert_status 422
+        expect(select_field.options.reload.pluck(:key)).to match_array %w[cat dog]
+      end
+
+      example '[error] Keeps an option left out of the request and the rule that uses it', document: false do
+        select_field.update!(logic: { rules: [{ if: dog.id, goto_page_id: page3.id }] })
+        do_request form_params(
+          select_field => { options: [{ id: cat.id, title_multiloc: cat.title_multiloc }], logic: { rules: [{ if: dog.id, goto_page_id: page3.id }] } },
+          scale_field => invalid_logic
+        )
+
+        assert_status 422
+        expect(select_field.options.reload.pluck(:key)).to match_array %w[cat dog]
+        expect(select_field.reload.logic).to eq({ 'rules' => [{ 'if' => dog.id, 'goto_page_id' => page3.id }] })
+      end
+
+      example '[error] Does not mark the form as updated and logs no activity', document: false do
+        custom_form.update_column(:fields_last_updated_at, 1.day.ago)
+        last_updated_at = custom_form.reload.fields_last_updated_at
+
+        expect { do_request form_params(select_field => { title_multiloc: { en: 'Changed title' } }, scale_field => invalid_logic) }
+          .not_to have_enqueued_job(LogActivityJob)
+        assert_status 422
+        expect(custom_form.reload.fields_last_updated_at).to eq last_updated_at
+      end
     end
 
     example 'Drops the rules of a rating question without an error (currently existing bug, B1)', document: false do
