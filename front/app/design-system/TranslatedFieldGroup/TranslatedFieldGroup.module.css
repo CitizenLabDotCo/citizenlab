@@ -1,0 +1,14 @@
+/* The language bar 8 above the first field, the line naming what is missing 8 under the last. */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  min-width: 0;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--gv-space-4);
+}

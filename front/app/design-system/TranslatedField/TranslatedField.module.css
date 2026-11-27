@@ -1,0 +1,184 @@
+/* The language picker: the left segment of a field, or a button above a group of fields. */
+.picker {
+  composes: button from '../reset.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-6);
+  color: var(--gv-text-primary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.picker[data-hovered] {
+  background: var(--gv-surface-hovered);
+}
+
+.picker[data-pressed],
+.picker[aria-expanded='true'] {
+  background: var(--gv-surface-pressed);
+}
+
+.picker[data-disabled] {
+  color: var(--gv-text-disabled);
+  cursor: default;
+}
+
+/* Full height inside the field, its divider on the right. */
+.inlinePicker {
+  composes: picker;
+  composes: ui from '../typography.module.css';
+  composes: ringInside from '../focus.module.css';
+  align-self: stretch;
+  padding: 0 var(--gv-space-10) 0 var(--gv-space-12);
+  border-right: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: calc(var(--gv-radius-8) - var(--gv-border-width-1)) 0 0
+    calc(var(--gv-radius-8) - var(--gv-border-width-1));
+}
+
+/* 12/20 like a card title. The negative margin lines the chevron up with the fields' right edge. */
+.barPicker {
+  composes: picker;
+  composes: ringOutside from '../focus.module.css';
+  height: var(--gv-size-24);
+  margin-right: calc(-1 * var(--gv-space-4));
+  padding: 0 var(--gv-space-4) 0 var(--gv-space-8);
+  border-radius: var(--gv-radius-6);
+  font-family: var(--gv-font-family);
+  font-size: var(--gv-font-size-12);
+  line-height: var(--gv-font-line-height-20);
+  font-weight: var(--gv-font-weight-regular);
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--gv-icon-primary);
+}
+
+.picker[data-disabled] .chevron {
+  color: var(--gv-icon-disabled);
+}
+
+.popover {
+  display: flex;
+  flex-direction: column;
+  min-width: 172px;
+  max-height: 264px;
+}
+
+.menu {
+  composes: collection from '../collection.module.css';
+  padding: var(--gv-space-6);
+}
+
+.item {
+  composes: item from '../collection.module.css';
+  composes: ui from '../typography.module.css';
+  color: var(--gv-text-primary);
+  outline: none;
+}
+
+.item[data-hovered],
+.item[data-focused],
+.item[data-current] {
+  background: var(--gv-surface-hovered);
+}
+
+.item[data-pressed],
+.item[data-current][data-hovered] {
+  background: var(--gv-surface-pressed);
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.done {
+  flex-shrink: 0;
+  color: var(--gv-surface-success-strong);
+}
+
+.toDo {
+  flex-shrink: 0;
+  color: var(--gv-icon-tertiary);
+}
+
+.count {
+  composes: small from '../typography.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-4);
+  height: var(--gv-size-24);
+  padding: 0 var(--gv-space-8);
+  border-radius: var(--gv-radius-full);
+  white-space: nowrap;
+  background: var(--gv-surface-muted);
+  color: var(--gv-text-secondary);
+}
+
+.toTranslate {
+  background: var(--gv-surface-warning);
+  color: var(--gv-text-warning);
+}
+
+.complete {
+  background: var(--gv-surface-info);
+  color: var(--gv-text-info);
+}
+
+.blocked {
+  background: var(--gv-surface-danger);
+  color: var(--gv-text-danger);
+}
+
+.countCheck {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+}
+
+/* The field box: picker, text, count. Its own padding sits only on the right of the count. */
+.frame {
+  composes: input size36 from '../TextField/input.module.css';
+  gap: 0;
+  padding: 0 var(--gv-space-8) 0 0;
+}
+
+/* Repeated class: outranks the focused border of the shared input frame. */
+.frame.frame[data-blocked] {
+  border-color: var(--gv-border-danger);
+}
+
+/* Repeated class: outranks the shared inner input's zero padding. */
+.input.input {
+  padding: 0 var(--gv-space-12);
+}
+
+.input {
+  composes: innerInput from '../TextField/input.module.css';
+  text-overflow: ellipsis;
+}
+
+.gap {
+  composes: small from '../typography.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+  margin: 0;
+  color: var(--gv-text-secondary);
+}
+
+.gapIcon {
+  flex-shrink: 0;
+  width: var(--gv-size-icon-14);
+  height: var(--gv-size-icon-14);
+  color: var(--gv-icon-tertiary);
+}

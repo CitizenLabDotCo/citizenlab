@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 
 import {
   Button as AriaButton,
@@ -14,71 +14,61 @@ import { useIntl } from 'utils/cl-intl';
 import Icon from '../Icon';
 import surfaces from '../surfaces.module.css';
 
-import styles from './LanguageSwitcher.module.css';
 import messages from './messages';
+import styles from './TranslatedField.module.css';
+import { TranslationLanguage } from './types';
 import '../tokens.css';
 
-export type LanguageOption = {
-  id: string;
-  // The language's own name, e.g. "Français".
-  name: string;
-  // Every field the switcher drives has text in this language.
-  done: boolean;
-};
-
 type Props = {
-  // Names what the switcher drives, e.g. "Title and description".
+  // Names what the picker drives, e.g. "Project title".
   'aria-label': string;
-  languages: LanguageOption[];
-  selectedId: string;
-  onChange: (id: string) => void;
+  languages: TranslationLanguage[];
+  selectedLanguage: string;
+  onLanguageChange: (id: string) => void;
+  // Inline: the left segment of a field. Bar: on its own, above a group of fields.
+  variant: 'inline' | 'bar';
+  isDisabled?: boolean;
+  // Inline, the menu hangs under the whole field rather than under the picker.
+  fieldRef?: RefObject<HTMLDivElement>;
 };
 
-// Picks the language a group of multilingual fields shows. "1/3" counts the
-// languages done while some still need text. Hidden on a one-language platform.
-const LanguageSwitcher = ({
+// Opens the language menu: a check for each language done, a dashed circle
+// for each one still to translate.
+const LanguagePicker = ({
   'aria-label': ariaLabel,
   languages,
-  selectedId,
-  onChange,
+  selectedLanguage,
+  onLanguageChange,
+  variant,
+  isDisabled,
+  fieldRef,
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  if (languages.length < 2) return null;
-
   const selected =
-    languages.find((language) => language.id === selectedId) ?? languages[0];
-  const doneCount = languages.filter((language) => language.done).length;
-  const allDone = doneCount === languages.length;
-  const progress = formatMessage(messages.languagesDone, {
-    done: doneCount,
-    total: languages.length,
-  });
+    languages.find((language) => language.id === selectedLanguage) ??
+    languages[0];
 
   return (
     <MenuTrigger>
       <AriaButton
-        className={styles.trigger}
-        aria-label={`${ariaLabel}: ${selected.name}. ${progress}`}
-        data-language-switcher
+        className={variant === 'inline' ? styles.inlinePicker : styles.barPicker}
+        aria-label={`${ariaLabel}: ${selected.name}`}
+        isDisabled={isDisabled}
       >
         <span>{selected.name}</span>
-        {!allDone && (
-          <span className={styles.count} aria-hidden>
-            {`${doneCount}/${languages.length}`}
-          </span>
-        )}
         <Icon name="chevron-down-12" className={styles.chevron} />
       </AriaButton>
       <Popover
-        placement="bottom end"
-        offset={4}
+        triggerRef={variant === 'inline' ? fieldRef : undefined}
+        placement={variant === 'inline' ? 'bottom start' : 'bottom end'}
+        offset={8}
         className={`${surfaces.dropdown} ${styles.popover}`}
       >
         <AriaMenu
           aria-label={ariaLabel}
           className={styles.menu}
-          onAction={(key: Key) => onChange(String(key))}
+          onAction={(key: Key) => onLanguageChange(String(key))}
         >
           {languages.map((language) => (
             <AriaMenuItem
@@ -112,4 +102,4 @@ const LanguageSwitcher = ({
   );
 };
 
-export default LanguageSwitcher;
+export default LanguagePicker;
