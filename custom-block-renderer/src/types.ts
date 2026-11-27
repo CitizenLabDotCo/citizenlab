@@ -125,8 +125,16 @@ export interface RenderResponse {
  */
 export const MAX_SCREENSHOT_HEIGHT_PX = 6000;
 
-/** A page that will not settle is killed and reported rather than held open. */
-export const RENDER_TIMEOUT_MS = 30_000;
+/**
+ * How long the harness page has to load and boot the app, and how long the block
+ * then has to mount, load its data and be measured. With the screenshot and the
+ * clean-up, a render that has a browser context answers within about 75 seconds,
+ * under the 90 Rails waits (`RENDER_TIMEOUT_SECONDS` in renderer_client.rb). Time
+ * spent waiting for a free context comes on top, so a render queued behind slow
+ * ones can still reach Rails as a timeout.
+ */
+export const HARNESS_READY_TIMEOUT_MS = 30_000;
+export const BLOCK_RUN_TIMEOUT_MS = 30_000;
 
 /** Console lines are deduped and capped so one noisy block cannot flood a transcript. */
 export const MAX_CONSOLE_LINES = 20;

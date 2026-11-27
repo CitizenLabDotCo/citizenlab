@@ -19,13 +19,13 @@ const MAX_BODY_BYTES = 4 * 1024 * 1024;
 // request that never returns.
 const MAX_QUEUED_RENDERS = Number(process.env.MAX_QUEUED_RENDERS ?? 12);
 
-const pool = new RenderPool();
-let queuedRenders = 0;
-
 const server = Fastify({
   logger: { level: process.env.LOG_LEVEL ?? "info" },
   bodyLimit: MAX_BODY_BYTES,
 });
+
+const pool = new RenderPool(server.log);
+let queuedRenders = 0;
 
 // Rails is the only caller, over the internal network. The header is what stops
 // anything else that reaches the port from compiling arbitrary TypeScript here.
@@ -44,7 +44,13 @@ server.addHook("onRequest", async (request, reply) => {
   }
 });
 
-server.get("/health", async () => ({ status: "ok" }));
+// ECS replaces the task when this fails, which is the only way out once Chromium has
+// died or every slot is stuck.
+server.get("/health", async (_request, reply) =>
+  pool.healthy
+    ? { status: "ok" }
+    : reply.code(503).send({ status: "unable_to_render" })
+);
 
 // The one description of the SDK. Rails puts it in the system prompt, so the model is
 // told about exactly the module the typechecker holds its blocks to.

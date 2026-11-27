@@ -4,13 +4,15 @@ import { createRequire } from "node:module";
 import type { Page } from "playwright";
 
 import { runChecks } from "./checks.ts";
+import { DeadlineExceeded, withDeadline } from "./deadline.ts";
 import { CONFIGURED_ORIGINS, isAllowedRequest } from "./egress.ts";
 import type { RenderPool } from "./pool.ts";
 import { describeStackPosition } from "./sourceMap.ts";
 import {
+  BLOCK_RUN_TIMEOUT_MS,
+  HARNESS_READY_TIMEOUT_MS,
   MAX_CONSOLE_LINES,
   MAX_SCREENSHOT_HEIGHT_PX,
-  RENDER_TIMEOUT_MS,
   type BrowserFacts,
   type HarnessFacts,
   type RenderRequest,
@@ -92,10 +94,16 @@ export const render = async (
   input: RenderRequest
 ): Promise<RenderResponse> => {
   const slot = await pool.acquire();
-  const page = await slot.context.newPage();
+  const page = await slot.context.newPage().catch(async (error: unknown) => {
+    await pool.release(slot, { discard: true });
+    throw error;
+  });
   const bundle = bundleOf(input);
   const browserFacts = collectBrowserFacts(page, bundle);
   let harnessFacts: HarnessFacts | null = null;
+  // Once the block has outrun its deadline, its page may still be running it, so
+  // nothing more is asked of that page and its context is replaced.
+  let hung = false;
 
   try {
     // Generated code runs in this page, holding a token that reads this layout's
@@ -125,9 +133,10 @@ export const render = async (
 
     // Locale-prefixed, like every route in this app, and deliberately not under
     // /admin: this browser has no session and would be redirected to a sign-in page.
+    const harnessReadyBy = Date.now() + HARNESS_READY_TIMEOUT_MS;
     await page.goto(`${input.appOrigin}/${input.locale}/block-harness`, {
       waitUntil: "domcontentloaded",
-      timeout: RENDER_TIMEOUT_MS,
+      timeout: HARNESS_READY_TIMEOUT_MS,
     });
     await page.addScriptTag({ content: axe() });
 
@@ -140,7 +149,7 @@ export const render = async (
           (globalThis as unknown as { __blockHarness?: unknown }).__blockHarness
         ),
       null,
-      { timeout: RENDER_TIMEOUT_MS }
+      { timeout: Math.max(1, harnessReadyBy - Date.now()) }
     );
 
     // Everything so far belongs to the app starting up — a 401 on the signed-out
@@ -152,21 +161,30 @@ export const render = async (
     browserFacts.pageErrors.length = 0;
     browserFacts.failedRequests.length = 0;
 
-    harnessFacts = (await page.evaluate(
-      (message) =>
-        (
-          globalThis as unknown as {
-            __blockHarness: { run(m: unknown): Promise<unknown> };
-          }
-        ).__blockHarness.run(message),
-      {
-        target: input.target,
-        locale: input.locale,
-        token: input.token,
-        layoutId: input.layoutId,
-      }
+    // A block that loops forever blocks the page, timers included, so the harness
+    // cannot stop it from inside. Only this side can give up on it.
+    harnessFacts = (await withDeadline(
+      page.evaluate(
+        (message) =>
+          (
+            globalThis as unknown as {
+              __blockHarness: { run(m: unknown): Promise<unknown> };
+            }
+          ).__blockHarness.run(message),
+        {
+          target: input.target,
+          locale: input.locale,
+          token: input.token,
+          layoutId: input.layoutId,
+        }
+      ),
+      BLOCK_RUN_TIMEOUT_MS,
+      `The block did not finish rendering within ${
+        BLOCK_RUN_TIMEOUT_MS / 1000
+      } seconds. Look for a loop that never ends.`
     )) as HarnessFacts;
   } catch (error) {
+    if (error instanceof DeadlineExceeded) hung = true;
     browserFacts.pageErrors.push(
       error instanceof Error ? error.message : String(error)
     );
@@ -182,7 +200,7 @@ export const render = async (
   // needs to see it (section 7.4). Captured at CSS scale and no taller than a
   // provider accepts: the context renders at 2x for crisp measurements, but a
   // picture twice the size says nothing more to a model and can be refused outright.
-  const wantsScreenshot = input.screenshot !== false;
+  const wantsScreenshot = input.screenshot !== false && !hung;
   let screenshot: string | null = null;
   let screenshotClipped = false;
   if (wantsScreenshot) {
@@ -210,8 +228,8 @@ export const render = async (
     }
   }
 
-  await page.close().catch(() => undefined);
-  await pool.release(slot);
+  if (!hung) await page.close().catch(() => undefined);
+  await pool.release(slot, { discard: hung });
 
   return {
     mounted: harnessFacts?.mounted ?? false,

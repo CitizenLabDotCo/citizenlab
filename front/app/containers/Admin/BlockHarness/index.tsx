@@ -118,18 +118,34 @@ const BlockHarness = () => {
 
     let live = true;
     const report = async () => {
-      await settle(queryClient);
-      if (!live) return;
+      let facts: HarnessFacts;
+      try {
+        await settle(queryClient);
+        if (!live) return;
 
-      const metrics: Metrics = measure('#harness-root');
-      const violations = await runAxe();
+        const metrics: Metrics = measure('#harness-root');
+        const violations = await runAxe();
+        facts = {
+          mounted: errorRef.current === null,
+          boundaryError: errorRef.current,
+          metrics,
+          a11y: { violations },
+        };
+      } catch (error) {
+        // The block runs in this page and can break what measuring relies on, such
+        // as document.querySelector. Without an answer the renderer waits until its
+        // deadline and can only say the block hung.
+        const { message, stack } =
+          error instanceof Error ? error : new Error(String(error));
+        facts = {
+          mounted: false,
+          boundaryError: errorRef.current ?? { message, stack },
+          metrics: { root: { width: 0, height: 0 }, charts: [], boxes: [] },
+          a11y: { violations: [] },
+        };
+      }
 
-      resolveRef.current?.({
-        mounted: errorRef.current === null,
-        boundaryError: errorRef.current,
-        metrics,
-        a11y: { violations },
-      });
+      resolveRef.current?.(facts);
       resolveRef.current = null;
     };
 

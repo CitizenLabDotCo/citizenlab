@@ -1,9 +1,23 @@
 import { chromium, type Browser, type BrowserContext } from "playwright";
 
+import { withDeadline } from "./deadline.ts";
+
 const POOL_SIZE = Number(process.env.RENDER_POOL_SIZE ?? 3);
 
 /** A context is thrown away after this many renders, so generated code cannot accumulate. */
 const RENDERS_PER_CONTEXT = 50;
+
+/**
+ * A render gives its slot back within about 75 seconds, its deadlines included. A slot
+ * out for longer than this is held by something no deadline covers.
+ */
+const STUCK_AFTER_MS = 120_000;
+
+/**
+ * Closing a context kills its pages, even one stuck in a loop. Should the close
+ * itself hang, the slot gets a new context anyway.
+ */
+const CONTEXT_CLOSE_TIMEOUT_MS = 5_000;
 
 /** The A4 content width reports are laid out for; charts size themselves to it. */
 const VIEWPORT = { width: 794, height: 1123 };
@@ -39,6 +53,19 @@ interface Slot {
   uses: number;
 }
 
+/** The part of the server's logger the pool uses, so the pool does not depend on Fastify. */
+export interface PoolLogger {
+  warn(details: object, message: string): void;
+}
+
+/** Whether a render could still get a slot: one is free, or one is out but not stuck. */
+export const canStillRender = (
+  freeSlots: number,
+  checkedOutAt: Iterable<number>,
+  now: number
+): boolean =>
+  freeSlots > 0 || [...checkedOutAt].some((at) => now - at < STUCK_AFTER_MS);
+
 /**
  * A small pool of warm browser contexts.
  *
@@ -50,6 +77,12 @@ export class RenderPool {
   private browser: Browser | null = null;
   private slots: Slot[] = [];
   private waiting: ((slot: Slot) => void)[] = [];
+  private checkedOut = new Map<Slot, number>();
+  private readonly log: PoolLogger;
+
+  constructor(log: PoolLogger) {
+    this.log = log;
+  }
 
   async start(): Promise<void> {
     this.browser = await chromium.launch({
@@ -84,30 +117,72 @@ export class RenderPool {
     return this.browser !== null;
   }
 
+  /**
+   * False once no render can succeed until the process is replaced: Chromium is gone,
+   * or every slot is held by a render that never gave it back. A pool that never
+   * started counts as healthy, because building does not need it.
+   */
+  get healthy(): boolean {
+    if (!this.browser) return true;
+
+    return (
+      this.browser.isConnected() &&
+      canStillRender(this.slots.length, this.checkedOut.values(), Date.now())
+    );
+  }
+
   /** Resolves with a context to render in, once one is free. */
   acquire(): Promise<Slot> {
     const free = this.slots.pop();
-    if (free) return Promise.resolve(free);
+    if (free) {
+      this.checkedOut.set(free, Date.now());
+      return Promise.resolve(free);
+    }
 
     return new Promise((resolve) => this.waiting.push(resolve));
   }
 
-  async release(slot: Slot): Promise<void> {
+  /** `discard` replaces the slot's context, for one whose page may still be running code. */
+  async release(slot: Slot, { discard = false } = {}): Promise<void> {
+    slot.uses += 1;
+
     const usable =
-      slot.uses + 1 < RENDERS_PER_CONTEXT ? slot : await this.recycle(slot);
-    usable.uses = usable === slot ? slot.uses + 1 : 0;
+      discard || slot.uses >= RENDERS_PER_CONTEXT
+        ? await this.recycle(slot)
+        : slot;
+    // Only now: a slot whose context is being replaced is still on its way back, and
+    // counting it as gone would fail the health check of a pool that is fine.
+    this.checkedOut.delete(slot);
+    if (!usable) return;
 
     const next = this.waiting.shift();
     if (next) {
+      this.checkedOut.set(usable, Date.now());
       next(usable);
       return;
     }
     this.slots.push(usable);
   }
 
-  private async recycle(slot: Slot): Promise<Slot> {
-    await slot.context.close().catch(() => undefined);
-    return this.newSlot();
+  /** Null when no new context could be made: the pool is a slot short from then on. */
+  private async recycle(slot: Slot): Promise<Slot | null> {
+    await withDeadline(
+      slot.context.close(),
+      CONTEXT_CLOSE_TIMEOUT_MS,
+      "The context did not close."
+    ).catch((error: unknown) => {
+      this.log.warn(
+        { err: error },
+        "A browser context did not close; a page in it may still be running code."
+      );
+    });
+    return this.newSlot().catch((error: unknown) => {
+      this.log.warn(
+        { err: error },
+        "A browser context could not be replaced; the render pool is a slot short from now on."
+      );
+      return null;
+    });
   }
 
   private async newSlot(): Promise<Slot> {
