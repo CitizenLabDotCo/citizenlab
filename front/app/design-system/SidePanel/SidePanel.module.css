@@ -112,3 +112,11 @@
     transform: translateY(var(--gv-motion-offset-far));
   }
 }
+
+/* The library's head: the title is a grey UI line, not a heading. */
+.title.title {
+  font-size: var(--gv-font-size-13);
+  line-height: var(--gv-font-line-height-20);
+  font-weight: var(--gv-font-weight-regular);
+  color: var(--gv-text-secondary);
+}

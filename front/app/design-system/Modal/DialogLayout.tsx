@@ -5,6 +5,7 @@ import { Dialog, Heading } from 'react-aria-components';
 import { useIntl } from 'utils/cl-intl';
 
 import Button from '../Button';
+import { IconName } from '../Icon';
 import IconButton from '../IconButton';
 
 import messages from './messages';
@@ -33,6 +34,10 @@ export type DialogLayoutProps = {
   leadingAction?: ReactNode;
   showClose?: boolean;
   isCloseDisabled?: boolean;
+  // Controls in the head before the close button, like a record stepper.
+  headActions?: ReactNode;
+  closeIcon?: IconName;
+  titleClassName?: string;
 };
 
 type Props = DialogLayoutProps & {
@@ -54,6 +59,9 @@ const DialogLayout = ({
   leadingAction,
   showClose = true,
   isCloseDisabled,
+  headActions,
+  closeIcon = 'x-16',
+  titleClassName,
   role = 'dialog',
   primaryVariant = 'primary',
   autoFocusSecondary = false,
@@ -74,7 +82,10 @@ const DialogLayout = ({
         <>
           <div className={styles.head}>
             <div className={styles.heading}>
-              <Heading slot="title" className={styles.title}>
+              <Heading
+                slot="title"
+                className={`${styles.title} ${titleClassName ?? ''}`}
+              >
                 {title}
               </Heading>
               {description && (
@@ -83,9 +94,10 @@ const DialogLayout = ({
                 </p>
               )}
             </div>
+            {headActions}
             {showClose && (
               <IconButton
-                icon="x-16"
+                icon={closeIcon}
                 aria-label={formatMessage(messages.close)}
                 onPress={close}
                 isDisabled={isCloseDisabled}
