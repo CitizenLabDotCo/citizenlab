@@ -1,0 +1,119 @@
+/* The library's Tag list bar and Tag list row: 36 high, a 15 px box, the
+   chevron 12 px after it and the title 8 px after that. */
+.bar,
+.row {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-height: var(--gv-size-36);
+  padding: 0 var(--gv-space-8);
+  border-radius: var(--gv-radius-8);
+}
+
+.check {
+  display: flex;
+  flex-shrink: 0;
+  width: 15px;
+  margin-right: var(--gv-space-12);
+}
+
+.count {
+  composes: small from '../typography.module.css';
+  flex: 1;
+  color: var(--gv-text-secondary);
+}
+
+.barAction {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.row {
+  gap: 0;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.row:hover,
+.row:focus-within {
+  background: var(--gv-surface-control-subtle);
+}
+
+.row[data-selected] {
+  background: var(--gv-surface-selected-row);
+}
+
+/* The box shows on hover, focus, once checked, or during a selection. */
+.row .check > * {
+  opacity: 0;
+}
+
+.row:hover .check > *,
+.row:focus-within .check > *,
+.row[data-selected] .check > *,
+.row[data-shows-selection] .check > * {
+  opacity: 1;
+}
+
+.toggle {
+  display: flex;
+  flex-shrink: 0;
+  width: var(--gv-size-16);
+  margin-right: var(--gv-space-8);
+}
+
+.toggleButton {
+  composes: ringOutside from '../focus.module.css';
+  display: flex;
+  border-radius: var(--gv-radius-4);
+  color: var(--gv-icon-secondary);
+}
+
+/* A nested row starts where its parent's title does. */
+.row[data-nested] {
+  padding-left: calc(
+    var(--gv-space-8) + 15px + var(--gv-space-12) + var(--gv-size-16) +
+      var(--gv-space-8)
+  );
+}
+
+.title {
+  composes: ui from '../typography.module.css';
+  min-width: 0;
+  color: var(--gv-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  composes: small from '../typography.module.css';
+  flex-shrink: 0;
+  margin-left: var(--gv-space-8);
+  color: var(--gv-text-tertiary);
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--gv-space-4);
+  margin-left: auto;
+  opacity: 0;
+}
+
+.row:hover .actions,
+.row:focus-within .actions {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .actions,
+  .row .check > * {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    transition: none;
+  }
+}
