@@ -24,7 +24,7 @@ describe('Survey logic in the builder', () => {
     }
   });
 
-  it('offers a Logic tab for a rating question but drops its rules on save without an error (currently existing bug, B1)', () => {
+  it('keeps the rules of a rating question after saving and reloading', () => {
     const ratingTitle = 'Rate the service';
     const ratingRow = () =>
       cy.contains('[data-cy="e2e-field-row"]', ratingTitle);
@@ -73,25 +73,24 @@ describe('Survey logic in the builder', () => {
         const savedFields: CustomFieldsResponse = interception.response?.body;
         expect(
           fieldByTitle(savedFields, ratingTitle).attributes.logic
-        ).to.deep.equal({});
+        ).to.deep.equal(sentRating?.logic);
       });
       cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
-      ratingRow()
-        .find('[data-cy="e2e-field-rule-display"]')
-        .should('not.exist');
-
       cy.reload();
       cy.dataCy('e2e-field-row').should('have.length', 5);
+      ratingRow()
+        .find('[data-cy="e2e-field-rule-display"]')
+        .contains('Ending')
+        .should('exist');
       ratingRow().click();
       cy.dataCy('e2e-form-builder-logic-tab').click();
-      cy.dataCy('e2e-add-rule-button').should('exist');
-      cy.dataCy('e2e-rule-input-select').should('not.exist');
+      cy.dataCy('e2e-rule-input-select').should('have.length', 1);
 
       cy.apiGetSurveyFields(survey.phaseId).then((response) => {
         expect(
-          fieldByTitle(response.body, ratingTitle).attributes.logic
-        ).to.deep.equal({});
+          fieldByTitle(response.body, ratingTitle).attributes.logic.rules
+        ).to.have.length(1);
       });
     });
   });

@@ -178,7 +178,7 @@ class McpServer::Tools::FormFieldsSchemaBuilder
           Shape on selection fields:
           { "rules": [{ "if": "<option_id|temp_id|'any_other_answer'|'no_answer'>", "goto_page_id": "<page_id|temp_id>" }] }. 
 
-          Shape on linear_scale fields: the same, with "if" an integer from 1 to `maximum`
+          Shape on linear_scale and rating fields: the same, with "if" an integer from 1 to `maximum`
           instead of an option id. Rules on any other value are dropped on save.
           
           Shape on pages: 

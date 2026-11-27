@@ -18,6 +18,10 @@ module InputTypeStrategy
       true
     end
 
+    def supports_logic?
+      true
+    end
+
     def answers_eq(answers, value)
       answers.where("(value #>> '{}')::integer = ?", value)
     end

@@ -74,14 +74,9 @@ const multiselectRules = {
 };
 
 describe('FormBuilderSettings logic tab', () => {
-  it.each([
-    { inputType: 'select', label: '' },
-    { inputType: 'linear_scale', label: '' },
-    { inputType: 'rating', label: ' (currently existing bug, B1)' },
-    { inputType: 'page', label: '' },
-  ] as const)(
-    'shows the logic tab for a $inputType field$label',
-    ({ inputType }) => {
+  it.each(['select', 'linear_scale', 'rating', 'page'] as const)(
+    'shows the logic tab for a %s field',
+    (inputType) => {
       renderSettings(makeField(inputType));
 
       expect(screen.getByText('Logic')).toBeInTheDocument();

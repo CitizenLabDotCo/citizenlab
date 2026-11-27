@@ -70,6 +70,20 @@ resource 'Phases' do
       expect(seen_counts).to eq [3, 1, 2]
     end
 
+    example 'Counts a question after a rating question as seen only by the responses whose rating does not skip it' do
+      rating_field = create(:custom_field_rating, resource: custom_form, key: 'rating_field', maximum: 5, required: false)
+      rating_field.insert_at(1)
+      rating_field.update!(logic: { rules: [{ if: 1, goto_page_id: page3.id }, { if: 5, goto_page_id: form_end.id }] })
+      respond(rating_field: 1, page3_question: 'a')
+      respond(rating_field: 5)
+      respond(rating_field: 3, page2_question: 'b', page3_question: 'c')
+
+      do_request
+
+      assert_status 200
+      expect([rating_field, page2_question, page3_question].map { |field| result_for(field)[:totalResponseCount] }).to eq [3, 1, 2]
+    end
+
     example 'Applies the page default when no question rule on the page matches, unlike the respondent form (currently existing bug, B6)', document: false do
       page1.update!(logic: { next_page_id: page3.id })
       select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: form_end.id }] })

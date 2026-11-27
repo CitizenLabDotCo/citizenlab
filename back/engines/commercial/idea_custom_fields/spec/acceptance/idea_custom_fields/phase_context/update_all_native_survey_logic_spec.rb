@@ -318,15 +318,117 @@ resource 'Idea Custom Fields' do
       end
     end
 
-    example 'Drops the rules of a rating question without an error (currently existing bug, B1)', document: false do
-      rating_field = create(:custom_field_rating, resource: custom_form, maximum: 5)
-      request = form_params
-      request[:custom_fields].insert(4, field_params(rating_field, logic: { rules: [{ if: 1, goto_page_id: form_end.id }] }))
-      do_request request
+    context 'with a rating question' do
+      let!(:rating_field) { create(:custom_field_rating, resource: custom_form, key: 'rating_field', maximum: 5, required: false) }
 
-      assert_status 200
-      expect(response_logic(rating_field)).to eq({})
-      expect(rating_field.reload.logic).to eq({})
+      def rating_request(**attributes)
+        form_params.tap do |request|
+          request[:custom_fields].insert(4, field_params(rating_field, **attributes))
+        end
+      end
+
+      example 'Stores rules on every value of the rating and the catch-all rules', document: false do
+        rules = (1..5).map { |value| { if: value, goto_page_id: value.odd? ? page3.id : form_end.id } } +
+                [{ if: 'any_other_answer', goto_page_id: form_end.id }, { if: 'no_answer', goto_page_id: page3.id }]
+        do_request rating_request(logic: { rules: })
+
+        assert_status 200
+        expect(response_logic(rating_field)).to eq({ rules: })
+        expect(rating_field.reload.logic['rules'].pluck('if')).to eq [1, 2, 3, 4, 5, 'any_other_answer', 'no_answer']
+      end
+
+      example 'Keeps the rules of a rating question when another attribute changes', document: false do
+        rating_field.update!(logic: { rules: [{ if: 1, goto_page_id: form_end.id }] })
+        do_request rating_request(title_multiloc: { en: 'Changed title' }, logic: { rules: [{ if: 1, goto_page_id: form_end.id }] })
+
+        assert_status 200
+        expect(rating_field.reload.title_multiloc).to eq({ 'en' => 'Changed title' })
+        expect(rating_field.logic).to eq({ 'rules' => [{ 'if' => 1, 'goto_page_id' => form_end.id }] })
+      end
+
+      example 'Removes the rules of a rating question when the request sends empty logic', document: false do
+        rating_field.update!(logic: { rules: [{ if: 1, goto_page_id: form_end.id }] })
+        do_request rating_request(logic: { rules: [] })
+
+        assert_status 200
+        expect(rating_field.reload.logic).to eq({ 'rules' => [] })
+      end
+
+      example 'Stores the rules of a new rating question', document: false do
+        request = form_params
+        request[:custom_fields].insert(4, {
+          input_type: 'rating',
+          title_multiloc: { en: 'New rating' },
+          maximum: 3,
+          logic: { rules: [{ if: 3, goto_page_id: form_end.id }] }
+        })
+        do_request request
+
+        assert_status 200
+        new_rating = CustomField.find_by(resource: custom_form, title_multiloc: { en: 'New rating' })
+        expect(new_rating.logic).to eq({ 'rules' => [{ 'if' => 3, 'goto_page_id' => form_end.id }] })
+      end
+
+      example 'Replaces the temp id of a new page in a rating rule by the page id', document: false do
+        request = rating_request(logic: { rules: [{ if: 2, goto_page_id: 'TEMP-ID-PAGE' }] })
+        request[:custom_fields].insert(5, { temp_id: 'TEMP-ID-PAGE', input_type: 'page', page_layout: 'default', title_multiloc: { en: 'New page' } })
+        do_request request
+
+        assert_status 200
+        new_page = CustomField.find_by(resource: custom_form, title_multiloc: { en: 'New page' })
+        expect(rating_field.reload.logic).to eq({ 'rules' => [{ 'if' => 2, 'goto_page_id' => new_page.id }] })
+      end
+
+      example 'Drops rating rules on a string or on a value outside the rating without an error', document: false do
+        rules = [0, 1, '2', 6, 'yes'].map { |value| { if: value, goto_page_id: form_end.id } }
+        do_request rating_request(logic: { rules: })
+
+        assert_status 200
+        expect(rating_field.reload.logic['rules'].pluck('if')).to eq [1]
+      end
+
+      example 'Drops the no_answer rule of a rating question that is made required', document: false do
+        rules = [{ if: 'no_answer', goto_page_id: page3.id }, { if: 'any_other_answer', goto_page_id: form_end.id }]
+        do_request rating_request(required: true, logic: { rules: })
+
+        assert_status 200
+        expect(rating_field.reload.logic['rules'].pluck('if')).to eq ['any_other_answer']
+      end
+
+      example 'Drops the rating rules above a lowered maximum', document: false do
+        rules = [{ if: 3, goto_page_id: page3.id }, { if: 4, goto_page_id: form_end.id }]
+        do_request rating_request(maximum: 3, logic: { rules: })
+
+        assert_status 200
+        expect(rating_field.reload.maximum).to eq 3
+        expect(rating_field.logic['rules'].pluck('if')).to eq [3]
+      end
+
+      example '[error] Rejects a rating rule that jumps backwards and persists nothing', document: false do
+        do_request rating_request(title_multiloc: { en: 'Changed title' }, logic: { rules: [{ if: 1, goto_page_id: page1.id }] })
+
+        assert_status 422
+        expect(logic_errors).to eq({ '4': [{ error: 'target_before_source_not_allowed', value: page1.id }] })
+        expect(rating_field.reload.title_multiloc).not_to eq({ 'en' => 'Changed title' })
+        expect(rating_field.logic).to eq({})
+      end
+
+      example '[error] Rejects a rating rule that targets a question', document: false do
+        text_field = create(:custom_field_text, resource: custom_form)
+        request = rating_request(logic: { rules: [{ if: 1, goto_page_id: text_field.id }] })
+        request[:custom_fields].insert(6, field_params(text_field))
+        do_request request
+
+        assert_status 422
+        expect(logic_errors).to eq({ '4': [{ error: 'only_page_allowed_as_target', value: text_field.id }] })
+      end
+
+      example '[error] Rejects a rating rule with an invalid structure', document: false do
+        do_request rating_request(logic: { rules: [{ if: 1, goto_page_id: form_end.id, extra: 'x' }] })
+
+        assert_status 422
+        expect(logic_errors).to eq({ '4': [{ error: 'invalid_structure' }] })
+      end
     end
 
     example 'Drops the rules of a sentiment scale question without an error (current behaviour)', document: false do
