@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   s.add_dependency 'active_model_serializers', '~> 0.10.7'
+  s.add_dependency 'faraday', '~> 2.15'
   s.add_dependency 'ice_cube'
   s.add_dependency 'kaminari', '~> 1.2'
   s.add_dependency 'liquid', '>= 4', '< 6'

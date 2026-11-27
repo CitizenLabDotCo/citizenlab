@@ -206,10 +206,6 @@ module EmailCampaigns
       nil
     end
 
-    def extra_mailgun_variables(_command)
-      super || {}
-    end
-
     def can_be_disabled?
       true
     end

@@ -43,7 +43,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def userjot_identity?
-    active_admin? &&
+    active_admin_or_moderator? &&
       AppConfiguration.instance.feature_activated?('userjot') &&
       UserjotIdentityService.new.configured?
   end

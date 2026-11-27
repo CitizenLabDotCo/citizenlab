@@ -50,17 +50,16 @@ module EmailCampaigns
 
     # from https://documentation.mailgun.com/en/latest/user_manual.html#webhooks
     def verify
-      return unless ENV.fetch('MAILGUN_API_KEY', false)
+      # If the key is missing, there is nothing to verify against, so hooks are rejected.
+      api_key = ENV.fetch('MAILGUN_API_KEY', nil)
+      return head :unauthorized if api_key.blank?
 
-      api_key = ENV.fetch('MAILGUN_API_KEY')
-      token = params[:signature][:token]
-      timestamp = params[:signature][:timestamp]
-      signature = params[:signature][:signature]
+      signature = params[:signature]
+      return head :not_acceptable if signature.blank?
 
-      digest = OpenSSL::Digest.new('SHA256')
-      data = [timestamp, token].join
-
-      head :not_acceptable if signature != OpenSSL::HMAC.hexdigest(digest, api_key, data)
+      data = [signature[:timestamp], signature[:token]].join
+      expected = OpenSSL::HMAC.hexdigest('SHA256', api_key, data)
+      head :not_acceptable unless ActiveSupport::SecurityUtils.secure_compare(signature[:signature].to_s, expected)
     end
 
     def switch_tenant(&)

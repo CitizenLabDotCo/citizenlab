@@ -38,6 +38,7 @@ EmailCampaigns::Engine.routes.draw do
 
   namespace :hooks, defaults: { format: :json } do
     resources :mailgun_events, only: [:create]
+    resources :scaleway_events, only: [:create]
 
     namespace :sms do
       resources :events, only: [:create]

@@ -73,4 +73,19 @@ describe EmailCampaigns::EmailBounceService do
       expect(user.reload.email_bounced_at).to be_nil
     end
   end
+
+  describe '#record_bounce' do
+    let!(:user) { create(:user, email: 'Someone@Example.com') }
+
+    it 'marks the user as bounced with the given reason, matching the address case-insensitively' do
+      freeze_time do
+        service.record_bounce('someone@example.com', '550 5.1.1 mailbox not found')
+
+        expect(user.reload).to have_attributes(
+          email_bounced_at: Time.zone.now,
+          email_bounce_reason: '550 5.1.1 mailbox not found'
+        )
+      end
+    end
+  end
 end

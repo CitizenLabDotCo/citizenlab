@@ -227,6 +227,7 @@ PATH
   specs:
     email_campaigns (0.1.0)
       active_model_serializers (~> 0.10.7)
+      faraday (~> 2.15)
       ice_cube
       kaminari (~> 1.2)
       liquid (>= 4, < 6)

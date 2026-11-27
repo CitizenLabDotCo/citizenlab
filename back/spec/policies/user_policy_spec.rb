@@ -391,10 +391,12 @@ describe UserPolicy do
 
     it { is_expected.to be true }
 
-    context 'for a project moderator' do
-      let(:current_user) { create(:project_moderator) }
+    %i[project_moderator project_folder_moderator space_moderator].each do |moderator_factory|
+      context "for a #{moderator_factory.to_s.humanize(capitalize: false)}" do
+        let(:current_user) { create(moderator_factory) }
 
-      it { is_expected.to be false }
+        it { is_expected.to be true }
+      end
     end
 
     context 'for a resident' do
