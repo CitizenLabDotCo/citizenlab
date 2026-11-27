@@ -170,7 +170,12 @@ export class RenderPool {
       slot.context.close(),
       CONTEXT_CLOSE_TIMEOUT_MS,
       "The context did not close."
-    ).catch(() => undefined);
+    ).catch((error: unknown) => {
+      this.log.warn(
+        { err: error },
+        "A browser context did not close; a page in it may still be running code."
+      );
+    });
     return this.newSlot().catch((error: unknown) => {
       this.log.warn(
         { err: error },
