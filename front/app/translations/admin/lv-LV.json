@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Rādīt {tagName} apakšbirkas",
   "app.containers.Admin.projects.project.topicFormTitle": "Tēmas veidlapa",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# birka} other {# birkas}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Dalībnieki sākumlapā var filtrēt projektus pēc tēmas.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Izvēlieties periodu",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Satiksmes avoti",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Esam mainījuši veidu, kā vācam un rādām apmeklētāju datus. Rezultātā apmeklētāju dati ir precīzāki un pieejami vairāk datu veidu, vienlaikus saglabājot atbilstību GDPR. Šos jaunos datus sākām vākt tikai 2024. gada novembrī, tāpēc pirms tam dati nav pieejami.",

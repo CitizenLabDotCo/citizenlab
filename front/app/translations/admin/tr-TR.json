@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "{tagName} alt etiketlerini göster",
   "app.containers.Admin.projects.project.topicFormTitle": "Konu formu",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# etiket} other {# etiket}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Katılımcılar ana sayfadaki projeleri konuya göre filtreleyebilir.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Dönem seçiniz",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Trafik kaynakları",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Ziyaretçi verilerini toplama ve görüntüleme şeklimizi değiştirdik. Sonuç olarak, ziyaretçi verileri daha doğrudur ve GDPR ile uyumlu olmaya devam ederken daha fazla veri türü mevcuttur. Bu yeni verileri yalnızca Kasım 2024'te toplamaya başladık, bu nedenle bundan önce hiçbir veri mevcut değil.",

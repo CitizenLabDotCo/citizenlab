@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Pokaż podtagi dla {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "Formularz tematu",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# tag} other {# tagi}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Uczestnicy mogą filtrować projekty według tematu na stronie głównej.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Wybierz okres",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Źródła ruchu",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Zmieniliśmy sposób gromadzenia i wyświetlania danych odwiedzających. W rezultacie dane odwiedzających są dokładniejsze i dostępnych jest więcej rodzajów danych, przy jednoczesnym zachowaniu zgodności z RODO. Zaczęliśmy gromadzić te nowe dane dopiero w listopadzie 2024 r., więc wcześniej żadne dane nie były dostępne.",

@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "{tagName} alcímkéinek megjelenítése",
   "app.containers.Admin.projects.project.topicFormTitle": "Téma űrlap",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# címke} other {# címke}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "A résztvevők téma szerint szűrhetik a projekteket a kezdőlapon.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Időszak kiválasztása",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Forgalmi források",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Megváltoztattuk a látogatói adatok gyűjtésének és megjelenítésének módját. Ennek eredményeként a látogatói adatok pontosabbak, és többféle adattípus érhető el, miközben továbbra is megfelelnek a GDPR-nak. Ezen új adatok gyűjtését csak 2024 novemberében kezdtük el, így az ezt megelőző időszakról nem állnak rendelkezésre adatok.",

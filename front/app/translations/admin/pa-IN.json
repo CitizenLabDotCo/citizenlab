@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "{tagName} ਦੇ ਸਬ-ਟੈਗ ਦਿਖਾਓ",
   "app.containers.Admin.projects.project.topicFormTitle": "ਵਿਸ਼ਾ ਫਾਰਮ",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# ਟੈਗ} other {# ਟੈਗ}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "ਭਾਗੀਦਾਰ ਹੋਮਪੇਜ 'ਤੇ ਵਿਸ਼ੇ ਅਨੁਸਾਰ ਪ੍ਰੋਜੈਕਟਾਂ ਨੂੰ ਫਿਲਟਰ ਕਰ ਸਕਦੇ ਹਨ।",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "ਮਿਆਦ ਚੁਣੋ",
   "app.containers.Admin.projects.project.traffic.trafficSources": "ਆਵਾਜਾਈ ਸਰੋਤ",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "ਅਸੀਂ ਵਿਜ਼ਟਰ ਡੇਟਾ ਇਕੱਠਾ ਕਰਨ ਅਤੇ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰਨ ਦੇ ਤਰੀਕੇ ਨੂੰ ਬਦਲ ਦਿੱਤਾ ਹੈ। ਨਤੀਜੇ ਵਜੋਂ, ਵਿਜ਼ਟਰ ਡੇਟਾ ਵਧੇਰੇ ਸਟੀਕ ਹੈ ਅਤੇ GDPR ਦੀ ਪਾਲਣਾ ਕਰਦੇ ਹੋਏ, ਹੋਰ ਕਿਸਮਾਂ ਦੇ ਡੇਟਾ ਉਪਲਬਧ ਹਨ। ਅਸੀਂ ਇਹ ਨਵਾਂ ਡੇਟਾ ਨਵੰਬਰ 2024 ਵਿੱਚ ਹੀ ਇਕੱਠਾ ਕਰਨਾ ਸ਼ੁਰੂ ਕੀਤਾ ਸੀ, ਇਸ ਲਈ ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕੋਈ ਡੇਟਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",

@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Visa undertaggar för {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "Ämnesformulär",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# tagg} other {# taggar}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Deltagare kan filtrera projekt efter ämne på startsidan.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Välj period",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Källor till trafik",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Vi har ändrat vårt sätt att samla in och visa besöksdata. Som ett resultat är besöksdata mer exakt och fler typer av data finns tillgängliga, samtidigt som de fortfarande är GDPR-kompatibla. Vi började samla in dessa nya data först i november 2024, så innan dess finns inga data tillgängliga.",

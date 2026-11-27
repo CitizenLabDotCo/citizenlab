@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Mostrar subtags de {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "Formulário de tópico",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# tag} other {# tags}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Os participantes podem filtrar projetos por tópico na página inicial.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Selecione o período",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Fontes de tráfego",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Mudamos a forma como coletamos e exibimos os dados dos visitantes. Como resultado, os dados dos visitantes são mais precisos e mais tipos de dados estão disponíveis, sem deixar de estar em conformidade com o GDPR. Só começamos a coletar esses novos dados em novembro de 2024, portanto, antes disso, não há dados disponíveis.",

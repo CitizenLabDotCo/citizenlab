@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Prikaži podoznake za {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "Obrazac teme",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# oznaka} few {# oznake} other {# oznaka}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Sudionici mogu filtrirati projekte prema temi na početnoj stranici.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Odaberite razdoblje",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Izvori prometa",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Promijenili smo način prikupljanja i prikaza podataka o posjetiteljima. Kao rezultat toga, podaci o posjetiteljima su točniji i dostupno je više vrsta podataka, a istovremeno su i dalje u skladu s GDPR-om. Ove nove podatke počeli smo prikupljati tek u studenom 2024., tako da prije toga nisu bili dostupni nikakvi podaci.",

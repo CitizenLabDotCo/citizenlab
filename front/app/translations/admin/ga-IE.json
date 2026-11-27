@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Taispeáin fo-chlibeanna de chuid {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "Foirm ábhair",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# chlib} other {# clib}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Is féidir le rannpháirtithe tionscadail a scagadh de réir ábhair ar an leathanach baile.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Roghnaigh tréimhse",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Foinsí tráchta",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Tá athrú déanta againn ar an gcaoi a mbailímid agus a thaispeánaimid sonraí cuairteoirí. Mar thoradh air sin, tá sonraí cuairteoirí níos cruinne agus tá níos mó cineálacha sonraí ar fáil, agus fós ag cloí le GDPR. Níor thosaíomar ag bailiú na sonraí nua seo ach i mí na Samhna 2024, mar sin roimhe sin níl aon sonraí ar fáil.",

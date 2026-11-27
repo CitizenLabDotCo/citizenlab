@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Sub-Tags vun {tagName} weisen",
   "app.containers.Admin.projects.project.topicFormTitle": "Sujet-Formulaire",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# Tag} other {# Tags}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "D'Participante kënne Projeten op der Homepage no Theme filteren.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Period auswielen",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Traffic-Quellen",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Mir hunn d'Aart a Weis geännert, wéi mir Visiteurendaten erfaassen an uweisen. Doduerch sinn d'Visiteurendaten méi präzis a méi Datekategorië sinn disponibel, wärend d'DSGVO weiderhin agehale gëtt. Mir hunn eréischt am November 2024 ugefaangen, dës nei Daten ze sammelen, dofir sinn d'Date vun derzäit virdrun net disponibel.",

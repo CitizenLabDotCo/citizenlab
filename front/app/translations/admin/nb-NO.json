@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Vis underemneknagger for {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "Temaskjema",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# emneknagg} other {# emneknagger}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Deltakere kan filtrere prosjekter etter tema på forsiden.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Velg periode",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Trafikkilder",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Vi har endret måten vi samler inn og viser besøksdata på. Som et resultat av dette er besøksdataene mer nøyaktige og flere typer data er tilgjengelige, samtidig som vi overholder GDPR. Vi begynte først å samle inn disse nye dataene i november 2024, så før det er ingen data tilgjengelig.",

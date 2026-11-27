@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Subtags van {tagName} tonen",
   "app.containers.Admin.projects.project.topicFormTitle": "Onderwerpformulier",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# tag} other {# tags}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Deelnemers kunnen projecten filteren op onderwerp op de startpagina.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Selecteer periode",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Kanalen",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "We hebben de manier waarop we bezoekersgegevens verzamelen en weergeven veranderd. Hierdoor zijn de bezoekersgegevens nauwkeuriger en zijn er meer soorten gegevens beschikbaar, terwijl we nog steeds voldoen aan de GDPR. We zijn pas in november 2024 begonnen met het verzamelen van deze nieuwe gegevens, dus daarvoor zijn geen gegevens beschikbaar.",

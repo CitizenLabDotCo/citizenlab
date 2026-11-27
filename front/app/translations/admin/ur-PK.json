@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "{tagName} کے ذیلی ٹیگز دکھائیں",
   "app.containers.Admin.projects.project.topicFormTitle": "موضوع کا فارم",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# ٹیگ} other {# ٹیگز}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "شرکاء ہوم پیج پر موضوع کے لحاظ سے پروجیکٹس کو فلٹر کر سکتے ہیں۔",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "مدت منتخب کریں۔",
   "app.containers.Admin.projects.project.traffic.trafficSources": "ٹریفک ذرائع",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "ہم نے وزیٹر کے ڈیٹا کو جمع کرنے اور ڈسپلے کرنے کا طریقہ بدل دیا ہے۔ نتیجے کے طور پر، وزیٹر کا ڈیٹا زیادہ درست ہے اور ڈیٹا کی مزید اقسام دستیاب ہیں، جب کہ وہ ابھی تک GDPR کے مطابق ہے۔ ہم نے یہ نیا ڈیٹا نومبر 2024 میں اکٹھا کرنا شروع کیا تھا، اس لیے اس سے پہلے کوئی ڈیٹا دستیاب نہیں ہے۔",

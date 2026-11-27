@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Mostra les subetiquetes de {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "Formulari del tema",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# etiqueta} other {# etiquetes}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Els participants poden filtrar els projectes per tema a la pàgina d'inici.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Selecciona el període",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Fonts de trànsit",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Hem canviat la manera com recollim i mostrem les dades dels visitants. Com a resultat, les dades dels visitants són més precises i hi ha més tipus de dades disponibles, tot complint amb el RGPD. Hem començat a recollir aquestes dades noves al novembre de 2024, per la qual cosa no hi ha dades disponibles d'abans d'aquesta data.",

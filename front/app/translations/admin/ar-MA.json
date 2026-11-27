@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "إظهار الأوسمة الفرعية لـ {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "استمارة الموضوع",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# وسم} other {# وسوم}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "المشاركين يقدروا يصفيو المشاريع حسب الموضوع فالصفحة الرئيسية.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "اختر الفترة",
   "app.containers.Admin.projects.project.traffic.trafficSources": "مصادر الزيارات",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "غيرنا الطريقة باش كنجمعو ونعرضو بيانات الزوار. نتيجة لهادشي، ولات بيانات الزوار دقيقة كتر وأنواع كتر ديال البيانات ولات متاحة، مع البقاء ممتثلين لقوانين حماية البيانات (GDPR). يلاه بدينا كنجمعو هاد البيانات الجديدة ف نونبر 2024، داكشي علاش ما كاين حتى شي بيانات متوفرة قبل هاد التاريخ.",

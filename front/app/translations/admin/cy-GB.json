@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Dangos is-dagiau {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "Ffurflen pwnc",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# tag} other {# tagiau}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Gall cyfranogwyr hidlo prosiectau yn ôl pwnc ar yr hafan.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Dewiswch gyfnod",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Ffynonellau traffig",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Rydym wedi newid y ffordd rydym yn casglu ac yn arddangos data ymwelwyr. O ganlyniad, mae data ymwelwyr yn fwy cywir ac mae mwy o fathau o ddata ar gael, tra'n dal i gydymffurfio â GDPR. Dim ond ym mis Tachwedd 2024 y dechreuon ni gasglu'r data newydd hwn, felly cyn hynny nid oes unrhyw ddata ar gael.",

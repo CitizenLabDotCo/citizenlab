@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Show subtags of {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "Topic form",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# tag} other {# tags}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Participants can filter projects by topic on the homepage.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Select period",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Traffic sources",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "We have changed the way we collect and display visitor data. As a result, visitor data is more accurate and more types of data are available, while still being GDPR compliant. We only started collecting this new data in November 2024, so before that no data is available.",

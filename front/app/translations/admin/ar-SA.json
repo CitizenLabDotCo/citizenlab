@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "إظهار العلامات الفرعية لـ {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "نموذج الموضوع",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# وسم} other {# أوسمة}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "يمكن للمشاركين تصفية المشاريع حسب الموضوع في الصفحة الرئيسية.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "اختر الفترة",
   "app.containers.Admin.projects.project.traffic.trafficSources": "مصادر حركة المرور",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "لقد غيّرنا طريقة جمع بيانات الزوار وعرضها. ونتيجةً لذلك، أصبحت بيانات الزوار أكثر دقةً، وتتوفر أنواعٌ أكثر من البيانات، مع الحفاظ على الامتثال لمعايير اللائحة العامة لحماية البيانات (GDPR). بدأنا بجمع هذه البيانات الجديدة في نوفمبر 2024 فقط، لذا لا تتوفر أي بيانات قبل ذلك.",

@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Afficher les sous-étiquettes de {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "Formulaire de sujet",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# étiquette} other {# étiquettes}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Les participants peuvent filtrer les projets par thématique sur la page d'accueil.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Sélectionnez la période",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Sources de trafic",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Nous avons modifié la façon dont nous collectons et affichons les données relatives aux visiteurs. En conséquence, les données sur les visiteurs sont plus précises et davantage d'informations sont disponibles, tout en restant conformes au RGPD. Nous avons commencé à collecter ces nouvelles données seulement en novembre 2024, les données ne sont donc pas disponibles avant cette date.",

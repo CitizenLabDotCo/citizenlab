@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Näytä tunnisteen {tagName} alatunnisteet",
   "app.containers.Admin.projects.project.topicFormTitle": "Aihelomake",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# tunniste} other {# tunnistetta}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Osallistujat voivat suodattaa hankkeita aiheen mukaan etusivulla.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Valitse ajanjakso",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Liikenteen lähteet",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Olemme muuttaneet tapaamme kerätä ja näyttää kävijätietoja. Tämän seurauksena kävijätiedot ovat tarkempia ja saatavilla on useampia datatyyppejä, mutta ne ovat edelleen GDPR-yhteensopivia. Aloitimme näiden uusien tietojen keräämisen vasta marraskuussa 2024, joten sitä ennen tietoja ei ole saatavilla.",

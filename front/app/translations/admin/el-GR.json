@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "Εμφάνιση υποετικετών του {tagName}",
   "app.containers.Admin.projects.project.topicFormTitle": "Φόρμα θέματος",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# ετικέτα} other {# ετικέτες}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Οι συμμετέχοντες μπορούν να φιλτράρουν τα έργα ανά θέμα στην αρχική σελίδα.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Επιλογή περιόδου",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Πηγές επισκεψιμότητας",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Έχουμε αλλάξει τον τρόπο με τον οποίο συλλέγουμε και εμφανίζουμε τα δεδομένα επισκεπτών. Ως αποτέλεσμα, τα δεδομένα επισκεπτών είναι πιο ακριβή και περισσότεροι τύποι δεδομένων είναι διαθέσιμοι, παραμένοντας παράλληλα συμβατά με τον GDPR. Ξεκινήσαμε τη συλλογή αυτών των νέων δεδομένων τον Νοέμβριο του 2024, επομένως δεν υπάρχουν διαθέσιμα δεδομένα πριν από αυτό το διάστημα.",

@@ -2552,7 +2552,6 @@
   "app.containers.Admin.projects.project.toggleSubtags": "{tagName}-ip ataani ilisarnaatit takutikkit",
   "app.containers.Admin.projects.project.topicFormTitle": "Sammisamut immersugassaq",
   "app.containers.Admin.projects.project.topicTagsCount": "{count, plural, one {# oqaaseq pingaarneq} other {# oqaatsit pingaarnerit}}",
-  "app.containers.Admin.projects.project.topicTagsDescription": "Peqataasut suliniutit sammivii malillugit saqqami immikkoortiterisinnaapput.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Piffissaq toqqaruk",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Isertut suminngaanneerneri",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Alakkartut paasissutissaataannik katerseriaaserput saqqummiusseriaaserpullu allanngortippagut. Tamatuma kingunerisaanik paasissutissat eqqornerulerput paasissutissallu assigiinngitsut amerlanerulerlutik, suli GDPR-imut naapertuullutik. Paasissutissanik nutaanik katersineq aatsaat november 2024-mi aallartipparput, taamaattumik tamatuma siornatigut paasissutissanik peqanngilaq.",
