@@ -228,6 +228,51 @@ class SanitizationService
   end
 
   class IframeScrubber < Rails::Html::PermitScrubber
+    # Rich text is rendered inside the app's own CSS, so a class it brings (e.g. the header's
+    # `position: fixed`) or a size taken from the viewport lets it cover the page. The value rules
+    # below keep what the editor writes, and what pasted text brings that cannot move or cover
+    # anything.
+    # Units that cannot reach the viewport: `vh`/`vw` are left out. The absolute ones come with
+    # content pasted from a word processor (`.5in`, `9.75pt`). No negative lengths: a negative
+    # margin lets an image or a video slide over the content next to it.
+    LENGTH = '(?:\d+(?:\.\d+)?|\.\d+)(?:px|em|rem|%|pt|cm|mm|in)?|auto'
+    # A colour, or a keyword such as a border's `solid`.
+    COLOR = '#\h{3,8}|rgba?\([\d.,%\s]+\)|[a-z]+'
+    SIZE = /\A(?:\d+(?:\.\d+)?(?:px|%)?|auto)\z/
+    CSS_SIZE = /\A(?:#{LENGTH})\z/
+    SPACING = /\A(?:#{LENGTH})(?:\s+(?:#{LENGTH})){0,3}\z/
+    # A border's width, style and colour, so its width is held to the same lengths as a size.
+    BORDER = /\A(?:#{LENGTH}|#{COLOR})(?:\s+(?:#{LENGTH}|#{COLOR})){0,3}\z/
+
+    # Alignment and size, as the editor writes them, and `cursor` from older content.
+    MEDIA_STYLE = {
+      'display' => /\A(?:block|inline|inline-block)\z/,
+      'float' => /\A(?:left|right|none)\z/,
+      'cursor' => /\A[a-z-]+\z/,
+      'width' => CSS_SIZE,
+      'height' => CSS_SIZE,
+      'max-width' => CSS_SIZE
+    }.merge(%w[margin margin-top margin-right margin-bottom margin-left].index_with { SPACING }).freeze
+
+    # Text pasted from elsewhere keeps its colour: a colour cannot move or cover anything.
+    TEXT_STYLE = {
+      'color' => /\A(?:#{COLOR})\z/
+    }.freeze
+
+    # Tables are saved as HTML through the API, with inline styles only (see the static pages spec).
+    TABLE_STYLE = {
+      'width' => CSS_SIZE,
+      'display' => /\A(?:table|table-row|table-cell)(?:\s*!important)?\z/,
+      'text-align' => /\A(?:left|center|right|justify)\z/,
+      'vertical-align' => /\A(?:top|middle|bottom|baseline)\z/
+    }.merge(
+      %w[border border-top border-right border-bottom border-left border-collapse border-color border-style border-width]
+        .index_with { BORDER },
+      %w[padding padding-top padding-right padding-bottom padding-left].index_with { SPACING }
+    ).freeze
+
+    # A feature's `values` restrict what its attributes may hold: tokens for `class`, declarations
+    # for `style`, the whole value otherwise. An attribute with no rule keeps any value.
     EDITOR_FEATURES = {
       default: {
         tags: %w[p br],
@@ -239,7 +284,14 @@ class SanitizationService
       },
       alignment: {
         tags: %w[],
-        attributes: %w[class]
+        # Pasted text also brings a colour on its bold, italic or linked words.
+        tag_attributes: %w[p h2 h3 li].index_with { %w[class style] }
+          .merge(%w[b u i em strong a].index_with { %w[style] }),
+        # The editor aligns with a class; text pasted from elsewhere brings `text-align` instead.
+        values: {
+          'class' => /\Aql-align-(?:left|center|right|justify)\z/,
+          'style' => TEXT_STYLE.merge('text-align' => /\A(?:left|center|right|justify)\z/)
+        }
       },
       list: {
         tags: %w[ol ul li],
@@ -253,13 +305,31 @@ class SanitizationService
         tags: %w[a],
         attributes: %w[href target rel]
       },
+      # The editor's call-to-action button, only on the fields whose editor offers it or where admins
+      # already put some (ideas, form field descriptions).
+      button: {
+        tags: %w[a],
+        tag_attributes: { 'a' => %w[class style] },
+        values: { 'class' => /\Acustom-button\z/, 'style' => TEXT_STYLE }
+      },
       image: {
         tags: %w[img],
-        attributes: %w[src style width height data-align alt title data-cl2-text-image-text-reference]
+        tag_attributes: {
+          'img' => %w[class src style width height data-align alt title data-cl2-text-image-text-reference]
+        },
+        # `keepHTML` is how the editor recognises its own images when the text is edited again.
+        values: { 'class' => /\AkeepHTML\z/, 'style' => MEDIA_STYLE, 'width' => SIZE, 'height' => SIZE }
       },
       video: {
         tags: %w[iframe],
-        attributes: %w[class frameborder allowfullscreen referrerpolicy src data-blot-formatter-unclickable-bound width height data-align style]
+        tag_attributes: {
+          'iframe' => %w[class frameborder allowfullscreen referrerpolicy src title data-blot-formatter-unclickable-bound width height data-align style]
+        },
+        # Older videos carry the alignment class themselves.
+        values: {
+          'class' => /\Aql-(?:video|align-(?:left|center|right|justify))\z/,
+          'style' => MEDIA_STYLE, 'width' => SIZE, 'height' => SIZE
+        }
       },
       embed: {
         tags: %w[iframe],
@@ -273,11 +343,15 @@ class SanitizationService
       },
       mention: {
         tags: %w[span],
-        attributes: %w[class data-user-id data-link-profile]
+        tag_attributes: { 'span' => %w[class data-user-id data-link-profile] },
+        values: { 'class' => /\Acl-mention-user\z/ }
       },
       table: {
         tags: %w[table thead tbody tr th td tfoot],
-        attributes: %w[class style width border border-collapse display border-color padding text-align]
+        tag_attributes: %w[table thead tbody tr th td tfoot].index_with do
+          %w[style width border border-collapse display border-color padding text-align]
+        end,
+        values: { 'style' => TABLE_STYLE }
       }
     }.freeze
 
@@ -290,7 +364,8 @@ class SanitizationService
     # another decision (which hosts to verify with Google), so the two may change apart.
     PLATFORM_DOMAINS = %w[govocal.com citizenlab.co].freeze
 
-    private_constant :EDITOR_FEATURES, :EMBED_SRC, :PLATFORM_DOMAINS
+    private_constant :LENGTH, :COLOR, :SIZE, :CSS_SIZE, :SPACING, :BORDER, :MEDIA_STYLE, :TEXT_STYLE, :TABLE_STYLE,
+      :EDITOR_FEATURES, :EMBED_SRC, :PLATFORM_DOMAINS
     attr_reader :features, :tags, :attributes, :tag_attributes, :host
 
     # A feature's `attributes` are kept on every allowed tag, its `tag_attributes` only on their own tag.
@@ -308,6 +383,7 @@ class SanitizationService
       shared_attributes = @features.flat_map { |f| EDITOR_FEATURES[f][:attributes] || [] }
       @tag_only_attributes = @tag_attributes.values.flatten - shared_attributes
       @attributes = (shared_attributes + @tag_attributes.values.flatten).uniq
+      @value_rules = value_rules_by_tag
     end
 
     def allowed_node?(node)
@@ -320,14 +396,53 @@ class SanitizationService
     private
 
     # `PermitScrubber` checks attributes against one list for every tag, so the ones kept for a
-    # single tag are removed from the others first.
+    # single tag are removed from the others first, and the kept ones held to their value rule.
     def scrub_attributes(node)
       node.attribute_nodes.each do |attr|
-        next unless @tag_only_attributes.include?(attr.name)
-
-        attr.remove unless tag_attributes.fetch(node.name, []).include?(attr.name)
+        if @tag_only_attributes.include?(attr.name) && tag_attributes.fetch(node.name, []).exclude?(attr.name)
+          attr.remove
+        else
+          restrict_value(attr, @value_rules.dig(node.name, attr.name))
+        end
       end
       super
+    end
+
+    # `{ tag => { attribute => rule } }`. When two enabled features keep the same attribute on the
+    # same tag, a feature without a rule wins, so neither loses what it used to keep.
+    def value_rules_by_tag
+      by_feature = @features.filter_map do |f|
+        EDITOR_FEATURES[f][:tag_attributes]&.transform_values do |attributes|
+          attributes.index_with { |attribute| EDITOR_FEATURES[f].dig(:values, attribute) }
+        end
+      end
+      by_feature.reduce({}) do |all, more|
+        all.merge(more) { |_tag, mine, theirs| mine.merge(theirs) { |_attribute, a, b| a && b } }
+      end
+    end
+
+    def restrict_value(attr, rule)
+      return unless rule
+
+      value = case attr.name
+      when 'class' then attr.value.split.grep(rule).join(' ')
+      when 'style' then allowed_declarations(attr.value, rule)
+      else rule.match?(attr.value.strip) ? attr.value : ''
+      end
+      value.empty? ? attr.remove : attr.value = value
+    end
+
+    # A plain split is enough: a comment or an escape that fools it only costs the declaration,
+    # since what is kept must still match its rule. Loofah's own CSS scrub runs after this one.
+    def allowed_declarations(style, allowed)
+      style.split(';').filter_map do |declaration|
+        property, value = declaration.split(':', 2).map(&:strip)
+        # A leading or doubled `;` leaves a declaration with nothing in it.
+        next unless value
+
+        property = property.downcase
+        "#{property}:#{value};" if allowed[property]&.match?(value.downcase)
+      end.join
     end
 
     def iframe_allowed?(src)
