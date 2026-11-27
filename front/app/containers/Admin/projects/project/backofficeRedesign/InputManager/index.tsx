@@ -1,6 +1,5 @@
 import React, { lazy, Suspense, useState } from 'react';
 
-import DesignSystemEmptyState from 'design-system/EmptyState';
 import Spinner from 'design-system/Spinner';
 
 import useIdeas from 'api/ideas/useIdeas';
@@ -15,6 +14,7 @@ import { ManagerType } from 'components/admin/PostManager';
 
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
+import EmptySideColumn from '../Phase/EmptySideColumn';
 import ListLoadError from '../Phase/ListLoadError';
 import ManageLayout from '../Phase/ManageLayout';
 import ListRowsSkeleton from '../WorkspaceSkeleton/ListRowsSkeleton';
@@ -39,6 +39,7 @@ import usePanelNavigation from './usePanelNavigation';
 import usePhaseCounts from './usePhaseCounts';
 import usePickerOptions from './usePickerOptions';
 import useSelection from './useSelection';
+import useStatPresets, { isOnlyFilter } from './useStatPresets';
 import 'design-system/tokens.css';
 
 const ManagedInputsMap = lazy(() => import('./ManagedInputsMap'));
@@ -115,6 +116,10 @@ const InputManager = ({ project, phase }: Props) => {
   const { data: phases } = usePhases(project.id);
   const counts = usePhaseCounts(scope);
   const { statuses, tagOptions } = usePickerOptions(type, project.id);
+  const presets = useStatPresets({ type, phase, counts, statuses });
+  const activePreset = presets.find((preset) =>
+    isOnlyFilter(filters, preset.filter)
+  );
   const categories = useFilterCategories({
     type,
     projectId: project.id,
@@ -193,7 +198,7 @@ const InputManager = ({ project, phase }: Props) => {
           phase.attributes.participation_method === 'ideation' ? (
             <OfflineCollection phase={phase} />
           ) : (
-            <DesignSystemEmptyState context="panel" illustration="small" />
+            <EmptySideColumn />
           )
         }
       >
@@ -251,6 +256,13 @@ const InputManager = ({ project, phase }: Props) => {
         categories={categories}
         count={
           filteredTotal !== undefined ? termCount(filteredTotal) : undefined
+        }
+        preset={
+          activePreset && {
+            label: activePreset.label,
+            onRemove: () =>
+              setFilters({ phase: filters.phase }, { replace: true }),
+          }
         }
         onClearAll={clearFilters}
       />

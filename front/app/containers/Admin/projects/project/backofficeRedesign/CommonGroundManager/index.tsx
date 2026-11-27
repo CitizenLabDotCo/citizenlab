@@ -28,6 +28,7 @@ import SidePanel from '../InputManager/SidePanel';
 import usePanelNavigation from '../InputManager/usePanelNavigation';
 import useSelection from '../InputManager/useSelection';
 import ImportInputsModal from '../Phase/BuildPanel/BuildFields/MethodSection/CommonGroundSection/ImportInputsModal';
+import EmptySideColumn from '../Phase/EmptySideColumn';
 import ListLoadError from '../Phase/ListLoadError';
 import ManageLayout from '../Phase/ManageLayout';
 import ListRowsSkeleton from '../WorkspaceSkeleton/ListRowsSkeleton';
@@ -180,6 +181,27 @@ const CommonGroundManager = ({ project, phase }: Props) => {
     refreshResults();
   };
 
+  const importBanner = isImporting && (
+    <Banner tone="info">
+      <FormattedMessage
+        {...inputManagerMessages.inputImportProgress}
+        values={{ importedCount, totalCount: totalToImport }}
+      />
+    </Banner>
+  );
+
+  // Nothing in the phase yet: the library drops the stats and the actions.
+  if (phaseTotal === 0) {
+    return (
+      <ManageLayout
+        side={<EmptySideColumn />}
+      >
+        {importBanner}
+        <EmptyList />
+      </ManageLayout>
+    );
+  }
+
   return (
     <ManageLayout
       side={
@@ -221,14 +243,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         />
       }
     >
-      {isImporting && (
-        <Banner tone="info">
-          <FormattedMessage
-            {...inputManagerMessages.inputImportProgress}
-            values={{ importedCount, totalCount: totalToImport }}
-          />
-        </Banner>
-      )}
+      {importBanner}
       <StatementToolbar
         selectedIdeas={selection.selectedIdeas}
         listedTotal={listedTotal}
@@ -247,7 +262,6 @@ const CommonGroundManager = ({ project, phase }: Props) => {
 
       {isError && <ListLoadError onRetry={() => refetch()} />}
       {!ideas && !isError && <ListRowsSkeleton />}
-      {ideas && phaseTotal === 0 && !isError && <EmptyList />}
       {ideas && pageIdeas.length === 0 && !!phaseTotal && (
         <NoMatches onClearFilters={clearFilters} />
       )}

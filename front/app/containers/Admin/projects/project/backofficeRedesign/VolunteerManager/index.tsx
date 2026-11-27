@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import DesignSystemEmptyState from 'design-system/EmptyState';
 import Text from 'design-system/Text';
 
 import useCauses from 'api/causes/useCauses';
@@ -18,6 +19,7 @@ import { FilterCategory } from '../InputManager/FilterMenu/useFilterCategories';
 import SearchToggle from '../InputManager/SearchToggle';
 import Card from '../InputManager/SideColumn/Card';
 import { toggled } from '../InputManager/utils';
+import EmptySideColumn from '../Phase/EmptySideColumn';
 import ManageLayout from '../Phase/ManageLayout';
 import SetupCard from '../ProjectSetupPanel/SetupCard';
 
@@ -128,6 +130,23 @@ const VolunteerManager = ({ phase }: Props) => {
   };
   const categories = [causeFilter, dateFilter];
   const total = volunteers?.meta.total;
+  const phaseTotal = causes?.data.reduce(
+    (sum, cause) => sum + cause.attributes.volunteers_count,
+    0
+  );
+
+  // Nothing in the phase yet: the library drops the stats and the export.
+  if (phaseTotal === 0) {
+    return (
+      <ManageLayout
+        side={<EmptySideColumn />}
+      >
+        <DesignSystemEmptyState context="panel" illustration="large">
+          {formatMessage(messages.manageEmpty)}
+        </DesignSystemEmptyState>
+      </ManageLayout>
+    );
+  }
 
   return (
     <ManageLayout
@@ -173,7 +192,6 @@ const VolunteerManager = ({ phase }: Props) => {
         isError={isError}
         onRetry={() => refetch()}
         isChangingList={isChangingList}
-        hasFilters={causeIds.length > 0 || !!search || !!signedUp}
         causeTitles={causeTitles}
         sort={sort}
         onSort={changeSort}

@@ -17,9 +17,3 @@
 .stats {
   composes: stats from '../_shared/listManager.module.css';
 }
-
-.emptyContent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-8);
-}

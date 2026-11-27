@@ -65,6 +65,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addOfflineVotes',
     defaultMessage: 'Add offline votes',
   },
+  addOfflinePicks: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addOfflinePicks',
+    defaultMessage: 'Add offline picks',
+  },
   exportParticipationData: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.exportParticipationData',
     defaultMessage: 'Export participation data.',
@@ -767,5 +771,29 @@ export default defineMessages({
   paperAndExcelForms: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.paperAndExcelForms',
     defaultMessage: 'Paper and Excel forms',
+  },
+  noOfflineForm: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noOfflineForm',
+    defaultMessage: 'No offline version of this form yet. {downloadLink}.',
+  },
+  downloadFromForm: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.downloadFromForm',
+    defaultMessage: 'Download it from the {term} form',
+  },
+  downloadFromSurvey: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.downloadFromSurvey',
+    defaultMessage: 'Download it from the survey',
+  },
+  paperForms: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.paperForms',
+    defaultMessage: 'Paper forms',
+  },
+  paperFormsDescription: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.paperFormsDescription',
+    defaultMessage: 'Import {terms} collected on paper',
+  },
+  spreadsheetDescription: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.spreadsheetDescription',
+    defaultMessage: 'Import {terms} collected in another tool or on paper',
   },
 });

@@ -214,24 +214,15 @@ describe('Redesigned method-specific Manage views', () => {
       });
   });
 
-  it('offers signup date filtering even before the first volunteer', () => {
+  it('shows the empty view before the first volunteer', () => {
     createMethod('volunteering').then(() => {
       cy.visit(
         `admin/projects/${projectId}/phases/${phaseId}/volunteering?project_backoffice_redesign`
       );
-      cy.contains('No volunteers yet').should('be.visible');
-      cy.intercept('GET', `**/phases/${phaseId}/volunteers*`).as('volunteers');
-      cy.get('[aria-label="Filter"]')
-        .click()
-        .should('have.attr', 'aria-expanded', 'true');
-      cy.get('[data-cy="e2e-manage-filter-signedUp"]').click();
-      cy.get('[role="menuitemradio"]')
-        .contains(/^Earlier$/)
-        .click();
-      cy.wait('@volunteers')
-        .its('request.query.signed_up')
-        .should('eq', 'earlier');
-      cy.contains('No volunteers match these filters.').should('be.visible');
+      cy.contains(
+        'Once the project is live, you can review and manage volunteers here'
+      ).should('be.visible');
+      cy.get('[aria-label="Filter"]').should('not.exist');
     });
   });
 });

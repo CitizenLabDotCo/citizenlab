@@ -94,13 +94,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.mostlyDisagree',
     defaultMessage: 'Mostly disagree',
   },
-  noReactionsTitle: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.noReactionsTitle',
-    defaultMessage: 'Reactions will appear here',
-  },
-  noReactionsDescription: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.noReactionsDescription',
+  manageEmpty: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.manageEmpty',
     defaultMessage:
-      'Once people take part, you can review and manage their reactions here.',
+      'Once the project is live, you can review and manage reactions here',
   },
 });

@@ -5,7 +5,6 @@ import { randomEmail, randomString } from '../../support/commands';
 describe('Redesigned Common Ground manager', () => {
   let projectId: string;
   let phaseId: string;
-  let sourcePhaseId: string;
   let userId: string | undefined;
   const projectTitle = randomString();
   const sourcePhaseTitle = randomString();
@@ -31,8 +30,7 @@ describe('Redesigned Common Ground manager', () => {
           canPost: true,
         });
       })
-      .then((phase) => {
-        sourcePhaseId = phase.body.data.id;
+      .then(() => {
         return cy.apiCreatePhase({
           projectId,
           title: randomString(),
@@ -133,16 +131,6 @@ describe('Redesigned Common Ground manager', () => {
   });
 
   it('refreshes the empty state and counts after importing statements', () => {
-    [firstTitle, secondTitle].forEach((title) => {
-      cy.then(() =>
-        cy.apiCreateIdea({
-          phaseId: sourcePhaseId,
-          ideaTitle: title,
-          ideaContent: randomString(30),
-        })
-      );
-    });
-
     // The e2e back end runs no background job worker, so the copy job is
     // stubbed: the test creates the copies itself, then reports the job done.
     const importJob = {
@@ -150,12 +138,8 @@ describe('Redesigned Common Ground manager', () => {
       type: 'job',
       attributes: { progress: 0, total: 2, error_count: 0, errors: [] },
     };
-    let runningJobs: (typeof importJob)[] = [];
-    cy.intercept('POST', `**/phases/${phaseId}/inputs/copy`, (request) => {
-      if (request.body.dry_run) return;
-      runningJobs = [importJob];
-      request.reply({ data: importJob });
-    });
+    // The import starts from Build; Manage follows the running job.
+    let runningJobs = [importJob];
     cy.intercept({ method: 'GET', pathname: '/web_api/v1/jobs' }, (request) => {
       request.reply({ data: runningJobs });
     });
@@ -165,21 +149,9 @@ describe('Redesigned Common Ground manager', () => {
         `admin/projects/${projectId}/phases/${phaseId}/ideas?project_backoffice_redesign`
       );
     });
-    cy.contains('Reactions will appear here').should('be.visible');
-    cy.contains('0 statements').should('be.visible');
-    cy.contains('button', 'Import inputs').click();
-    // The project and phase options open in popovers outside the dialog.
-    cy.get('[role="dialog"] [role="combobox"]').first().type(projectTitle);
-    cy.contains('[role="option"]', projectTitle).click();
-    cy.get('[data-cy="e2e-import-phase-select"] button').click();
-    cy.contains('[role="option"]', sourcePhaseTitle).click();
-    // The option list is a dialog too until it has closed.
-    cy.get('[role="listbox"]').should('not.exist');
-    cy.get('[role="dialog"]').within(() => {
-      cy.contains('2 inputs will be imported').should('be.visible');
-      cy.contains('button', 'Import inputs').click();
-    });
-
+    cy.contains(
+      'Once the project is live, you can review and manage reactions here'
+    ).should('be.visible');
     cy.contains('0 out of 2 inputs have been imported').should('be.visible');
     [firstTitle, secondTitle].forEach((title) => {
       cy.then(() =>
@@ -195,7 +167,9 @@ describe('Redesigned Common Ground manager', () => {
     });
 
     cy.contains('2 statements').should('be.visible');
-    cy.contains('Reactions will appear here').should('not.exist');
+    cy.contains(
+      'Once the project is live, you can review and manage reactions here'
+    ).should('not.exist');
     cy.contains('[data-cy^="e2e-statement-row-"]', firstTitle).should(
       'be.visible'
     );

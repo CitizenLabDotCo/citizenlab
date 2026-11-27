@@ -26,6 +26,8 @@ import styles from './SideColumn.module.css';
 import 'design-system/tokens.css';
 
 interface Props {
+  // The card that opens it names it.
+  title: string;
   phase: IPhaseData;
   onClose: () => void;
 }
@@ -39,7 +41,7 @@ interface FormValues {
 const isNumber = (value: number | undefined) =>
   value === undefined || !Number.isNaN(value);
 
-const OfflineVotesModal = ({ phase, onClose }: Props) => {
+const OfflineVotesModal = ({ title, phase, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const queryClient = useQueryClient();
@@ -102,7 +104,7 @@ const OfflineVotesModal = ({ phase, onClose }: Props) => {
       onOpenChange={(isOpen) => {
         if (!isOpen && !isSubmitting) onClose();
       }}
-      title={formatMessage(messages.addOfflineVotes)}
+      title={title}
       primaryAction={{
         label: formatMessage(messages.saveOfflineVotes),
         onPress: () => save(),

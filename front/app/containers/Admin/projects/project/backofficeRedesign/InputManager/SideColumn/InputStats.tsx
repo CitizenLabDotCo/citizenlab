@@ -3,49 +3,32 @@ import React from 'react';
 import StatRow from 'design-system/StatRow';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
+import {
+  BudgetingMetrics,
+  VotingMetrics,
+} from 'api/phase_insights/types';
+import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
 import { ManagerType } from 'components/admin/PostManager';
-import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 
 import { useIntl } from 'utils/cl-intl';
 
 import StatsSkeleton from '../../WorkspaceSkeleton/StatsSkeleton';
 import messages from '../messages';
-import useInputTermLabels from '../useInputTermLabels';
 import { ManagerFilters, SetFilters } from '../useManagerParams';
 import { PhaseCounts } from '../usePhaseCounts';
+import useStatPresets, { isOnlyFilter, PresetFilter } from '../useStatPresets';
 
 import styles from './SideColumn.module.css';
-
-type RowFilter = Pick<
-  Partial<ManagerFilters>,
-  'statuses' | 'assignees' | 'reply' | 'contentWarnings'
->;
 
 interface Row {
   key: string;
   label: string;
   value: number;
   /** What the row filters the list to. Absent when it can't filter. */
-  filter?: RowFilter;
+  filter?: PresetFilter;
 }
-
-const sameValues = (values: string[], target: string[]) =>
-  values.length === target.length &&
-  target.every((value) => values.includes(value));
-
-const isOnlyFilter = (filters: ManagerFilters, filter: RowFilter) =>
-  (!!filter.reply ||
-    !!filter.statuses?.length ||
-    !!filter.assignees?.length ||
-    !!filter.contentWarnings) &&
-  !!filters.contentWarnings === !!filter.contentWarnings &&
-  filters.reply === filter.reply &&
-  sameValues(filters.statuses, filter.statuses ?? []) &&
-  sameValues(filters.assignees, filter.assignees ?? []) &&
-  filters.topics.length === 0 &&
-  !filters.source;
 
 interface Props {
   type: ManagerType;
@@ -67,93 +50,51 @@ const InputStats = ({
   setFilters,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { capitalizedTerms } = useInputTermLabels();
+  const presets = useStatPresets({ type, phase, counts, statuses });
   const isVoting = phase.attributes.participation_method === 'voting';
-  const isProposals = type === 'ProjectProposals';
-  // A budgeting phase has no vote total: it counts the money allocated.
-  const showVotes = isVoting && phase.attributes.voting_method !== 'budgeting';
+  const isBudgeting =
+    isVoting && phase.attributes.voting_method === 'budgeting';
+  // A budgeting phase's vote total is the money allocated, so its votes are
+  // the picks, which only the phase insights count.
+  const { data: insights, isLoading: isLoadingPicks } = usePhaseInsights({
+    phaseId: phase.id,
+    enabled: isBudgeting,
+  });
+  const metrics = insights?.data.attributes.metrics;
+  // The insights send a budgeting phase's picks under `voting`.
+  const votingMetrics: VotingMetrics | BudgetingMetrics | undefined =
+    metrics?.voting ?? metrics?.budgeting;
+  const onlinePicks =
+    votingMetrics && 'online_picks' in votingMetrics
+      ? votingMetrics.online_picks
+      : 0;
 
-  if (!counts && !showVotes) return <StatsSkeleton />;
+  if (!counts && !isVoting) return <StatsSkeleton />;
+  if (isBudgeting && isLoadingPicks) return <StatsSkeleton />;
 
   // The online and offline counts add up to the phase's vote total.
-  const { votes_count: onlineVotes, manual_votes_count: offlineVotes } =
-    phase.attributes;
+  const offlineVotes = phase.attributes.manual_votes_count;
+  const onlineVotes = isBudgeting
+    ? onlinePicks
+    : phase.attributes.votes_count;
 
-  const statusRow = (key: string, label: string, codes: Set<string>): Row => {
-    const ids = statuses
-      .filter((status) => codes.has(status.attributes.code))
-      .map((status) => status.id);
+  const rows: Row[] = isVoting
+    ? [
+        {
+          key: 'votes',
+          label: formatMessage(messages.totalVotesColumn),
+          value: onlineVotes + offlineVotes,
+        },
+        {
+          key: 'offlineVotes',
+          label: formatMessage(messages.offlineVotes),
+          value: offlineVotes,
+        },
+        ...presets,
+      ]
+    : presets;
 
-    return {
-      key,
-      label,
-      value: ids.reduce((sum, id) => sum + (counts?.byStatus[id] ?? 0), 0),
-      filter: { statuses: ids },
-    };
-  };
-
-  const rows: Row[] = [];
-
-  if (showVotes) {
-    rows.push(
-      {
-        key: 'votes',
-        label: formatMessage(messages.totalVotesColumn),
-        value: onlineVotes + offlineVotes,
-      },
-      {
-        key: 'offlineVotes',
-        label: formatMessage(messages.offlineVotes),
-        value: offlineVotes,
-      }
-    );
-  }
-
-  if (counts && !isVoting) {
-    if (isProposals) {
-      rows.push(
-        statusRow(
-          'awaiting',
-          formatMessage(messages.waitingForResponse),
-          new Set(['threshold_reached'])
-        ),
-        statusRow(
-          'gatheringSupport',
-          formatMessage(messages.stillGatheringSupport),
-          new Set(['proposed'])
-        )
-      );
-    } else {
-      rows.push({
-        key: 'awaiting',
-        label: formatMessage(messages.waitingForReply),
-        value: counts.awaiting,
-        filter: { reply: 'awaiting' },
-      });
-      if (counts.byAssignee) {
-        rows.push({
-          key: 'unassigned',
-          label: formatMessage(messages.unassigned),
-          value: counts.byAssignee[UNASSIGNED],
-          filter: { assignees: [UNASSIGNED] },
-        });
-      }
-    }
-  }
-  if (counts?.contentWarnings !== undefined) {
-    rows.push({
-      key: 'contentWarnings',
-      label: formatMessage(messages.contentWarnings),
-      value: counts.contentWarnings,
-      filter: { contentWarnings: true },
-    });
-  }
-
-  if (counts && isVoting && !showVotes) {
-    rows.push({ key: 'inputs', label: capitalizedTerms, value: counts.total });
-  }
-
-  const toggleRow = (filter: RowFilter, active: boolean) =>
+  const toggleRow = (filter: PresetFilter, active: boolean) =>
     setFilters(
       // The counts are for the listed phase, so keep it.
       { ...(active ? {} : filter), phase: filters.phase },

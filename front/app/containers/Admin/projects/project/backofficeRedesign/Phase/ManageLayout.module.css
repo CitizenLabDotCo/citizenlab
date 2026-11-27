@@ -26,3 +26,10 @@
   padding: var(--gv-space-18);
   overflow-y: auto;
 }
+
+.emptySide {
+  composes: panel from '../../../../../../design-system/surfaces.module.css';
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}

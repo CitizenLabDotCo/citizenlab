@@ -9,12 +9,12 @@ import { ParticipationMethod } from 'api/phases/types';
 
 import { isPDFUploadSupported } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 
-import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
-
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../messages';
+
+import PaperFormImport from './PaperFormImport';
 import 'design-system/tokens.css';
 
 interface Props {
@@ -49,7 +49,7 @@ const OfflineFormsButton = ({
         </Button>
       )}
       <Modal isOpen={opened} onOpenChange={setOpened} title={title}>
-        <ImportInputsSection
+        <PaperFormImport
           formType={survey ? 'survey' : 'input_form'}
           pdfImportSupported={isPDFUploadSupported(participationMethod)}
         />

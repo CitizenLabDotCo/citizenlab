@@ -9,19 +9,32 @@ import messages from '../messages';
 import OptionList from '../OptionList';
 
 import styles from './FilterChips.module.css';
-import { FilterCategory } from './useFilterCategories';
+import { FilterCategory, FilterCategoryKey } from './useFilterCategories';
 import 'design-system/tokens.css';
 
 interface Props {
   categories: FilterCategory[];
   /** The formatted result count, e.g. "24 inputs". */
   count?: string;
+  /** Set when the list is filtered by exactly one of the stats. */
+  preset?: { label: string; onRemove: () => void };
   onClearAll: () => void;
 }
 
-const FilterChips = ({ categories, count, onClearAll }: Props) => {
+// The filters a stat sets; its chip stands in for theirs.
+const PRESET_KEYS: FilterCategoryKey[] = [
+  'status',
+  'assignee',
+  'reply',
+  'contentWarnings',
+];
+
+const FilterChips = ({ categories, count, preset, onClearAll }: Props) => {
   const { formatMessage } = useIntl();
   const activeCategories = categories.filter((category) => category.isActive);
+  const chipCategories = preset
+    ? activeCategories.filter((category) => !PRESET_KEYS.includes(category.key))
+    : activeCategories;
   const inactiveCategories = categories.filter(
     (category) => !category.isActive
   );
@@ -51,7 +64,10 @@ const FilterChips = ({ categories, count, onClearAll }: Props) => {
         </Menu>
       }
     >
-      {activeCategories.map((category) => {
+      {preset && (
+        <FilterChip label={preset.label} onRemove={preset.onRemove} />
+      )}
+      {chipCategories.map((category) => {
         const values = category.options
           .filter((option) => category.selected.includes(option.value))
           .map((option) => option.label)

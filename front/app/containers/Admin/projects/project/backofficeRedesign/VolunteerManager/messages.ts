@@ -46,12 +46,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.noMatchingVolunteers',
     defaultMessage: 'No volunteers match these filters.',
   },
-  noVolunteersYet: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.noVolunteersYet',
-    defaultMessage: 'No volunteers yet',
-  },
-  noVolunteersYetDescription: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.noVolunteersYetDescription',
-    defaultMessage: 'People who sign up for one of the causes appear here.',
+  manageEmpty: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.manageEmpty',
+    defaultMessage:
+      'Once the project is live, you can review and manage volunteers here',
   },
 });

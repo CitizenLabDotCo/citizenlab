@@ -19,7 +19,6 @@ interface Props {
   isError: boolean;
   onRetry: () => void;
   isChangingList: boolean;
-  hasFilters: boolean;
   causeTitles: Map<string, string>;
   sort: VolunteersSort;
   onSort: (sort: VolunteersSort) => void;
@@ -32,7 +31,6 @@ const VolunteerList = ({
   isError,
   onRetry,
   isChangingList,
-  hasFilters,
   causeTitles,
   sort,
   onSort,
@@ -51,21 +49,11 @@ const VolunteerList = ({
     );
   }
 
-  if (volunteers.data.length === 0 && hasFilters) {
+  if (volunteers.data.length === 0) {
     return (
       <EmptyState
         size="small"
         description={formatMessage(messages.noMatchingVolunteers)}
-      />
-    );
-  }
-
-  if (volunteers.data.length === 0) {
-    return (
-      <EmptyState
-        size="large"
-        title={formatMessage(messages.noVolunteersYet)}
-        description={formatMessage(messages.noVolunteersYetDescription)}
       />
     );
   }

@@ -46,6 +46,12 @@ const SideColumn = ({
 }: Props) => {
   const isVoting = phase.attributes.participation_method === 'voting';
   const { formatMessage } = useIntl();
+  // Budget allocation counts picks, not votes.
+  const addOfflineLabel = formatMessage(
+    phase.attributes.voting_method === 'budgeting'
+      ? messages.addOfflinePicks
+      : messages.addOfflineVotes
+  );
   const [offlineOpened, setOfflineOpened] = useState(false);
   const [importOpened, setImportOpened] = useState(false);
   const exports = (
@@ -66,7 +72,7 @@ const SideColumn = ({
         <Card fillHeight={false}>
           <Disclosure
             header="button"
-            title={formatMessage(messages.addOfflineVotes)}
+            title={addOfflineLabel}
             actionIcon="plus-16"
             onPress={() => setOfflineOpened(true)}
           />
@@ -83,6 +89,7 @@ const SideColumn = ({
       )}
       {offlineOpened && (
         <OfflineVotesModal
+          title={addOfflineLabel}
           phase={phase}
           onClose={() => setOfflineOpened(false)}
         />
