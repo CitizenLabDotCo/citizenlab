@@ -94,9 +94,9 @@ class McpServer::Serializers::Base
     # Enforce the invariant that serializers return hashes with symbols as
     # top-level keys (multiloc values keep their string locale keys).
     if collection?
-      records.map { attributes(it).symbolize_keys }
+      records.map { only_active_locales(attributes(it).symbolize_keys) }
     else
-      attributes(records.sole).symbolize_keys
+      only_active_locales(attributes(records.sole).symbolize_keys)
     end
   end
 
@@ -111,6 +111,24 @@ class McpServer::Serializers::Base
   end
 
   private
+
+  # MCP tools only accept the platform's active locales (see McpServer::LocaleGuard),
+  # so they are also the only ones shown.
+  def only_active_locales(node)
+    case node
+    when Hash
+      node.to_h do |key, value|
+        multiloc = key.to_s.end_with?('_multiloc') && value.is_a?(Hash)
+        [key, multiloc ? value.slice(*active_locales) : only_active_locales(value)]
+      end
+    when Array then node.map { only_active_locales(it) }
+    else node
+    end
+  end
+
+  def active_locales
+    @active_locales ||= AppConfiguration.instance.settings('core', 'locales')
+  end
 
   # Helper that returns the admin and citizen-facing URLs for the record.
   # Serializers that want to surface click-through URLs to the LLM should opt in

@@ -23,6 +23,22 @@ describe McpServer::Serializers::Base do
     it 'returns an empty array for an empty relation' do
       expect(serializer.serialize(CustomField.none)).to eq([])
     end
+
+    it 'leaves out the locales that are not active on the platform, also in nested records' do
+      serializer = Class.new(described_class) do
+        def attributes(_record)
+          {
+            title_multiloc: { 'en' => 'Title', 'es-ES' => 'Título' },
+            options: [{ title_multiloc: { 'es-ES' => 'Opción' } }]
+          }
+        end
+      end
+
+      expect(serializer.serialize(record)).to eq(
+        title_multiloc: { 'en' => 'Title' },
+        options: [{ title_multiloc: {} }]
+      )
+    end
   end
 
   describe 'with a wrapped upstream serializer' do
