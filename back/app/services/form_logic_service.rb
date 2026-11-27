@@ -176,14 +176,14 @@ class FormLogicService
       if page_temp_ids_to_ids_mapping.include?(target_id)
         rule['goto_page_id'] = page_temp_ids_to_ids_mapping[target_id]
       end
+    end
 
-      # Remove any select options that do not exist - unless 'any_other_answer' or 'no_answer'
+    # Remove any select options that do not exist - unless 'any_other_answer' or 'no_answer'
+    if field.supports_options?
       allowed_if_values = field.options.pluck(:id)
       allowed_if_values << 'any_other_answer'
       allowed_if_values << 'no_answer' unless field.required?
-      if field.supports_options? && allowed_if_values.exclude?(rule['if'])
-        rules.delete(rule)
-      end
+      rules.reject! { |rule| allowed_if_values.exclude?(rule['if']) }
     end
     field.update! logic: logic
   end

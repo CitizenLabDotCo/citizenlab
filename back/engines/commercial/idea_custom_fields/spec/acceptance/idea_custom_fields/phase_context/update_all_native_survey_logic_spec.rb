@@ -90,7 +90,7 @@ resource 'Idea Custom Fields' do
       expect(response_logic(select_field)).to eq({ rules: [{ if: dog.id, goto_page_id: page3.id }] })
     end
 
-    example 'Keeps the second of two consecutive rules with unknown options (currently existing bug, B5)', document: false do
+    example 'Drops each of two consecutive rules with unknown options', document: false do
       rules = [
         { if: 'unknown-option-1', goto_page_id: page3.id },
         { if: 'unknown-option-2', goto_page_id: page3.id },
@@ -99,7 +99,7 @@ resource 'Idea Custom Fields' do
       do_request form_params(select_field => { logic: { rules: } })
 
       assert_status 200
-      expect(response_logic(select_field)[:rules].pluck(:if)).to eq ['unknown-option-2', dog.id]
+      expect(response_logic(select_field)[:rules].pluck(:if)).to eq [dog.id]
     end
 
     example 'Drops the rule of an option deleted in the same request', document: false do

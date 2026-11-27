@@ -346,16 +346,40 @@ describe FormLogicService do
       expect(question1.reload.logic).to eq('rules' => [{ 'if' => option1.id, 'goto_page_id' => page2.id }])
     end
 
-    it 'keeps the second of two consecutive rules with unknown options (currently existing bug, B5)' do
+    it 'removes every one of several consecutive rules with unknown options' do
       question1.update!(logic: { 'rules' => [
         { 'if' => 'UNKNOWN_1', 'goto_page_id' => page2.id },
         { 'if' => 'UNKNOWN_2', 'goto_page_id' => page2.id },
+        { 'if' => 'UNKNOWN_3', 'goto_page_id' => page2.id },
         { 'if' => option1.id, 'goto_page_id' => page2.id }
       ] })
 
       form_logic.replace_temp_ids!({}, {})
 
-      expect(question1.reload.logic['rules'].pluck('if')).to eq ['UNKNOWN_2', option1.id]
+      expect(question1.reload.logic['rules'].pluck('if')).to eq [option1.id]
+    end
+
+    it 'keeps the rules of new options next to rules with unknown options' do
+      question1.update!(logic: { 'rules' => [
+        { 'if' => 'UNKNOWN_1', 'goto_page_id' => page2.id },
+        { 'if' => 'TEMP-ID-OPTION', 'goto_page_id' => page2.id },
+        { 'if' => 'UNKNOWN_2', 'goto_page_id' => page2.id }
+      ] })
+
+      form_logic.replace_temp_ids!({}, { 'TEMP-ID-OPTION' => option2.id })
+
+      expect(question1.reload.logic['rules'].pluck('if')).to eq [option2.id]
+    end
+
+    it 'leaves no rules when all of them have unknown options' do
+      question1.update!(logic: { 'rules' => [
+        { 'if' => 'UNKNOWN_1', 'goto_page_id' => page2.id },
+        { 'if' => 'UNKNOWN_2', 'goto_page_id' => page2.id }
+      ] })
+
+      form_logic.replace_temp_ids!({}, {})
+
+      expect(question1.reload.logic).to eq('rules' => [])
     end
 
     it 'keeps no_answer on an optional select and drops it on a required select' do
