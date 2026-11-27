@@ -456,11 +456,86 @@ resource 'Idea Custom Fields' do
       expect(response_data[2].dig(:attributes, :logic)).to eq({})
     end
 
-    example 'Wipes legacy multiselect rules on the first save, even when the request does not send logic (currently existing bug, B7)', document: false do
+    context 'with a multiselect question created before multiselect logic was discontinued' do
+      let!(:multiselect_field) { create(:custom_field_multiselect, :with_options, resource: custom_form, created_at: Time.utc(2025, 6, 1)) }
+      let(:first_option) { multiselect_field.options.first }
+      let(:legacy_rules) { [{ 'if' => first_option.id, 'goto_page_id' => page3.id }] }
+
+      before { multiselect_field.update_column(:logic, { 'rules' => legacy_rules }) }
+
+      def multiselect_request(**attributes)
+        form_params.tap do |request|
+          request[:custom_fields].insert(2, field_params(multiselect_field, **attributes))
+        end
+      end
+
+      example 'Keeps its rules on save when the request does not send logic', document: false do
+        do_request multiselect_request
+
+        assert_status 200
+        expect(multiselect_field.reload.logic).to eq({ 'rules' => legacy_rules })
+      end
+
+      example 'Keeps its rules on save when another attribute changes', document: false do
+        do_request multiselect_request(title_multiloc: { en: 'Changed title' }, logic: { rules: legacy_rules })
+
+        assert_status 200
+        expect(multiselect_field.reload.title_multiloc).to eq({ 'en' => 'Changed title' })
+        expect(response_logic(multiselect_field)).to eq({ rules: legacy_rules.map(&:symbolize_keys) })
+      end
+
+      example 'Stores changes to its rules', document: false do
+        rules = [{ if: first_option.id, goto_page_id: form_end.id }, { if: 'any_other_answer', goto_page_id: page3.id }]
+        do_request multiselect_request(logic: { rules: })
+
+        assert_status 200
+        expect(response_logic(multiselect_field)).to eq({ rules: })
+      end
+
+      example 'Drops the rule of one of its options deleted in the same request', document: false do
+        options = multiselect_field.options.drop(1).map { |option| { id: option.id, title_multiloc: option.title_multiloc } }
+        do_request multiselect_request(options:, logic: { rules: legacy_rules })
+
+        assert_status 200
+        expect(multiselect_field.reload.logic).to eq({ 'rules' => [] })
+      end
+
+      example '[error] Rejects a rule of it that jumps backwards', document: false do
+        do_request multiselect_request(logic: { rules: [{ if: first_option.id, goto_page_id: page1.id }] })
+
+        assert_status 422
+        expect(logic_errors).to eq({ '2': [{ error: 'target_before_source_not_allowed', value: page1.id }] })
+        expect(multiselect_field.reload.logic).to eq({ 'rules' => legacy_rules })
+      end
+    end
+
+    example 'Keeps the rules of a multiselect image question created before multiselect logic was discontinued', document: false do
+      image_field = create(:custom_field_multiselect_image, :with_options, resource: custom_form, created_at: Time.utc(2025, 6, 1))
+      rules = [{ 'if' => image_field.options.first.id, 'goto_page_id' => page3.id }]
+      image_field.update_column(:logic, { 'rules' => rules })
+      request = form_params
+      request[:custom_fields].insert(2, field_params(image_field))
+      do_request request
+
+      assert_status 200
+      expect(image_field.reload.logic).to eq({ 'rules' => rules })
+    end
+
+    example 'Wipes the rules of a multiselect question created after multiselect logic was discontinued', document: false do
       multiselect_field = create(:custom_field_multiselect, :with_options, resource: custom_form)
       multiselect_field.update_column(:logic, { 'rules' => [{ 'if' => multiselect_field.options.first.id, 'goto_page_id' => page3.id }] })
       request = form_params
       request[:custom_fields].insert(2, field_params(multiselect_field))
+      do_request request
+
+      assert_status 200
+      expect(multiselect_field.reload.logic).to eq({})
+    end
+
+    example 'Drops new rules of a multiselect question created before multiselect logic was discontinued that had none', document: false do
+      multiselect_field = create(:custom_field_multiselect, :with_options, resource: custom_form, created_at: Time.utc(2025, 6, 1))
+      request = form_params
+      request[:custom_fields].insert(2, field_params(multiselect_field, logic: { rules: [{ if: multiselect_field.options.first.id, goto_page_id: page3.id }] }))
       do_request request
 
       assert_status 200

@@ -214,10 +214,25 @@ RSpec.describe CustomField do
       expect(field.reload.logic).to eq({ 'rules' => [{ 'if' => 1, 'goto_page_id' => 'some_page_id' }] })
     end
 
-    it 'clears the logic of a legacy multiselect field even when it is saved without changing the logic (currently existing bug, B7)' do
+    %w[multiselect multiselect_image].each do |input_type|
+      it "keeps the logic of a legacy #{input_type} field when it is saved" do
+        field = create(:custom_field, input_type: input_type, resource: create(:custom_form), created_at: Time.utc(2025, 6, 1))
+        field.update_column(:logic, { 'rules' => [{ 'if' => 'option-id', 'goto_page_id' => 'some_page_id' }] })
+        field.reload.update!(title_multiloc: { 'en' => 'Changed' })
+        expect(field.reload.logic).to eq({ 'rules' => [{ 'if' => 'option-id', 'goto_page_id' => 'some_page_id' }] })
+      end
+    end
+
+    it 'clears the logic of a multiselect field created after the cutoff when it is saved' do
       field = create(:custom_field_multiselect, resource: create(:custom_form))
       field.update_column(:logic, { 'rules' => [{ 'if' => 'option-id', 'goto_page_id' => 'some_page_id' }] })
       field.reload.update!(title_multiloc: { 'en' => 'Changed' })
+      expect(field.reload.logic).to eq({})
+    end
+
+    it 'does not add logic to a legacy multiselect field that has none' do
+      field = create(:custom_field_multiselect, resource: create(:custom_form), created_at: Time.utc(2025, 6, 1))
+      field.update!(logic: { 'rules' => [{ 'if' => 'option-id', 'goto_page_id' => 'some_page_id' }] })
       expect(field.reload.logic).to eq({})
     end
   end

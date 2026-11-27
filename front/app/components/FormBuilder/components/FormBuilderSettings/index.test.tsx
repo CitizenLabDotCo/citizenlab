@@ -103,7 +103,7 @@ describe('FormBuilderSettings logic tab', () => {
   });
 
   it.each(['multiselect', 'multiselect_image'] as const)(
-    'shows the logic tab for a %s field created before 2026-01-18 that has rules (currently existing bug, B7)',
+    'shows the logic tab for a %s field created before 2026-01-18 that has rules',
     (inputType) => {
       renderSettings(
         makeField(inputType, {

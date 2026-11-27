@@ -32,4 +32,30 @@ RSpec.describe InputTypeStrategy::Multiselect do
   its(:supports_reference_distribution?) { is_expected.to be true }
   its(:supports_file_upload?) { is_expected.to be false }
   its(:supports_logic?) { is_expected.to be false }
+
+  describe '#supports_logic?' do
+    let(:rules) { { 'rules' => [{ 'if' => 'option-id', 'goto_page_id' => 'page-id' }] } }
+
+    def stored_field(created_at:, logic:)
+      create(:custom_field_multiselect, :for_custom_form, created_at: created_at).tap do |field|
+        field.update_column(:logic, logic)
+        field.reload
+      end
+    end
+
+    it 'is true for a question created before the cutoff that has rules' do
+      field = stored_field(created_at: Time.utc(2026, 1, 17, 23, 59, 59), logic: rules)
+      expect(described_class.new(field).supports_logic?).to be true
+    end
+
+    it 'is false for a question created on the cutoff that has rules' do
+      field = stored_field(created_at: Time.utc(2026, 1, 18), logic: rules)
+      expect(described_class.new(field).supports_logic?).to be false
+    end
+
+    it 'is false for a question created before the cutoff without rules' do
+      field = stored_field(created_at: Time.utc(2025, 6, 1), logic: { 'rules' => [] })
+      expect(described_class.new(field).supports_logic?).to be false
+    end
+  end
 end

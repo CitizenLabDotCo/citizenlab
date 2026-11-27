@@ -6,6 +6,10 @@ module InputTypeStrategy
       true
     end
 
+    def supports_logic?
+      legacy_multiselect_logic?
+    end
+
     def supports_other_option?
       true
     end
