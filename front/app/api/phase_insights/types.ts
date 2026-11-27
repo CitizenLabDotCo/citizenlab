@@ -156,6 +156,7 @@ export interface PhaseInsightsAttributes {
     fields: DemographicFieldBackend[];
   };
   participants_and_visitors_chart_data: ParticipantsAndVisitorsChartData;
+  excluded_admin_and_moderator_participations: number;
 }
 
 export interface PhaseInsightsData {

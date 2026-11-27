@@ -215,6 +215,29 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
     end
   end
 
+  describe '#call' do
+    let(:admin) { create(:admin) }
+
+    before do
+      admin_idea = create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: admin)
+      create(:reaction, reactable: admin_idea, created_at: 10.days.ago, user: admin, mode: 'up')
+    end
+
+    it 'reports no excluded participations when admins and moderators are included' do
+      result = service.call
+
+      expect(result[:excluded_admin_and_moderator_participations]).to eq(0)
+      expect(result[:metrics]['ideation']).to include(ideas_posted: 5, reactions: 4)
+    end
+
+    it 'counts the participations it leaves out of the metrics' do
+      result = described_class.new(phase, exclude_admins_and_moderators: true).call
+
+      expect(result[:excluded_admin_and_moderator_participations]).to eq(2)
+      expect(result[:metrics]['ideation']).to include(ideas_posted: 4, reactions: 3)
+    end
+  end
+
   describe 'phase_participation_method_metrics' do
     let(:user1) { create(:user) }
     let(:participation1) { create(:posting_idea_participation, acted_at: 10.days.ago, user: user1) }

@@ -11,7 +11,14 @@ module Insights
     # --- TEMPLATE METHOD (Instance Method) ---
     # This method defines the immutable workflow for all child services.
     def call
-      insights_data(filtered_phase_participations)
+      all_participations = phase_participations
+      participations = exclude_admin_and_moderator_participations(all_participations)
+
+      # Tells a phase where only admins and moderators took part apart from one
+      # where nobody did, as both show zero participation.
+      excluded_count = all_participations.values.sum(&:size) - participations.values.sum(&:size)
+
+      insights_data(participations).merge(excluded_admin_and_moderator_participations: excluded_count)
     end
 
     private
@@ -20,11 +27,14 @@ module Insights
       @exclude_admins_and_moderators
     end
 
+    def filtered_phase_participations
+      exclude_admin_and_moderator_participations(phase_participations)
+    end
+
     # Removes the participations of admins and moderators when requested.
     # The participant_id of a participation is the user id when the user is known,
     # so participations without a known user (e.g. anonymous ones) are kept.
-    def filtered_phase_participations
-      participations = phase_participations
+    def exclude_admin_and_moderator_participations(participations)
       return participations unless exclude_admins_and_moderators?
 
       participant_ids = participations.values.flatten.pluck(:participant_id).uniq

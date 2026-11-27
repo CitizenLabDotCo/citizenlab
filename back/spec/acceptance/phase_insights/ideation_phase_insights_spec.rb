@@ -91,6 +91,8 @@ resource 'Phase insights' do
       expect(json_response_body[:data][:id]).to eq(ideation_phase.id.to_s)
       expect(json_response_body[:data][:type]).to eq('phase_insights')
 
+      expect(json_response_body.dig(:data, :attributes, :excluded_admin_and_moderator_participations)).to eq(0)
+
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 4,
