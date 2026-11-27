@@ -10,8 +10,8 @@ module ContentBuilder
     # not run in it either, which is why this is a network call rather than a library.
     class RendererClient
       DEFAULT_TIMEOUT_SECONDS = 60
-      # A render drives a real browser and waits for the block's data; the service's
-      # own timeout is 30s, so this sits above it.
+      # A render drives a real browser and waits for the block's data. Once it has a
+      # browser context, the service answers within about 75s, so this sits above it.
       RENDER_TIMEOUT_SECONDS = 90
       OPEN_TIMEOUT_SECONDS = 5
       SECRET_HEADER = 'X-Renderer-Secret'
