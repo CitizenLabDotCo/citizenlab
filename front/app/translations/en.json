@@ -2700,6 +2700,7 @@
   "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Back to folder",
   "app.designSystem.ActionStatus.dismiss": "Dismiss",
   "app.designSystem.AlertDialog.cancel": "Cancel",
+  "app.designSystem.AlertDialog.typeToConfirm": "Type {word} to confirm",
   "app.designSystem.Banner.dismiss": "Dismiss",
   "app.designSystem.DateField.hourPlaceholder": "hh",
   "app.designSystem.DateField.minutePlaceholder": "mm",
