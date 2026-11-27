@@ -168,17 +168,6 @@ resource 'Phases' do
       expect([page2_question, page3_question].map { |field| result_for(field)[:totalResponseCount] }).to eq [1, 1]
     end
 
-    example 'Counts no question after a jump to a disabled page as seen (currently existing bug, N4)', document: false do
-      page2.update!(enabled: false)
-      select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: page2.id }] })
-      respond(select_field: 'cat', page2_question: 'b', page3_question: 'c')
-
-      do_request
-
-      assert_status 200
-      expect(seen_counts).to eq [1, 1, 0]
-    end
-
     example 'Leaves draft responses out of the counts', document: false do
       select_field.update!(logic: { rules: [{ if: cat.id, goto_page_id: form_end.id }] })
       respond(select_field: 'dog')

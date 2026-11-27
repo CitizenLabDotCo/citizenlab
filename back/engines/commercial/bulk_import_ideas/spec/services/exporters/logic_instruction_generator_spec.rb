@@ -186,29 +186,12 @@ describe BulkImportIdeas::Exporters::LogicInstructionGenerator do
       end
     end
 
-    context 'rules that jump to a page that is not printed' do
-      let!(:page3) { create(:custom_field_page, resource: custom_form, enabled: false, title_multiloc: { 'en' => 'Third page' }).tap { |page| page.insert_at(end_page.ordering) } }
+    context 'rules that jump to a later page' do
+      let!(:page3) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Third page' }).tap { |page| page.insert_at(end_page.ordering) } }
 
-      it 'leaves out an option rule to a disabled page (currently existing bug, B9)' do
-        select_field.update!(logic: { 'rules' => [{ 'if' => select_field.options.first.id, 'goto_page_id' => page3.id }] })
-        fields = build_field_hashes
-        generator.attach_logic_instructions(fields)
-
-        expect(fields.pluck(:logic_instructions).compact).to be_empty
-      end
-
-      it 'leaves out page logic to a disabled page (currently existing bug, B9)' do
-        page1.update!(logic: { 'next_page_id' => page3.id })
-        fields = build_field_hashes
-        generator.attach_logic_instructions(fields)
-
-        expect(fields.pluck(:logic_instructions).compact).to be_empty
-      end
-
-      it 'describes the same rules once the page is enabled' do
+      it 'describes an option rule and page logic that jump to it' do
         select_field.update!(logic: { 'rules' => [{ 'if' => select_field.options.first.id, 'goto_page_id' => page3.id }] })
         page1.update!(logic: { 'next_page_id' => page3.id })
-        page3.update!(enabled: true)
         fields = build_field_hashes
         generator.attach_logic_instructions(fields)
 

@@ -237,6 +237,34 @@ RSpec.describe CustomField do
     end
   end
 
+  describe 'enabled validation' do
+    it 'is invalid for a disabled page' do
+      page = build(:custom_field_page, enabled: false)
+      expect(page).not_to be_valid
+      expect(page.errors.details[:enabled]).to eq [{ error: :inclusion, value: false }]
+    end
+
+    it 'is invalid for a disabled end page' do
+      expect(build(:custom_field_form_end_page, enabled: false)).not_to be_valid
+    end
+
+    it 'enables a page that does not say whether it is enabled' do
+      page = build(:custom_field_page, enabled: nil)
+      expect(page).to be_valid
+      expect(page.enabled).to be true
+    end
+
+    it 'is valid for a disabled question' do
+      expect(build(:custom_field_text, resource: create(:custom_form), enabled: false)).to be_valid
+    end
+
+    it 'does not let an existing page be disabled' do
+      page = create(:custom_field_page)
+      expect { page.update!(enabled: false) }.to raise_error(ActiveRecord::RecordInvalid)
+      expect(page.reload.enabled).to be true
+    end
+  end
+
   describe 'page_layout validation' do
     context 'for page custom_field' do
       let(:page_custom_field) { build(:custom_field_page) }

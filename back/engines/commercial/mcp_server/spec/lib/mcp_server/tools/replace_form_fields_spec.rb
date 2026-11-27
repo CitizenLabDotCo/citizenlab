@@ -56,6 +56,23 @@ describe McpServer::Tools::ReplaceFormFields do
       expect(response.structured_content[:fields_last_updated_at]).to be > fetched[:fields_last_updated_at]
     end
 
+    it 'rejects a disabled page and changes nothing' do
+      response = run(
+        container_type: 'phase',
+        container_id: phase.id,
+        fields: [
+          { id: page.id, input_type: 'page', page_layout: 'default', enabled: false, title_multiloc: page.title_multiloc },
+          { id: question.id, input_type: 'text', title_multiloc: { 'en' => 'New question' }, required: false, enabled: true },
+          { id: end_page.id, input_type: 'page', page_layout: 'default', key: 'form_end', title_multiloc: end_page.title_multiloc }
+        ]
+      )
+
+      expect(response).to be_error
+      expect(page.reload.enabled).to be(true)
+      expect(question.reload.title_multiloc).to eq('en' => 'Old question')
+      expect(CustomField.exists?(dropped_question.id)).to be(true)
+    end
+
     it 'ignores read-only keys instead of assigning them' do
       other_form = create(:custom_form)
       fetched = run_mcp_tool(

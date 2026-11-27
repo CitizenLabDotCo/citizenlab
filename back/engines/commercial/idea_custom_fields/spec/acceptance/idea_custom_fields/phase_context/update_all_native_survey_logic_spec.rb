@@ -193,11 +193,49 @@ resource 'Idea Custom Fields' do
       expect(response_logic(page1)).to eq({ next_page_id: page2.id })
     end
 
-    example 'Allows a jump to a disabled page (currently existing bug, N4)', document: false do
-      do_request form_params(page3 => { enabled: false }, select_field => { logic: { rules: [{ if: cat.id, goto_page_id: page3.id }] } })
+    example '[error] Rejects a disabled page and persists nothing', document: false do
+      do_request form_params(
+        page3 => { enabled: false },
+        select_field => { title_multiloc: { en: 'Changed title' }, logic: { rules: [{ if: cat.id, goto_page_id: page3.id }] } }
+      )
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ '4': { enabled: [{ error: 'inclusion', value: false }] } })
+      expect(page3.reload.enabled).to be true
+      expect(select_field.reload.title_multiloc).not_to eq({ 'en' => 'Changed title' })
+      expect(select_field.logic).to eq({})
+    end
+
+    example '[error] Rejects a disabled end page', document: false do
+      do_request form_params(form_end => { enabled: false })
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ '5': { enabled: [{ error: 'inclusion', value: false }] } })
+    end
+
+    example '[error] Rejects a new disabled page', document: false do
+      request = form_params
+      request[:custom_fields].insert(4, { temp_id: 'TEMP-ID-PAGE', input_type: 'page', page_layout: 'default', enabled: false, title_multiloc: { en: 'New page' } })
+
+      expect { do_request request }.not_to change(CustomField, :count)
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ '4': { enabled: [{ error: 'inclusion', value: false }] } })
+    end
+
+    example 'Allows a disabled question', document: false do
+      do_request form_params(scale_field => { enabled: false })
 
       assert_status 200
-      expect(response_logic(select_field)).to eq({ rules: [{ if: cat.id, goto_page_id: page3.id }] })
+      expect(scale_field.reload.enabled).to be false
+    end
+
+    example 'Enables a new page that the request does not say is enabled', document: false do
+      request = form_params
+      request[:custom_fields].insert(4, { temp_id: 'TEMP-ID-PAGE', input_type: 'page', page_layout: 'default', title_multiloc: { en: 'New page' } })
+      do_request request
+
+      assert_status 200
+      expect(CustomField.find_by(resource: custom_form, title_multiloc: { en: 'New page' }).enabled).to be true
     end
 
     example 'Allows page logic that jumps to the end page', document: false do
