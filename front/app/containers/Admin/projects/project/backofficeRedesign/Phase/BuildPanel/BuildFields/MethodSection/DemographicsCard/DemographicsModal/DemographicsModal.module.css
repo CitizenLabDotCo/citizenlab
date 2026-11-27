@@ -1,5 +1,67 @@
 .body {
   display: flex;
   flex-direction: column;
-  gap: var(--gv-space-20);
+  gap: var(--gv-space-16);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-24);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+.switchLabel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-2);
+}
+
+.inlineLink {
+  margin-left: var(--gv-space-16);
+}
+
+.questions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+}
+
+.questionList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.questionRow {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  min-height: var(--gv-size-40);
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-divider);
+}
+
+.questionTitle {
+  composes: ui from '../../../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.questionRemove {
+  display: flex;
+  margin-left: auto;
+}
+
+.addQuestion {
+  display: flex;
+  margin-top: var(--gv-space-8);
+}
+
+/* A grey group label sits 8 above its radios, closer than the sections. */
+.groupLabel {
+  margin-bottom: calc(var(--gv-space-8) - var(--gv-space-16));
 }
