@@ -17,3 +17,64 @@
   min-height: 90px;
   padding: var(--gv-space-14);
 }
+
+/* A whole empty view: the illustration and one sentence in the middle. */
+.panel {
+  composes: ui from '../typography.module.css';
+  flex: 1;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+  min-height: 100%;
+  padding: var(--gv-space-40) var(--gv-space-24);
+  color: var(--gv-text-secondary);
+}
+
+.art {
+  flex-shrink: 0;
+}
+
+.artlarge {
+  width: 120px;
+  height: 90px;
+}
+
+.artsmall {
+  width: 80px;
+  height: 60px;
+}
+
+.ground {
+  fill: var(--gv-surface-control-subtle);
+}
+
+.cover {
+  fill: var(--gv-surface-muted);
+}
+
+.page {
+  fill: var(--gv-surface-panel);
+  stroke: var(--gv-border-strong);
+  stroke-width: 1;
+}
+
+.spine {
+  stroke: var(--gv-border-strong);
+  stroke-width: 1;
+}
+
+.rule {
+  stroke: var(--gv-surface-muted);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.pencil > * {
+  fill: var(--gv-surface-panel);
+  stroke: var(--gv-icon-quiet);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.pencil > .lead {
+  fill: var(--gv-icon-secondary);
+}
