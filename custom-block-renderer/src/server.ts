@@ -44,7 +44,13 @@ server.addHook("onRequest", async (request, reply) => {
   }
 });
 
-server.get("/health", async () => ({ status: "ok" }));
+// ECS replaces the task when this fails, which is the only way out once Chromium has
+// died or every slot is stuck.
+server.get("/health", async (_request, reply) =>
+  pool.healthy
+    ? { status: "ok" }
+    : reply.code(503).send({ status: "unable_to_render" })
+);
 
 // The one description of the SDK. Rails puts it in the system prompt, so the model is
 // told about exactly the module the typechecker holds its blocks to.
