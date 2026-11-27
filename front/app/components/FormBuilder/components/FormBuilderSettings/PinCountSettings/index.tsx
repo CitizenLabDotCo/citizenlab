@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Box, IconTooltip, Label } from '@citizenlab/cl2-component-library';
+import { Box, Label, Text } from '@citizenlab/cl2-component-library';
 import { useWatch } from 'react-hook-form';
 import styled from 'styled-components';
 
 import Input from 'components/HookForm/Input';
-import Toggle from 'components/HookForm/Toggle';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -20,16 +19,13 @@ const StyledLabel = styled(Label)`
 type Props = {
   minimumSelectCountName: string;
   maximumSelectCountName: string;
-  selectCountToggleName: string;
 };
 
 const PinCountSettings = ({
   minimumSelectCountName,
   maximumSelectCountName,
-  selectCountToggleName,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const isPinLimitEnabled = useWatch({ name: selectCountToggleName });
   const minimumPins = useWatch({ name: minimumSelectCountName });
 
   const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
@@ -41,59 +37,45 @@ const PinCountSettings = ({
 
   return (
     <Box mb="24px">
-      <Box mb="16px" data-cy="e2e-pin-count-toggle">
-        <Toggle
-          name={selectCountToggleName}
-          label={
-            <Box display="flex">
-              {formatMessage(messages.limitNumberPins)}
-              <Box pl="4px">
-                <IconTooltip
-                  placement="top-start"
-                  content={formatMessage(messages.limitNumberPinsTooltip)}
-                />
-              </Box>
-            </Box>
-          }
-        />
-      </Box>
-
-      {isPinLimitEnabled && (
-        <Box ml="16px" data-cy="e2e-pin-count-fields">
-          <Box mb="8px" display="flex">
-            <Box minWidth="100px" my="auto">
-              <StyledLabel
-                htmlFor="minimumPinsInput"
-                value={formatMessage(messages.minimum)}
-              />
-            </Box>
-            <Input
-              id="minimumPinsInput"
-              name={minimumSelectCountName}
-              type="number"
-              min="0"
-              size="small"
-              onKeyDown={handleKeyDown}
+      <Text color="textSecondary" mt="0" mb="8px">
+        {formatMessage(messages.numberOfLocations)}
+      </Text>
+      <Box data-cy="e2e-pin-count-fields">
+        <Box mb="8px" display="flex">
+          <Box minWidth="100px" my="auto">
+            <StyledLabel
+              htmlFor="minimumPinsInput"
+              value={formatMessage(messages.minimum)}
             />
           </Box>
-          <Box display="flex">
-            <Box minWidth="100px" my="auto">
-              <StyledLabel
-                htmlFor="maximumPinsInput"
-                value={formatMessage(messages.maximum)}
-              />
-            </Box>
-            <Input
-              id="maximumPinsInput"
-              name={maximumSelectCountName}
-              type="number"
-              size="small"
-              min={minimumPins}
-              onKeyDown={handleKeyDown}
-            />
-          </Box>
+          <Input
+            id="minimumPinsInput"
+            name={minimumSelectCountName}
+            type="number"
+            min="0"
+            size="small"
+            onKeyDown={handleKeyDown}
+            placeholder={formatMessage(messages.noMinimum)}
+          />
         </Box>
-      )}
+        <Box display="flex">
+          <Box minWidth="100px" my="auto">
+            <StyledLabel
+              htmlFor="maximumPinsInput"
+              value={formatMessage(messages.maximum)}
+            />
+          </Box>
+          <Input
+            id="maximumPinsInput"
+            name={maximumSelectCountName}
+            type="number"
+            size="small"
+            min={minimumPins}
+            onKeyDown={handleKeyDown}
+            placeholder={formatMessage(messages.noLimit)}
+          />
+        </Box>
+      </Box>
     </Box>
   );
 };

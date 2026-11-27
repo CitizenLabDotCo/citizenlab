@@ -161,10 +161,29 @@ export default defineMessages({
     defaultMessage:
       'Click on the map to draw. Then, drag on points to move them.',
   },
-  clickOnMapToAddMultiplePins2: {
-    id: 'app.components.CustomFieldsForm.clickOnMapToAddMultiplePins2',
+  clickOnMapToAddMultiplePins3: {
+    id: 'app.components.CustomFieldsForm.clickOnMapToAddMultiplePins3',
     defaultMessage:
-      'Click on the map to add locations. Then, drag on points to move them. You can remove your last location by clicking on the Undo button in the top right corner of the map.',
+      'Click on the map or type an address below to add up to {maxPins, plural, one {# location} other {# locations}}.',
+  },
+  tapOnMapToAddMultiplePins2: {
+    id: 'app.components.CustomFieldsForm.tapOnMapToAddMultiplePins2',
+    defaultMessage:
+      'Tap on the map or type an address below to add up to {maxPins, plural, one {# location} other {# locations}}.',
+  },
+  clickOnMapToAddLocations: {
+    id: 'app.components.CustomFieldsForm.clickOnMapToAddLocations',
+    defaultMessage:
+      'Click on the map or type an address below to add locations.',
+  },
+  tapOnMapToAddLocations: {
+    id: 'app.components.CustomFieldsForm.tapOnMapToAddLocations',
+    defaultMessage: 'Tap on the map or type an address below to add locations.',
+  },
+  maximumLocationsReached: {
+    id: 'app.components.CustomFieldsForm.maximumLocationsReached',
+    defaultMessage:
+      'You have added all {maxPins, plural, one {# location} other {# locations}}. To add another, remove one first.',
   },
   minimumCoordinates: {
     id: 'app.components.CustomFieldsForm.minimumCoordinates2',
@@ -227,11 +246,6 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.maximumPinsAllowed',
     defaultMessage:
       'Add no more than {maxPins, plural, one {# location} other {# locations}}.',
-  },
-  maximumPinsReachedClick: {
-    id: 'app.components.CustomFieldsForm.maximumPinsReachedClick',
-    defaultMessage:
-      'You have added all {maxPins, plural, one {# location} other {# locations}}. To add another, remove one by clicking on the Undo button in the top right corner of the map.',
   },
   maximumPinsReachedTap: {
     id: 'app.components.CustomFieldsForm.maximumPinsReachedTap',

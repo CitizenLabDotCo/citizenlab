@@ -27,10 +27,12 @@ import { Option } from 'components/UI/LocationInput';
 
 import InstructionAnimation from '../components/InstructionAnimation';
 import LocationTextInput from '../components/LocationTextInput';
+import PinAddressRows from '../components/PinAddressRows';
 import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import UndoButton from '../components/UndoButton';
 import {
   handleMapClickMultipoint,
+  isLineOrPolygonInput,
   isMultiPointInput,
   setupPointDrag,
 } from '../multiPointUtils';
@@ -50,6 +52,11 @@ type Props = {
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   data: GeoJSON.Point | GeoJSON.LineString | GeoJSON.Polygon | undefined;
+  pinCoordinates: number[][];
+  maxPins?: number;
+  onAddPin: (point: GeoJSON.Point) => void;
+  onReplacePin: (index: number, point: GeoJSON.Point) => void;
+  onRemovePin: (index: number) => void;
 };
 
 const DesktopView = ({
@@ -61,6 +68,11 @@ const DesktopView = ({
   handleMultiPointChange,
   mapView,
   data,
+  pinCoordinates,
+  maxPins,
+  onAddPin,
+  onReplacePin,
+  onRemovePin,
 }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
@@ -96,8 +108,8 @@ const DesktopView = ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
 
-    if (isMultiPointInput(inputType)) {
-      // Show these buttons in sequence for inputs that collect several points
+    if (isLineOrPolygonInput(inputType)) {
+      // Show these buttons in sequence for inputs that draw a shape
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(undoButtonRef?.current || '', 'top-right');
@@ -150,7 +162,12 @@ const DesktopView = ({
       if (inputType === 'point') {
         handleMapClickPoint(event, mapView, handleSinglePointChange);
       } else if (isMultiPointInput(inputType)) {
-        handleMapClickMultipoint(event, mapView, handleMultiPointChange);
+        handleMapClickMultipoint(
+          event,
+          mapView,
+          handleMultiPointChange,
+          maxPins
+        );
       }
     },
     [
@@ -158,6 +175,7 @@ const DesktopView = ({
       handleSinglePointChange,
       inputType,
       interactionMode,
+      maxPins,
     ]
   );
 
@@ -243,14 +261,14 @@ const DesktopView = ({
               onModeChange={handleInteractionModeChange}
             />
           )}
-          {isMultiPointInput(inputType) && data && (
+          {isLineOrPolygonInput(inputType) && data && (
             <RemoveAnswerButton
               mapView={mapView}
               handleMultiPointChange={handleMultiPointChange}
             />
           )}
           <Box>
-            {isMultiPointInput(inputType) && (
+            {isLineOrPolygonInput(inputType) && (
               <UndoButton
                 handleMultiPointChange={handleMultiPointChange}
                 mapView={mapView}
@@ -276,6 +294,17 @@ const DesktopView = ({
               data={data}
             />
           </Box>
+          {inputType === 'multipoint' && (
+            <Box mt="12px">
+              <PinAddressRows
+                coordinates={pinCoordinates}
+                maxPins={maxPins}
+                onAddPin={onAddPin}
+                onReplacePin={onReplacePin}
+                onRemovePin={onRemovePin}
+              />
+            </Box>
+          )}
         </>
       </Box>
     </>

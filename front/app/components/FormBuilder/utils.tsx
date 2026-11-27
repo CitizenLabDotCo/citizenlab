@@ -220,7 +220,6 @@ export function getAdditionalSettings(
           <PinCountSettings
             minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
             maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
-            selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
           />
         </>
       );

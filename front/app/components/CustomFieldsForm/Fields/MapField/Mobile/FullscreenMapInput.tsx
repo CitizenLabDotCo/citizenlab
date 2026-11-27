@@ -131,7 +131,12 @@ const FullscreenMapInput = memo<Props>(
         if (inputType === 'point') {
           handleMapClickPoint(event, mapView, handleSinglePointChange);
         } else if (isMultiPointInput(inputType)) {
-          handleMapClickMultipoint(event, mapView, handleMultiPointChange);
+          handleMapClickMultipoint(
+            event,
+            mapView,
+            handleMultiPointChange,
+            maxPins
+          );
         }
       },
       [
@@ -139,6 +144,7 @@ const FullscreenMapInput = memo<Props>(
         handleSinglePointChange,
         inputType,
         interactionMode,
+        maxPins,
       ]
     );
 

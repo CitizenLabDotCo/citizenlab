@@ -11,7 +11,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
-import { MessageDescriptor } from 'react-intl';
 import { CLError, RHFErrors } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -20,14 +19,13 @@ import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { parseLayers } from 'components/EsriMap/utils';
+import { goToMapLocation, parseLayers } from 'components/EsriMap/utils';
 import Error, { TFieldName } from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
-
 import DesktopTabletView from './Desktop/DesktopTabletView';
+import getInstructionMessage from './getInstructionMessage';
 import MobileView from './Mobile/MobileView';
 import {
   convertCoordinatesToGeoJSON,
@@ -35,31 +33,9 @@ import {
   convertWKTToGeojson,
   exceedsPinLimit,
   getCoordinatesFromMultiPointData,
+  isAnswerFull,
+  removePinAt,
 } from './multiPointUtils';
-import { MapInputType } from './utils';
-
-// Touch devices are told to tap, pointer devices to click, so each input type
-// needs both wordings.
-const INSTRUCTION_MESSAGES: {
-  [key in MapInputType]: { tap: MessageDescriptor; click: MessageDescriptor };
-} = {
-  point: {
-    tap: messages.tapOnMapToAddOrType,
-    click: messages.clickOnMapToAddOrType,
-  },
-  multipoint: {
-    tap: messages.tapOnMapToAddMultiplePins,
-    click: messages.clickOnMapToAddMultiplePins2,
-  },
-  line: {
-    tap: messages.tapOnMapMultipleToAdd,
-    click: messages.clickOnMapMultipleToAdd,
-  },
-  polygon: {
-    tap: messages.tapOnMapMultipleToAdd,
-    click: messages.clickOnMapMultipleToAdd,
-  },
-};
 
 const MapField = ({
   question,
@@ -102,10 +78,9 @@ const MapField = ({
     : undefined;
 
   const maxPins = question.maximum_select_count;
-  const pinCount: number =
-    getCoordinatesFromMultiPointData(value, question.input_type)?.length ?? 0;
-  const limitReached =
-    maxPins !== undefined && exceedsPinLimit(pinCount + 1, maxPins);
+  const pinCoordinates: number[][] =
+    getCoordinatesFromMultiPointData(value, question.input_type) ?? [];
+  const limitReached = isAnswerFull(pinCoordinates.length, maxPins);
 
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
@@ -151,14 +126,9 @@ const MapField = ({
     [setValue, name]
   );
 
-  // Handler for when multiple point data changes (line/polygon/multipoint)
-  const handleMultiPointChange = useCallback(
+  const writePinCoordinates = useCallback(
     (coordinates?: number[][]) => {
       if (coordinates) {
-        if (exceedsPinLimit(coordinates.length, maxPins)) {
-          return;
-        }
-
         const value = convertCoordinatesToGeoJSON(
           coordinates,
           question.input_type
@@ -177,18 +147,73 @@ const MapField = ({
         });
       }
     },
-    [setValue, name, question.input_type, maxPins]
+    [setValue, name, question.input_type]
   );
 
-  const instruction = INSTRUCTION_MESSAGES[question.input_type];
-  const instructionText = limitReached
-    ? formatMessage(
-        isTabletOrSmaller
-          ? messages.maximumPinsReachedTap
-          : messages.maximumPinsReachedClick,
-        { maxPins }
+  // Handler for when multiple point data changes (line/polygon/multipoint)
+  const handleMultiPointChange = useCallback(
+    (coordinates?: number[][]) => {
+      // The map and the drag only ever add a point or move one, so a count
+      // past the limit here is an addition to refuse. Taking a pin off goes
+      // through writePinCoordinates, which lets an answer that is already
+      // over the limit come back down.
+      if (coordinates && exceedsPinLimit(coordinates.length, maxPins)) {
+        return;
+      }
+
+      writePinCoordinates(coordinates);
+    },
+    [writePinCoordinates, maxPins]
+  );
+
+  // The answer as it stands right now, rather than as it stood when a handler
+  // was created: an address lookup resolves long after that, and the map may
+  // have gained a pin in between.
+  const getCurrentPinCoordinates = (): number[][] => {
+    const storedValue = getValues(name);
+    const geojson = storedValue
+      ? convertWKTToGeojson({ point: storedValue }).point
+      : undefined;
+
+    return getCoordinatesFromMultiPointData(geojson, question.input_type) ?? [];
+  };
+
+  const handleAddPin = (point: GeoJSON.Point) => {
+    handleMultiPointChange([...getCurrentPinCoordinates(), point.coordinates]);
+    if (mapView) {
+      goToMapLocation(point, mapView);
+    }
+  };
+
+  const handleReplacePin = (index: number, point: GeoJSON.Point) => {
+    // The count does not change, so this never has to pass the limit check.
+    writePinCoordinates(
+      getCurrentPinCoordinates().map((coordinates, pinIndex) =>
+        pinIndex === index ? point.coordinates : coordinates
       )
-    : formatMessage(isTabletOrSmaller ? instruction.tap : instruction.click);
+    );
+    if (mapView) {
+      goToMapLocation(point, mapView);
+    }
+  };
+
+  const handleRemovePin = (index: number) => {
+    writePinCoordinates(removePinAt(getCurrentPinCoordinates(), index));
+  };
+
+  const instructionMessage = getInstructionMessage({
+    inputType: question.input_type,
+    maxPins,
+    limitReached,
+    // The address rows live in the desktop and tablet view
+    hasAddressRows: !isMobileOrSmaller,
+    isTabletOrSmaller,
+  });
+  // Only the messages that name a number of locations are picked when there is
+  // a limit to name.
+  const instructionText = maxPins
+    ? formatMessage(instructionMessage, { maxPins })
+    : formatMessage(instructionMessage);
 
   return (
     <>
@@ -235,6 +260,11 @@ const MapField = ({
                 handleSinglePointChange={handleSinglePointChange}
                 data={value}
                 handleMultiPointChange={handleMultiPointChange}
+                pinCoordinates={pinCoordinates}
+                maxPins={maxPins}
+                onAddPin={handleAddPin}
+                onReplacePin={handleReplacePin}
+                onRemovePin={handleRemovePin}
               />
             )}
           </>
