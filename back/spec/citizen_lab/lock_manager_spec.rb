@@ -72,23 +72,10 @@ RSpec.describe CitizenLab::LockManager do
     end
 
     it 'stops waiting after the timeout' do
-      lock_name = 'lock-name'
-      locked = Queue.new
-      release = Queue.new
-
-      thread = Thread.new do
-        described_class.with_transaction_lock(lock_name) do
-          locked << true
-          release.pop
-        end
+      holding_lock('lock-name') do
+        expect { described_class.with_transaction_lock('lock-name', timeout: 0.1.seconds) { nil } }
+          .to raise_error(ActiveRecord::LockWaitTimeout)
       end
-
-      locked.pop
-      expect { described_class.with_transaction_lock(lock_name, timeout: 0.1.seconds) { nil } }
-        .to raise_error(ActiveRecord::LockWaitTimeout)
-
-      release << true
-      thread.join
     end
 
     it 'restores the lock timeout once the lock is taken' do

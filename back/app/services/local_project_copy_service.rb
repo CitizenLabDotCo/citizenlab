@@ -12,8 +12,9 @@ class LocalProjectCopyService < ProjectCopyService
     # The copy's slug is picked from its title when the project is saved, but
     # only the commit reserves it. Copies with the same title running at the
     # same time (a double click, or two projects with the same title) would
-    # otherwise pick the same slug.
-    lock_name = "project_slug/#{base_slug(new_title_multiloc)}"
+    # otherwise pick the same slug. Advisory locks are shared by the whole
+    # database, so the name includes the tenant: slugs only clash within one.
+    lock_name = "project_slug/#{Apartment::Tenant.current}/#{base_slug(new_title_multiloc)}"
     CitizenLab::LockManager.with_transaction_lock(lock_name, timeout: SLUG_LOCK_TIMEOUT) do
       copy_project(source_project, dest_folder, new_title_multiloc)
     end

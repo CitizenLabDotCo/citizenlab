@@ -19,4 +19,17 @@ RSpec.describe LocalProjectCopyService, use_transactional_fixtures: false do
 
     expect(copies.map(&:slug)).to contain_exactly('same-title-copy', 'same-title-copy-1')
   end
+
+  context 'when another copy holds the slug lock' do
+    let(:project) { create(:project, title_multiloc: { en: 'Copy me' }) }
+
+    before { stub_const("#{described_class}::SLUG_LOCK_TIMEOUT", 1.second) }
+
+    # Tenants share the advisory locks, so the lock name holds the tenant.
+    it 'stops waiting after the timeout' do
+      holding_lock("project_slug/#{Apartment::Tenant.current}/copy-me-copy") do
+        expect { described_class.new.copy(project) }.to raise_error(ActiveRecord::LockWaitTimeout)
+      end
+    end
+  end
 end
