@@ -34,10 +34,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.setupCards.projectPageTooltip',
     defaultMessage: 'The page participants see when they open the project',
   },
-  areaTooltip2: {
-    id: 'app.containers.Admin.projects.project.setupCards.areaTooltip2',
+  areaTooltip3: {
+    id: 'app.containers.Admin.projects.project.setupCards.areaTooltip3',
     defaultMessage:
-      'Participants can find projects by area on the projects page and on pages that list projects by area. Choose where this project applies.',
+      'Residents can filter projects by area on the All projects page. Choose where this project applies.',
   },
   methodsTooltip: {
     id: 'app.containers.Admin.projects.project.setupCards.methodsTooltip',
@@ -81,9 +81,9 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, one {# area selected} other {# areas selected}}',
   },
-  topicTagsDescription: {
-    id: 'app.containers.Admin.projects.project.topicTagsDescription',
+  topicTagsDescription2: {
+    id: 'app.containers.Admin.projects.project.topicTagsDescription2',
     defaultMessage:
-      'Participants can filter projects by topic on the homepage.',
+      'Residents can filter projects by topic on the All projects page.',
   },
 });

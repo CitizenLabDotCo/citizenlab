@@ -57,9 +57,12 @@ describe('Project setup feedback', () => {
       ],
       [
         'area',
-        'Participants can find projects by area on the projects page and on pages that list projects by area. Choose where this project applies.',
+        'Residents can filter projects by area on the All projects page. Choose where this project applies.',
       ],
-      ['topics', 'Participants can filter projects by topic on the homepage.'],
+      [
+        'topics',
+        'Residents can filter projects by topic on the All projects page.',
+      ],
       ['project-page', 'The page participants see when they open the project'],
       ['methods', 'The ways participants take part, one after the other'],
     ];
@@ -229,7 +232,7 @@ describe('Project setup feedback', () => {
         `/admin/projects/${projectId}/phases/${phaseId}/setup?project_backoffice_redesign`
       );
       cy.get('#phase-build-panel-title').clear().type('Unsaved title');
-      cy.get('[aria-label="New phase"]').click();
+      cy.get('[aria-label="New participation method"]').click();
       cy.get('[role="dialog"]')
         .contains(/^Ideation$/)
         .click();
