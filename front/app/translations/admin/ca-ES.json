@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Descarrega les estadístiques com a PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Baixa com a PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Baixa com a Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Edita la pàgina d'inici del projecte",
   "app.containers.Admin.projects.project.insights.errorLoading": "Error en carregar les dades d'anàlisi",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Error en carregar els resultats de Common Ground",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Error en carregar les dades demogràfiques",

@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Λήψη αναλυτικών στοιχείων ως PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Λήψη ως PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Λήψη ως Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Επεξεργασία της αρχικής σελίδας του έργου",
   "app.containers.Admin.projects.project.insights.errorLoading": "Σφάλμα κατά τη φόρτωση των δεδομένων ανάλυσης",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Σφάλμα κατά τη φόρτωση των αποτελεσμάτων Common Ground",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Σφάλμα κατά τη φόρτωση δημογραφικών δεδομένων",

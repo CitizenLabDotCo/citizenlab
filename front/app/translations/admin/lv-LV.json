@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Lejupielādēt ieskatu PDF formātā",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Lejupielādēt kā PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Lejupielādēt kā Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Rediģēt projekta sākumlapu",
   "app.containers.Admin.projects.project.insights.errorLoading": "Kļūda ielādējot ieskatu datus",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Kļūda, ielādējot kopīgā pamatojuma rezultātus",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Kļūda, ielādējot demogrāfiskos datus",

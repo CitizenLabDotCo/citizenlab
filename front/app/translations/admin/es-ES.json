@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Descargar tendencias en PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Descargar como PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Descargar como Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Editar la página de inicio del proyecto",
   "app.containers.Admin.projects.project.insights.errorLoading": "Error al cargar datos de tendencias",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Error al cargar los resultados de la fase de Terreno en Común",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Error al cargar datos demográficos",

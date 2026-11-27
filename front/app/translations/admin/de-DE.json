@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Einblicke als PDF herunterladen",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Als PDF herunterladen",
   "app.containers.Admin.projects.project.insights.downloadWord": "Als Word herunterladen",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Projekthomepage bearbeiten",
   "app.containers.Admin.projects.project.insights.errorLoading": "Fehler beim Laden von Einblicken",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Fehler beim Laden der ZusammenFinden-Ergebnisse",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Fehler beim Laden demographischer Daten",

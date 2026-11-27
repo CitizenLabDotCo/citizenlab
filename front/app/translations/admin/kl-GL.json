@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Paasissutissat PDF-itut aakkit",
   "app.containers.Admin.projects.project.insights.downloadPdf": "PDF-itut aatsiguk",
   "app.containers.Admin.projects.project.insights.downloadWord": "Word-itut aajuk",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Suliniummi saqqaa aaqqissuuguk",
   "app.containers.Admin.projects.project.insights.errorLoading": "Paasissutissanik aallernermi kukkuneq",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Common Ground-imit inernerit aaneqarneranni kukkuneqartoqarpoq.",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Inoqassutsip paasissutissartaanik aallernermi kukkuneqartoqarpoq",

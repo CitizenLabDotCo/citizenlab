@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Preuzmite uvide kao PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Preuzmi kao PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Preuzmi kao Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Uredi početnu stranicu projekta",
   "app.containers.Admin.projects.project.insights.errorLoading": "Pogreška pri učitavanju podataka uvida",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Pogreška u učitavanju rezultata Common Grounda",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Pogreška pri učitavanju demografskih podataka",

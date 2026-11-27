@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Atsisiųsti įžvalgas kaip PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Atsisiųsti kaip PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Atsisiųsti kaip \"Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Redaguoti projekto pradinį puslapį",
   "app.containers.Admin.projects.project.insights.errorLoading": "Įžvalgų duomenų įkėlimo klaida",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Klaida įkeliant \"Common Ground\" rezultatus",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Klaida įkeliant demografinius duomenis",

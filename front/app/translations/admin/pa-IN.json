@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "ਇਨਸਾਈਟਸ ਨੂੰ PDF ਦੇ ਰੂਪ ਵਿੱਚ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.containers.Admin.projects.project.insights.downloadPdf": "PDF ਦੇ ਤੌਰ ਤੇ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.containers.Admin.projects.project.insights.downloadWord": "ਸ਼ਬਦ ਦੇ ਤੌਰ ਤੇ ਡਾਊਨਲੋਡ ਕਰੋ",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "ਪ੍ਰੋਜੈਕਟ ਹੋਮਪੇਜ ਨੂੰ ਸੋਧੋ",
   "app.containers.Admin.projects.project.insights.errorLoading": "ਅੰਦਰੂਨੀ-ਝਾਤਾਂ ਡਾਟਾ ਲੋਡ ਕਰਨ ਵੇਲੇ ਗੜਬੜ ਹੋਈ",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "ਕਾਮਨ ਗਰਾਊਂਡ ਨਤੀਜੇ ਲੋਡ ਕਰਨ ਵਿੱਚ ਗੜਬੜ",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "ਜਨਸੰਖਿਆ ਡੇਟਾ ਲੋਡ ਕਰਨ ਵਿੱਚ ਗੜਬੜ",

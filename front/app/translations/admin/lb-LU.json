@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Abléck als PDF eroflueden",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Als PDF eroflueden",
   "app.containers.Admin.projects.project.insights.downloadWord": "Als Word eroflueden",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "D'Projet-Homepage beaarbechten",
   "app.containers.Admin.projects.project.insights.errorLoading": "Feeler beim Luede vun den Insights-Daten",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Feeler beim Luede vun de Common Ground Resultater",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Feeler beim Luede vun den demographeschen Donnéeën",

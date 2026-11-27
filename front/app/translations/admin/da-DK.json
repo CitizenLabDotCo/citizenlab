@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Download indsigter som PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Download som PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Download som Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Rediger projektets startside",
   "app.containers.Admin.projects.project.insights.errorLoading": "Fejl ved indlæsning af indsigtsdata",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Fejl ved indlæsning af Common Ground-resultater",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Fejl ved indlæsning af demografiske data",

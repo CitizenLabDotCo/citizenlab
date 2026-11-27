@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Lawrlwytho mewnwelediadau fel PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Lawrlwytho fel PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Lawrlwytho fel Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Golygu hafan y prosiect",
   "app.containers.Admin.projects.project.insights.errorLoading": "Gwall wrth lwytho data mewnwelediadau",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Gwall wrth lwytho canlyniadau Common Ground",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Gwall wrth lwytho data demograffig",

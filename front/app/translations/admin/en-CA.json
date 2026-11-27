@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Download insights as PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Download as PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Download as Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Edit the project homepage",
   "app.containers.Admin.projects.project.insights.errorLoading": "Error loading insights data",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Error loading Common Ground results",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Error loading demographics data",

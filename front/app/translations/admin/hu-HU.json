@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Elemzések letöltése PDF-ben",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Letöltés PDF-ként",
   "app.containers.Admin.projects.project.insights.downloadWord": "Letöltés Word formátumban",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "A projekt kezdőlapjának szerkesztése",
   "app.containers.Admin.projects.project.insights.errorLoading": "Hiba történt az elemzési adatok betöltésekor",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Hiba történt a Common Ground eredmények betöltésekor.",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Hiba a demográfiai adatok betöltésekor",

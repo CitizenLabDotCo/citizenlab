@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Inzichten downloaden als PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Downloaden als PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Downloaden als Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Bewerk de startpagina van het project",
   "app.containers.Admin.projects.project.insights.errorLoading": "Fout bij het laden van inzichtgegevens",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Fout bij het laden van resultaten stellingenmethode",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Fout bij het laden van demografische gegevens",

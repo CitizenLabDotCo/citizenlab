@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Faça o download dos insights em PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Baixar como PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Baixar como Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Editar a página inicial do projeto",
   "app.containers.Admin.projects.project.insights.errorLoading": "Erro ao carregar dados de percepções",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Erro ao carregar os resultados do Common Ground",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Erro ao carregar dados demográficos",

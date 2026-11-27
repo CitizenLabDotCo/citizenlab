@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Téléchargez les statistiques au format PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Modifier la page d'accueil du projet",
   "app.containers.Admin.projects.project.insights.errorLoading": "Erreur lors du chargement des statistiques",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Erreur lors du chargement des résultats",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Erreur lors du chargement des données démographiques",

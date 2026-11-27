@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Lataa tiedot PDF-muodossa",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Lataa PDF-tiedostona",
   "app.containers.Admin.projects.project.insights.downloadWord": "Lataa Word-muodossa",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Muokkaa projektin etusivua",
   "app.containers.Admin.projects.project.insights.errorLoading": "Virhe ladattaessa tilastotietoja",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Virhe ladattaessa Common Groundin tuloksia",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Virhe ladattaessa demografisia tietoja",

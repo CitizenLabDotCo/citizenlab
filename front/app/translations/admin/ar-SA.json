@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "حمّل المعلومات بصيغة PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "قم بالتنزيل كملف PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "قم بالتنزيل كملف وورد",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "تعديل الصفحة الرئيسية للمشروع",
   "app.containers.Admin.projects.project.insights.errorLoading": "حدث خطأ أثناء تحميل بيانات التحليلات",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "خطأ في تحميل نتائج Common Ground",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "حدث خطأ أثناء تحميل البيانات الديموغرافية",

@@ -2070,7 +2070,6 @@
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": "Pobierz spostrzeżenia w formacie PDF",
   "app.containers.Admin.projects.project.insights.downloadPdf": "Pobierz jako PDF",
   "app.containers.Admin.projects.project.insights.downloadWord": "Pobierz jako Word",
-  "app.containers.Admin.projects.project.insights.editProjectHomepage": "Edytuj stronę główną projektu",
   "app.containers.Admin.projects.project.insights.errorLoading": "Błąd ładowania danych analitycznych",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Błąd ładowania wyników Common Ground",
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Błąd ładowania danych demograficznych",
