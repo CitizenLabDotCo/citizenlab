@@ -1,8 +1,10 @@
 import React, { ReactNode } from 'react';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { PhaseInsightsParticipationMetrics } from 'api/phase_insights/types';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
+import useProjectById from 'api/projects/useProjectById';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -17,12 +19,6 @@ import messages from './messages';
 import { PhaseViewKey } from './usePhaseViews';
 import styles from './ViewContent.module.css';
 import 'design-system/tokens.css';
-
-// The library's empty views: the notebook and one sentence on what the view is for.
-const EMPTY_COPY = {
-  manage: messages.manageEmpty,
-  insights: messages.insightsEmpty,
-};
 
 interface Responses {
   metrics?: PhaseInsightsParticipationMetrics;
@@ -110,6 +106,8 @@ interface Props {
 const ViewContent = ({ phase, view, children }: Props) => {
   const { formatMessage } = useIntl();
   const { terms } = useInputTermLabels();
+  const { data: project } = useProjectById(phase.relationships.project.data.id);
+  const { data: appConfiguration } = useAppConfiguration();
   const onInsights = view === 'insights';
   const supportsMetrics =
     onInsights &&
@@ -134,27 +132,67 @@ const ViewContent = ({ phase, view, children }: Props) => {
     return <>{children}</>;
   }
 
-  const emptyState = (
-    <EmptyState
-      size="large"
-      illustrated
-      description={formatMessage(EMPTY_COPY[view], { terms })}
-    />
-  );
-
-  // Only a phase with an end date can have participation after it.
-  const lateEndAt =
-    onInsights && hasParticipationOutsideDates(phase)
-      ? phase.attributes.end_at
-      : null;
-
+  // The library's empty views: the notebook and one sentence on what the view is for.
   if (view === 'manage') {
     return (
       <ManageLayout side={<OfflineCollection phase={phase} />}>
-        {emptyState}
+        <EmptyState
+          size="large"
+          illustrated
+          description={formatMessage(messages.manageEmpty, { terms })}
+        />
       </ManageLayout>
     );
   }
+
+  const isDraft = project?.data.attributes.publication_status === 'draft';
+
+  const adminsExcluded =
+    !!appConfiguration?.data.attributes.settings.core
+      .exclude_admins_and_moderators_from_statistics;
+  const onlyAdminActivity =
+    (insightsQuery.data?.data.attributes
+      .excluded_admin_and_moderator_participations ?? 0) > 0;
+  // Only a phase with an end date can have participation after it.
+  const lateEndAt =
+    !onlyAdminActivity && hasParticipationOutsideDates(phase)
+      ? phase.attributes.end_at
+      : null;
+
+  const emptyState = onlyAdminActivity ? (
+    <EmptyState
+      size="large"
+      illustrated
+      title={formatMessage(messages.insightsOnlyAdminActivity)}
+      description={formatMessage(messages.insightsLeavesOutAdmins)}
+    />
+  ) : lateEndAt ? (
+    <EmptyState
+      size="large"
+      illustrated
+      title={formatMessage(messages.noParticipationInPhaseDates)}
+      description={
+        <LateParticipationDescription phase={phase} endAt={lateEndAt} />
+      }
+    />
+  ) : isDraft ? (
+    <EmptyState
+      size="large"
+      illustrated
+      description={formatMessage(messages.insightsEmpty)}
+    />
+  ) : (
+    <EmptyState
+      size="large"
+      illustrated
+      title={formatMessage(messages.insightsNoActivity)}
+      description={formatMessage(
+        adminsExcluded
+          ? messages.insightsCountsPhaseDatesWithoutAdmins
+          : messages.insightsCountsPhaseDates
+      )}
+    />
+  );
 
   return (
     <>
@@ -162,20 +200,7 @@ const ViewContent = ({ phase, view, children }: Props) => {
       <div className={styles.sidePanel}>
         <EmptyState size="small" illustrated />
       </div>
-      <div className={styles.main}>
-        {lateEndAt ? (
-          <EmptyState
-            size="large"
-            illustrated
-            title={formatMessage(messages.noParticipationInPhaseDates)}
-            description={
-              <LateParticipationDescription phase={phase} endAt={lateEndAt} />
-            }
-          />
-        ) : (
-          emptyState
-        )}
-      </div>
+      <div className={styles.main}>{emptyState}</div>
     </>
   );
 };

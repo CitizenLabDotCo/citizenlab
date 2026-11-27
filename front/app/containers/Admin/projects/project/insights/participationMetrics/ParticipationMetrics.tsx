@@ -4,6 +4,7 @@ import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 
 import Skeleton from 'design-system/Skeleton';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
@@ -43,6 +44,8 @@ const ParticipationMetrics = ({ phase }: Props) => {
     phaseId: phase.id,
   });
 
+  const { data: appConfiguration } = useAppConfiguration();
+
   const metrics = response?.data.attributes.metrics;
   const isCurrentPhase = pastPresentOrFuture([start_at, end_at]) === 'present';
   // null when the back end could not measure them, as opposed to measuring none
@@ -55,6 +58,15 @@ const ParticipationMetrics = ({ phase }: Props) => {
   // participants, so their own tile replaces the participants one.
   const methodTileCountsParticipants =
     detailed && ['poll', 'volunteering'].includes(participation_method);
+  const adminsExcluded =
+    !!appConfiguration?.data.attributes.settings.core
+      .exclude_admins_and_moderators_from_statistics;
+  const visitorsTooltip = detailed
+    ? [
+        formatMessage(messages.visitorsMetricTooltip),
+        ...(adminsExcluded ? [formatMessage(messages.adminsLeftOut)] : []),
+      ].join(' ')
+    : undefined;
 
   useWordSection(
     'participation-metrics',
@@ -245,6 +257,7 @@ const ParticipationMetrics = ({ phase }: Props) => {
           change={
             isCurrentPhase ? metrics.visitors_7_day_percent_change : undefined
           }
+          labelTooltip={visitorsTooltip}
         />
         {participants !== null && !methodTileCountsParticipants && (
           <MetricCard

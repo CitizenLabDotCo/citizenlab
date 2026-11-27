@@ -7,6 +7,7 @@ import ChartLegend from 'design-system/ChartLegend';
 import DashboardCard from 'design-system/DashboardCard';
 import Skeleton from 'design-system/Skeleton';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
@@ -52,6 +53,7 @@ const ParticipantsTimeline = ({ phase }: Props) => {
   const graphRef = useRef<SVGElement>(null);
 
   const { data, isPending, error } = usePhaseInsights({ phaseId: phase.id });
+  const { data: appConfiguration } = useAppConfiguration();
 
   if (isPending && redesigned) {
     return (
@@ -131,6 +133,19 @@ const ParticipantsTimeline = ({ phase }: Props) => {
     const participantsLabel =
       methodSeries && formatMessage(methodSeries.label);
     const cardTitle = methodSeries ? formatMessage(methodSeries.title) : title;
+    const adminsExcluded =
+      !!appConfiguration?.data.attributes.settings.core
+        .exclude_admins_and_moderators_from_statistics;
+    const emptyChart = (
+      <p className={styles.empty}>
+        {formatMessage(
+          showParticipants
+            ? messages.noActivityInPhaseDates
+            : messages.noVisitsInPhaseDates
+        )}
+        {adminsExcluded && ` ${formatMessage(messages.adminsLeftOut)}`}
+      </p>
+    );
 
     return (
       <DashboardCard title={cardTitle} actions={exportMenu}>
@@ -149,6 +164,7 @@ const ParticipantsTimeline = ({ phase }: Props) => {
               showLegend={false}
               innerRef={graphRef}
               participantsLabel={participantsLabel}
+              emptyContainerContent={emptyChart}
             />
           </div>
           <ChartLegend

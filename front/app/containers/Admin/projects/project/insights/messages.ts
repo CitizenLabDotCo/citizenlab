@@ -21,9 +21,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.goToMessaging',
     defaultMessage: 'Go to Messaging',
   },
-  editProjectHomepage: {
-    id: 'app.containers.Admin.projects.project.insights.editProjectHomepage',
-    defaultMessage: 'Edit the project homepage',
+  editProjectPage: {
+    id: 'app.containers.Admin.projects.project.insights.editProjectPage',
+    defaultMessage: 'Edit the project page',
   },
   createInformationPhase: {
     id: 'app.containers.Admin.projects.project.insights.createInformationPhase',
@@ -194,6 +194,25 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.participationOverTime',
     defaultMessage: 'Participation over time',
   },
+  noVisitsInPhaseDates: {
+    id: 'app.containers.Admin.projects.project.insights.noVisitsInPhaseDates',
+    defaultMessage: 'No visits to the project during the phase dates.',
+  },
+  noActivityInPhaseDates: {
+    id: 'app.containers.Admin.projects.project.insights.noActivityInPhaseDates',
+    defaultMessage:
+      'No visits or participation during the phase dates.',
+  },
+  visitorsMetricTooltip: {
+    id: 'app.containers.Admin.projects.project.insights.visitorsMetricTooltip',
+    defaultMessage:
+      'The number of unique people who visited the project during the phase dates.',
+  },
+  adminsLeftOut: {
+    id: 'app.containers.Admin.projects.project.insights.adminsLeftOut',
+    defaultMessage:
+      'Admins and managers are left out, as set in the platform settings.',
+  },
   visitorsOverTime: {
     id: 'app.containers.Admin.projects.project.insights.visitorsOverTime',
     defaultMessage: 'Visitors over time',
@@ -221,6 +240,11 @@ export default defineMessages({
   deleteSurveyResults: {
     id: 'app.containers.Admin.projects.project.insights.deleteSurveyResults',
     defaultMessage: 'Delete survey results',
+  },
+  deleteSurveyResultsDialogText: {
+    id: 'app.containers.Admin.projects.project.insights.deleteSurveyResultsDialogText',
+    defaultMessage:
+      'This deletes all {count, plural, one {# response} other {# responses}} to this survey, with their answers. It cannot be undone.',
   },
   downloadInsightsPdf: {
     id: 'app.containers.Admin.projects.project.insights.downloadInsightsPdf',

@@ -12,6 +12,7 @@ import {
 import { useRouter } from '@tanstack/react-router';
 import { stringify } from 'qs';
 
+import AlertDialog from 'design-system/AlertDialog';
 import DsBadge from 'design-system/Badge';
 import DsButton from 'design-system/Button';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
@@ -35,6 +36,7 @@ import useInputResponseExport from 'containers/Admin/projects/project/inputRespo
 
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -85,7 +87,8 @@ const SurveyActions = ({ phase }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { mutate: updatePhase } = useUpdatePhase();
 
-  const { mutate: deleteFormResults } = useDeleteSurveyResults();
+  const { mutate: deleteFormResults, isPending: isDeletingResults } =
+    useDeleteSurveyResults();
   const { data: submissionCount } = useFormSubmissionCount({
     phaseId,
   });
@@ -252,11 +255,30 @@ const SurveyActions = ({ phase }: Props) => {
 
   const modals = (
     <>
-      <DeleteModal
-        showDeleteModal={showDeleteModal}
-        closeDeleteModal={closeDeleteModal}
-        deleteResults={deleteResults}
-      />
+      {redesigned ? (
+        <AlertDialog
+          isOpen={showDeleteModal}
+          onOpenChange={setShowDeleteModal}
+          title={formatMessage(messages.deleteSurveyResults)}
+          confirmLabel={formatMessage(messages.deleteSurveyResults)}
+          confirmationWord={formatMessage(
+            typedDeleteConfirmationMessages.confirmationWordDelete
+          )}
+          isPending={isDeletingResults}
+          onConfirm={deleteResults}
+          confirmDataCy="e2e-confirm-delete-survey-results"
+        >
+          {formatMessage(messages.deleteSurveyResultsDialogText, {
+            count: submissionCount.data.attributes.totalSubmissions,
+          })}
+        </AlertDialog>
+      ) : (
+        <DeleteModal
+          showDeleteModal={showDeleteModal}
+          closeDeleteModal={closeDeleteModal}
+          deleteResults={deleteResults}
+        />
+      )}
       {responseExportModal}
     </>
   );

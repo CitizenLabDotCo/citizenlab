@@ -10,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import StatTile from 'design-system/StatTile';
-import DsTooltip, { TooltipTarget } from 'design-system/Tooltip';
 
 import { SevenDayChange } from 'api/phase_insights/types';
 
@@ -64,37 +63,24 @@ const MetricCard = ({
     typeof value === 'number' ? formatNumber(value) : value;
 
   if (redesigned) {
-    const labelHint =
-      change !== undefined ? (
-        <>
-          {labelTooltip && <p className={styles.tooltipText}>{labelTooltip}</p>}
-          <MetricTrend change={change} />
-        </>
-      ) : (
-        labelTooltip
-      );
+    const hasHint = !!labelTooltip || !!valueTooltip || change !== undefined;
 
     return (
       <StatTile
         className={styles.panelMetric}
-        label={
-          labelHint ? (
-            <DsTooltip content={labelHint}>
-              <TooltipTarget className={styles.hint}>{label}</TooltipTarget>
-            </DsTooltip>
-          ) : (
-            label
-          )
-        }
-        value={
-          valueTooltip ? (
-            <DsTooltip content={valueTooltip}>
-              <TooltipTarget className={styles.hint}>
-                {formattedValue}
-              </TooltipTarget>
-            </DsTooltip>
-          ) : (
-            formattedValue
+        label={label}
+        value={formattedValue}
+        tooltip={
+          hasHint && (
+            <>
+              {labelTooltip && (
+                <p className={styles.tooltipText}>{labelTooltip}</p>
+              )}
+              {valueTooltip && (
+                <p className={styles.tooltipText}>{valueTooltip}</p>
+              )}
+              {change !== undefined && <MetricTrend change={change} />}
+            </>
           )
         }
       />

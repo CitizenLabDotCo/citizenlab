@@ -14,3 +14,12 @@
 .chart :global(.recharts-cartesian-axis-tick-line) {
   stroke: var(--gv-border-control);
 }
+
+/* Sits in the chart's empty box, which centres it. */
+.empty {
+  composes: body from '../../../../../design-system/typography.module.css';
+  max-width: 360px;
+  margin: 0;
+  color: var(--gv-text-secondary);
+  text-align: center;
+}

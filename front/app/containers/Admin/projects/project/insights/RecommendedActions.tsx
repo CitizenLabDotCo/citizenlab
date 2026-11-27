@@ -69,8 +69,8 @@ const RecommendedActions = ({ phase, children }: Props) => {
     to: '/$locale/admin/projects/$projectId/messaging',
     params: { locale, projectId },
   }).href;
-  const projectHref = router.buildLocation({
-    to: '/$locale/admin/projects/$projectId',
+  const projectPageEditorHref = router.buildLocation({
+    to: '/$locale/admin/project-page-builder/projects/$projectId',
     params: { locale, projectId },
   }).href;
   const informationPhaseHref = router.buildLocation({
@@ -123,8 +123,8 @@ const RecommendedActions = ({ phase, children }: Props) => {
           <MenuItem href={messagingHref}>
             {formatMessage(messages.goToMessaging)}
           </MenuItem>
-          <MenuItem href={projectHref}>
-            {formatMessage(messages.editProjectHomepage)}
+          <MenuItem href={projectPageEditorHref}>
+            {formatMessage(messages.editProjectPage)}
           </MenuItem>
           <MenuItem href={informationPhaseHref}>
             {formatMessage(messages.createInformationPhase)}

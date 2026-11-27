@@ -29,6 +29,7 @@ type Props = Dates &
     isAnimationActive?: boolean;
     // What the participants line counts, when a method names them otherwise.
     participantsLabel?: string;
+    emptyContainerContent?: React.ReactNode;
   };
 
 const getLineConfig = (
@@ -61,6 +62,7 @@ const Chart = ({
   showLegend = true,
   isAnimationActive,
   participantsLabel,
+  emptyContainerContent,
 }: Props & AccessibilityProps) => {
   const { formatMessage } = useIntl();
 
@@ -126,6 +128,7 @@ const Chart = ({
           : undefined
       }
       innerRef={noData ? undefined : innerRef}
+      emptyContainerContent={emptyContainerContent}
       {...accessibilityProps}
     />
   );

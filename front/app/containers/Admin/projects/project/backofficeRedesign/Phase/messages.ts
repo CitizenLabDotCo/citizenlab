@@ -35,6 +35,29 @@ export default defineMessages({
     defaultMessage:
       'Once the project is live, insights will help you turn participation into clear results',
   },
+  insightsNoActivity: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsNoActivity',
+    defaultMessage: 'No activity counted in this phase',
+  },
+  insightsCountsPhaseDates: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsCountsPhaseDates',
+    defaultMessage:
+      'Insights counts the visits and participation during the phase dates.',
+  },
+  insightsCountsPhaseDatesWithoutAdmins: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsCountsPhaseDatesWithoutAdmins',
+    defaultMessage:
+      'Insights counts the visits and participation during the phase dates. Admins and managers are left out, as set in the platform settings.',
+  },
+  insightsOnlyAdminActivity: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsOnlyAdminActivity',
+    defaultMessage: 'Only admins and managers have taken part so far',
+  },
+  insightsLeavesOutAdmins: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsLeavesOutAdmins',
+    defaultMessage:
+      'Insights leaves out the visits and participation of admins and managers, as set in the platform settings.',
+  },
   noParticipationInPhaseDates: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.noParticipationInPhaseDates',
     defaultMessage: 'No participation in the phase dates',

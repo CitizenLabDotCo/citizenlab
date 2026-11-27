@@ -49,6 +49,7 @@ import InsightsPdfContent from './pdf/InsightsPdfContent';
 import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
 import PdfRenderModeProvider from './pdf/PdfRenderModeProvider';
 import RecommendedActions from './RecommendedActions';
+import useRefreshParticipationData from './useRefreshParticipationData';
 import wordMessages from './word/messages';
 import {
   WordExportProvider,
@@ -94,6 +95,7 @@ const InsightsContent = () => {
   const { formatMessage } = useIntl();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const inputResponseExport = useInputResponseExport({ projectId, phaseId });
+  useRefreshParticipationData(phaseId, redesigned);
 
   const {
     downloadPdf,
