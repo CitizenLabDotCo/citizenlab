@@ -14,6 +14,7 @@ type Props = {
   // While a change saves, the spinner takes the chevron's place.
   isPending?: boolean;
   'aria-label'?: string;
+  'aria-describedby'?: string;
 };
 
 // The library's Pill picker trigger: a grey pill with the value and a chevron,
@@ -22,11 +23,13 @@ const PillButton = ({
   children,
   isPending = false,
   'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
 }: Props) => (
   <AriaButton
     className={styles.pill}
     isPending={isPending}
     aria-label={ariaLabel}
+    aria-describedby={ariaDescribedBy}
   >
     <span className={styles.label}>{children}</span>
     {isPending ? (

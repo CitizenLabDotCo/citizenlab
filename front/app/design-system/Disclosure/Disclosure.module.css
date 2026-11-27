@@ -94,6 +94,11 @@
   background: var(--gv-surface-pressed);
 }
 
+/* An open card reads as one surface: its header never fills. */
+.card[data-expanded] > .heading > .trigger {
+  background: none;
+}
+
 .title {
   composes: small from '../typography.module.css';
   flex: 1;
