@@ -8,7 +8,7 @@ import DashboardCard from 'design-system/DashboardCard';
 import Skeleton from 'design-system/Skeleton';
 
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
@@ -19,7 +19,7 @@ import {
 } from 'components/admin/GraphCards/ParticipantsCard/series';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import styles from './ParticipantsTimeline.module.css';
@@ -33,6 +33,17 @@ interface Props {
 // Fixed dimensions for PDF export to fit A4 page (with 15mm margins)
 const PDF_CHART_WIDTH = 650;
 const PDF_CHART_HEIGHT = 280;
+
+// Methods whose dashboards name the participants after what they did.
+const METHOD_SERIES: Partial<
+  Record<
+    ParticipationMethod,
+    { title: MessageDescriptor; label: MessageDescriptor }
+  >
+> = {
+  poll: { title: messages.responsesOverTime, label: messages.respondents },
+  volunteering: { title: messages.signUpsOverTime, label: messages.volunteerings },
+};
 
 const ParticipantsTimeline = ({ phase }: Props) => {
   const { isPdfRenderMode } = usePdfExportContext();
@@ -116,12 +127,16 @@ const ParticipantsTimeline = ({ phase }: Props) => {
     const series: SeriesKey[] = showParticipants
       ? ['participants', 'visitors']
       : ['visitors'];
+    const methodSeries = METHOD_SERIES[phase.attributes.participation_method];
+    const participantsLabel =
+      methodSeries && formatMessage(methodSeries.label);
+    const cardTitle = methodSeries ? formatMessage(methodSeries.title) : title;
 
     return (
-      <DashboardCard title={title} actions={exportMenu}>
+      <DashboardCard title={cardTitle} actions={exportMenu}>
         <WordExportableInsight
           exportId="participation-timeline"
-          heading={title}
+          heading={cardTitle}
         >
           <div className={styles.chart}>
             <Chart
@@ -133,11 +148,15 @@ const ParticipantsTimeline = ({ phase }: Props) => {
               showVisitors
               showLegend={false}
               innerRef={graphRef}
+              participantsLabel={participantsLabel}
             />
           </div>
           <ChartLegend
             items={series.map((key) => ({
-              label: formatMessage(SERIES[key].label),
+              label:
+                key === 'participants' && participantsLabel
+                  ? participantsLabel
+                  : formatMessage(SERIES[key].label),
               color: SERIES[key].color,
             }))}
           />

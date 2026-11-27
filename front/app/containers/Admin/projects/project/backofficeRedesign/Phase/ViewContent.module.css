@@ -22,7 +22,3 @@
   flex-grow: 1;
   height: auto;
 }
-
-.note {
-  padding: var(--gv-space-18);
-}

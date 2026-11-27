@@ -3,6 +3,11 @@
   min-width: 0;
 }
 
+/* Four tiles fill the row, as in the poll and volunteering dashboards. */
+.fourTiles > .panelMetric {
+  flex-basis: calc((100% - 3 * var(--gv-space-16)) / 4);
+}
+
 /* Focusable so the design-system Tooltip can open on hover and keyboard focus. */
 .hint {
   composes: ringOutside from '../../../../../../design-system/focus.module.css';

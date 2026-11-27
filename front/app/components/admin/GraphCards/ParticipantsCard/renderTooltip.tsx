@@ -8,7 +8,6 @@ import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 import { colors } from 'components/admin/Graphs/styling';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
 import { SERIES, SeriesKey } from './series';
@@ -28,6 +27,7 @@ type CustomTooltipProps = {
     | [];
   resolution: IResolution;
   series: SeriesKey[];
+  labels: Record<SeriesKey, string>;
 };
 
 const CustomTooltip = ({
@@ -35,6 +35,7 @@ const CustomTooltip = ({
   payload,
   resolution,
   series,
+  labels,
 }: CustomTooltipProps) => {
   if (!payload?.[0]?.payload || !label) return null;
 
@@ -53,7 +54,7 @@ const CustomTooltip = ({
               mr="6px"
               mt="-2px"
             />
-            <FormattedMessage {...SERIES[key].label} />: {data[key]}
+            {labels[key]}: {data[key]}
           </Box>
         )
       )}
@@ -62,7 +63,12 @@ const CustomTooltip = ({
 };
 
 const renderTooltip =
-  (resolution: IResolution, series: SeriesKey[]) => (props) =>
+  (
+    resolution: IResolution,
+    series: SeriesKey[],
+    labels: Record<SeriesKey, string>
+  ) =>
+  (props) =>
     (
       <Tooltip
         {...props}
@@ -73,6 +79,7 @@ const renderTooltip =
             payload={props.payload as any}
             resolution={resolution}
             series={series}
+            labels={labels}
           />
         )}
       />

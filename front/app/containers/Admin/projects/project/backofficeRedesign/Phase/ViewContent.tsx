@@ -1,12 +1,8 @@
 import React, { ReactNode } from 'react';
 
-import Banner from 'design-system/Banner';
-
 import { PhaseInsightsParticipationMetrics } from 'api/phase_insights/types';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
-
-import projectMessages from 'containers/Admin/projects/project/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -39,7 +35,11 @@ const isPhaseEmpty = (
   { metrics }: Responses
 ) => {
   if (view === 'insights') {
-    if (!metrics) return false;
+    // Visitors are all a document's Insights count, so zero visitors is its
+    // dashboard's answer rather than an empty view.
+    if (!metrics || attributes.participation_method === 'document_annotation') {
+      return false;
+    }
 
     const activity = [
       metrics.visitors,
@@ -158,6 +158,10 @@ const ViewContent = ({ phase, view, children }: Props) => {
 
   return (
     <>
+      {/* The actions column, before the dashboard, shows only the small notebook. */}
+      <div className={styles.sidePanel}>
+        <EmptyState size="small" illustrated />
+      </div>
       <div className={styles.main}>
         {lateEndAt ? (
           <EmptyState
@@ -170,17 +174,6 @@ const ViewContent = ({ phase, view, children }: Props) => {
           />
         ) : (
           emptyState
-        )}
-      </div>
-      <div className={styles.sidePanel}>
-        {/* The side column shows only the small notebook. */}
-        <EmptyState size="small" illustrated />
-        {phase.attributes.participation_method === 'document_annotation' && (
-          <div role="note" className={styles.note}>
-            <Banner tone="neutral">
-              {formatMessage(projectMessages.konveioParticipationDataNotice)}
-            </Banner>
-          </div>
         )}
       </div>
     </>

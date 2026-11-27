@@ -14,6 +14,8 @@ import VotingMetrics from './methodMetrics/VotingMetrics';
 interface Props {
   participationMethod: ParticipationMethod;
   inputTerm?: InputTerm;
+  // Set in the redesigned workspace only.
+  phaseId?: string;
   metrics: PhaseInsightsParticipationMetrics;
   showChange: boolean;
 }
@@ -21,6 +23,7 @@ interface Props {
 const MethodMetrics = ({
   participationMethod,
   inputTerm,
+  phaseId,
   metrics,
   showChange,
 }: Props) => {
@@ -40,7 +43,11 @@ const MethodMetrics = ({
       const proposalsMetrics = metrics.proposals;
       if (!proposalsMetrics) return null;
       return (
-        <ProposalsMetrics metrics={proposalsMetrics} showChange={showChange} />
+        <ProposalsMetrics
+          metrics={proposalsMetrics}
+          inputTerm={inputTerm}
+          showChange={showChange}
+        />
       );
     }
     case 'native_survey':
@@ -52,7 +59,13 @@ const MethodMetrics = ({
     case 'poll': {
       const pollMetrics = metrics.poll;
       if (!pollMetrics) return null;
-      return <PollMetrics metrics={pollMetrics} showChange={showChange} />;
+      return (
+        <PollMetrics
+          metrics={pollMetrics}
+          phaseId={phaseId}
+          showChange={showChange}
+        />
+      );
     }
     case 'common_ground': {
       const commonGroundMetrics = metrics.common_ground;
@@ -75,6 +88,7 @@ const MethodMetrics = ({
       return (
         <VolunteeringMetrics
           metrics={volunteeringMetrics}
+          phaseId={phaseId}
           showChange={showChange}
         />
       );

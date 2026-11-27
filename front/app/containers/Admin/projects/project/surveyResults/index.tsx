@@ -2,9 +2,11 @@ import React, { Fragment } from 'react';
 
 import styled from 'styled-components';
 
+import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import T from 'components/T';
@@ -13,6 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
+import ExternalSurveyInsights from '../insights/ExternalSurveyInsights';
 import messages from '../messages';
 
 import ExportSurveyButton from './ExportSurveyButton';
@@ -24,12 +27,14 @@ const Container = styled.div`
 `;
 
 const SurveyResults = () => {
-  const { projectId } = useParams({
+  const { projectId, phaseId } = useParams({
     from: '/$locale/admin/projects/$projectId/phases/$phaseId/survey-results',
   });
   const surveys_enabled = useFeatureFlag({ name: 'surveys' });
   const typeform_enabled = useFeatureFlag({ name: 'typeform_surveys' });
+  const redesigned = useProjectBackofficeRedesign();
   const { data: phases } = usePhases(projectId);
+  const { data: phase } = usePhase(redesigned ? phaseId : null);
 
   const renderButtons = () => {
     if (surveys_enabled && typeform_enabled && !isNilOrError(phases)) {
@@ -52,6 +57,10 @@ const SurveyResults = () => {
     }
     return null;
   };
+
+  if (redesigned) {
+    return phase ? <ExternalSurveyInsights phase={phase.data} /> : null;
+  }
 
   return (
     <>

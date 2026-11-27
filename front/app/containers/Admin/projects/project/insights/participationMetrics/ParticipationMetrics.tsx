@@ -50,6 +50,11 @@ const ParticipationMetrics = ({ phase }: Props) => {
   const participationRate = metrics?.participation_rate_as_percent ?? null;
   // for Konveio, notice to explain where data can be found.
   const showKonveioNotice = participation_method === 'document_annotation';
+  const detailed = redesigned && !isPdfRenderMode;
+  // A poll's respondents and a volunteering phase's volunteers are its
+  // participants, so their own tile replaces the participants one.
+  const methodTileCountsParticipants =
+    detailed && ['poll', 'volunteering'].includes(participation_method);
 
   useWordSection(
     'participation-metrics',
@@ -229,8 +234,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
       <Box
         display="flex"
         flexWrap="wrap"
-        gap={redesigned && !isPdfRenderMode ? '10px' : '16px'}
+        gap={detailed && !methodTileCountsParticipants ? '10px' : '16px'}
         w="100%"
+        className={methodTileCountsParticipants ? styles.fourTiles : undefined}
       >
         <MetricCard
           label={formatMessage(messages.visitors)}
@@ -240,7 +246,7 @@ const ParticipationMetrics = ({ phase }: Props) => {
             isCurrentPhase ? metrics.visitors_7_day_percent_change : undefined
           }
         />
-        {participants !== null && (
+        {participants !== null && !methodTileCountsParticipants && (
           <MetricCard
             label={formatMessage(messages.participants)}
             value={participants}
@@ -257,17 +263,18 @@ const ParticipationMetrics = ({ phase }: Props) => {
         )}
         <MethodMetrics
           participationMethod={participation_method}
-          inputTerm={
-            redesigned && !isPdfRenderMode
-              ? phase.attributes.input_term
-              : undefined
-          }
+          inputTerm={detailed ? phase.attributes.input_term : undefined}
+          phaseId={detailed ? phase.id : undefined}
           metrics={metrics}
           showChange={isCurrentPhase}
         />
         {participationRate !== null && (
           <MetricCard
-            label={formatMessage(messages.participationRate)}
+            label={formatMessage(
+              detailed && participation_method === 'poll'
+                ? messages.responseRate
+                : messages.participationRate
+            )}
             value={
               participationRate ===
               'participant_count_compared_with_zero_visitors'

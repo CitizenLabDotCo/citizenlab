@@ -42,6 +42,7 @@ import styles from './Insights.module.css';
 import messages from './messages';
 import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
 import SurveyActions from './methodSpecific/nativeSurvey/SurveyActions';
+import PollExportAction from './methodSpecific/poll/PollExportAction';
 import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import InsightsPdfContent from './pdf/InsightsPdfContent';
@@ -347,6 +348,7 @@ const InsightsContent = () => {
           isPending={isCreatingAnalysis}
         />
       )}
+      {participationMethod === 'poll' && <PollExportAction phase={phase.data} />}
       <MenuTrigger>
         <Disclosure
           header="button"

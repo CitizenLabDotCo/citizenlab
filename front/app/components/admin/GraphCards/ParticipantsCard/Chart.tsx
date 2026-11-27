@@ -27,6 +27,8 @@ type Props = Dates &
     showVisitors?: boolean;
     showLegend?: boolean;
     isAnimationActive?: boolean;
+    // What the participants line counts, when a method names them otherwise.
+    participantsLabel?: string;
   };
 
 const getLineConfig = (
@@ -58,6 +60,7 @@ const Chart = ({
   showVisitors = false,
   showLegend = true,
   isAnimationActive,
+  participantsLabel,
 }: Props & AccessibilityProps) => {
   const { formatMessage } = useIntl();
 
@@ -71,10 +74,15 @@ const Chart = ({
     [startAtMoment, endAtMoment, resolution]
   );
 
+  const labels: Record<SeriesKey, string> = {
+    participants: participantsLabel ?? formatMessage(SERIES.participants.label),
+    visitors: formatMessage(SERIES.visitors.label),
+  };
+
   const legendItems: LegendItem[] = series.map((key) => ({
     icon: 'circle',
     color: SERIES[key].color,
-    label: formatMessage(SERIES[key].label),
+    label: labels[key],
   }));
 
   const formatTick = (date: string) => {
@@ -108,7 +116,7 @@ const Chart = ({
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
       yaxis={yaxis}
-      tooltip={noData ? undefined : renderTooltip(resolution, series)}
+      tooltip={noData ? undefined : renderTooltip(resolution, series, labels)}
       legend={
         showLegend
           ? {

@@ -328,4 +328,29 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.downloadWord',
     defaultMessage: 'Download as Word',
   },
+  pollQuestions: {
+    id: 'app.containers.Admin.projects.project.insights.pollQuestions',
+    defaultMessage: 'Questions',
+  },
+  responseRate: {
+    id: 'app.containers.Admin.projects.project.insights.responseRate',
+    defaultMessage: 'Response rate',
+  },
+  causes: {
+    id: 'app.containers.Admin.projects.project.insights.causes',
+    defaultMessage: 'Causes',
+  },
+  responsesOverTime: {
+    id: 'app.containers.Admin.projects.project.insights.responsesOverTime',
+    defaultMessage: 'Responses over time',
+  },
+  signUpsOverTime: {
+    id: 'app.containers.Admin.projects.project.insights.signUpsOverTime',
+    defaultMessage: 'Sign-ups over time',
+  },
+  externalSurveyResponses: {
+    id: 'app.containers.Admin.projects.project.insights.externalSurveyResponses',
+    defaultMessage:
+      'Responses are kept in the survey tool. Use Export to download them.',
+  },
 });
