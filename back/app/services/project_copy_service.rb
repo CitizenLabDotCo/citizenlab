@@ -32,7 +32,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     project
   end
 
-  def export(
+  def export( # rubocop:disable Metrics/ParameterLists
     project,
     local_copy: false,
     include_ideas: false,
@@ -42,7 +42,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     new_slug: nil,
     new_title_multiloc: nil,
     timeline_start_at: nil,
-    new_publication_status: nil
+    new_publication_status: nil,
+    space_id: nil
   )
     include_ideas = false if local_copy
     max_ideas = max_ideas.presence&.to_i
@@ -56,7 +57,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     new_slug = SlugService.new.generate_slug(nil, new_slug) if new_slug
 
     # TODO: deal with linking idea_statuses, custom field values and maybe areas and groups
-    @template['models']['project']                       = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
+    @template['models']['project']                       = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, space_id: space_id, shift_timestamps: shift_timestamps
     @template['models']['project_image']                 = yml_project_images shift_timestamps: shift_timestamps
     @template['models']['phase']                         = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
     @template['models']['custom_form']                   = yml_custom_forms shift_timestamps: shift_timestamps
@@ -299,7 +300,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def yml_projects(shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil)
+  def yml_projects(shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil, space_id: nil)
     yml_project = {
       'title_multiloc' => new_title_multiloc || @project.title_multiloc,
       'created_at' => shift_timestamp(@project.created_at, shift_timestamps)&.iso8601,
@@ -324,7 +325,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       'internal_role' => @project.internal_role,
       'listed' => @project.listed,
       'track_participation_location' => @project.track_participation_location,
-      'space_id' => @local_copy ? @project.space_id : nil
+      # Set as given: nil puts the copy at the root, outside any space.
+      'space_id' => space_id
     }
     yml_project['slug'] = new_slug if new_slug.present?
     store_ref yml_project, @project.id, :project

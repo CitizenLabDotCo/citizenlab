@@ -124,6 +124,14 @@ describe LocalProjectCopyService do
       expect(copied_project.space_id).to be_nil
     end
 
+    it 'refuses a space that does not match the given folder' do
+      source_project = create(:project)
+      dest_folder = create(:project_folder, space: create(:space))
+
+      expect { service.copy(source_project, dest_folder: dest_folder, dest_space: create(:space)) }
+        .to raise_error(ArgumentError)
+    end
+
     it 'associates areas of source project with copied project' do
       source_project = build(:project, areas: create_list(:area, 2))
       copied_project = service.copy(source_project)
