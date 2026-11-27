@@ -36,6 +36,30 @@ describe('DayPressRangePicker', () => {
     ).toHaveFocus();
   });
 
+  it('hands a day pressed in the calendar to the caller only as a day press', async () => {
+    const user = userEvent.setup();
+    const props = handlers();
+    render(
+      <DayPressRangePicker
+        aria-label="Dates"
+        value={null}
+        {...props}
+        minValue={new CalendarDate(2026, 1, 1)}
+        defaultFocusedValue={new CalendarDate(2026, 11, 14)}
+      />
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: 'Open the calendar Start date' })
+    );
+    await user.click(
+      await screen.findByRole('button', { name: /November 1, 2026/ })
+    );
+
+    expect(props.onDayPress).toHaveBeenCalledWith(new CalendarDate(2026, 11, 1));
+    expect(props.onStartChange).not.toHaveBeenCalled();
+  });
+
   it('writes the day first and hands a typed start day to the caller', async () => {
     const user = userEvent.setup();
     const props = handlers();

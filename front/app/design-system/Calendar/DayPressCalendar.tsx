@@ -65,6 +65,9 @@ const DayPressCalendar = ({
 
   return (
     <AriaCalendar<CalendarDate, 'multiple'>
+      // Inside a date picker's popover, the picker's calendar context would
+      // also hand each press's list of days to the picker as its single day.
+      slot={null}
       selectionMode="multiple"
       className={styles.calendar}
       value={selectedDays}
