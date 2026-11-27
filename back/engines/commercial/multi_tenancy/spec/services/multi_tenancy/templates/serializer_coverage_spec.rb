@@ -118,11 +118,12 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         Analytics::DimensionType
       ],
 
-      # The AI assistant's chats with individual admins — per-user runtime data, never
-      # templated or copied.
+      # Chats with the model: the AI assistant's with individual admins, and each
+      # report's. Runtime data, never templated or copied.
       ai_assistant: %w[
         AIAssistant::Conversation
         AIAssistant::Message
+        AIAssistant::Run
         AIAssistant::ToolCall
       ],
 
@@ -229,15 +230,13 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         UserCustomFields::Representativeness::RefDistribution
       ],
 
-      # AI-authored page builder blocks, the answers they cached and the record of
-      # the runs that wrote them. All of it stays in the tenant that made it: the
-      # feature is behind the `llm_reporting` flag and has no template story yet.
+      # AI-authored page builder blocks and the answers they cached. All of it stays
+      # in the tenant that made it: the feature is behind the `llm_reporting` flag and
+      # has no template story yet.
       llm_reporting: %w[
         ContentBuilder::CustomBlock
         ContentBuilder::CustomBlockVersion
         ContentBuilder::QuerySnapshot
-        ReportBuilder::GenerationTranscript
-        ReportBuilder::ReportChat
       ],
 
       # Files engine — Preview/Transcript are derived artifacts (generated from the file),

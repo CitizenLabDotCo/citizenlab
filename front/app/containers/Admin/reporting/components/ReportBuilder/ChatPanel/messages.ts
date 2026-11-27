@@ -26,4 +26,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.ChatPanel.stop',
     defaultMessage: 'Stop',
   },
+  sendFailed: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.ChatPanel.sendFailed',
+    defaultMessage: 'Your message could not be sent. Please try again.',
+  },
 });

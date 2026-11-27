@@ -1,11 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, Title, stylingConsts } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Title,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import styled from 'styled-components';
 
 import useReportChat from 'api/report_chat/useReportChat';
-import useSendReportChatMessage from 'api/report_chat/useSendReportChatMessage';
+import useSendReportChatMessage, {
+  isConversationBusy,
+} from 'api/report_chat/useSendReportChatMessage';
 import useCancelReportGeneration from 'api/report_generation/useCancelReportGeneration';
 import useReportLayout from 'api/report_layout/useReportLayout';
 
@@ -24,6 +31,10 @@ const Panel = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
 `;
 
+// The longest message the backend accepts (AIAssistant::Message::MAX_CONTENT_LENGTH).
+// The text area stops typing at this length, so a longer message is never sent.
+const MAX_MESSAGE_LENGTH = 5000;
+
 interface Props {
   reportId: string;
   setSaved: (savedNodes: SerializedNodes) => void;
@@ -40,8 +51,11 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
   const { data: chat } = useReportChat(reportId, {
     enabled: llmReportingEnabled,
   });
-  const { mutate: sendMessage, isPending: sending } =
-    useSendReportChatMessage();
+  const {
+    mutate: sendMessage,
+    isPending: sending,
+    error: sendError,
+  } = useSendReportChatMessage();
   const { mutate: cancelTurn, isPending: stopping } =
     useCancelReportGeneration();
   const { refetch: refetchLayout } = useReportLayout(reportId);
@@ -82,8 +96,12 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
 
     // Send the layout as it stands in the editor, so unsaved edits are what the
     // model revises rather than what it overwrites.
-    sendMessage({ reportId, message, craftjsJson: query.getSerializedNodes() });
-    setDraft('');
+    // The draft is only cleared once the turn is accepted, so a refused message
+    // can be sent again.
+    sendMessage(
+      { reportId, message, craftjsJson: query.getSerializedNodes() },
+      { onSuccess: () => setDraft('') }
+    );
   };
 
   return (
@@ -120,10 +138,16 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
           value={draft}
           rows={3}
           disabled={pending}
+          maxCharCount={MAX_MESSAGE_LENGTH}
           placeholder={formatMessage(messages.placeholder)}
           onChange={setDraft}
         />
       </Box>
+      {sendError && !isConversationBusy(sendError) && (
+        <Text my="8px" fontSize="s" color="red600">
+          <FormattedMessage {...messages.sendFailed} />
+        </Text>
+      )}
       <Box mt="8px" display="flex" alignItems="center" gap="8px">
         <ButtonWithLink
           buttonStyle="primary"

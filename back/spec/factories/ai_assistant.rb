@@ -14,6 +14,13 @@ FactoryBot.define do
     content { 'Create a survey about our park.' }
   end
 
+  factory :ai_assistant_run, class: 'AIAssistant::Run' do
+    conversation factory: :ai_assistant_conversation
+    model { 'eu.anthropic.claude-sonnet-4-6' }
+    usage { { 'input_tokens' => 1000, 'output_tokens' => 200 } }
+    stopped_because { 'done' }
+  end
+
   factory :ai_assistant_tool_call, class: 'AIAssistant::ToolCall' do
     message { association :ai_assistant_message, role: 'assistant', content: nil }
     sequence(:tool_use_id) { |n| "tooluse_#{n}" }

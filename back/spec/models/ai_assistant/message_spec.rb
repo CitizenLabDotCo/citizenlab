@@ -27,6 +27,36 @@ describe AIAssistant::Message do
     expect(build(:ai_assistant_message, conversation:, role: 'assistant', content: long_content)).to be_valid
   end
 
+  # The context an app writes around what a person typed carries the whole subject,
+  # and nobody typed it.
+  it 'limits the length of what a person typed, not of the context written around it' do
+    too_long = 'a' * (described_class::MAX_CONTENT_LENGTH + 1)
+
+    expect(build(:ai_assistant_message, conversation:, content: too_long)).to be_invalid
+    expect(build(:ai_assistant_message, conversation:, content: nil, model_text: too_long)).to be_valid
+  end
+
+  describe '#for_model' do
+    it 'is the context written for it' do
+      message = build(:ai_assistant_message, conversation:, content: 'Shorter.', model_text: 'Shorter. The report reads:')
+
+      expect(message.for_model).to eq 'Shorter. The report reads:'
+    end
+
+    # Most messages are written once and read by both.
+    it 'falls back to what the chat shows' do
+      expect(build(:ai_assistant_message, conversation:, content: 'Shorter.').for_model).to eq 'Shorter.'
+    end
+  end
+
+  # The chat shows a message it has text for; a step of a run it has none for.
+  it 'is listed as displayed only when it has something to show' do
+    shown = create(:ai_assistant_message, conversation:, content: 'Shorter.')
+    create(:ai_assistant_message, conversation:, content: nil, model_text: 'The report reads:')
+
+    expect(conversation.messages.displayed).to eq [shown]
+  end
+
   describe 'files', :active_job_que_adapter do
     let(:file) { create(:file, ai_processing_allowed: true, projects: [conversation.subject.project]) }
 

@@ -127,7 +127,7 @@ module ReportBuilder
           # The lock makes the in-progress check + enqueue atomic across concurrent requests.
           tracker = begin
             ::CitizenLab::LockManager.try_with_transaction_lock("generate_report/#{report.id}") do
-              enqueue_generate_report_job.tracker unless report.running_generation_tracker
+              enqueue_generate_report_job.tracker unless report.running_generation_tracker || report.chat&.running?
             end
           rescue ::CitizenLab::LockManager::FailedToLock
             nil
@@ -148,7 +148,8 @@ module ReportBuilder
         # was written up to then is saved.
         def cancel_generation
           authorize report, :cancel_generation?
-          run = report.generation_transcripts.running.newest_first.first
+          report.recover_lost_runs!
+          run = report.runs.running.newest_first.first
 
           if run.nil?
             return render json: { errors: { base: [{ error: 'not_running' }] } }, status: :not_found
@@ -166,57 +167,103 @@ module ReportBuilder
 
         # The report chat: the conversation and what it changed.
         def chat
+          report.recover_lost_runs!
           render json: chat_json(report.chat)
         end
 
         # Adds the admin's turn and starts the model's. The turn itself runs in the
         # background; the panel follows it by polling #chat.
         #
+        # Refuses with 409 while the model is already working on this report — another
+        # admin's turn, or a generation: two runs would write the same layout at once,
+        # and both are paid model calls.
+        #
         # The panel sends the layout as it stands in the editor, unsaved edits and all,
         # and that is what the model revises. Without it a turn would silently discard
         # whatever the admin had changed but not yet saved.
         def chat_turn
-          chat = report.chat || report.create_chat!
+          report.recover_lost_runs!
+          chat = report.chat!(locale: current_user.locale.to_s)
 
           # Authorize first (reading `report` does that), then look at the input.
-          # Not `require`: a blank message is a 422 with a code the panel can read,
-          # not a raised ParameterMissing.
+          # Not `require`: a blank or too long message is a 422 with a code the panel
+          # can read, not a raised ParameterMissing.
           message = params[:message].to_s.strip
-          if message.blank?
-            return render json: { errors: { message: [{ error: 'blank' }] } },
-              status: :unprocessable_entity
+          error = message_error(message)
+          return render json: { errors: { message: [{ error: error }] } }, status: :unprocessable_entity if error
+
+          started = chat.with_lock do
+            next false if chat.running? || report.running_generation_tracker
+
+            # The run writes the prompt it builds around these words onto this same
+            # message, as its context: the panel shows the question, the model is sent
+            # the question with the report.
+            turn = chat.messages.create!(role: 'user', content: message, author: current_user)
+            chat.update!(status: 'running', last_error_code: nil, turn_started_at: Time.current)
+            # In the same transaction, so a turn is never marked running without a
+            # job to end it.
+            enqueue_revise_report_job(message, turn)
+            true
           end
 
-          chat.append_turn!({ 'role' => 'user', 'text' => message, 'at' => Time.current.iso8601 })
+          if started
+            render json: chat_json(chat), status: :created
+          else
+            render json: { errors: { base: [{ error: 'conversation_busy' }] } }, status: :conflict
+          end
+        end
 
+        private
+
+        def message_error(message)
+          if message.blank?
+            'blank'
+          elsif message.length > ::AIAssistant::Message::MAX_CONTENT_LENGTH
+            'too_long'
+          end
+        end
+
+        # The chat as the panel shows it: a turn is a role, a line of text and a
+        # timestamp. `pending` is true while the model is at work on the report, a
+        # generation included, so the panel does not offer a turn that would be
+        # refused. `changed_layout` tells the panel to pull the new layout into the
+        # editor — only then, or it would overwrite edits the admin has not saved.
+        def chat_json(chat)
+          {
+            data: {
+              id: chat&.id || report.id,
+              type: 'report_chat',
+              attributes: {
+                turns: chat_turns(chat),
+                pending: chat&.running? || report.running_generation_tracker.present?
+              }
+            }
+          }
+        end
+
+        def enqueue_revise_report_job(message, turn)
           ReportBuilder::ReviseReportJob
             .with_tracking(owner: current_user)
             .perform_later(
               report,
               instruction: message,
               locale: current_user.locale.to_s,
-              craftjs_json: params[:craftjs_json]&.to_unsafe_h
+              craftjs_json: params[:craftjs_json]&.to_unsafe_h,
+              # Which turn this job answers: by the time it runs, the chat may have
+              # given up on it and moved on to a newer question.
+              turn_id: turn.id
             )
-
-          render json: chat_json(chat), status: :created
         end
 
-        private
+        def chat_turns(chat)
+          return [] if chat.nil?
 
-        # The transcript is the whole resource: a turn is a role, a line of text and a
-        # timestamp. `pending` is true while the model still owes an answer.
-        def chat_json(chat)
-          turns = chat&.transcript || []
-          {
-            data: {
-              id: chat&.id || report.id,
-              type: 'report_chat',
-              attributes: {
-                turns: turns,
-                pending: turns.last&.dig('role') == 'user'
-              }
-            }
-          }
+          chat.messages.displayed.includes(:run).map do |message|
+            turn = { 'role' => message.role, 'text' => message.content, 'at' => message.created_at.iso8601 }
+            next turn if message.user?
+
+            turn.merge('changed_layout' => message.run&.applied? || false)
+          end
         end
 
         def enqueue_generate_report_job

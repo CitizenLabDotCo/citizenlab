@@ -6,7 +6,7 @@ module ReportBuilder
   #
   # It runs as a job for the same reason generation does — a turn that adds a chart
   # is a minute of model calls and SQL — and the panel follows it by polling the
-  # chat, which is pending for as long as the last turn is the admin's.
+  # chat, which is pending for as long as the turn is running.
   class ReviseReportJob < ApplicationJob
     include Jobs::TrackableJob
 
@@ -14,22 +14,31 @@ module ReportBuilder
     # attempt, and each attempt is a paid model call.
     MAX_RETRY_COUNT = 1
 
+    # @param turn_id [String] the admin's message this job answers.
     # @param craftjs_json [Hash, nil] the layout as it stands in the admin's editor,
     #   which is what gets revised. It can be ahead of what is stored: they do not
     #   have to save before asking for a change. Falls back to the stored layout for
     #   a caller that has no editor open.
-    def run(report, instruction:, locale:, craftjs_json: nil)
-      tracker.update!(progress: 0, error_count: 0)
-      chat = report.chat || report.create_chat!
+    def run(report, instruction:, locale:, turn_id:, craftjs_json: nil)
+      # The turn was given up on while this job waited (see Report#recover_lost_runs!)
+      # and the admin told it failed. Answering now would answer a question they may
+      # have replaced since, and would end a turn this job does not own.
+      return mark_as_complete! unless report.current_chat_turn?(turn_id)
 
-      run_record = GenerationTranscript.create!(report: report, kind: 'revision')
+      # Each attempt gets the whole window. The clock is what tells the panel a turn
+      # was lost, and a turn being retried is not lost.
+      report.chat.update!(turn_started_at: Time.current)
+      tracker.update!(progress: 0, error_count: 0)
+      run_record = ::AIAssistant::Run.create!(conversation: report.chat, kind: Report::REVISION_KIND)
       composer = Composition::ReportComposer.new(
         report.reported_project,
         locale: locale,
         phase: report.phase,
         author: tracker.owner,
         layout_record: report.layout,
-        run_record: run_record
+        run_record: run_record,
+        # The prompt is written around the admin's question, and is kept on it.
+        turn_id: turn_id
       )
 
       begin
@@ -41,16 +50,23 @@ module ReportBuilder
           # The whole conversation so far, tool calls included: the model remembers the
           # chart it wrote rather than re-reading it.
           history: Composition::Messages.history(
-            GenerationTranscript.session_runs_for(report).flat_map(&:messages)
+            Composition::Session.runs_for(report).flat_map { |run| run.messages.to_a }
           )
         )
       ensure
-        record_transcript(run_record, composer)
+        record_outcome(run_record, composer)
       end
 
-      changed = result[:layout].present?
-      save_layout!(report, result[:layout], run_record) if changed
-      answer(chat, reply_for(result, composer.stopped_because), changed_layout: changed)
+      save_layout!(report, result[:layout], run_record) if result[:layout].present?
+
+      report.chat.with_lock do
+        # A run long enough to be given up on can come back to a turn that is no longer
+        # the one being waited for, and answering it would end that newer turn instead.
+        next unless report.current_chat_turn?(turn_id)
+
+        answer!(run_record, reply_for(result, composer.stopped_because))
+        report.chat.update!(status: 'idle', last_error_code: nil)
+      end
 
       track_progress
       mark_as_complete!
@@ -62,23 +78,22 @@ module ReportBuilder
 
     private
 
+    # The panel's version of what the model last said. It goes on the message that
+    # said it, so the model is not sent its own closing sentence twice, and so the
+    # panel can read from that message's run whether there is a new layout to pull
+    # into the editor.
+    def answer!(run_record, reply)
+      last_word = run_record.messages.where(role: 'assistant').last
+      return last_word.update!(content: reply) if last_word
+
+      run_record.append_message!(role: 'assistant', content: reply, author: tracker.owner)
+    end
+
     def save_layout!(report, craftjs_json, run_record)
       report.layout.craftjs_json = craftjs_json
       raise ActiveRecord::RecordInvalid, report unless ReportSaver.new(report, tracker.owner).save
 
-      run_record.report_saved!
-    end
-
-    # changed_layout tells the panel whether to pull the new layout into the editor.
-    # On a turn that changed nothing it must not, or it would overwrite edits the
-    # admin has made and not saved.
-    def answer(chat, text, changed_layout: false)
-      chat.append_turn!({
-        'role' => 'assistant',
-        'text' => text,
-        'at' => Time.current.iso8601,
-        'changed_layout' => changed_layout
-      })
+      run_record.applied!
     end
 
     # The model's own closing sentence when it finished; a plain account of what
@@ -93,16 +108,14 @@ module ReportBuilder
       end
     end
 
-    # Only this turn's messages: the history before them is already on record.
-    def record_transcript(run_record, composer)
+    def record_outcome(run_record, composer)
       run_record.update!(
         model: composer.model_name,
-        messages: composer.turn_messages,
         usage: composer.usage,
         stopped_because: composer.stopped_because
       )
     rescue StandardError => e
-      ErrorReporter.report(e, extra: { report_id: run_record.report_id })
+      ErrorReporter.report(e, extra: { run_id: run_record.id })
     end
 
     # Called on the final failure. Expire the Que job first (so the tracker exposes
@@ -110,7 +123,7 @@ module ReportBuilder
     # waiting forever.
     def expire
       super
-      answer(arguments.first.chat, 'Something went wrong on my side. Please try again.')
+      arguments.first.fail_chat_turn!('turn_failed')
       mark_as_complete!
     end
 

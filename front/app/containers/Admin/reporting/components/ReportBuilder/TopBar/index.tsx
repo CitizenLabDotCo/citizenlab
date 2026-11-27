@@ -44,7 +44,6 @@ import { PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templat
 import { View } from '../ViewContainer/typings';
 import ViewPicker from '../ViewContainer/ViewPicker';
 
-import GenerateReportButton from './GenerateReportButton';
 import messages from './messages';
 import QuitModal from './QuitModal';
 import ReportTitle from './ReportTitle';
@@ -327,15 +326,6 @@ const ContentBuilderTopBar = ({
         {!!phaseId && (
           <Box ml="32px">
             <ViewPicker view={view} setView={setView} />
-          </Box>
-        )}
-        {!!phaseId && llmReportingEnabled && (
-          <Box ml="32px" display="flex" alignItems="center">
-            <GenerateReportButton
-              reportId={reportId}
-              phaseId={phaseId}
-              setSaved={setSaved}
-            />
           </Box>
         )}
         <Box ml="32px">

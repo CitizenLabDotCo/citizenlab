@@ -62,7 +62,6 @@ ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_bd36415a82;
 ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXISTS fk_rails_bc5577641e;
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS fk_rails_bb813b4549;
-ALTER TABLE IF EXISTS ONLY public.report_builder_generation_transcripts DROP CONSTRAINT IF EXISTS fk_rails_b8de72b62d;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_b8d87c000f;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b894d506a0;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b82ab32ac2;
@@ -70,7 +69,6 @@ ALTER TABLE IF EXISTS ONLY public.oauth_access_grants DROP CONSTRAINT IF EXISTS 
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_b4a1624855;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS fk_rails_b48da9e6c7;
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS fk_rails_b3d04c10d5;
-ALTER TABLE IF EXISTS ONLY public.report_builder_report_chats DROP CONSTRAINT IF EXISTS fk_rails_b130536620;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_b0efe660f5;
 ALTER TABLE IF EXISTS ONLY public.analysis_tags DROP CONSTRAINT IF EXISTS fk_rails_afc2d02258;
 ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS fk_rails_ad985054f0;
@@ -106,6 +104,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_ra
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_8f9b3b56d6;
 ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF EXISTS fk_rails_8e3f01dacd;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS fk_rails_8cabeff294;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_messages DROP CONSTRAINT IF EXISTS fk_rails_8cab434751;
 ALTER TABLE IF EXISTS ONLY public.static_pages_spaces DROP CONSTRAINT IF EXISTS fk_rails_8c48617ba6;
 ALTER TABLE IF EXISTS ONLY public.idea_relations DROP CONSTRAINT IF EXISTS fk_rails_8a385cdad7;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF EXISTS fk_rails_87e592c9f5;
@@ -159,6 +158,7 @@ ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS fk_rails_465d6356b2;
 ALTER TABLE IF EXISTS ONLY public.followers DROP CONSTRAINT IF EXISTS fk_rails_3d258d3942;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_3c57357702;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_messages DROP CONSTRAINT IF EXISTS fk_rails_3a3c7671fe;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_39a1b51358;
 ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF EXISTS fk_rails_3814d72daa;
 ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS fk_rails_37becdebb0;
@@ -189,6 +189,7 @@ ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_06b
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_04be8cf6ba;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS fk_rails_0434b48643;
 ALTER TABLE IF EXISTS ONLY public.claim_tokens DROP CONSTRAINT IF EXISTS fk_rails_0176970569;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_runs DROP CONSTRAINT IF EXISTS fk_rails_0106f3c346;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_00698f2e02;
 DROP TRIGGER IF EXISTS que_state_notify ON public.que_jobs;
 DROP TRIGGER IF EXISTS que_job_notify ON public.que_jobs;
@@ -245,13 +246,11 @@ DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_user_id;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_status;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_campaign_id;
-DROP INDEX IF EXISTS public.index_report_chats_on_report_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_project_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name_tsvector;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
-DROP INDEX IF EXISTS public.index_report_builder_generation_transcripts_on_report_id;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
@@ -529,7 +528,11 @@ DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_fi
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
 DROP INDEX IF EXISTS public.index_ai_assistant_tool_calls_on_message_id;
 DROP INDEX IF EXISTS public.index_ai_assistant_tool_calls_on_decided_by_id;
+DROP INDEX IF EXISTS public.index_ai_assistant_runs_on_conversation_id;
+DROP INDEX IF EXISTS public.index_ai_assistant_messages_on_run_id;
 DROP INDEX IF EXISTS public.index_ai_assistant_messages_on_conversation_id_and_position;
+DROP INDEX IF EXISTS public.index_ai_assistant_messages_on_author_id;
+DROP INDEX IF EXISTS public.index_ai_assistant_conversations_shared_on_subject;
 DROP INDEX IF EXISTS public.index_ai_assistant_conversations_on_user_id;
 DROP INDEX IF EXISTS public.index_ai_assistant_conversations_on_subject;
 DROP INDEX IF EXISTS public.index_admin_publications_on_scheduled_transition;
@@ -584,9 +587,7 @@ ALTER TABLE IF EXISTS ONLY public.sms_deliveries DROP CONSTRAINT IF EXISTS sms_d
 ALTER TABLE IF EXISTS ONLY public.schema_migrations DROP CONSTRAINT IF EXISTS schema_migrations_pkey;
 ALTER TABLE IF EXISTS public.admin_publications DROP CONSTRAINT IF EXISTS scheduled_fields_both_or_neither;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
-ALTER TABLE IF EXISTS ONLY public.report_builder_report_chats DROP CONSTRAINT IF EXISTS report_builder_report_chats_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS report_builder_published_graph_data_units_pkey;
-ALTER TABLE IF EXISTS ONLY public.report_builder_generation_transcripts DROP CONSTRAINT IF EXISTS report_builder_generation_transcripts_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_values_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_lockers DROP CONSTRAINT IF EXISTS que_lockers_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_jobs DROP CONSTRAINT IF EXISTS que_jobs_pkey;
@@ -715,6 +716,7 @@ ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS analysis_analyses_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS analysis_analyses_custom_fields_pkey;
 ALTER TABLE IF EXISTS ONLY public.ai_assistant_tool_calls DROP CONSTRAINT IF EXISTS ai_assistant_tool_calls_pkey;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_runs DROP CONSTRAINT IF EXISTS ai_assistant_runs_pkey;
 ALTER TABLE IF EXISTS ONLY public.ai_assistant_messages DROP CONSTRAINT IF EXISTS ai_assistant_messages_pkey;
 ALTER TABLE IF EXISTS ONLY public.ai_assistant_conversations DROP CONSTRAINT IF EXISTS ai_assistant_conversations_pkey;
 ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS admin_publications_pkey;
@@ -767,9 +769,7 @@ DROP VIEW IF EXISTS public.reporting_comments;
 DROP VIEW IF EXISTS public.reporting_analysis_insights;
 DROP VIEW IF EXISTS public.reporting_analysis_heatmap_cells;
 DROP TABLE IF EXISTS public.report_builder_reports;
-DROP TABLE IF EXISTS public.report_builder_report_chats;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
-DROP TABLE IF EXISTS public.report_builder_generation_transcripts;
 DROP TABLE IF EXISTS public.que_values;
 DROP TABLE IF EXISTS public.que_lockers;
 DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
@@ -912,6 +912,7 @@ DROP TABLE IF EXISTS public.analysis_background_tasks;
 DROP TABLE IF EXISTS public.analysis_analyses;
 DROP TABLE IF EXISTS public.analysis_additional_custom_fields;
 DROP TABLE IF EXISTS public.ai_assistant_tool_calls;
+DROP TABLE IF EXISTS public.ai_assistant_runs;
 DROP TABLE IF EXISTS public.ai_assistant_messages;
 DROP TABLE IF EXISTS public.ai_assistant_conversations;
 DROP TABLE IF EXISTS public.admin_publications;
@@ -1279,7 +1280,7 @@ CREATE TABLE public.admin_publications (
 
 CREATE TABLE public.ai_assistant_conversations (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    user_id uuid NOT NULL,
+    user_id uuid,
     subject_type character varying NOT NULL,
     subject_id uuid NOT NULL,
     surface_key character varying NOT NULL,
@@ -1301,10 +1302,30 @@ CREATE TABLE public.ai_assistant_messages (
     conversation_id uuid NOT NULL,
     "position" integer NOT NULL,
     role character varying NOT NULL,
-    content text,
     file_ids uuid[] DEFAULT '{}'::uuid[] NOT NULL,
     input_tokens integer,
     output_tokens integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    context jsonb DEFAULT '{}'::jsonb NOT NULL,
+    author_id uuid,
+    run_id uuid
+);
+
+
+--
+-- Name: ai_assistant_runs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ai_assistant_runs (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    conversation_id uuid NOT NULL,
+    kind character varying DEFAULT ''::character varying NOT NULL,
+    model character varying DEFAULT ''::character varying NOT NULL,
+    usage jsonb DEFAULT '{}'::jsonb NOT NULL,
+    stopped_because character varying,
+    cancel_requested_at timestamp(6) without time zone,
+    applied_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -2453,7 +2474,7 @@ CREATE TABLE public.content_builder_custom_block_versions (
     manifest jsonb DEFAULT '{}'::jsonb NOT NULL,
     messages jsonb DEFAULT '{}'::jsonb NOT NULL,
     toolchain jsonb DEFAULT '{}'::jsonb NOT NULL,
-    generation_transcript_id uuid,
+    run_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -3947,25 +3968,6 @@ WITH (fillfactor='90');
 
 
 --
--- Name: report_builder_generation_transcripts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.report_builder_generation_transcripts (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    report_id uuid NOT NULL,
-    model character varying DEFAULT ''::character varying NOT NULL,
-    kind character varying DEFAULT 'generation'::character varying NOT NULL,
-    messages jsonb DEFAULT '[]'::jsonb NOT NULL,
-    usage jsonb DEFAULT '{}'::jsonb NOT NULL,
-    stopped_because character varying,
-    cancel_requested_at timestamp(6) without time zone,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    report_saved_at timestamp(6) without time zone
-);
-
-
---
 -- Name: report_builder_published_graph_data_units; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3974,19 +3976,6 @@ CREATE TABLE public.report_builder_published_graph_data_units (
     report_id uuid NOT NULL,
     graph_id character varying NOT NULL,
     data jsonb NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: report_builder_report_chats; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.report_builder_report_chats (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    report_id uuid NOT NULL,
-    transcript jsonb DEFAULT '[]'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -5772,6 +5761,14 @@ ALTER TABLE ONLY public.ai_assistant_messages
 
 
 --
+-- Name: ai_assistant_runs ai_assistant_runs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_runs
+    ADD CONSTRAINT ai_assistant_runs_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: ai_assistant_tool_calls ai_assistant_tool_calls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6796,27 +6793,11 @@ ALTER TABLE ONLY public.que_values
 
 
 --
--- Name: report_builder_generation_transcripts report_builder_generation_transcripts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.report_builder_generation_transcripts
-    ADD CONSTRAINT report_builder_generation_transcripts_pkey PRIMARY KEY (id);
-
-
---
 -- Name: report_builder_published_graph_data_units report_builder_published_graph_data_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.report_builder_published_graph_data_units
     ADD CONSTRAINT report_builder_published_graph_data_units_pkey PRIMARY KEY (id);
-
-
---
--- Name: report_builder_report_chats report_builder_report_chats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.report_builder_report_chats
-    ADD CONSTRAINT report_builder_report_chats_pkey PRIMARY KEY (id);
 
 
 --
@@ -7219,10 +7200,38 @@ CREATE INDEX index_ai_assistant_conversations_on_user_id ON public.ai_assistant_
 
 
 --
+-- Name: index_ai_assistant_conversations_shared_on_subject; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ai_assistant_conversations_shared_on_subject ON public.ai_assistant_conversations USING btree (subject_type, subject_id, surface_key) WHERE (user_id IS NULL);
+
+
+--
+-- Name: index_ai_assistant_messages_on_author_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ai_assistant_messages_on_author_id ON public.ai_assistant_messages USING btree (author_id);
+
+
+--
 -- Name: index_ai_assistant_messages_on_conversation_id_and_position; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_ai_assistant_messages_on_conversation_id_and_position ON public.ai_assistant_messages USING btree (conversation_id, "position");
+
+
+--
+-- Name: index_ai_assistant_messages_on_run_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ai_assistant_messages_on_run_id ON public.ai_assistant_messages USING btree (run_id);
+
+
+--
+-- Name: index_ai_assistant_runs_on_conversation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ai_assistant_runs_on_conversation_id ON public.ai_assistant_runs USING btree (conversation_id);
 
 
 --
@@ -9165,13 +9174,6 @@ CREATE INDEX index_reactions_on_user_id ON public.reactions USING btree (user_id
 
 
 --
--- Name: index_report_builder_generation_transcripts_on_report_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_report_builder_generation_transcripts_on_report_id ON public.report_builder_generation_transcripts USING btree (report_id);
-
-
---
 -- Name: index_report_builder_reports_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9204,13 +9206,6 @@ CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_r
 --
 
 CREATE UNIQUE INDEX index_report_builder_reports_on_project_id ON public.report_builder_reports USING btree (project_id);
-
-
---
--- Name: index_report_chats_on_report_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_report_chats_on_report_id ON public.report_builder_report_chats USING btree (report_id);
 
 
 --
@@ -9607,6 +9602,14 @@ ALTER TABLE ONLY public.analytics_dimension_locales_fact_visits
 
 
 --
+-- Name: ai_assistant_runs fk_rails_0106f3c346; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_runs
+    ADD CONSTRAINT fk_rails_0106f3c346 FOREIGN KEY (conversation_id) REFERENCES public.ai_assistant_conversations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: claim_tokens fk_rails_0176970569; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9844,6 +9847,14 @@ ALTER TABLE ONLY public.custom_field_option_images
 
 ALTER TABLE ONLY public.baskets_ideas
     ADD CONSTRAINT fk_rails_39a1b51358 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: ai_assistant_messages fk_rails_3a3c7671fe; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_messages
+    ADD CONSTRAINT fk_rails_3a3c7671fe FOREIGN KEY (run_id) REFERENCES public.ai_assistant_runs(id) ON DELETE SET NULL;
 
 
 --
@@ -10271,6 +10282,14 @@ ALTER TABLE ONLY public.static_pages_spaces
 
 
 --
+-- Name: ai_assistant_messages fk_rails_8cab434751; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_messages
+    ADD CONSTRAINT fk_rails_8cab434751 FOREIGN KEY (author_id) REFERENCES public.users(id) ON DELETE SET NULL;
+
+
+--
 -- Name: user_custom_fields_representativeness_ref_distributions fk_rails_8cabeff294; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10551,14 +10570,6 @@ ALTER TABLE ONLY public.phases
 
 
 --
--- Name: report_builder_report_chats fk_rails_b130536620; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.report_builder_report_chats
-    ADD CONSTRAINT fk_rails_b130536620 FOREIGN KEY (report_id) REFERENCES public.report_builder_reports(id) ON DELETE CASCADE;
-
-
---
 -- Name: baskets fk_rails_b3d04c10d5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10612,14 +10623,6 @@ ALTER TABLE ONLY public.notifications
 
 ALTER TABLE ONLY public.static_page_files
     ADD CONSTRAINT fk_rails_b8d87c000f FOREIGN KEY (migrated_file_id) REFERENCES public.files(id);
-
-
---
--- Name: report_builder_generation_transcripts fk_rails_b8de72b62d; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.report_builder_generation_transcripts
-    ADD CONSTRAINT fk_rails_b8de72b62d FOREIGN KEY (report_id) REFERENCES public.report_builder_reports(id) ON DELETE CASCADE;
 
 
 --
@@ -11057,6 +11060,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20261113090000'),
 ('20261106130200'),
 ('20261106130100'),
+('20261104124910'),
+('20261104124909'),
+('20261104100050'),
+('20261104100000'),
 ('20261028180200'),
 ('20261028180100'),
 ('20261028170100'),
