@@ -18,6 +18,15 @@ export default defineMessages({
     defaultMessage:
       'This will permanently delete this phase and all of its associated data, such as survey responses, poll results, and volunteering data.',
   },
+  deletePhaseDialogTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.deletePhaseDialogTitle',
+    defaultMessage: 'Delete this phase?',
+  },
+  deletePhaseDialogText: {
+    id: 'app.containers.AdminPage.ProjectEdit.deletePhaseDialogText',
+    defaultMessage:
+      "Its ideas, comments and reactions are deleted with it. This can't be undone.",
+  },
   deletePhaseButtonText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseButtonText',
     defaultMessage: 'Yes, delete this phase',

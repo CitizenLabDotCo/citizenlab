@@ -2,3 +2,7 @@
   composes: body from '../typography.module.css';
   color: var(--gv-text-body);
 }
+
+.confirmation {
+  margin-top: var(--gv-space-16);
+}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
+import AlertDialog from 'design-system/AlertDialog';
 import IconButton from 'design-system/IconButton';
 
 import { IPhaseData } from 'api/phases/types';
@@ -37,7 +38,7 @@ const PhaseOptionsMenu = ({ projectId, phase, variant = 'sidebar' }: Props) => {
   const { phaseId } = useParams({ strict: false });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showMoveModal, setShowMoveModal] = useState(false);
-  const { mutate: deletePhase } = useDeletePhase();
+  const { mutate: deletePhase, isPending: deleting } = useDeletePhase();
   const title = localize(phase.attributes.title_multiloc);
 
   const handleDelete = () => {
@@ -106,6 +107,21 @@ const PhaseOptionsMenu = ({ projectId, phase, variant = 'sidebar' }: Props) => {
           onClose={() => setShowMoveModal(false)}
         />
       )}
+      {variant === 'panel' ? (
+        <AlertDialog
+          isOpen={showDeleteModal}
+          onOpenChange={setShowDeleteModal}
+          title={formatMessage(phaseMessages.deletePhaseDialogTitle)}
+          confirmLabel={formatMessage(phaseMessages.deletePhase)}
+          confirmationWord={formatMessage(
+            typedDeleteConfirmationMessages.confirmationWordDelete
+          )}
+          isPending={deleting}
+          onConfirm={handleDelete}
+        >
+          {formatMessage(phaseMessages.deletePhaseDialogText)}
+        </AlertDialog>
+      ) : (
       <TypedDeleteConfirmationModal
         opened={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
@@ -118,6 +134,7 @@ const PhaseOptionsMenu = ({ projectId, phase, variant = 'sidebar' }: Props) => {
         }
         deleteButtonText={phaseMessages.deletePhaseButtonText}
       />
+      )}
     </>
   );
 };
