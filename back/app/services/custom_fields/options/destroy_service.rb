@@ -35,7 +35,7 @@ module CustomFields
       def update_form_logic(option)
         cf = option.custom_field
 
-        if cf.resource_type == 'CustomForm' && cf.input_type == 'select'
+        if cf.resource_type == 'CustomForm' && cf.supports_options? && cf.logic?
           FormLogicService.new([cf]).remove_select_logic_option_from_custom_fields(option)
         end
       end

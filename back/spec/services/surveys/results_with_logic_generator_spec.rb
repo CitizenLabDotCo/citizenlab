@@ -352,10 +352,10 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       end
     end
 
-    context 'ranking logic' do
+    context 'ranking logic stored before ranking logic was no longer accepted' do
       let(:by_bike) { ranking_field.options.find_by(key: 'by_bike') }
 
-      before { ranking_field.reload.update!(logic: { rules: [{ if: by_bike.id, goto_page_id: mid_page_field2.id }] }) }
+      before { ranking_field.update_columns(logic: { rules: [{ if: by_bike.id, goto_page_id: mid_page_field2.id }] }) }
 
       it 'applies an option rule like a multiselect when the only ranked option has a rule' do
         CustomFieldValuesTransitionService.new.assign(input, { ranking_field.key => %w[by_bike] })

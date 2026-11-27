@@ -492,12 +492,12 @@ resource 'Idea Custom Fields' do
         expect(response_logic(multiselect_field)).to eq({ rules: })
       end
 
-      example 'Drops the rule of one of its options deleted in the same request', document: false do
+      example 'Removes its logic when the option of its only rule is deleted in the same request', document: false do
         options = multiselect_field.options.drop(1).map { |option| { id: option.id, title_multiloc: option.title_multiloc } }
         do_request multiselect_request(options:, logic: { rules: legacy_rules })
 
         assert_status 200
-        expect(multiselect_field.reload.logic).to eq({ 'rules' => [] })
+        expect(multiselect_field.reload.logic).to eq({})
       end
 
       example '[error] Rejects a rule of it that jumps backwards', document: false do
@@ -542,7 +542,7 @@ resource 'Idea Custom Fields' do
       expect(multiselect_field.reload.logic).to eq({})
     end
 
-    example 'Keeps the rules of a ranking question (currently existing bug, B8)', document: false do
+    example 'Drops the rules of a ranking question without an error', document: false do
       ranking_field = create(:custom_field_ranking, :with_options, resource: custom_form)
       rules = [{ if: ranking_field.options.first.id, goto_page_id: form_end.id }]
       request = form_params
@@ -550,7 +550,19 @@ resource 'Idea Custom Fields' do
       do_request request
 
       assert_status 200
-      expect(response_logic(ranking_field)).to eq({ rules: })
+      expect(response_logic(ranking_field)).to eq({})
+      expect(ranking_field.reload.logic).to eq({})
+    end
+
+    example 'Wipes the stored rules of a ranking question on save', document: false do
+      ranking_field = create(:custom_field_ranking, :with_options, resource: custom_form)
+      ranking_field.update_columns(logic: { rules: [{ if: ranking_field.options.first.id, goto_page_id: form_end.id }] })
+      request = form_params
+      request[:custom_fields].insert(4, field_params(ranking_field))
+      do_request request
+
+      assert_status 200
+      expect(ranking_field.reload.logic).to eq({})
     end
 
     example 'Drops the rules of a text question without an error', document: false do

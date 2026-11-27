@@ -1012,7 +1012,7 @@ describe('determineNextPageNumber edge cases', () => {
         endPage(),
       ]);
 
-    it('never matches a ranking rule on an option id, because answers hold ranked keys (currently existing bug, B8)', () => {
+    it('never matches a ranking rule on an option id, because answers hold ranked keys (current behaviour)', () => {
       const pages = buildPages({ input_type: 'ranking', options: abcOptions }, [
         { if: 'id-a', goto_page_id: 'p3' },
       ]);
@@ -1021,7 +1021,7 @@ describe('determineNextPageNumber edge cases', () => {
       expect(nextPage(pages, { q: ['a'] })).toBe(1);
     });
 
-    it('matches a ranking rule whose value equals the comma-joined ranked keys (currently existing bug, B8)', () => {
+    it('matches a ranking rule whose value equals the comma-joined ranked keys (current behaviour)', () => {
       const pages = buildPages({ input_type: 'ranking', options: abcOptions }, [
         { if: 'a,b,c', goto_page_id: 'p3' },
       ]);

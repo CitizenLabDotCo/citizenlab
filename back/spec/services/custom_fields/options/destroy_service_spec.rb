@@ -43,17 +43,34 @@ describe CustomFields::Options::DestroyService do
       end
     end
 
-    context 'when an option with logic of a ranking field is destroyed' do
+    context 'when an option of a ranking field with stored logic is destroyed' do
       let(:ranking_field) { create(:custom_field_ranking, :with_options, :for_custom_form) }
       let(:option) { ranking_field.options.first }
       let(:page) { create(:custom_field_page, resource: ranking_field.resource) }
 
-      before { ranking_field.update!(logic: { rules: [{ if: option.id, goto_page_id: page.id }] }) }
+      before { ranking_field.update_columns(logic: { rules: [{ if: option.id, goto_page_id: page.id }] }) }
 
-      it 'leaves the rule of the deleted option in place (currently existing bug, B8)' do
+      it 'clears the logic, which ranking fields no longer support' do
         service.destroy!(option, current_user)
 
-        expect(ranking_field.reload.logic['rules'].pluck('if')).to eq [option.id]
+        expect(ranking_field.reload.logic).to eq({})
+      end
+    end
+
+    context 'when an option with logic of a legacy multiselect field is destroyed' do
+      let(:multiselect_field) { create(:custom_field_multiselect, :with_options, :for_custom_form, created_at: Time.utc(2025, 6, 1)) }
+      let(:option) { multiselect_field.options.first }
+      let(:other_option) { multiselect_field.options.second }
+      let(:page) { create(:custom_field_page, resource: multiselect_field.resource) }
+
+      before do
+        multiselect_field.update_columns(logic: { rules: [{ if: option.id, goto_page_id: page.id }, { if: other_option.id, goto_page_id: page.id }] })
+      end
+
+      it 'removes the rule of the deleted option and keeps the others' do
+        service.destroy!(option, current_user)
+
+        expect(multiselect_field.reload.logic).to eq('rules' => [{ 'if' => other_option.id, 'goto_page_id' => page.id }])
       end
     end
 
