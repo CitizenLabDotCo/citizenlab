@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { Locale, format, isSameMonth } from 'date-fns';
+import moment from 'moment-timezone';
 import styled from 'styled-components';
 
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
@@ -10,7 +11,7 @@ import { getPhaseLandingTab } from 'api/phases/utils';
 import methodMessages from 'containers/Admin/inspirationHub/messages';
 
 import { MessageDescriptor } from 'utils/cl-intl';
-import { pastPresentOrFuture } from 'utils/dateUtils';
+import { getDateInTimezone, pastPresentOrFuture } from 'utils/dateUtils';
 
 import messages from './messages';
 
@@ -60,14 +61,20 @@ export const STATUS_LABELS: Record<PhaseStatus, MessageDescriptor> = {
 export const phaseStatus = (phase: IPhaseData): PhaseStatus =>
   pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]);
 
+// Phase days belong to the platform's time zone, which the app sets as
+// moment's default. A plain Date would show them in the browser's zone,
+// a day early or late when the two differ.
+const platformDay = (isoString: string) =>
+  getDateInTimezone(isoString, moment().tz()) ?? new Date(isoString);
+
 // Same-month ranges name the month once: "3 to 23 Oct".
 export const shortDateRange = (
   startAt: string,
   endAt: string,
   locale: Locale
 ) => {
-  const start = new Date(startAt);
-  const end = new Date(endAt);
+  const start = platformDay(startAt);
+  const end = platformDay(endAt);
 
   return {
     startDate: format(start, isSameMonth(start, end) ? 'd' : 'd MMM', {
@@ -84,7 +91,7 @@ export const formatDateRange = (
   noEndLabel?: string
 ): string => {
   if (!endAt) {
-    return `${format(new Date(startAt), 'd MMM', { locale })} – ${
+    return `${format(platformDay(startAt), 'd MMM', { locale })} – ${
       noEndLabel ?? ''
     }`;
   }
