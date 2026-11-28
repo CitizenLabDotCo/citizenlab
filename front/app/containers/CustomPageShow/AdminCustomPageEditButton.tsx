@@ -4,7 +4,7 @@ import { colors, media } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
-import { ICustomPageData } from 'api/custom_pages/types';
+import { EDITABLE_POLICY_PAGES, ICustomPageData } from 'api/custom_pages/types';
 import { isContentBuilderPage } from 'api/custom_pages/util';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -41,6 +41,14 @@ const AdminCustomPageEditButton = ({
     context: project?.data,
   });
 
+  const isEditablePolicyPage = EDITABLE_POLICY_PAGES.some(
+    (policyPage) => policyPage === page.attributes.code
+  );
+  // No button for the cookie policy, which support edits. It can reach this view through a project
+  // URL, which finds any page by its slug.
+  const hasAdminEditor =
+    !!projectId || isContentBuilderPage(page) || isEditablePolicyPage;
+
   // The terms and privacy pages are edited in Settings → Policies.
   const editLink = projectId
     ? { linkTo: `/admin/projects/${projectId}/pages/${page.id}` }
@@ -52,7 +60,7 @@ const AdminCustomPageEditButton = ({
       } as const);
 
   // An admin preview shows this page in a frame, where the button would open the admin inside it.
-  return userCanEditPage && !checkIfFramed() ? (
+  return hasAdminEditor && userCanEditPage && !checkIfFramed() ? (
     <PositionWrapper>
       <ButtonWithLink
         icon="edit"
