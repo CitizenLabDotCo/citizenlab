@@ -9,6 +9,7 @@ class ProjectsFinderAdminService
     projects = filter_with_admin_publication(projects)
     projects = filter_moderatable(projects, current_user)
     projects = filter_status(projects, params)
+    projects = filter_display_status(projects, params)
     projects = filter_review_state(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
@@ -22,11 +23,16 @@ class ProjectsFinderAdminService
     projects = filter_visibility(projects, params)
     projects = filter_discoverability(projects, params)
     projects = filter_space(projects, params)
+    projects = filter_top_level(projects, params, current_user)
 
     # Apply sorting
     case params[:sort]
     when 'recently_viewed'
       sort_recently_viewed(projects, current_user)
+    when 'arranged'
+      sort_arranged(projects, current_user)
+    when *SORT_VALUES.keys.flat_map { |key| ["#{key}_asc", "#{key}_desc"] }
+      sort_by_value(projects, params[:sort])
     when 'phase_starting_or_ending_soon'
       sort_phase_starting_or_ending_soon(projects)
     when 'alphabetically_asc', 'alphabetically_desc'
@@ -39,12 +45,115 @@ class ProjectsFinderAdminService
     end
   end
 
+  # The phase that represents the project right now, as in
+  # ProjectSchedule#highlighted_phase: the active phase that ends soonest,
+  # otherwise the upcoming phase that starts soonest, otherwise the phase that
+  # ended last. `highlighted.state` is 'active', 'upcoming' or 'ended'.
+  HIGHLIGHTED_PHASE_SQL = <<~SQL.squish
+    SELECT %<column>s FROM (
+      SELECT phases.*, CASE
+        WHEN phases.start_at <= now() AND (phases.end_at IS NULL OR now() < phases.end_at) THEN 'active'
+        WHEN phases.start_at > now() THEN 'upcoming'
+        ELSE 'ended'
+      END AS state
+      FROM phases WHERE phases.project_id = projects.id
+    ) highlighted
+    ORDER BY
+      array_position(ARRAY['active', 'upcoming', 'ended'], highlighted.state),
+      CASE WHEN highlighted.state = 'active' THEN highlighted.end_at END ASC NULLS LAST,
+      CASE WHEN highlighted.state = 'upcoming' THEN highlighted.start_at END ASC,
+      highlighted.end_at DESC
+    LIMIT 1
+  SQL
+
+  # SQL for the value each sortable column of the admin project list orders
+  # by. Projects without a value come last in both directions.
+  SORT_VALUES = {
+    # Published, pending approval, draft, archived: the order the list shows
+    # statuses in. Scheduled statuses count once they are due, as in
+    # AdminPublication#effective_publication_status.
+    'status' => <<~SQL.squish,
+      SELECT CASE
+        WHEN status.value = 'published' THEN 0
+        WHEN status.value = 'draft' AND EXISTS (
+          SELECT 1 FROM project_reviews
+          WHERE project_reviews.project_id = projects.id AND project_reviews.approved_at IS NULL
+        ) THEN 1
+        WHEN status.value = 'draft' THEN 2
+        ELSE 3
+      END
+      FROM (
+        SELECT CASE
+          WHEN publications.scheduled_at <= now() AND publications.scheduled_status IS NOT NULL
+            THEN publications.scheduled_status
+          ELSE publications.publication_status
+        END AS value
+        FROM admin_publications publications
+        WHERE publications.publication_type = 'Project' AND publications.publication_id = projects.id
+      ) status
+    SQL
+    # Open, starting soon, no phases yet, ended.
+    'phase' => <<~SQL.squish,
+      SELECT array_position(
+        ARRAY['active', 'upcoming', 'none', 'ended'],
+        COALESCE((#{format(HIGHLIGHTED_PHASE_SQL, column: 'highlighted.state')}), 'none')
+      )
+    SQL
+    'participation_method' => format(HIGHLIGHTED_PHASE_SQL, column: 'highlighted.participation_method'),
+    'managers' => <<~SQL.squish,
+      SELECT min(NULLIF(lower(concat_ws(' ', users.first_name, users.last_name)), ''))
+      FROM users
+      WHERE users.roles @> jsonb_build_array(
+        jsonb_build_object('type', 'project_moderator', 'project_id', projects.id::text)
+      )
+    SQL
+    'start_date' => 'SELECT min(phases.start_at) FROM phases WHERE phases.project_id = projects.id',
+    # A project with an open-ended phase has no end date.
+    'end_date' => <<~SQL.squish
+      SELECT CASE WHEN bool_and(phases.end_at IS NOT NULL) THEN max(phases.end_at) END
+      FROM phases WHERE phases.project_id = projects.id
+    SQL
+  }.freeze
+
   # The methods below are private class methods.
   # They are currently only used by the execute method,
   # but could be used in other places as well.
 
   # SORTING METHODS
   def self.sort_recently_viewed(scope, current_user)
+    # We order by last_viewed_at, but tie-break with created_at and id for a stable sort,
+    # which is important for pagination
+    Project
+      .from(with_last_viewed_at(scope, current_user), :projects)
+      .order('last_viewed_at DESC NULLS LAST, projects.created_at ASC, projects.id ASC')
+  end
+
+  # The order admins arranged projects in for the front office. Positions are
+  # numbered per parent (a folder or the top level), so projects with
+  # different parents can share one; the user's last viewed comes first then.
+  def self.sort_arranged(scope, current_user)
+    projects_subquery = with_last_viewed_at(scope, current_user).select(<<~SQL.squish)
+      (
+        SELECT arranged.ordering FROM admin_publications arranged
+        WHERE arranged.publication_type = 'Project' AND arranged.publication_id = projects.id
+      ) AS arranged_ordering
+    SQL
+
+    Project
+      .from(projects_subquery, :projects)
+      .order('arranged_ordering ASC NULLS LAST, last_viewed_at DESC NULLS LAST, projects.created_at ASC, projects.id ASC')
+  end
+
+  def self.sort_by_value(scope, sort)
+    key, _, direction = sort.rpartition('_')
+    projects_subquery = scope.select("projects.*, (#{SORT_VALUES.fetch(key)}) AS sort_value")
+
+    Project
+      .from(projects_subquery, :projects)
+      .order(Arel.sql("sort_value #{direction == 'desc' ? 'DESC' : 'ASC'} NULLS LAST, projects.created_at ASC, projects.id ASC"))
+  end
+
+  def self.with_last_viewed_at(scope, current_user)
     substring_statement = "substring(path, 'admin/projects/(#{UUID_REGEX})')"
 
     # I first did this with a group by and max, but Copilot suggested
@@ -66,15 +175,9 @@ class ProjectsFinderAdminService
 
     recent_pageviews_subquery = "(#{recent_pageviews_sql}) AS recent_pageviews"
 
-    projects_subquery = scope
+    scope
       .joins("LEFT JOIN #{recent_pageviews_subquery} ON recent_pageviews.admin_project_id = projects.id AND recent_pageviews.rn = 1")
       .select('recent_pageviews.last_viewed_at AS last_viewed_at, projects.*')
-
-    # We order by last_viewed_at, but tie-break with created_at and id for a stable sort,
-    # which is important for pagination
-    Project
-      .from(projects_subquery, :projects)
-      .order('last_viewed_at DESC NULLS LAST, projects.created_at ASC, projects.id ASC')
   end
 
   def self.sort_phase_starting_or_ending_soon(scope)
@@ -155,6 +258,26 @@ class ProjectsFinderAdminService
     return scope if statuses.blank?
 
     scope.where(admin_publication: AdminPublication.with_status(statuses))
+  end
+
+  # The status as the admin project list shows it: a draft waiting for review
+  # approval is 'pending' rather than 'draft'. Unlike combining `status` with
+  # `review_state`, the selected statuses add up.
+  def self.filter_display_status(scope, params = {})
+    statuses = Array(params[:display_status]) & %w[published pending draft archived]
+    return scope if statuses.blank?
+
+    project_publications = AdminPublication.where(publication_type: 'Project')
+    drafts = project_publications.with_status('draft').select(:publication_id)
+    awaiting_approval = ProjectReview.where(approved_at: nil).select(:project_id)
+
+    matching_ids = []
+    other_statuses = statuses & %w[published archived]
+    matching_ids << project_publications.with_status(other_statuses).select(:publication_id) if other_statuses.any?
+    matching_ids << Project.where(id: drafts).where(id: awaiting_approval).select(:id) if statuses.include?('pending')
+    matching_ids << Project.where(id: drafts).where.not(id: awaiting_approval).select(:id) if statuses.include?('draft')
+
+    matching_ids.map { |ids| scope.where(id: ids) }.reduce(:or)
   end
 
   def self.filter_review_state(scope, params = {})
@@ -316,6 +439,22 @@ class ProjectsFinderAdminService
       SQL
     end
 
+    if participation_states.include?('starting_soon')
+      # Projects with no current phase and a phase still to come, as in
+      # ProjectSchedule#participation_status
+      conditions << <<-SQL.squish
+        projects.id IN (SELECT project_id FROM phases WHERE start_at > now())
+        AND projects.id NOT IN (
+          SELECT project_id FROM phases
+          WHERE start_at <= now() AND coalesce(end_at, 'infinity'::timestamp) > now()
+        )
+      SQL
+    end
+
+    if participation_states.include?('no_phases')
+      conditions << 'projects.id NOT IN (SELECT project_id FROM phases)'
+    end
+
     if participation_states.include?('past')
       # Projects that have at least one phase and all phases have ended
       conditions << <<-SQL.squish
@@ -389,5 +528,24 @@ class ProjectsFinderAdminService
     return scope if space_ids.blank?
 
     scope.where(space_id: space_ids)
+  end
+
+  # Keeps the projects that sit directly at the level of the admin project
+  # hierarchy being viewed: not inside a folder the user can open, nor inside
+  # a space the user can open, unless that space is the level being viewed
+  # (`space_ids`). Projects a user can't reach through a container stay, so
+  # nothing they manage disappears.
+  def self.filter_top_level(scope, params, current_user)
+    return scope unless params[:top_level].to_s == 'true'
+    return scope.none unless current_user
+
+    folder_publication_ids = AdminPublication
+      .where(publication_type: 'ProjectFolders::Folder', publication_id: AdminHierarchyScope.folders(current_user).select(:id))
+      .select(:id)
+    scope = scope.where(admin_publication: { parent_id: nil })
+      .or(scope.where.not(admin_publication: { parent_id: folder_publication_ids }))
+
+    space_ids = AdminHierarchyScope.spaces(current_user).where.not(id: Array(params[:space_ids])).select(:id)
+    scope.where(space_id: nil).or(scope.where.not(space_id: space_ids))
   end
 end
