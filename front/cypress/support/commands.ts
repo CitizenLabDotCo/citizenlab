@@ -196,6 +196,8 @@ declare global {
       apiUpdateCustomPage: typeof apiUpdateCustomPage;
       apiRemoveCustomPageLayout: typeof apiRemoveCustomPageLayout;
       apiAddFileToCustomPage: typeof apiAddFileToCustomPage;
+      apiRemoveFileFromCustomPage: typeof apiRemoveFileFromCustomPage;
+      apiGetCustomPageBySlug: typeof apiGetCustomPageBySlug;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
@@ -1463,6 +1465,34 @@ function apiAddFileToCustomPage(
         },
       })
     );
+  });
+}
+
+function apiRemoveFileFromCustomPage(customPageId: string, fileId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return requestAs(adminJwt, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+      url: `web_api/v1/static_pages/${customPageId}/files/${fileId}`,
+    });
+  });
+}
+
+function apiGetCustomPageBySlug(slug: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return requestAs(adminJwt, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'GET',
+      url: `web_api/v1/static_pages/by_slug/${slug}`,
+    });
   });
 }
 
@@ -2783,6 +2813,11 @@ Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);
 Cypress.Commands.add('apiRemoveCustomPageLayout', apiRemoveCustomPageLayout);
 Cypress.Commands.add('apiAddFileToCustomPage', apiAddFileToCustomPage);
+Cypress.Commands.add(
+  'apiRemoveFileFromCustomPage',
+  apiRemoveFileFromCustomPage
+);
+Cypress.Commands.add('apiGetCustomPageBySlug', apiGetCustomPageBySlug);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
 Cypress.Commands.add('apiCreateSmartGroup', apiCreateSmartGroup);
 Cypress.Commands.add(

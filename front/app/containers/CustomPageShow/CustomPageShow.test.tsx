@@ -107,13 +107,14 @@ describe('CustomPageShow', () => {
     expect(screen.queryByTestId('legacyInfoSection')).not.toBeInTheDocument();
   });
 
-  // Policy pages are not on the Content Builder.
-  it('renders the legacy sections for a policy page', () => {
+  // Policy pages are not on the Content Builder: one body, and no bottom section or projects.
+  it('renders a policy page with its body only', () => {
     hasContent = true;
     pageAttributes = { ...globalCustomPage, code: 'terms-and-conditions' };
     render(<CustomPageShow />);
 
-    expect(screen.getAllByTestId('legacyInfoSection')).toHaveLength(2);
+    expect(screen.getAllByTestId('legacyInfoSection')).toHaveLength(1);
+    expect(screen.queryByTestId('legacyProjects')).not.toBeInTheDocument();
     expect(screen.queryByTestId('builderContent')).not.toBeInTheDocument();
   });
 });
