@@ -44,7 +44,7 @@ import { randomString } from '../support/commands';
     });
 
     after(() => {
-      if (attachmentId) cy.apiRemoveFileFromCustomPage(attachmentId);
+      if (attachmentId) cy.apiDeleteCustomPageFile(attachmentId);
       if (pageId) cy.apiUpdateCustomPage(pageId, originalAttributes);
     });
 

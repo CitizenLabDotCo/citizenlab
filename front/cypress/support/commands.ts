@@ -196,7 +196,7 @@ declare global {
       apiUpdateCustomPage: typeof apiUpdateCustomPage;
       apiRemoveCustomPageLayout: typeof apiRemoveCustomPageLayout;
       apiAddFileToCustomPage: typeof apiAddFileToCustomPage;
-      apiRemoveFileFromCustomPage: typeof apiRemoveFileFromCustomPage;
+      apiDeleteCustomPageFile: typeof apiDeleteCustomPageFile;
       apiGetCustomPageBySlug: typeof apiGetCustomPageBySlug;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
@@ -1469,7 +1469,7 @@ function apiAddFileToCustomPage(
 }
 
 // Deletes the attachment's file from the file library, which deletes the attachment too.
-function apiRemoveFileFromCustomPage(attachmentId: string) {
+function apiDeleteCustomPageFile(attachmentId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -2816,10 +2816,7 @@ Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);
 Cypress.Commands.add('apiRemoveCustomPageLayout', apiRemoveCustomPageLayout);
 Cypress.Commands.add('apiAddFileToCustomPage', apiAddFileToCustomPage);
-Cypress.Commands.add(
-  'apiRemoveFileFromCustomPage',
-  apiRemoveFileFromCustomPage
-);
+Cypress.Commands.add('apiDeleteCustomPageFile', apiDeleteCustomPageFile);
 Cypress.Commands.add('apiGetCustomPageBySlug', apiGetCustomPageBySlug);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
 Cypress.Commands.add('apiCreateSmartGroup', apiCreateSmartGroup);
