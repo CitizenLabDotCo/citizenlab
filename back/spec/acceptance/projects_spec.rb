@@ -2206,6 +2206,29 @@ resource 'Projects' do
           copy_id = response_data[:id]
           expect(Project.find(copy_id).folder_id).to be_nil
         end
+
+        example 'Copy a project in a space to the root', document: false do
+          source_project.update!(space: create(:space))
+
+          do_request
+          assert_status 201
+
+          copy = Project.find(response_data[:id])
+          expect(copy.space_id).to be_nil
+          expect(copy.admin_publication.publication_status).to eq 'draft'
+        end
+
+        example 'Copy a project in a folder in a space to the root', document: false do
+          space = create(:space)
+          source_project.update!(folder: create(:project_folder, space: space), space: space)
+
+          do_request
+          assert_status 201
+
+          copy = Project.find(response_data[:id])
+          expect(copy.folder_id).to be_nil
+          expect(copy.space_id).to be_nil
+        end
       end
 
       context 'when the user does not moderate the source project' do
@@ -2232,6 +2255,19 @@ resource 'Projects' do
           copy_id = response_data[:id]
           expect(Project.find(copy_id).folder_id).to eq(source_project.folder_id)
         end
+
+        example 'Copy a project in the folder in a space', document: false do
+          space = create(:space)
+          source_project.folder.update!(space: space)
+          source_project.update!(space: space)
+
+          do_request
+          assert_status 201
+
+          copy = Project.find(response_data[:id])
+          expect(copy.folder_id).to eq(source_project.folder_id)
+          expect(copy.space_id).to eq(space.id)
+        end
       end
 
       context 'when the user does not moderate the folder of the source project' do
@@ -2241,6 +2277,33 @@ resource 'Projects' do
           do_request
           assert_status 401
         end
+      end
+    end
+
+    context 'when space moderator' do
+      before { header_token_for moderator }
+
+      let(:space) { create(:space) }
+      let(:source_project) { create(:project, space: space) }
+      let(:moderator) { create(:space_moderator, spaces: [space]) }
+
+      example 'Copy a project in the space', document: false do
+        do_request
+        assert_status 201
+
+        expect(Project.find(response_data[:id]).space_id).to eq(space.id)
+      end
+
+      example 'Copy a project in a folder of the space', document: false do
+        folder = create(:project_folder, space: space)
+        source_project.update!(folder: folder)
+
+        do_request
+        assert_status 201
+
+        copy = Project.find(response_data[:id])
+        expect(copy.folder_id).to eq(folder.id)
+        expect(copy.space_id).to eq(space.id)
       end
     end
   end

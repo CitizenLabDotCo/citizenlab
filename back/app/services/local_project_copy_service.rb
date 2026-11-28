@@ -2,7 +2,10 @@
 
 # Copies a project within a tenant.
 class LocalProjectCopyService < ProjectCopyService
-  def copy(source_project, dest_folder: source_project.folder)
+  def copy(source_project, dest_folder: source_project.folder, dest_space: dest_folder ? dest_folder.space : source_project.space)
+    # The copy is saved in the folder's space, whatever space is given.
+    raise ArgumentError, 'dest_space must be the space of dest_folder' if dest_folder && dest_folder.space != dest_space
+
     new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
 
     options = {
@@ -11,7 +14,8 @@ class LocalProjectCopyService < ProjectCopyService
       anonymize_users: false,
       new_title_multiloc: new_title_multiloc,
       timeline_start_at: Time.now.to_s,
-      new_publication_status: 'draft'
+      new_publication_status: 'draft',
+      space_id: dest_space&.id
     }
 
     template = export(source_project, **options)
