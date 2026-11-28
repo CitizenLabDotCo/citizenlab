@@ -2,8 +2,6 @@
 
 require 'rails_helper'
 
-# Rename to *_spec.ignore.rb once the task has been released and run, per
-# lib/tasks/single_use/README.md.
 # rubocop:disable RSpec/DescribeClass
 describe 'single_use:remove_hidden_policy_page_attachments' do
   before { load_rake_tasks_if_not_loaded }
