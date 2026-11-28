@@ -26,6 +26,16 @@ module AIAssistant
       raise NotImplementedError
     end
 
+    # The skill (see Skill) whose guidance goes into the instructions here, if any.
+    def self.skill_name
+      nil
+    end
+
+    # The files of that skill that go into the instructions.
+    def self.skill_files
+      []
+    end
+
     attr_reader :subject
 
     def initialize(subject)
@@ -64,11 +74,22 @@ module AIAssistant
     def system_prompt(locale:)
       [
         ::Analysis::LLM::Prompt.new.fetch('ai_assistant_base', locale:),
-        surface_prompt(locale:)
-      ].join("\n\n")
+        surface_prompt(locale:),
+        skill_prompt
+      ].compact.join("\n\n")
     end
 
     private
+
+    def skill
+      return @skill if defined?(@skill)
+
+      @skill = (Skill.find(self.class.skill_name, self.class.skill_files) if self.class.skill_name)
+    end
+
+    def skill_prompt
+      skill&.prompt
+    end
 
     def surface_prompt(locale:)
       raise NotImplementedError

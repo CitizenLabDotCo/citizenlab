@@ -12,6 +12,15 @@ module AIAssistant
         Phase
       end
 
+      def self.skill_name
+        'govocal-project-setup'
+      end
+
+      # Only its survey design guidance: the rest of the skill sets up whole projects.
+      def self.skill_files
+        %w[references/survey-design.md]
+      end
+
       def available?
         subject.participation_method == 'native_survey'
       end
