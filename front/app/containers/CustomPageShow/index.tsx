@@ -26,6 +26,7 @@ import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import BackToProjectLink from './BackToProjectLink';
 import LegacyPageHeader from './LegacyPageHeader';
 import PageSections from './PageSections';
+import PolicyPage from './PolicyPage';
 
 // Builder content is one white block, so the page's grey would only show as a strip below it.
 const PageContainer = styled(Container)<{ builderContent: boolean }>`
@@ -73,13 +74,30 @@ const CustomPageShow = () => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     appConfiguration?.data.attributes.settings.core.organization_name
   );
+  const helmet = (
+    <Helmet
+      title={`${localize(pageAttributes.title_multiloc)} | ${localizedOrgName}`}
+    />
+  );
+
+  if (!isContentBuilderPage(page.data)) {
+    return (
+      <>
+        {helmet}
+        <main className={`e2e-page-${pageSlugToUse}`}>
+          <Container>
+            <Content>
+              <PolicyPage page={page.data} />
+            </Content>
+          </Container>
+        </main>
+      </>
+    );
+  }
+
   return (
     <>
-      <Helmet
-        title={`${localize(
-          pageAttributes.title_multiloc
-        )} | ${localizedOrgName}`}
-      />
+      {helmet}
       <main className={`e2e-page-${pageSlugToUse}`}>
         <PageContainer builderContent={showBuilderContent}>
           {showBuilderContent ? (
@@ -106,10 +124,7 @@ const CustomPageShow = () => {
                   <BackToProjectLink projectId={pageAttributes.project_id} />
                 </Box>
               )}
-              <AdminCustomPageEditButton
-                pageId={page.data.id}
-                projectId={pageAttributes.project_id}
-              />
+              <AdminCustomPageEditButton page={page.data} />
             </Box>
           ) : (
             <LegacyPageHeader page={page.data} />

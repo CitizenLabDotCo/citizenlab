@@ -34,8 +34,8 @@ type Props = {
   page: ICustomPageData;
 };
 
-// How a custom page rendered before the Content Builder: two info sections, attachments and
-// a projects/events list, each behind its own toggle. Deleted once every page is migrated.
+// The fallback for a builder page with an empty layout: two info sections, attachments and a
+// projects/events list, each behind its own toggle. To be removed.
 const PageSections = ({ page }: Props) => {
   const { data: remotePageFiles } = usePageFiles(page.id);
   const attributes = page.attributes;

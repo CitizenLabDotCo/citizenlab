@@ -100,9 +100,18 @@ const brandingRoute = createRoute({
   ),
 });
 
+// `page` names the policy page whose editor opens on arrival.
+const policiesSearchSchema = yup.object({
+  page: yup.string().optional(),
+});
+
+type PoliciesSearchParams = yup.InferType<typeof policiesSearchSchema>;
+
 const policiesRoute = createRoute({
   getParentRoute: () => settingsRoute,
   path: 'policies',
+  validateSearch: (search: Record<string, unknown>): PoliciesSearchParams =>
+    policiesSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <AdminSettingsPolicies />

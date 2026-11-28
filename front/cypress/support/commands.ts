@@ -196,6 +196,8 @@ declare global {
       apiUpdateCustomPage: typeof apiUpdateCustomPage;
       apiRemoveCustomPageLayout: typeof apiRemoveCustomPageLayout;
       apiAddFileToCustomPage: typeof apiAddFileToCustomPage;
+      apiDeleteCustomPageFile: typeof apiDeleteCustomPageFile;
+      apiGetCustomPageBySlug: typeof apiGetCustomPageBySlug;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
@@ -1463,6 +1465,37 @@ function apiAddFileToCustomPage(
         },
       })
     );
+  });
+}
+
+// Deletes the attachment's file from the file library, which deletes the attachment too.
+function apiDeleteCustomPageFile(attachmentId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return requestAs(adminJwt, {
+      method: 'GET',
+      url: `web_api/v1/file_attachments/${attachmentId}`,
+    }).then((attachment) =>
+      requestAs(adminJwt, {
+        method: 'DELETE',
+        url: `web_api/v1/files/${attachment.body.data.relationships.file.data.id}`,
+      })
+    );
+  });
+}
+
+function apiGetCustomPageBySlug(slug: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return requestAs(adminJwt, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'GET',
+      url: `web_api/v1/static_pages/by_slug/${slug}`,
+    });
   });
 }
 
@@ -2783,6 +2816,8 @@ Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);
 Cypress.Commands.add('apiRemoveCustomPageLayout', apiRemoveCustomPageLayout);
 Cypress.Commands.add('apiAddFileToCustomPage', apiAddFileToCustomPage);
+Cypress.Commands.add('apiDeleteCustomPageFile', apiDeleteCustomPageFile);
+Cypress.Commands.add('apiGetCustomPageBySlug', apiGetCustomPageBySlug);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
 Cypress.Commands.add('apiCreateSmartGroup', apiCreateSmartGroup);
 Cypress.Commands.add(

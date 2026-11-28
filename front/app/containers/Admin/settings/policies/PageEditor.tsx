@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -17,6 +17,7 @@ import PageForm, { FormValues } from 'components/PageForm';
 import { FormattedMessage } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 
@@ -123,7 +124,18 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     getFiles();
   }, [remotePageFiles]);
 
-  const [expanded, setExpanded] = useState(false);
+  // Opened from a policy page's edit button.
+  const openOnArrival =
+    useSearch({ from: '/$locale/admin/settings/policies' }).page === pageSlug;
+  const [expanded, setExpanded] = useState(openOnArrival);
+  const editorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (openOnArrival) {
+      editorRef.current?.scrollIntoView();
+    }
+  }, [openOnArrival]);
+
   const toggleDeploy = () => {
     setExpanded((expanded) => !expanded);
   };
@@ -154,33 +166,35 @@ const PageEditor = ({ className, pageSlug }: Props) => {
       }
     };
 
-  if (!isNilOrError(page)) {
-    const pageId = page.data.id;
-    return (
-      <EditorWrapper
-        className={`${className} e2e-page-editor editor-${pageSlug}`}
-      >
-        <Toggle onClick={toggleDeploy} className={`${expanded && 'deployed'}`}>
-          <DeployIcon name="chevron-right" />
-          {messages[pageSlug] ? (
-            <FormattedMessage {...messages[pageSlug]} />
-          ) : (
-            pageSlug
-          )}
-        </Toggle>
+  // The toggle row renders before the page loads, so an editor that loads late doesn't push down
+  // the one opened on arrival.
+  return (
+    <EditorWrapper
+      ref={editorRef}
+      className={`${className} e2e-page-editor editor-${pageSlug}`}
+    >
+      <Toggle onClick={toggleDeploy} className={`${expanded && 'deployed'}`}>
+        <DeployIcon name="chevron-right" />
+        {messages[pageSlug] ? (
+          <FormattedMessage {...messages[pageSlug]} />
+        ) : (
+          pageSlug
+        )}
+      </Toggle>
 
-        <CSSTransition
-          in={expanded}
-          timeout={timeout}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-          classNames="page"
-        >
-          <EditionForm>
+      <CSSTransition
+        in={expanded}
+        timeout={timeout}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        enter={true}
+        exit={true}
+        classNames="page"
+      >
+        <EditionForm>
+          {page && (
             <PageForm
-              pageId={pageId}
+              pageId={page.data.id}
               defaultValues={{
                 nav_bar_item_title_multiloc:
                   page.data.attributes.nav_bar_item_title_multiloc,
@@ -189,15 +203,13 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                   page.data.attributes.top_info_section_multiloc,
                 local_page_files: files,
               }}
-              onSubmit={handleSubmit(pageId, files)}
+              onSubmit={handleSubmit(page.data.id, files)}
             />
-          </EditionForm>
-        </CSSTransition>
-      </EditorWrapper>
-    );
-  }
-
-  return null;
+          )}
+        </EditionForm>
+      </CSSTransition>
+    </EditorWrapper>
+  );
 };
 
 export default PageEditor;

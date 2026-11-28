@@ -80,12 +80,7 @@ const LegacyPageHeader = ({ page }: Props) => {
         <Box background="#fff" width="100%">
           <CustomPageHeader
             banner={bannerContentFromPage(pageAttributes)}
-            adminEditButton={
-              <AdminCustomPageEditButton
-                pageId={page.id}
-                projectId={pageAttributes.project_id}
-              />
-            }
+            adminEditButton={<AdminCustomPageEditButton page={page} />}
           />
         </Box>
       </>
@@ -101,10 +96,7 @@ const LegacyPageHeader = ({ page }: Props) => {
       )}
       <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
       <Box zIndex="40000">
-        <AdminCustomPageEditButton
-          pageId={page.id}
-          projectId={pageAttributes.project_id}
-        />
+        <AdminCustomPageEditButton page={page} />
       </Box>
     </NoBannerContainer>
   );
