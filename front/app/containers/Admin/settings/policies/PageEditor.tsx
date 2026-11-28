@@ -129,13 +129,12 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     useSearch({ from: '/$locale/admin/settings/policies' }).page === pageSlug;
   const [expanded, setExpanded] = useState(openOnArrival);
   const editorRef = useRef<HTMLDivElement>(null);
-  const pageLoaded = !!page;
 
   useEffect(() => {
-    if (openOnArrival && pageLoaded) {
+    if (openOnArrival) {
       editorRef.current?.scrollIntoView();
     }
-  }, [openOnArrival, pageLoaded]);
+  }, [openOnArrival]);
 
   const toggleDeploy = () => {
     setExpanded((expanded) => !expanded);
@@ -167,34 +166,35 @@ const PageEditor = ({ className, pageSlug }: Props) => {
       }
     };
 
-  if (!isNilOrError(page)) {
-    const pageId = page.data.id;
-    return (
-      <EditorWrapper
-        ref={editorRef}
-        className={`${className} e2e-page-editor editor-${pageSlug}`}
-      >
-        <Toggle onClick={toggleDeploy} className={`${expanded && 'deployed'}`}>
-          <DeployIcon name="chevron-right" />
-          {messages[pageSlug] ? (
-            <FormattedMessage {...messages[pageSlug]} />
-          ) : (
-            pageSlug
-          )}
-        </Toggle>
+  // The toggle row renders before the page loads, so an editor that loads late doesn't push down
+  // the one opened on arrival.
+  return (
+    <EditorWrapper
+      ref={editorRef}
+      className={`${className} e2e-page-editor editor-${pageSlug}`}
+    >
+      <Toggle onClick={toggleDeploy} className={`${expanded && 'deployed'}`}>
+        <DeployIcon name="chevron-right" />
+        {messages[pageSlug] ? (
+          <FormattedMessage {...messages[pageSlug]} />
+        ) : (
+          pageSlug
+        )}
+      </Toggle>
 
-        <CSSTransition
-          in={expanded}
-          timeout={timeout}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-          classNames="page"
-        >
-          <EditionForm>
+      <CSSTransition
+        in={expanded}
+        timeout={timeout}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        enter={true}
+        exit={true}
+        classNames="page"
+      >
+        <EditionForm>
+          {page && (
             <PageForm
-              pageId={pageId}
+              pageId={page.data.id}
               defaultValues={{
                 nav_bar_item_title_multiloc:
                   page.data.attributes.nav_bar_item_title_multiloc,
@@ -203,15 +203,13 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                   page.data.attributes.top_info_section_multiloc,
                 local_page_files: files,
               }}
-              onSubmit={handleSubmit(pageId, files)}
+              onSubmit={handleSubmit(page.data.id, files)}
             />
-          </EditionForm>
-        </CSSTransition>
-      </EditorWrapper>
-    );
-  }
-
-  return null;
+          )}
+        </EditionForm>
+      </CSSTransition>
+    </EditorWrapper>
+  );
 };
 
 export default PageEditor;
