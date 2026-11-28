@@ -1468,17 +1468,20 @@ function apiAddFileToCustomPage(
   });
 }
 
-function apiRemoveFileFromCustomPage(customPageId: string, fileId: string) {
+// Deletes the attachment's file from the file library, which deletes the attachment too.
+function apiRemoveFileFromCustomPage(attachmentId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return requestAs(adminJwt, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'DELETE',
-      url: `web_api/v1/static_pages/${customPageId}/files/${fileId}`,
-    });
+      method: 'GET',
+      url: `web_api/v1/file_attachments/${attachmentId}`,
+    }).then((attachment) =>
+      requestAs(adminJwt, {
+        method: 'DELETE',
+        url: `web_api/v1/files/${attachment.body.data.relationships.file.data.id}`,
+      })
+    );
   });
 }
 

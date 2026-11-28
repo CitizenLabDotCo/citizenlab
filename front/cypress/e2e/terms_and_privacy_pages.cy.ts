@@ -7,7 +7,7 @@ import { randomString } from '../support/commands';
     const body = randomString();
     let pageId: string;
     let originalAttributes: Record<string, unknown>;
-    let fileId: string | undefined;
+    let attachmentId: string | undefined;
 
     before(() => {
       cy.apiGetCustomPageBySlug(slug).then((response) => {
@@ -37,14 +37,14 @@ import { randomString } from '../support/commands';
         });
         cy.apiAddFileToCustomPage(pageId, 'example.pdf', 'example.pdf').then(
           (fileResponse) => {
-            fileId = fileResponse.body.data.id;
+            attachmentId = fileResponse.body.data.id;
           }
         );
       });
     });
 
     after(() => {
-      if (fileId) cy.apiRemoveFileFromCustomPage(pageId, fileId);
+      if (attachmentId) cy.apiRemoveFileFromCustomPage(attachmentId);
       if (pageId) cy.apiUpdateCustomPage(pageId, originalAttributes);
     });
 
