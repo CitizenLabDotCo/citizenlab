@@ -136,6 +136,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
       editorRef.current?.scrollIntoView();
     }
   }, [openOnArrival, pageLoaded]);
+
   const toggleDeploy = () => {
     setExpanded((expanded) => !expanded);
   };
