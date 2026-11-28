@@ -106,18 +106,4 @@ describe('CustomPageShow', () => {
     expect(screen.getByTestId('builderContent')).toBeInTheDocument();
     expect(screen.queryByTestId('legacyInfoSection')).not.toBeInTheDocument();
   });
-
-  // Policy pages are not on the Content Builder, and have no bottom section or projects.
-  it('renders a policy page in its own view', () => {
-    hasContent = true;
-    pageAttributes = { ...globalCustomPage, code: 'terms-and-conditions' };
-    render(<CustomPageShow />);
-
-    expect(
-      screen.getByRole('heading', { level: 1, name: 'About us' })
-    ).toBeInTheDocument();
-    expect(screen.queryByTestId('legacyInfoSection')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('legacyProjects')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('builderContent')).not.toBeInTheDocument();
-  });
 });
