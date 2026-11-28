@@ -999,6 +999,14 @@ resource 'Projects' do
         expect(copied_project.default_assignee_id).to eq @user.id
       end
 
+      example 'Copy a project while another copy with the same slug is running', document: false do
+        allow_any_instance_of(LocalProjectCopyService).to receive(:copy).and_raise(ActiveRecord::LockWaitTimeout)
+
+        do_request
+        assert_status 409
+        expect(json_response.dig(:errors, :base, 0, :error)).to eq 'copy_in_progress'
+      end
+
       context 'as a project moderator' do
         before do
           header 'Content-Type', 'application/json'

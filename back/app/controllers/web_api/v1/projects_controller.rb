@@ -272,6 +272,9 @@ class WebApi::V1::ProjectsController < ApplicationController
       params: jsonapi_serializer_params,
       include: [:admin_publication]
     ).serializable_hash, status: :created
+  rescue ActiveRecord::LockWaitTimeout
+    # Another copy that gets the same slug is still running.
+    render json: { errors: { base: [{ error: 'copy_in_progress' }] } }, status: :conflict
   end
 
   def update

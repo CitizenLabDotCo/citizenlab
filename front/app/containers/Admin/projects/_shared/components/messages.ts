@@ -37,6 +37,11 @@ export default defineMessages({
     defaultMessage:
       'There was an error copying this project, please try again later.',
   },
+  copyProjectInProgressError: {
+    id: 'app.containers.Admin.projects.all.copyProjectInProgressError',
+    defaultMessage:
+      'Another copy with the same title is still being made. Please try again in a moment.',
+  },
   deleteProjectButtonFull: {
     id: 'app.containers.Admin.projects.all.deleteProjectButtonFull',
     defaultMessage: 'Delete project',
