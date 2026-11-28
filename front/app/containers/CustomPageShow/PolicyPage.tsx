@@ -6,7 +6,7 @@ import {
   isRtl,
   media,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 import usePageFiles from 'api/page_files/usePageFiles';
@@ -14,14 +14,18 @@ import usePageFiles from 'api/page_files/usePageFiles';
 import useLocalize from 'hooks/useLocalize';
 
 import ContentContainer from 'components/ContentContainer';
-import InfoSection from 'components/LandingPages/citizen/InfoSection';
+import ResolveTextVariables from 'components/ResolveTextVariables';
+import T from 'components/T';
 import FileAttachments from 'components/UI/FileAttachments';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { isEmptyMultiloc } from 'utils/helperUtils';
 
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 
-// Copied on purpose from LegacyPageHeader and PageSections, which are to be removed, so these two
-// pages keep their look.
-const TitleContainer = styled(ContentContainer)`
+// The title and attachments styles are copied on purpose from LegacyPageHeader and PageSections,
+// which are to be removed.
+const PageContainer = styled(ContentContainer)`
   background: #fff;
   padding: 50px;
 
@@ -69,18 +73,28 @@ type Props = {
 // attachments.
 const PolicyPage = ({ page }: Props) => {
   const localize = useLocalize();
+  const theme = useTheme();
   const { data: pageFiles } = usePageFiles(page.id);
   const { title_multiloc, top_info_section_multiloc } = page.attributes;
 
   return (
     <>
-      <TitleContainer>
+      <PageContainer>
         <Title>{localize(title_multiloc)}</Title>
         <Box zIndex="40000">
-          <AdminCustomPageEditButton pageId={page.id} />
+          <AdminCustomPageEditButton page={page} />
         </Box>
-      </TitleContainer>
-      <InfoSection multilocContent={top_info_section_multiloc} />
+        {!isEmptyMultiloc(top_info_section_multiloc) && (
+          // The same gap below the title as the cookie policy and accessibility statement pages.
+          <Box mt="40px">
+            <QuillEditedContent textColor={theme.colors.tenantText}>
+              <ResolveTextVariables value={top_info_section_multiloc}>
+                {(multiloc) => <T value={multiloc} supportHtml={true} />}
+              </ResolveTextVariables>
+            </QuillEditedContent>
+          </Box>
+        )}
+      </PageContainer>
       {pageFiles && pageFiles.data.length > 0 && (
         <AttachmentsContainer>
           <FileAttachments files={pageFiles.data} />

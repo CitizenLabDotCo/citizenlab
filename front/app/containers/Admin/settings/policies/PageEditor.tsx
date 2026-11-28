@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -17,6 +17,7 @@ import PageForm, { FormValues } from 'components/PageForm';
 import { FormattedMessage } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 
@@ -123,7 +124,18 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     getFiles();
   }, [remotePageFiles]);
 
-  const [expanded, setExpanded] = useState(false);
+  // Opened from a policy page's edit button.
+  const openOnArrival =
+    useSearch({ from: '/$locale/admin/settings/policies' }).page === pageSlug;
+  const [expanded, setExpanded] = useState(openOnArrival);
+  const editorRef = useRef<HTMLDivElement>(null);
+  const pageLoaded = !!page;
+
+  useEffect(() => {
+    if (openOnArrival && pageLoaded) {
+      editorRef.current?.scrollIntoView();
+    }
+  }, [openOnArrival, pageLoaded]);
   const toggleDeploy = () => {
     setExpanded((expanded) => !expanded);
   };
@@ -158,6 +170,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     const pageId = page.data.id;
     return (
       <EditorWrapper
+        ref={editorRef}
         className={`${className} e2e-page-editor editor-${pageSlug}`}
       >
         <Toggle onClick={toggleDeploy} className={`${expanded && 'deployed'}`}>

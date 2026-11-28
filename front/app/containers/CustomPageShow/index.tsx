@@ -124,10 +124,7 @@ const CustomPageShow = () => {
                   <BackToProjectLink projectId={pageAttributes.project_id} />
                 </Box>
               )}
-              <AdminCustomPageEditButton
-                pageId={page.data.id}
-                projectId={pageAttributes.project_id}
-              />
+              <AdminCustomPageEditButton page={page.data} />
             </Box>
           ) : (
             <LegacyPageHeader page={page.data} />

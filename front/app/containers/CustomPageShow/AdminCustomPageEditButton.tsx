@@ -4,6 +4,8 @@ import { colors, media } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
+import { ICustomPageData } from 'api/custom_pages/types';
+import { isContentBuilderPage } from 'api/custom_pages/util';
 import useProjectById from 'api/projects/useProjectById';
 
 import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
@@ -21,15 +23,14 @@ import messages from './messages';
 // the page heading (WCAG 1.4.10 Reflow).
 
 interface Props {
-  pageId: string;
-  projectId?: string | null;
+  page: ICustomPageData;
 }
 
 const AdminCustomPageEditButton = ({
-  pageId,
-  projectId,
+  page,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
+  const projectId = page.attributes.project_id;
   // Only fetched for project pages (hook disabled when id is nullish); passed
   // as the rule's context to resolve moderator access.
   const { data: project } = useProjectById(projectId);
@@ -40,9 +41,15 @@ const AdminCustomPageEditButton = ({
     context: project?.data,
   });
 
+  // The terms and privacy pages are edited in Settings → Policies.
   const editLink = projectId
-    ? { linkTo: `/admin/projects/${projectId}/pages/${pageId}` }
-    : adminCustomPageContentLink(pageId);
+    ? { linkTo: `/admin/projects/${projectId}/pages/${page.id}` }
+    : isContentBuilderPage(page)
+    ? adminCustomPageContentLink(page.id)
+    : ({
+        to: '/admin/settings/policies',
+        search: { page: page.attributes.slug },
+      } as const);
 
   // An admin preview shows this page in a frame, where the button would open the admin inside it.
   return userCanEditPage && !checkIfFramed() ? (
