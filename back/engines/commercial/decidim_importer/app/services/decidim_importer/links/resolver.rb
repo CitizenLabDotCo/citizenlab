@@ -9,12 +9,15 @@ module DecidimImporter
     #   * **content** (rule 2) — a `…/processes/<slug>/…` link resolves to `/projects/<slug>`. Projects
     #     keep their Decidim slug on import ({Extractors::ProjectsExtractor}), so the slugs match.
     #   * **files** (rule 4) — an Active Storage blob link resolves by (decoded) filename to the imported
-    #     `Files::File` of the same name, returning its *id*. The URL isn't known until the file is
-    #     uploaded, so the post-import `correct_links` task turns the id into the file's `content.url`.
+    #     `Files::File` of the same name, or else to the one whose source URL has that filename (the file
+    #     is named after the attachment title, which often differs from the uploaded filename), returning
+    #     its *id*. The URL isn't known until the file is uploaded, so the post-import `correct_links`
+    #     task turns the id into the file's `content.url`.
     class Resolver
       def initialize(ref_map)
         @project_slugs = project_slugs(ref_map)
-        @files_by_name = files_by_name(ref_map)
+        @files_by_name = files_by(ref_map) { |attrs| attrs['name'] }
+        @files_by_source_name = files_by(ref_map) { |attrs| filename_of(attrs['remote_content_url']) }
       end
 
       # A same-domain/relative link → a Go Vocal internal path, or nil when nothing matches. The slug is
@@ -30,9 +33,10 @@ module DecidimImporter
       end
 
       # An Active Storage link → the id of the imported file with the same (decoded) filename, or nil.
+      # The file's own name wins over its source URL's filename.
       def file_id(url)
         name = filename_of(url)
-        file = name && @files_by_name[name]
+        file = name && (@files_by_name[name] || @files_by_source_name[name])
         file&.attributes&.fetch('id', nil)
       end
 
@@ -47,13 +51,14 @@ module DecidimImporter
         end
       end
 
-      # First file wins on a duplicate name — linking either would be a guess, so we stay deterministic.
-      def files_by_name(ref_map)
+      # Imported files indexed by the key the block derives from their attributes. First file wins on a
+      # duplicate key — linking either would be a guess, so we stay deterministic.
+      def files_by(ref_map)
         ref_map.records.each_with_object({}) do |record, map|
           next unless record.model_name == 'files/file'
 
-          name = record.attributes['name']
-          map[name] ||= record if name.present?
+          key = yield(record.attributes)
+          map[key] ||= record if key.present?
         end
       end
 
@@ -68,7 +73,7 @@ module DecidimImporter
         nil
       end
 
-      # The decoded basename of a URL's path (the stored filename to match against `Files::File#name`).
+      # The decoded basename of a URL's path.
       def filename_of(url)
         path = path_of(url)
         return nil unless path
