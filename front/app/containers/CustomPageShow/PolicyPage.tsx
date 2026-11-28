@@ -26,7 +26,7 @@ import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 // The title and attachments styles are copied on purpose from LegacyPageHeader and PageSections,
 // which are to be removed.
 const PageContainer = styled(ContentContainer)`
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   padding: 50px;
 
   ${media.tablet`
@@ -56,7 +56,7 @@ const Title = styled.h1`
 `;
 
 const AttachmentsContainer = styled(ContentContainer)`
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   padding: 0 20px 50px;
 
   ${media.tablet`
